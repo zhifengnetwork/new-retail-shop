@@ -1,12 +1,12 @@
 <template>
-  <div class="hello">
+  <div class="home">
       <van-loading size="24px" vertical>加载中...</van-loading>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'home',
   data () {
     return {
       
@@ -17,8 +17,8 @@ export default {
 
 
 <style lang="stylus" scoped>
-.hello{
+.home
   font-size 30px
   color red
-}
+
 </style>

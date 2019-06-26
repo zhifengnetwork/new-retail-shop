@@ -13,8 +13,11 @@ import 'vant/lib/index.css';
 Vue.use(Vant);
 
 // 引入axios请求数据
-import axios from 'axios'
+import axios from "./axios/request";
 Vue.prototype.$axios = axios
+
+// 引入vuex管理数据
+import store from '@/store/store.js'
 
 Vue.config.productionTip = false
 
@@ -22,6 +25,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,// 全局注册 vuex状态管理
   components: { App },
   template: '<App/>'
 })
