@@ -1,24 +1,28 @@
 <template>
-  <div class="home">
-      <van-loading size="24px" vertical>加载中...</van-loading>
-  </div>
+	<div class="home">
+		首页
+		<!-- 底部导航 -->
+		<Navigate></Navigate>
+	</div>
 </template>
 
 <script>
+import Navigate from "@/pages/common/footer/Navigate";
 export default {
-  name: 'home',
-  data () {
-    return {
-      
-    }
-  }
-}
+	name: "home",
+	data() {
+		return {};
+	},
+	components: {
+		Navigate
+	}
+};
 </script>
 
 
 <style lang="stylus" scoped>
-.home
-  font-size 30px
-  color red
-
+.home {
+  font-size: 30px;
+  color: red;
+}
 </style>
