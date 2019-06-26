@@ -3,30 +3,29 @@
         <ul>
  			<li>
  				<router-link exact to="/Home">
-                    <van-icon name="wap-home"/>
- 					<span>首页</span>
+                    <i class="home-icon"></i>
+ 					<span class="text">首页</span>
  				</router-link>
  			</li>
  			<li>
  				<router-link to="/Category">
- 					<van-icon name="wap-nav" />
- 					<span>分类</span>
+ 					<i class="category-icon"></i>
+ 					<span class="text">分类</span>
  				</router-link>
  			</li>
  			<li>
  				<router-link to="/Cart">
- 					<van-icon name="cart" />
- 					<span>购物车</span>
+ 					<i class="cart-icon"></i>
+ 					<span class="text">购物车</span>
  				</router-link>
  			</li>
  			<li>
  				<router-link to="/User">
- 					<van-icon name="contact" />
- 					<span>我的</span>	
+ 					<i class="user-icon"></i>
+ 					<span class="text">我的</span>	
  				</router-link>
  			</li>
  		</ul>
-
     </div>
 </template>
 
@@ -35,7 +34,7 @@
         name:'Navigate',
         data(){
             return{
-                active: 0
+                
             }
         }
         
@@ -65,19 +64,39 @@
 				align-items center 
 				justify-content center
 				i
+					width 100%
+					height 40px
+					margin 7px 0
 					display block
-					margin-top 8px 
-				.van-icon
-					font-size 40px
-					color #7f7f7f
-				span{
-					margin-top: 8px
+				.home-icon
+					background url(/static/images/public/home-icon.png) no-repeat center center
+					background-size 42px 39px
+				.category-icon
+					background url(/static/images/public/category-icon.png) no-repeat center center
+					background-size 39px 39px
+				.cart-icon
+					background url(/static/images/public/cart-icon.png) no-repeat center center
+					background-size 48px 40px
+				.user-icon
+					background url(/static/images/public/user-icon.png) no-repeat center center
+					background-size 34px 39px
+				span
 					font-size 26px;
 					color #7f7f7f
-				}
+				
 			.router-link-exact-active
-				.van-icon
-					color #ff0000
+				.home-icon
+					background url(/static/images/public/home-icon-on.png) no-repeat center center
+					background-size 42px 39px
+				.category-icon
+					background url(/static/images/public/category-icon-on.png) no-repeat center center
+					background-size 39px 39px
+				.cart-icon
+					background url(/static/images/public/cart-icon-on.png) no-repeat center center
+					background-size 48px 40px
+				.user-icon
+					background url(/static/images/public/user-icon-on.png) no-repeat center center
+					background-size 34px 39px
 				span
 					color #ff0000	
 </style>
