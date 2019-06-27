@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+import '../static/css/reset.css'
+
 // 配置移动端自适配:安装lib-flexible、安装postcss-px2rem-exclude
 import 'lib-flexible/flexible.js'
 
