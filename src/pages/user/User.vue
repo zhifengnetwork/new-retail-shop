@@ -87,14 +87,18 @@
             </div>
             <!--  -->
             <div class="list_wrap">
-                <div class="arr_wrap">
-                    <span>我的团队</span>
-                    <span class="right_ico"></span>
-                </div>
-                <div class="arr_wrap">
-                    <span>收款信息</span>
-                    <span class="right_ico"></span>
-                </div>
+                <router-link class="my_look" to="/user/myTeam">
+                    <div class="arr_wrap">
+                        <span>我的团队</span>
+                        <span class="right_ico"></span>
+                    </div>
+                </router-link>
+                <router-link class="my_look" to="/user/receiptInformation">
+                    <div class="arr_wrap">
+                        <span>收款信息</span>
+                        <span class="right_ico"></span>
+                    </div>
+                </router-link>    
                 <div class="arr_wrap">
                     <span>佣金明细</span>
                     <span class="right_ico"></span>
@@ -112,10 +116,12 @@
                     <span>邀请链接</span>
                     <span class="right_ico"></span>
                 </div>
-                <div class="arr_wrap">
-                    <span>我的分享</span>
-                    <span class="right_ico"></span>
-                </div>
+                <router-link class="my_look" to="/user/mySharing">
+                    <div class="arr_wrap">
+                        <span>我的分享</span>
+                        <span class="right_ico"></span>
+                    </div>
+                </router-link>
             </div>
         </div>
         <!-- 底部 -->
@@ -263,6 +269,8 @@
             font-size 28px
             color #525252
             line-height 80px
+            .my_look
+                color #525252
             .arr_wrap
                 border-bottom 1.5px solid #e6e6e6
                 .right_ico

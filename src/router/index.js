@@ -12,6 +12,12 @@ import Cart from '@/pages/cart/Cart'
 
 // 我的
 import User from '@/pages/user/User'
+// 我的团队
+import myTeam from '@/pages/user/myTeam'
+// 收款信息
+import receiptInformation from '@/pages/user/receiptInformation'
+// 我的分享
+import mySharing from '@/pages/user/mySharing'
 
 
 Vue.use(Router)
@@ -49,6 +55,24 @@ export default new Router({
 			name: 'User',
 			component: Home,
 			component:() => import('@/pages/user/User'),
+		},
+		// 我的团队
+		{
+			path: '/user/myTeam',
+			name: 'myTeam',
+			component:() => import('@/pages/user/myTeam'),
+		},
+		// 收款信息
+		{
+			path: '/user/receiptInformation',
+			name: 'receiptInformation',
+			component:() => import('@/pages/user/receiptInformation'),
+		},
+		// 我的分享
+		{
+			path: '/user/mySharing',
+			name: 'mySharing',
+			component:() => import('@/pages/user/mySharing'),
 		},
 
 		// 重定向
