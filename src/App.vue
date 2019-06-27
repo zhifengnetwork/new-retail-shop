@@ -10,6 +10,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
+body
+  background-color #f7f7f7
+  color #151515
 
 </style>
