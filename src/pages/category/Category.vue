@@ -2,10 +2,8 @@
 	<div class="Category">
 		<!-- 头部组件 -->
 		<TopHeader custom-title="分类" custom-fixed>
-			<!-- 返回按钮 -->
-			<i slot="backBtn" class="iconfont icon-fanhui"></i>
-			<!-- 右边 -->
-			<i slot="rightBtn" class="iconfont icon-lajitong"></i>
+			<!-- <i slot="backBtn" class="iconfont icon-fanhui"></i> -->
+			<!-- <i slot="rightBtn" class="iconfont icon-lajitong"></i> -->
 		</TopHeader>
 
 		<!-- 底部导航 -->
