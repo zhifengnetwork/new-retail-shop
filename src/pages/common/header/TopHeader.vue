@@ -1,7 +1,7 @@
 <template>
     <div class="TopHeader" :style="{'position':customFixed ? 'fixed' : 'relative' }">
         <div class="backBtn" @click="backAction">
-            <i class="iconfont icon-fanhui"></i>
+            <slot name="backBtn"></slot>
         </div>
         <div class="title">{{customTitle}}</div>
         <div class="rightBtn">
@@ -48,25 +48,35 @@ export default {
 <style lang="stylus" scoped>
 .TopHeader
     width 100%
-    height 120px
-    line-height 120px
-    color #fff
-    font-size 36px
-    background-color #10903d
+    height 88px
+    line-height 88px
+    color #151515
+    font-size 30px
+    background-color #ffffff
     display flex
     justify-content space-between
     align-items center
+    position relative
     .backBtn
         width 10%
         text-align center
+        position absolute
+        left 0
+        top 0
         .iconfont 
             font-size 36px
     .title
         text-align center
-        flex 1 1 auto
+        width 70%
+        margin 0 auto
+        white-space nowrap
+        overflow hidden
+        text-overflow ellipsis
     .rightBtn
         padding-right 30px
-        box-sizing border-box
+        position absolute
+        right 0
+        top 0
         .iconfont
             font-size 46px
 
