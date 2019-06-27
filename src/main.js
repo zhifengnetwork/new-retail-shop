@@ -9,9 +9,10 @@ import 'lib-flexible/flexible.js'
 
 // 导入vant所有组件
 import Vant from 'vant';
+// import { Dialog } from 'vant';
 import 'vant/lib/index.css';
 Vue.use(Vant);
-
+// Vue.use(Dialog);
 // 引入axios请求数据
 import axios from "./axios/request";
 Vue.prototype.$axios = axios
