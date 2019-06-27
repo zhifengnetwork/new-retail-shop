@@ -1,12 +1,20 @@
 <template>
 	<div class="Category">
-		分类
+		<!-- 头部组件 -->
+		<TopHeader custom-title="分类" custom-fixed>
+			<!-- 返回按钮 -->
+			<i slot="backBtn" class="iconfont icon-fanhui"></i>
+			<!-- 右边 -->
+			<i slot="rightBtn" class="iconfont icon-lajitong"></i>
+		</TopHeader>
+
 		<!-- 底部导航 -->
 		<Navigate></Navigate>
 	</div>
 </template>
 
 <script>
+import TopHeader from "@/pages/common/header/TopHeader"
 import Navigate from "@/pages/common/footer/Navigate";
 export default {
 	name: "Category",
@@ -14,6 +22,7 @@ export default {
 		return {};
 	},
 	components: {
+		TopHeader,
 		Navigate
 	}
 };

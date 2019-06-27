@@ -247,7 +247,8 @@ export default {
 				font-size 48px
 				color #ffffff
 				font-weight normal
-				margin-right 48px
+				margin-left 35px
+				margin-right 44px
 			span 
 				font-size 28px
 				color #ffdbd9
