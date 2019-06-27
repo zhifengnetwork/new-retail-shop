@@ -7,7 +7,6 @@
 				<span class="text">搜索	</span>
 			</div>
 		</div>
-
 		<!-- 轮播图 -->
 		<div class="banner">
 			<van-swipe :autoplay="3000" indicator-color="white">

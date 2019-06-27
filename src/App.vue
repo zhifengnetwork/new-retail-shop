@@ -12,7 +12,11 @@ export default {
 
 <style lang="stylus">
 body
-  background-color #f7f7f7
-  color #151515
+	background-color #f7f7f7
+	color #151515
+	.height-88
+		width 100%
+		height 88px
+
 
 </style>

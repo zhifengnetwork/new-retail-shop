@@ -46,7 +46,6 @@ input, select {
 } 
 .clearfix{zoom:1}  /*是在处理兼容性问题*/
 
-
 /*省略号单行*/
 .publicEllipsis {
 	overflow: hidden;
