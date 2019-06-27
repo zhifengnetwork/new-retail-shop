@@ -8,15 +8,31 @@
         <div class="content">
             <div class="main">
                 <div class="list_wrap">
-                    <div class="list">
-                        <div class="group">
-                            <span>团队列表</span>
-                            <i class="iconfont icon-xiangyoujiantou"></i>
-                        </div>
-                        <p>8</p>
-                        <p>总人数</p>
+                    <div class="group">
+                        <span>团队列表</span>
+                        <i class="iconfont icon-xiangyoujiantou"></i>
                     </div>
+                    <p>8</p>
+                    <p>总人数</p>
                 </div>
+
+                <div class="list_wrap_1">
+                    <div class="group">
+                        <span>佣金明细</span>
+                        <i class="iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                    <p>2.88</p>
+                    <p>总收益</p>
+                </div>
+
+                <div class="list_wrap_2">
+                    <div class="group">
+                        <span>预计收益</span>
+                        <i class="iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                    <p>547.54</p>
+                </div>
+
             </div>
         </div>
     </div>
@@ -47,14 +63,49 @@
                 margin 18px 24px
                 background #fff 
                 .list_wrap 
+                    margin-bottom 20px
                     padding 31px 36px 45px
                     background url(/static/images/user/back1.png) no-repeat
                     background-size 100% 100% 
-                    .list 
-                        .group
-                            line-height 65px 
-                        p 
-                            font-size 30px
-                            text-align center
-                            line-height 65px                                   
+                    .group
+                        line-height 65px 
+                        color #28678e
+                        .icon-xiangyoujiantou
+                            font-size 12px
+                            vertical-align middle 
+                    p 
+                        font-size 30px
+                        text-align center
+                        line-height 65px 
+                .list_wrap_1 
+                    margin-bottom 20px
+                    padding 31px 36px 45px
+                    background url(/static/images/user/back2.png) no-repeat
+                    background-size 100% 100% 
+                    .group
+                        line-height 65px 
+                        color #8e4a28
+                        .icon-xiangyoujiantou
+                            font-size 12px
+                            vertical-align middle 
+                    p 
+                        font-size 30px
+                        text-align center
+                        line-height 65px 
+                .list_wrap_2
+                    margin-bottom 20px
+                    padding 31px 36px 105px
+                    background url(/static/images/user/back3.png) no-repeat
+                    background-size 100% 100% 
+                    .group
+                        line-height 65px 
+                        color #8e2862
+                        .icon-xiangyoujiantou
+                            font-size 12px
+                            vertical-align middle 
+                    p 
+                        font-size 30px
+                        text-align center
+                        line-height 65px               
+                                                             
 </style>
