@@ -35,7 +35,10 @@
 
 		<!-- 预售 -->
 		<div class="advance-sale">
-			<a href="#"><img src="/static/images/home/advance-sale-img.png" /></a>
+			<a href="#">
+				<h1>50元专区</h1>
+				<span>不包邮</span>
+			</a>
 		</div>
 
 		<!-- 热销商品 -->
@@ -103,14 +106,57 @@
 				</div>
 			</div>
 		</div>
-
+		
 		<!-- 推荐商品 -->
 		<div class="recommend-wrap">
 			<div class="heading">
 				<i class="icon"><img src="/static/images/home/recommend-icon.png"></i>
 				<h3>推荐商品</h3>
 			</div>
-
+			<div class="recommend-list">
+				<div class="single-item">
+					<a href="#">
+						<div class="img-wrap">
+							<img src="/static/images/home/recommend-goods-img01.png" />
+						</div>
+						<div class="main">
+							<h3>自然堂化妆品补水防晒虎自然堂化...</h3>
+							<div class="price">
+								<p class="discount-price">￥360.00</p>
+								<p class="original-price">原价:￥500.00</p>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="single-item">
+					<a href="#">
+						<div class="img-wrap">
+							<img src="/static/images/home/recommend-goods-img01.png" />
+						</div>
+						<div class="main">
+							<h3>自然堂化妆品补水防晒虎自然堂化...</h3>
+							<div class="price">
+								<p class="discount-price">￥360.00</p>
+								<p class="original-price">原价:￥500.00</p>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="single-item">
+					<a href="#">
+						<div class="img-wrap">
+							<img src="/static/images/home/recommend-goods-img01.png" />
+						</div>
+						<div class="main">
+							<h3>自然堂化妆品补水防晒虎自然堂化...</h3>
+							<div class="price">
+								<p class="discount-price">￥360.00</p>
+								<p class="original-price">原价:￥500.00</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
 		</div>
 
 		<!-- 底部导航 -->
@@ -142,6 +188,10 @@ export default {
 		display flex
 		align-items center
 		justify-content center
+		position fixed
+		left 0
+		top 0
+		z-index 9
 		.search
 			width 700px
 			height 60px
@@ -161,6 +211,7 @@ export default {
 				font-size 28px
 	.banner
 		width 100%
+		padding-top 76px
 		img 
 			width 100% 
 			display block
@@ -179,12 +230,27 @@ export default {
 		.van-notice-bar >>> .van-notice-bar__left-icon, .van-notice-bar__right-icon
 			min-width 33px
 	.advance-sale
-		width 100%
+		width 700px
+		height 150px
+		background url(/static/images/home/advance-sale-img.png) no-repeat
+		background-size 100%
 		margin 0 auto
 		padding 0 .25rem
 		box-sizing border-box
-		img 
+		a
 			width 100%
+			height 100%
+			display flex
+			align-items center
+			justify-content center
+			h1
+				font-size 48px
+				color #ffffff
+				font-weight normal
+				margin-right 48px
+			span 
+				font-size 28px
+				color #ffdbd9
 	.heading
 		height 82px
 		display flex
@@ -226,6 +292,7 @@ export default {
 						max-width 100%
 						max-height 100%
 				.main
+					flex 1
 					h3
 						font-size 22px
 						color #151515
@@ -246,5 +313,49 @@ export default {
 	.recommend-wrap
 		padding 0 .25rem
 		box-sizing border-box
+		.recommend-list
+			.single-item
+				width 100%
+				height 324px
+				background-color #fff
+				border-radius 8px
+				overflow hidden
+				margin-bottom 12px
+				padding 12px
+				box-sizing border-box
+				a
+					display flex
+					align-items center
+					.img-wrap
+						width 300px
+						height 300px
+						overflow hidden
+						margin-right 28px
+						img 
+							max-width 100%
+							max-height 100%
+					.main
+						h3
+							height 70px
+							font-size 26px
+							color #151515
+							-webkit-box-orient vertical
+							-webkit-line-clamp 2
+							display -webkit-box
+							overflow hidden
+							text-overflow ellipsis
+							margin-bottom 80px
+						.price
+							display flex
+							align-items center
+							justify-content space-between
+							margin-right 26px
+							.discount-price
+								font-size 30px
+								color #ed0d0d
+							.original-price
+								font-size 24px
+								color #a1a1a1
+								text-decoration line-through
 			
 </style>
