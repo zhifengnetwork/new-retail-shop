@@ -46,8 +46,10 @@
                 <div class="title_wrap">
                     <h2>我的订单</h2>
                     <div class="check">
-                        查看全部订单
-                        <i class="right_icon"></i>
+                        <router-link to="/Order">
+                             查看全部订单
+                            <i class="right_icon"></i>
+                        </router-link>
                     </div>
                 </div>
                 <div class="item_wrap">
@@ -108,10 +110,12 @@
                     <span class="cell">180 8222 8888</span>
                     <span class="right_ico"></span>
                 </div>
-                <div class="arr_wrap">
-                    <span>地址管理</span>
-                    <span class="right_ico"></span>
-                </div>
+               
+                    <div class="arr_wrap"> <router-link to="/user/Address">
+                        <span>地址管理</span>
+                        <span class="right_ico"></span></router-link>
+                    </div>
+                 
                 <div class="arr_wrap">
                     <span>邀请链接</span>
                     <span class="right_ico"></span>
