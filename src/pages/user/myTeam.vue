@@ -1,19 +1,21 @@
 <template>
     <div class="MyTeam">
         <!-- 头部组件 -->
-		<Team-Header custom-title="我的团队" custom-fixed class="head">
+		<Team-Header custom-title="我的团队" custom-fixed>
 			<!-- 返回按钮 -->
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</Team-Header>
         <div class="content">
             <div class="main">
                 <div class="list_wrap">
-                    <div class="group">
-                        <span>团队列表</span>
-                        <i class="iconfont icon-xiangyoujiantou"></i>
-                    </div>
-                    <p>8</p>
-                    <p>总人数</p>
+                    <router-link class="look" to="/user/myTeam/commissionlist">
+                        <div class="group">
+                            <span>团队列表</span>
+                            <i class="iconfont icon-xiangyoujiantou"></i>
+                        </div>
+                        <p>8</p>
+                        <p>总人数</p>
+                    </router-link>    
                 </div>
 
                 <div class="list_wrap_1">
@@ -26,11 +28,13 @@
                 </div>
 
                 <div class="list_wrap_2">
-                    <div class="group">
-                        <span>预计收益</span>
-                        <i class="iconfont icon-xiangyoujiantou"></i>
-                    </div>
-                    <p>547.54</p>
+                    <router-link class="look" to="/user/shouyilist">
+                        <div class="group">
+                            <span>预计收益</span>
+                            <i class="iconfont icon-xiangyoujiantou"></i>
+                        </div>
+                        <p>547.54</p>
+                    </router-link>
                 </div>
 
             </div>
@@ -77,6 +81,7 @@
                         font-size 30px
                         text-align center
                         line-height 65px 
+                        color #151515
                 .list_wrap_1 
                     margin-bottom 20px
                     padding 31px 36px 45px
@@ -91,7 +96,8 @@
                     p 
                         font-size 30px
                         text-align center
-                        line-height 65px 
+                        line-height 65px
+                        color #151515 
                 .list_wrap_2
                     margin-bottom 20px
                     padding 31px 36px 105px
@@ -106,6 +112,11 @@
                     p 
                         font-size 30px
                         text-align center
-                        line-height 65px               
+                        line-height 65px 
+                        color #151515
+
+.my_look
+    display block
+    color #151515
                                                              
 </style>
