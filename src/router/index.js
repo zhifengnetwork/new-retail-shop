@@ -9,7 +9,8 @@ import Category from '@/pages/category/Category'
 
 // 购物车
 import Cart from '@/pages/cart/Cart'
-
+//挂卖区
+import Sell from '@/pages/sell/Sell'
 // 我的
 import User from '@/pages/user/User'
 // 我的团队
@@ -55,6 +56,12 @@ export default new Router({
 			name: 'User',
 			component: Home,
 			component:() => import('@/pages/user/User'),
+		},
+		//挂卖区
+		{
+			path: '/Sell',
+			name: 'Sell',
+			component:() => import('@/pages/sell/Sell'),
 		},
 		// 我的团队
 		{
