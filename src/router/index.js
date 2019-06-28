@@ -11,6 +11,8 @@ import Category from '@/pages/category/Category'
 import Cart from '@/pages/cart/Cart'
 //挂卖区
 import Sell from '@/pages/sell/Sell'
+//付款
+import Payment from '@/pages/sell/Payment'
 // 我的
 import User from '@/pages/user/User'
 // 我的团队
@@ -49,19 +51,24 @@ export default new Router({
 			component: Home,
 			component:() => import('@/pages/cart/Cart'),
 		},
-
+		//挂卖区
+		{
+			path: '/Sell',
+			name: 'Sell',
+			component:() => import('@/pages/sell/Sell'),
+		},
+		//支付
+		{
+			path: '/Payment',
+			name: 'Payment',
+			component:() => import('@/pages/sell/Payment'),
+		},
 		// 我的
 		{
 			path: '/User',
 			name: 'User',
 			component: Home,
 			component:() => import('@/pages/user/User'),
-		},
-		//挂卖区
-		{
-			path: '/Sell',
-			name: 'Sell',
-			component:() => import('@/pages/sell/Sell'),
 		},
 		// 我的团队
 		{
