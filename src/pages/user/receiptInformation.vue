@@ -1,7 +1,7 @@
 <template>
     <div class="rece">
         <!-- 头部组件 -->
-		<Rece-Header custom-title="收款信息" custom-fixed class="head">
+		<Rece-Header custom-title="收款信息" custom-fixed>
 			<!-- 返回按钮 -->
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</Rece-Header>
