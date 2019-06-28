@@ -9,7 +9,8 @@ import Category from '@/pages/category/Category'
 
 // 购物车
 import Cart from '@/pages/cart/Cart'
-
+//挂卖区
+import Sell from '@/pages/sell/Sell'
 // 我的
 import User from '@/pages/user/User'
 // 个人资料
@@ -85,6 +86,12 @@ export default new Router({
 			path: '/user/lookorder',
 			name: 'alipay',
 			component:() => import('@/pages/user/lookorder'),
+		},
+		//挂卖区
+		{
+			path: '/Sell',
+			name: 'Sell',
+			component:() => import('@/pages/sell/Sell'),
 		},
 		// 我的团队
 		{

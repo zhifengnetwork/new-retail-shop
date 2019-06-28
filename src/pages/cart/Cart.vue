@@ -28,6 +28,7 @@
             </div>
         </div>
         <!-- CART FOOT START -->
+        <div class="footer-height"></div>
         <div class="footer">
             <div class="footer-a">
                 <span class="f-a-a">
@@ -36,14 +37,14 @@
                 <div class="f-a-b">
                     <p class="size-30">
                         <strong>总计：</strong>
-                        <span class="colorRed">￥<strong class="size-35">{{totalPrice}}</strong></span>
+                        <span class="colorRed">￥<strong class="size-35">{{updatePrice}}</strong></span>
                     </p>
                     <p class="size-24">
                         节省: <span class="size-20">￥</span><span class="size-30">10.00</span>
                     </p>
                 </div>
             </div>
-            <div class="footer-b">结算({{totalNumber}})</div>
+            <div class="footer-b">结算({{updateNumber}})</div>
         </div>
         <Navigate></Navigate>
     </div>
@@ -79,21 +80,37 @@ export default {
                     isCheck:true
                 }
             ],
-            totalPrice:'0.00',
-            totalNumber:2,
             allChecked: false,
-            
         };
     },
     components: {
-    [Dialog.Component.name]: Dialog.Component
-  },
+        [Dialog.Component.name]: Dialog.Component
+    },
+    computed:{
+        updatePrice(){
+            let totalPrice=0;
+            this.list.forEach((data)=>{
+                if(data.isCheck){
+                    totalPrice += new Number(data.price) * new Number(data.number);
+                }
+            })
+            return totalPrice;
+        },
+        updateNumber(){
+            let count =0;
+            this.list.forEach((data)=>{
+                if(data.isCheck){
+                    count ++
+                }
+            })
+            return count;
+        }
+    },
     methods:{
         selectAll(_flag){
             for(var i =0;i<this.list.length;i++){
                 this.list[i].isCheck = ! _flag;
             }
-            this.updatePrice();
         },
         selectGoods(e,key){
             var data =this.list[key];
@@ -101,7 +118,6 @@ export default {
             if(!data.isCheck){
                 this.allChecked=false
             }
-            this.updatePrice();
         },
         reducingNumber(key){
             var data =this.list[key];
@@ -113,9 +129,8 @@ export default {
         },
         changNumber(e,key){
             var val =e.target.value;
-            var stock =1000000
             var data =this.list[key]; 
-            if(val<=1 || val>=stock){
+            if(val<=1){
                 return;
             }
             this.$set( data,'number',val)
@@ -125,48 +140,25 @@ export default {
             title: '信息提醒',
             message: '亲，再考虑考虑吧?'
             }).then(() => {
-
-                this.deletGoods()
+                let newArry=[];
+                this.list.forEach((data,index)=>{
+                    if(!data.isCheck){
+                        newArry.push(data)
+                    }
+                })
+                this.list =newArry;
 
             // on confirm
             }).catch(() => {
             // on cancel
             });
         },
-        deletGoods(){
-            var list =this.list;
-            console.log(list)
-            for(let i=0; i<list.length; i++){
-                if(list[i].isCheck){
-                    this.list.splice(i,1)
-                }
-            }
-        },
         addNumber(key){
             var data =this.list[key];
             var val =parseInt(data.number) 
             val =new Number(val+ 1)
             this.$set( data,'number',val);
-            this.updatePrice(key)
         },
-        updatePrice(){
-            var tPrice =0;
-            var list =this.list;
-            var nun =0;
-            for(var i=0; i<list.length; i++){
-                if(list[i].isCheck){
-                    var price =new Number(list[i].price);
-                    var number =new Number(list[i].number);
-                    var goPrice = price * number;
-                    tPrice = tPrice + goPrice;
-                }
-            }
-            this.totalPrice=tPrice.toFixed(2);
-            this.totalNumber=nun+1
-        }
-    },
-    mounted(){
-        this.updatePrice();
     },
     components: {
         TopHeader,
@@ -190,16 +182,12 @@ export default {
             width:100%;
             min-height:100%;
             color:#151515;
-            .height-88
-                width 100%;
-                height 88px;
             .conter
                 margin : 10px 24px;
                 .c-list-
                     width:100%;
                     margin-bottom:12px;
                     border-radius:6px;
-                    background:#ccc;
                     padding: 20px 40px 20px 6px;
                     height:238px;
                     display:flex;
@@ -259,9 +247,12 @@ export default {
                                     height:inherit;
                                     font-size:24px;
                                     font-weight:bold;
+            .footer-height
+                width :100%;
+                height:220px;
             .footer
                 position :fixed;
-                bottom:100px;
+                bottom:98px;
                 width :100%;
                 height:120px;
                 left:0;
