@@ -4,6 +4,12 @@ import Router from 'vue-router'
 // 登录
 import Login from '@/pages/login/Login'
 
+// 注册
+import Register from '@/pages/login/Register'
+
+// 修改密码
+import EditPassword from '@/pages/login/EditPassword'
+
 // 首页
 import Home from '@/pages/home/Home'
 
@@ -56,6 +62,19 @@ export default new Router({
 			name: 'Login',
 			component:() => import('@/pages/login/Login'),
 		},
+		// 注册
+		{
+			path: '/Register',
+			name: 'Register',
+			component:() => import('@/pages/login/Register'),
+		},
+		// 修改密码
+		{
+			path: '/EditPassword',
+			name: 'EditPassword',
+			component:() => import('@/pages/login/EditPassword'),
+		},
+
 
 		/**
 		 * 首页
