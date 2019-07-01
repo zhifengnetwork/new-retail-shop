@@ -21,6 +21,14 @@ import Details from '@/pages/details/Details'
 
 // 购物车
 import Cart from '@/pages/cart/Cart'
+//挂卖区
+import Sell from '@/pages/sell/Sell'
+
+//挂卖区
+import Sell from '@/pages/sell/Sell'
+//付款
+import Payment from '@/pages/sell/Payment'
+
 
 // 订单列表
 import Order from '@/pages/order/Order'
@@ -31,12 +39,6 @@ import ReturnGoods from '@/pages/order/ReturnGoods'
 // 申请退款
 import ReturnRequest from '@/pages/order/ReturnRequest'
 
-
-
-//挂卖区
-import Sell from '@/pages/sell/Sell'
-//付款
-import Payment from '@/pages/sell/Payment'
 // 我的
 import User from '@/pages/user/User'
 // 个人资料
@@ -125,6 +127,13 @@ export default new Router({
 			component:() => import('@/pages/cart/Cart'),
 		},
 
+		//支付
+		{
+			path: '/Payment',
+			name: 'Payment',
+			component:() => import('@/pages/sell/Payment'),
+		},
+
 		/**
 		 * 商品详情页 
 		 */ 
@@ -165,13 +174,7 @@ export default new Router({
 
 		/**
 		 * 我的
-		 */		
-		//支付
-		{
-			path: '/Payment',
-			name: 'Payment',
-			component:() => import('@/pages/sell/Payment'),
-		},
+		 */
 		// 我的
 		{
 			path: '/User',
