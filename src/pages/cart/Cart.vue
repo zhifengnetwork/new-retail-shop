@@ -54,6 +54,7 @@
 import TopHeader from "@/pages/common/header/TopHeader";
 import Navigate from "@/pages/common/footer/Navigate";
 import { Dialog } from 'vant';
+import { Toast } from 'vant';
 export default {
     data(){
         return {
@@ -136,6 +137,10 @@ export default {
             this.$set( data,'number',val)
         },
         deletOption(){
+            if(this.updateNumber < 1){
+                Toast('亲，还没有选择要删除的商品哦!');
+                return
+            }
             Dialog.confirm({
             title: '信息提醒',
             message: '亲，再考虑考虑吧?'

@@ -68,6 +68,9 @@ import alipay from '@/pages/user/alipay'
 // 修改用户名
 import modifyUserName from '@/pages/user/modifyUserName'
 
+// 收藏
+import Collect from '@/pages/user/Collect'
+
 // 收货地址
 import Address from '@/pages/user/address/Address'
 // 添加收货地址
@@ -183,7 +186,6 @@ export default new Router({
 		/**
 		 * 我的
 		 */
-		// 我的
 		{
 			path: '/User',
 			name: 'User',
@@ -274,7 +276,12 @@ export default new Router({
 			name: 'alipay',
 			component:() => import('@/pages/user/modifyUserName'),
 		},
-
+		// 收藏
+		{
+			path: '/user/Collect',
+			name: 'alipay',
+			component:() => import('@/pages/user/Collect'),
+		},
 		/**
 		 * 地址管理
 		 */
