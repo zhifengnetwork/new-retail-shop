@@ -1,21 +1,28 @@
 <template>
-    <div class="Login">
-        <h1>登录</h1>
-        <div class="login-container">
+    <div class="Register">
+        <h1>注册</h1>
+        <div class="register-container">
             <div class="form-group">
                 <i class="icon tel-icon"></i>
                 <input type="text" placeholder="输入手机号" >
             </div>
             <div class="form-group">
+                <i class="icon verify-icon"></i>
+                <input type="password" placeholder="输入验证码" >
+                <div class="verifyCode">获取验证码</div>
+            </div>
+            <div class="form-group">
                 <i class="icon password-icon"></i>
                 <input type="password" placeholder="输入密码" >
-                <div class="eyes">
-                    <i class="icon close-eyes"></i>
-                </div>
             </div>
-            <div class="btn">登录</div>
+            <div class="form-group">
+                <i class="icon password-icon"></i>
+                <input type="password" placeholder="再次输入密码" >
+            </div>
+
+            <div class="btn">注册</div>
             <div class="jump-link">
-                <router-link to="/Register">注册账号</router-link>
+                <router-link to="/Login">登录</router-link>
                 <router-link to="/EditPassword">忘记密码</router-link>
             </div>
         </div>
@@ -25,12 +32,13 @@
 
 <script>
 export default {
+    name:'Register',
 
 }
 </script>
 
 <style lang="stylus" scoped>
-.Login
+.Register
     width 100%
     min-height 100vh
     background-color #ffffff
@@ -40,7 +48,7 @@ export default {
         text-align center
         font-weight normal
         font-size 36px
-    .login-container
+    .register-container
         padding 0 24px
         box-sizing border-box
         .form-group
@@ -60,19 +68,16 @@ export default {
             .password-icon
                 background url(/static/images/login/password-icon.png) no-repeat center center
                 background-size 24px 28px
+            .verify-icon
+                background url(/static/images/login/verifyCode-icon.png) no-repeat center center
+                background-size 14px 30px
             input 
                 height 50px
                 flex 1
                 font-size 26px
-            .eyes
-                width 82px
-                height 100%
-                .close-eyes
-                    background url(/static/images/login/close-eyes.png) no-repeat center center
-                    background-size 36px 17px
-                .open-eyes
-                    background url(/static/images/login/open-eyes.png) no-repeat center center
-                    background-size 36px 24px
+            .verifyCode
+                font-size 30px
+                color #f4550b
         .btn
             width 100%
             height 88px
@@ -92,8 +97,7 @@ export default {
             display flex
             justify-content space-between
             a
-                // color #1e82d2
                 color #fa9f71
-
+        
 
 </style>
