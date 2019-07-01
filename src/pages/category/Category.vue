@@ -1,5 +1,6 @@
 <template>
 	<div class="Category">
+		
 		<!-- 头部组件 -->
 		<TopHeader custom-title="分类" custom-fixed>
 			<!-- <i slot="backBtn" class="iconfont icon-fanhui"></i> -->
@@ -7,7 +8,8 @@
 		</TopHeader>
 		<div class="height-88"></div>
 
-		<div class="scroll-content">
+		<Loading v-if="isLoading"></Loading>
+		<div class="scroll-content" v-else>
 			<div class="scroll-menu">
 				<div class="menu-item" 
 				v-for="(item,index) in menuBar" 
@@ -180,6 +182,7 @@ export default {
 					}
 				]
 			],
+			isLoading:true
 		};
 	},
 	methods:{

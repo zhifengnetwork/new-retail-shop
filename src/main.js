@@ -21,6 +21,9 @@ Vue.prototype.$axios = axios
 // 引入vuex管理数据
 import store from '@/store/store.js'
 
+import Loading from '@/pages/common/loading/Loading'
+Vue.component('Loading',Loading)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

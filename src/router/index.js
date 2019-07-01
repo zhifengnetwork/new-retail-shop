@@ -66,6 +66,8 @@ import AddAddress from '@/pages/user/address/AddAddress'
 // 修改收货地址
 import EditAddress from '@/pages/user/address/EditAddress'
 
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -270,7 +272,7 @@ export default new Router({
 			component: (resolve) => require(['@/pages/user/address/SelectPoint'],resolve),
 		},
 
-
+	
 		// 重定向
 		{
 			path: '*',
