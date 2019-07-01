@@ -160,18 +160,24 @@
 
 		<!-- 底部导航 -->
 		<Navigate></Navigate>
+
+		<!-- 弹窗 -->
+		<Popup></Popup>
+
 	</div>
 </template>
 
 <script>
 import Navigate from "@/pages/common/footer/Navigate";
+import Popup from "@/pages/home/Popup"
 export default {
 	name: "home",
 	data() {
 		return {};
 	},
 	components: {
-		Navigate
+		Navigate,
+		Popup
 	}
 };
 </script>

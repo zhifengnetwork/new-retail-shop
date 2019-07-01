@@ -4,20 +4,22 @@
         <div class="login-container">
             <div class="form-group">
                 <i class="icon tel-icon"></i>
-                <input type="text" placeholder="输入手机号" >
+                <input type="text" placeholder="输入手机号" v-model="phone">
             </div>
             <div class="form-group">
                 <i class="icon password-icon"></i>
-                <input type="password" placeholder="输入密码" >
-                <div class="eyes">
-                    <i class="icon close-eyes"></i>
+                <input :type="isHide?'password':'text' " placeholder="输入密码" v-model="password">
+                <div class="eyes" @click="handleEyes()">
+                    <i :class="isHide?'close-eyes':'open-eyes'"></i>
                 </div>
             </div>
-            <div class="btn">登录</div>
+            <div class="btn" @click="loginClick()">登录</div>
+
             <div class="jump-link">
                 <router-link to="/Register">注册账号</router-link>
                 <router-link to="/EditPassword">忘记密码</router-link>
             </div>
+
         </div>
        
     </div>
@@ -25,6 +27,47 @@
 
 <script>
 export default {
+    name:'Login',
+    data(){
+        return{
+            phone:'',//手机号
+            password:'',//密码
+            isHide:true,  //是否显示密码
+            disabled:false
+        }
+    },
+    methods:{
+        /**
+         * 密码显示开关
+         */
+        handleEyes(){
+            this.isHide = !this.isHide
+        },
+
+        /**
+         * 校验登录
+         */
+        loginClick(){
+            if(this.phone == ''){
+                this.$toast('手机号码不能为空')
+                return false
+            }else if(!/^1[345678]\d{9}$/.test(this.phone)){
+                this.$toast('请填写正确的手机号码')
+                return false
+            }else if(this.password == ''){
+                this.$toast('密码不能为空')
+                return false
+            }else if(!/^[a-z0-9_-]{6,18}$/.test(this.password)){
+                this.$toast('密码长度为6-18位')
+                return false
+            }else{
+                // 请求数据
+                this.$toast('校验成功，请求接口数据再次验证')
+            }
+
+        }
+
+    }
 
 }
 </script>
@@ -67,10 +110,16 @@ export default {
             .eyes
                 width 82px
                 height 100%
+                i 
+                    width 100%
+                    height 100%
+                    display inline-block
                 .close-eyes
+                    width 82px
                     background url(/static/images/login/close-eyes.png) no-repeat center center
                     background-size 36px 17px
                 .open-eyes
+                    width 82px
                     background url(/static/images/login/open-eyes.png) no-repeat center center
                     background-size 36px 24px
         .btn

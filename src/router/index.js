@@ -12,6 +12,8 @@ import EditPassword from '@/pages/login/EditPassword'
 
 // 首页
 import Home from '@/pages/home/Home'
+// 首页弹窗
+import Popup from '@/pages/home/Popup'
 //挂卖区
 import Sell from '@/pages/sell/Sell'
 
@@ -98,6 +100,12 @@ export default new Router({
 			path: '/Home',
 			name: 'Home',
 			component:() => import('@/pages/home/Home'),//按需加载
+		},
+		// 弹窗
+		{
+			path: '/Home/Popup',
+			name: 'Popup',
+			component:() => import('@/pages/home/Popup'),//按需加载
 		},
 		//挂卖区
 		{
