@@ -22,11 +22,14 @@ import Details from '@/pages/details/Details'
 // 购物车
 import Cart from '@/pages/cart/Cart'
 <<<<<<< HEAD
+<<<<<<< HEAD
 //挂卖区
 import Sell from '@/pages/sell/Sell'
 //付款
 import Payment from '@/pages/sell/Payment'
 =======
+=======
+>>>>>>> 60d1b1ec27387886aa03308adb145b88ff64e0ce
 
 // 订单列表
 import Order from '@/pages/order/Order'
@@ -39,7 +42,14 @@ import ReturnRequest from '@/pages/order/ReturnRequest'
 
 
 
+<<<<<<< HEAD
 >>>>>>> a67806b098c03df673454454ffce650273a2a53d
+=======
+//挂卖区
+import Sell from '@/pages/sell/Sell'
+//付款
+import Payment from '@/pages/sell/Payment'
+>>>>>>> 60d1b1ec27387886aa03308adb145b88ff64e0ce
 // 我的
 import User from '@/pages/user/User'
 // 个人资料
@@ -103,6 +113,12 @@ export default new Router({
 			name: 'Home',
 			component:() => import('@/pages/home/Home'),//按需加载
 		},
+		//挂卖区
+		{
+			path: '/Sell',
+			name: 'Sell',
+			component:() => import('@/pages/sell/Sell'),
+		},
 
 		/**
 		 * 分类
@@ -122,6 +138,7 @@ export default new Router({
 			component:() => import('@/pages/cart/Cart'),
 		},
 <<<<<<< HEAD
+<<<<<<< HEAD
 		//挂卖区
 		{
 			path: '/Sell',
@@ -136,6 +153,8 @@ export default new Router({
 		},
 		// 我的
 =======
+=======
+>>>>>>> 60d1b1ec27387886aa03308adb145b88ff64e0ce
 
 		/**
 		 * 商品详情页 
@@ -177,16 +196,25 @@ export default new Router({
 
 		/**
 		 * 我的
+<<<<<<< HEAD
 		 */
 		//我的
 >>>>>>> a67806b098c03df673454454ffce650273a2a53d
+=======
+		 */		
+		//支付
+		{
+			path: '/Payment',
+			name: 'Payment',
+			component:() => import('@/pages/sell/Payment'),
+		},
+		// 我的
+>>>>>>> 60d1b1ec27387886aa03308adb145b88ff64e0ce
 		{
 			path: '/User',
 			name: 'User',
 			component:() => import('@/pages/user/User'),
 		},
-<<<<<<< HEAD
-=======
 		// 个人资料
 		{
 			path: '/user/personalData',
@@ -205,13 +233,7 @@ export default new Router({
 			name: 'alipay',
 			component:() => import('@/pages/user/lookorder'),
 		},
-		//挂卖区
-		{
-			path: '/Sell',
-			name: 'Sell',
-			component:() => import('@/pages/sell/Sell'),
-		},
->>>>>>> 1c3c95cd4ca43c2b28f0802be7c3c079895c4e31
+		
 		// 我的团队
 		{
 			path: '/user/myTeam',
