@@ -12,6 +12,8 @@ import EditPassword from '@/pages/login/EditPassword'
 
 // 首页
 import Home from '@/pages/home/Home'
+//挂卖区
+import Sell from '@/pages/sell/Sell'
 
 // 分类
 import Category from '@/pages/category/Category'
@@ -21,14 +23,9 @@ import Details from '@/pages/details/Details'
 
 // 购物车
 import Cart from '@/pages/cart/Cart'
-//挂卖区
-import Sell from '@/pages/sell/Sell'
 
-//挂卖区
-import Sell from '@/pages/sell/Sell'
 //付款
 import Payment from '@/pages/sell/Payment'
-
 
 // 订单列表
 import Order from '@/pages/order/Order'

@@ -409,14 +409,15 @@
 <script>
 import Vue from 'vue'
 import AreaList from './area'
-import {GoodsAction,GoodsActionBigBtn,GoodsActionMiniBtn,Toast,Sku } from 'vant'
+// import {GoodsAction,GoodsActionBigBtn,GoodsActionMiniBtn,Toast,Sku } from 'vant'
+import {GoodsAction,Toast,Sku } from 'vant'
 
 import TopHeader from "@/pages/common/header/TopHeader"
 
 Vue.use(
     GoodsAction,
-    GoodsActionBigBtn,
-    GoodsActionMiniBtn,
+    // GoodsActionBigBtn,
+    // GoodsActionMiniBtn,
     Toast,
     Sku 
     )
@@ -426,8 +427,8 @@ export default {
     components:{
         TopHeader,
         GoodsAction,
-        GoodsActionBigBtn,
-        GoodsActionMiniBtn,
+        // GoodsActionBigBtn,
+        // GoodsActionMiniBtn,
     },
     data(){
         return {
