@@ -35,6 +35,8 @@ import ReturnRequest from '@/pages/order/ReturnRequest'
 
 
 
+//付款
+import Payment from '@/pages/sell/Payment'
 // 我的
 import User from '@/pages/user/User'
 // 个人资料
@@ -159,6 +161,19 @@ export default new Router({
 		 * 我的
 		 */
 		//我的
+		//挂卖区
+		{
+			path: '/Sell',
+			name: 'Sell',
+			component:() => import('@/pages/sell/Sell'),
+		},
+		//支付
+		{
+			path: '/Payment',
+			name: 'Payment',
+			component:() => import('@/pages/sell/Payment'),
+		},
+		// 我的
 		{
 			path: '/User',
 			name: 'User',
