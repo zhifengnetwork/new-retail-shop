@@ -59,7 +59,7 @@ export default {
     position relative
     top 0
     left 0
-    z-index :2
+    z-index 9
     .backBtn
         width 10%
         text-align center

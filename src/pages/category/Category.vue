@@ -26,10 +26,10 @@
 				<div class="list-item" v-for="(items,index) in this.listData" :key="index" v-show ="activeIndex === index">
 					<div class="single-item" v-for="(item,index) in items" :key="index">
 						<div class="img-wrap">
-							<a href="#"><img :src="item.imgUrl" /></a>
+							<router-link to="/Details"><img :src="item.imgUrl" /></router-link>
 						</div>
 						<div class="main">
-							<a href="#"><h3>{{item.goodsName}}</h3></a>
+							<router-link to="/Details"><h3>{{item.goodsName}}</h3></router-link>
 							<p class="price">{{item.price | moneyFormat | rmb}}</p>
 						</div>
 					</div>

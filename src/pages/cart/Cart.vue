@@ -10,10 +10,10 @@
             <div class="c-list-" v-for="(item,key) in list" :key="key">
                 <van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox>
                 <div class="-list-img">
-                    <img :src="item.img" />
+                    <router-link to="/Details"><img :src="item.img" /></router-link>
                 </div>
                 <div class="goods-info">
-                    <p class="-info-msg">{{item.text}}</p>
+                     <router-link to="/Details"><p class="-info-msg">{{item.text}}</p></router-link>
                     <div class="-info-option"> 
                         <span class="price">
                             ￥<strong>{{item.price}}</strong>
@@ -206,6 +206,7 @@ export default {
                             width:100%;
                             height:80px;
                             font-size:24px;
+                            color #151515;
                             overflow:hidden;
                             text-overflow: ellipsis;
                             -webkit-line-clamp: 2;
