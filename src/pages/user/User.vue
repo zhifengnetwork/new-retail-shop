@@ -2,9 +2,11 @@
     <div class="user">
         <div class="header">
             <div class="info_wrap">
-                <div class="portrait">
-                    <img src="/static/images/user/002.png"/>
-                </div>
+                <router-link class="my_look" to="/user/personalData">
+                    <div class="portrait">
+                        <img src="/static/images/user/002.png"/>
+                    </div>
+                </router-link>    
                 <div class="name_wrap">
                     <p class="name">美美宝宝</p>
                     <p class="id">ID：187514</p>
@@ -17,11 +19,13 @@
             <div class="article">
                 <div class="user_item">
                     <div class="earnings">
-                        <div class="number">100</div>
-                        <div>
-                            预计收益
-                            <i class="right_arrow"></i>
-                        </div>
+                        <router-link class="look" to="/user/shouyilist">
+                            <div class="number">100</div>
+                            <div>
+                                预计收益
+                                <i class="right_arrow"></i>
+                            </div>
+                        </router-link>
                     </div>
                     <div class="balance">
                         <div class="number">500</div>
@@ -57,6 +61,7 @@
                         <li>
                             <div class="img">
                                 <img src="/static/images/user/payment.png"/>
+                                <div class="info-icon van-info">10</div>
                             </div>
                             <div>待付款</div>
                         </li>
@@ -89,18 +94,18 @@
             </div>
             <!--  -->
             <div class="list_wrap">
-                <router-link class="my_look" to="/user/myTeam">
-                    <div class="arr_wrap">
+                <div class="arr_wrap">
+                    <router-link class="my_look" to="/user/myTeam">
                         <span>我的团队</span>
                         <span class="right_ico"></span>
-                    </div>
-                </router-link>
-                <router-link class="my_look" to="/user/receiptInformation">
-                    <div class="arr_wrap">
+                    </router-link>
+                </div>
+                <div class="arr_wrap">
+                    <router-link class="my_look" to="/user/receiptInformation">
                         <span>收款信息</span>
                         <span class="right_ico"></span>
-                    </div>
-                </router-link>    
+                    </router-link> 
+                </div>
                 <div class="arr_wrap">
                     <span>佣金明细</span>
                     <span class="right_ico"></span>
@@ -119,13 +124,13 @@
                 <div class="arr_wrap">
                     <span>邀请链接</span>
                     <span class="right_ico"></span>
-                </div>
-                <router-link class="my_look" to="/user/mySharing">
-                    <div class="arr_wrap">
+                </div>               
+                <div class="arr_wrap">
+                    <router-link class="my_look" to="/user/mySharing">
                         <span>我的分享</span>
                         <span class="right_ico"></span>
-                    </div>
-                </router-link>
+                    </router-link>
+                </div>
             </div>
         </div>
         <!-- 底部 -->
@@ -262,9 +267,19 @@
                 .item li:last-child
                     border none   
                 .img 
+                    position relative
                     margin 0 auto
                     width 48px
                     height 38px 
+                    .info-icon
+                        position absolute
+                        border 2px solid #fc822e
+                        right 15%
+                        top -35%
+                        font-size 20px
+                        color #fea15a
+                        background #ffffff
+                        text-align center
         .list_wrap
             margin 0 24px 116px 24px
             padding 16px 22px
@@ -274,6 +289,7 @@
             color #525252
             line-height 80px
             .my_look
+                display block
                 color #525252
             .arr_wrap
                 border-bottom 1.5px solid #e6e6e6
@@ -297,4 +313,6 @@ img
     margin 0 auto
     max-width 100%
     height 100%
+.look
+    color #525252    
 </style>

@@ -27,14 +27,30 @@ import ReturnRequest from '@/pages/order/ReturnRequest'
 
 
 
+//挂卖区
+import Sell from '@/pages/sell/Sell'
+//付款
+import Payment from '@/pages/sell/Payment'
 // 我的
 import User from '@/pages/user/User'
+// 个人资料
+import personalData from '@/pages/user/personalData'
+// 预计收益
+import shouyilist from '@/pages/user/shouyilist'
+// 查看订单
+import lookorder from '@/pages/user/lookorder'
 // 我的团队
 import myTeam from '@/pages/user/myTeam'
+// 团队列表
+import commissionlist from '@/pages/user/commissionlist'
 // 收款信息
 import receiptInformation from '@/pages/user/receiptInformation'
 // 我的分享
 import mySharing from '@/pages/user/mySharing'
+// 支付宝账号编辑
+import alipay from '@/pages/user/alipay'
+// 修改用户名
+import modifyUserName from '@/pages/user/modifyUserName'
 
 // 收货地址
 import Address from '@/pages/user/address/Address'
@@ -64,6 +80,12 @@ export default new Router({
 			path: '/Home',
 			name: 'Home',
 			component:() => import('@/pages/home/Home'),//按需加载
+		},
+		//挂卖区
+		{
+			path: '/Sell',
+			name: 'Sell',
+			component:() => import('@/pages/sell/Sell'),
 		},
 
 		/**
@@ -124,18 +146,49 @@ export default new Router({
 
 		/**
 		 * 我的
-		 */
-		//我的
+		 */		
+		//支付
+		{
+			path: '/Payment',
+			name: 'Payment',
+			component:() => import('@/pages/sell/Payment'),
+		},
+		// 我的
 		{
 			path: '/User',
 			name: 'User',
 			component:() => import('@/pages/user/User'),
 		},
+		// 个人资料
+		{
+			path: '/user/personalData',
+			name: 'personalData',
+			component:() => import('@/pages/user/personalData'),
+		},
+		// 预计收益
+		{
+			path: '/user/shouyilist',
+			name: 'alipay',
+			component:() => import('@/pages/user/shouyilist'),
+		},
+		// 查看订单
+		{
+			path: '/user/lookorder',
+			name: 'alipay',
+			component:() => import('@/pages/user/lookorder'),
+		},
+		
 		// 我的团队
 		{
 			path: '/user/myTeam',
 			name: 'myTeam',
 			component:() => import('@/pages/user/myTeam'),
+		},
+		// 团队列表
+		{
+			path: '/user/myTeam/commissionlist',  
+			name: 'commissionlist',
+			component: () => import('@/pages/user/commissionlist'),
 		},
 		// 收款信息
 		{
@@ -148,6 +201,18 @@ export default new Router({
 			path: '/user/mySharing',
 			name: 'mySharing',
 			component:() => import('@/pages/user/mySharing'),
+		},
+		// 支付宝账号编辑
+		{
+			path: '/user/alipay',
+			name: 'alipay',
+			component:() => import('@/pages/user/alipay'),
+		},
+		// 修改用户名
+		{
+			path: '/user/modifyUserName',
+			name: 'alipay',
+			component:() => import('@/pages/user/modifyUserName'),
 		},
 
 		/**
