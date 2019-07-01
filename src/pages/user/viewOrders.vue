@@ -1,38 +1,31 @@
 <template>
-    <div class="comm_wrap">
+    <div class="view_wrap">
         <!-- 头部组件 -->
-		<Comm-Header custom-title="团队列表" custom-fixed>
+		<View-Header custom-title="查看订单" custom-fixed>
 			<!-- 返回按钮 -->
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
-		</Comm-Header>
+		</View-Header>
         <div class="content">
             <div class="item_wrap">
 
                 <div class="title_wrap">
                     <ul class="title">
-                        <li>用户ID</li>
-                        <li>名称</li>
-                        <li>电话</li>
-                        <li>订单</li>
+                        <li>下单时间</li>
+                        <li>订单号</li>
+                        <li>金额</li>
                     </ul>
                 </div>
 
                 <div class="list_wrap">
                     <ul class="bound">
-                        <li>4584554</li>
-                        <li>冷漠之秋二小姐</li>
-                        <li>15588229900</li>
-                        <li>
-                            <router-link class="my_look" to="/user/myTeam/commissionlist/viewOrders">查看</router-link>
-                        </li>
+                        <li>2019-09-06</li>
+                        <li>915588229900</li>
+                        <li>￥229900.00</li>
                     </ul>
                     <ul class="not_bound">
-                        <li>4584554</li>
-                        <li>二小姐</li>
-                        <li>未绑定</li>
-                        <li>
-                            <router-link class="my_look" to="/user/myTeam/commissionlist/viewOrders">查看</router-link>
-                        </li>
+                        <li>2019-09-06</li>
+                        <li>915588229900</li>
+                        <li>￥229900.00</li>
                     </ul>
                 </div>
 
@@ -42,9 +35,9 @@
 </template>
 
 <script>
-	import CommHeader from "@/pages/common/header/TopHeader"
+	import ViewHeader from "@/pages/common/header/TopHeader"
     export default {
-		name: 'commissionlist',
+		name: 'viewOrders',
 		data(){
             return{
                 
@@ -52,14 +45,14 @@
 			
 		},
         components:{
-            CommHeader,
+            ViewHeader,
         },
         
     }
 </script>
 
 <style lang="stylus" scoped>
-    .comm_wrap
+    .view_wrap
         .content
             padding-top 88px
             .item_wrap
@@ -83,7 +76,4 @@
                 .list_wrap .not_bound
                     background #ecf4fc                         
 
-.my_look
-    display block
-    color #151515
 </style>
