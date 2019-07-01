@@ -21,6 +21,8 @@ import Details from '@/pages/details/Details'
 
 // 购物车
 import Cart from '@/pages/cart/Cart'
+//挂卖区
+import Sell from '@/pages/sell/Sell'
 
 //挂卖区
 import Sell from '@/pages/sell/Sell'
