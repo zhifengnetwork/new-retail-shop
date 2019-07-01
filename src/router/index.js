@@ -21,8 +21,6 @@ import Details from '@/pages/details/Details'
 
 // 购物车
 import Cart from '@/pages/cart/Cart'
-//挂卖区
-import Sell from '@/pages/sell/Sell'
 
 //挂卖区
 import Sell from '@/pages/sell/Sell'
@@ -45,14 +43,24 @@ import User from '@/pages/user/User'
 import personalData from '@/pages/user/personalData'
 // 预计收益
 import shouyilist from '@/pages/user/shouyilist'
-// 查看订单
-import lookorder from '@/pages/user/lookorder'
+// 账户余额
+import theAccountBalance from '@/pages/user/theAccountBalance'
+// 提现明细
+import theWithdrawal from '@/pages/user/theWithdrawal'
+// 账单明细
+import billingDetails from '@/pages/user/billingDetails'
+// 账户提现
+import withdrawal from '@/pages/user/withdrawal'
 // 我的团队
 import myTeam from '@/pages/user/myTeam'
 // 团队列表
 import commissionlist from '@/pages/user/commissionlist'
+// 查看订单
+import viewOrders from '@/pages/user/viewOrders'
 // 收款信息
 import receiptInformation from '@/pages/user/receiptInformation'
+// 佣金明细
+import detailed from '@/pages/user/detailed'
 // 我的分享
 import mySharing from '@/pages/user/mySharing'
 // 支付宝账号编辑
@@ -190,16 +198,34 @@ export default new Router({
 		// 预计收益
 		{
 			path: '/user/shouyilist',
-			name: 'alipay',
+			name: 'shouyilist',
 			component:() => import('@/pages/user/shouyilist'),
 		},
-		// 查看订单
+		// 账户余额
 		{
-			path: '/user/lookorder',
-			name: 'alipay',
-			component:() => import('@/pages/user/lookorder'),
+			path: '/user/theAccountBalance',
+			name: 'theAccountBalance',
+			component:() => import('@/pages/user/theAccountBalance'),
 		},
-		
+		// 账户提现
+		{
+			path: '/user/withdrawal',
+			name: 'withdrawal',
+			component:() => import('@/pages/user/withdrawal'),
+		},
+		// 提现明细
+		{
+			path: '/user/theWithdrawal',
+			name: 'theWithdrawal',
+			component:() => import('@/pages/user/theWithdrawal'),
+		},
+		// 账单明细
+		{
+			path: '/user/billingDetails',
+			name: 'billingDetails',
+			component:() => import('@/pages/user/billingDetails'),
+		},
+
 		// 我的团队
 		{
 			path: '/user/myTeam',
@@ -212,11 +238,23 @@ export default new Router({
 			name: 'commissionlist',
 			component: () => import('@/pages/user/commissionlist'),
 		},
+		// 查看订单
+		{
+			path: '/user/myTeam/commissionlist/viewOrders',  
+			name: 'viewOrders',
+			component: () => import('@/pages/user/viewOrders'),
+		},
 		// 收款信息
 		{
 			path: '/user/receiptInformation',
 			name: 'receiptInformation',
 			component:() => import('@/pages/user/receiptInformation'),
+		},
+		// 佣金明细
+		{
+			path: '/user/detailed',
+			name: 'detailed',
+			component:() => import('@/pages/user/detailed'),
 		},
 		// 我的分享
 		{

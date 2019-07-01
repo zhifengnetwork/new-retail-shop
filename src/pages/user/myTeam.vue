@@ -8,7 +8,7 @@
         <div class="content">
             <div class="main">
                 <div class="list_wrap">
-                    <router-link class="look" to="/user/myTeam/commissionlist">
+                    <router-link class="my_look" to="/user/myTeam/commissionlist">
                         <div class="group">
                             <span>团队列表</span>
                             <i class="iconfont icon-xiangyoujiantou"></i>
@@ -19,16 +19,18 @@
                 </div>
 
                 <div class="list_wrap_1">
-                    <div class="group">
-                        <span>佣金明细</span>
-                        <i class="iconfont icon-xiangyoujiantou"></i>
-                    </div>
-                    <p>2.88</p>
-                    <p>总收益</p>
+                    <router-link class="my_look" to="/user/detailed">
+                        <div class="group">
+                            <span>佣金明细</span>
+                            <i class="iconfont icon-xiangyoujiantou"></i>
+                        </div>
+                        <p>2.88</p>
+                        <p>总收益</p>
+                    </router-link>
                 </div>
 
                 <div class="list_wrap_2">
-                    <router-link class="look" to="/user/shouyilist">
+                    <router-link class="my_look" to="/user/shouyilist">
                         <div class="group">
                             <span>预计收益</span>
                             <i class="iconfont icon-xiangyoujiantou"></i>

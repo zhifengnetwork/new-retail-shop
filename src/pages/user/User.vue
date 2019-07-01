@@ -28,11 +28,13 @@
                         </router-link>
                     </div>
                     <div class="balance">
-                        <div class="number">500</div>
-                        <div>
-                            余额
-                            <i class="right_arrow"></i>
-                        </div>
+                        <router-link class="look" to="/user/theAccountBalance">
+                            <div class="number">500</div>
+                            <div>
+                                余额
+                                <i class="right_arrow"></i>
+                            </div>
+                        </router-link>
                     </div>
                     <div class="collection">
                         <div class="number">148</div>
@@ -107,8 +109,10 @@
                     </router-link> 
                 </div>
                 <div class="arr_wrap">
-                    <span>佣金明细</span>
-                    <span class="right_ico"></span>
+                    <router-link class="my_look" to="/user/detailed">
+                        <span>佣金明细</span>
+                        <span class="right_ico"></span>
+                    </router-link>
                 </div>
                 <div class="arr_wrap">
                     <span>手机号绑定</span>

@@ -8,10 +8,12 @@
         <div class="content">
 			<div class="nom_wrap">
                 <div class="item_wrap">
-                    <div class="text">头像</div>
-                    <div class="img">
-                        <img src="/static/images/user/002.png"/>
-                    </div>
+                        <div class="text">头像</div>
+                        <van-uploader :after-read="onRead">    
+                            <div class="img">
+                                <img src="/static/images/user/002.png"/>
+                            </div>
+                        </van-uploader>
                 </div>
                 <router-link class="my_look" to="/user/modifyUserName">
                     <div class="item_wrap">
@@ -22,7 +24,7 @@
                         </div>
                     </div>
                 </router-link>
-                <router-link class="my_look" to="#">
+                <router-link class="my_look" to="/EditPassword">
                     <div class="item_wrap">
                         <div class="text">修改密码</div>
                         <div class="name_wrap">
@@ -43,7 +45,8 @@
 		name: "personalData",
 		data() {
 			return{
-                
+                //用户头像
+                userImg:'',
 			}
 		},
 		components: {
@@ -76,16 +79,16 @@
                 .text
                     width 130px
                     font-size 30px
-                    text-align right
+                    text-align-last justify
                 .name_wrap
                     font-size 30px
                     float right
                 .img
-                    margin 5px 0 0
-                    float right
                     width 68px
                     height 68px
                     border-radius 50% 
+                .van-uploader
+                    float right    
             .btn 
                 position fixed
                 bottom 27px
