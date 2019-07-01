@@ -75,7 +75,7 @@
                             </van-cell>
                             
                             <!-- 领取优惠券上拉菜单 -->
-                            <van-actionsheet v-model="couponShow" title="优惠券"  style="display:none">
+                            <!-- <van-actionsheet v-model="couponShow" title="优惠券"  style="display:none">
                                 <div class="coupon-list">
                                     <ul>
                                         <li>
@@ -118,13 +118,13 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
                                 <!-- 暂无可使用优惠券 -->
-                                <div class="none" style="display:none">
+                                <!-- <div class="none" style="display:none">
                                     <img src="/static/img/public/none.png" >
                                     <p>暂无可使用优惠券</p>
-                                </div>
-                            </van-actionsheet>
+                                </div> -->
+                            <!-- </van-actionsheet> -->
 
                         </van-cell-group>
                     </div>
@@ -321,21 +321,21 @@
         </div>
         
         <!-- 商品规格1 -->
-        <div class="sku-wrap" style="display:none">
+        <!-- <div class="sku-wrap" style="display:none">
             <van-actionsheet v-model="skuShow" title="商品规格">
-                <div class="sku-content">
+                <div class="sku-content"> -->
                     <!-- 尺寸 -->
-                    <div class="sku-row">
+                    <!-- <div class="sku-row">
                         <div class="sku-row-title">尺寸</div>
                         <div class="sku-row-con">
                             <span class="sku-row-item active">S</span>
                             <span class="sku-row-item">M</span>
                             <span class="sku-row-item">L</span>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- 颜色 -->
-                    <div class="sku-row">
+                    <!-- <div class="sku-row">
                         <div class="sku-row-title">颜色分类</div>
                         <div class="sku-row-con">
                             <span class="sku-row-item active">墨绿色</span>
@@ -343,25 +343,25 @@
                             <span class="sku-row-item">红色</span>
                             <span class="sku-row-item">黑色</span>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- 颜色分类 -->
-                    <div class="sku-row">
+                    <!-- <div class="sku-row">
                         <div class="sku-row-title" style="padding-bottom:.25rem">购买数量</div>
                         <div class="stepper">
                             <van-stepper v-model="value" />
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- 按钮 -->
-                    <button class="confirmBtn" @click="confirm()">确定</button>
+                    <!-- <button class="confirmBtn" @click="confirm()">确定</button>
 
                 </div>
             </van-actionsheet>
-        </div>
+        </div> -->
 
         <!-- 商品规格2 -->
-        <van-sku
+        <!-- <van-sku
             v-model="showBase"
             :sku="sku"
             :goods="sku.goods"
@@ -377,10 +377,10 @@
                     </van-button>
                 </div>
             </template>
-        </van-sku>
+        </van-sku> -->
 
         <!-- 底部菜单 -->
-        <div class="bottom-bar">
+        <!-- <div class="bottom-bar">
             <van-goods-action>
                 <goods-action-mini-btn
                 icon="like-o"
@@ -401,7 +401,7 @@
                 @click="handleBtn"
                 />
             </van-goods-action>
-        </div>
+        </div> -->
 
     </div>
 </template>
@@ -409,7 +409,8 @@
 <script>
 import Vue from 'vue'
 import AreaList from './area'
-import {GoodsAction,GoodsActionBigBtn,GoodsActionMiniBtn,Toast,Sku } from 'vant'
+// import {GoodsAction,GoodsActionBigBtn,GoodsActionMiniBtn,Toast,Sku } from 'vant'
+import {GoodsAction,Toast,Sku } from 'vant'
 
 import TopHeader from "@/pages/common/header/TopHeader"
 
