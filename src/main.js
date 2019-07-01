@@ -24,6 +24,9 @@ import store from '@/store/store.js'
 import Loading from '@/pages/common/loading/Loading'
 Vue.component('Loading',Loading)
 
+import Scroller from '@/pages/common/scroller/Scroller'
+Vue.component('Scroller',Scroller)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
