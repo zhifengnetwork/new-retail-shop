@@ -60,10 +60,14 @@ export default {
     top 0
     left 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     z-index 9
 =======
     z-index :2
 >>>>>>> de952da7e1ca2bad2bd739cc8e2556ad0b0247b8
+=======
+    z-index 9
+>>>>>>> 7ab2fb051ca9d27a06a6033115b532c24a0c218e
     .backBtn
         width 10%
         text-align center

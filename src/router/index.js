@@ -21,8 +21,11 @@ import Details from '@/pages/details/Details'
 
 // 购物车
 import Cart from '@/pages/cart/Cart'
+<<<<<<< HEAD
 //挂卖区
 import Sell from '@/pages/sell/Sell'
+=======
+>>>>>>> 7ab2fb051ca9d27a06a6033115b532c24a0c218e
 
 // 订单列表
 import Order from '@/pages/order/Order'
@@ -35,6 +38,11 @@ import ReturnRequest from '@/pages/order/ReturnRequest'
 
 
 
+<<<<<<< HEAD
+=======
+//挂卖区
+import Sell from '@/pages/sell/Sell'
+>>>>>>> 7ab2fb051ca9d27a06a6033115b532c24a0c218e
 //付款
 import Payment from '@/pages/sell/Payment'
 // 我的
@@ -100,6 +108,12 @@ export default new Router({
 			name: 'Home',
 			component:() => import('@/pages/home/Home'),//按需加载
 		},
+		//挂卖区
+		{
+			path: '/Sell',
+			name: 'Sell',
+			component:() => import('@/pages/sell/Sell'),
+		},
 
 		/**
 		 * 分类
@@ -159,6 +173,7 @@ export default new Router({
 
 		/**
 		 * 我的
+<<<<<<< HEAD
 		 */
 		//我的
 		//挂卖区
@@ -167,6 +182,9 @@ export default new Router({
 			name: 'Sell',
 			component:() => import('@/pages/sell/Sell'),
 		},
+=======
+		 */		
+>>>>>>> 7ab2fb051ca9d27a06a6033115b532c24a0c218e
 		//支付
 		{
 			path: '/Payment',
@@ -197,12 +215,16 @@ export default new Router({
 			name: 'alipay',
 			component:() => import('@/pages/user/lookorder'),
 		},
+<<<<<<< HEAD
 		//挂卖区
 		{
 			path: '/Sell',
 			name: 'Sell',
 			component:() => import('@/pages/sell/Sell'),
 		},
+=======
+		
+>>>>>>> 7ab2fb051ca9d27a06a6033115b532c24a0c218e
 		// 我的团队
 		{
 			path: '/user/myTeam',
