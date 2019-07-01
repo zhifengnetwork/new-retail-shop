@@ -2,13 +2,20 @@
     <div class="cart">
       	<!-- 头部组件 -->
 		<TopHeader custom-title="收藏" custom-fixed>
-			<i slot="rightBtn" class="iconfont icon-lajitong" @click="deletOption()"></i>
+            <i slot="backBtn" class="iconfont icon-fanhui"></i>
+			<i slot="rightBtn" v-show="!showTrash" class="iconfont icon-lajitong" @click="showDelectBtn()"></i>
+            <span slot="rightBtn" v-show="showTrash"  @click="showDelectBtn()">完成</span>
 		</TopHeader>
         <div class="height-88"></div>
        
-        <div class="conter">
+        <!-- NO INFO START -->
+        <div v-show="list.length<1">
+            <Nodata :nodatas="nodatas"></Nodata>
+        </div>
+        <!-- GOODS INFO START -->
+        <div  v-show="list.length>0" class="conter">
             <div class="c-list-" v-for="(item,key) in list" :key="key">
-                <van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox>
+                <van-checkbox  v-show="showTrash" v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox>
                 <div class="-list-img">
                     <router-link to="/Details"><img :src="item.img" /></router-link>
                 </div>
@@ -22,15 +29,29 @@
                 </div>
             </div>
         </div>
+        <!-- CART FOOT START -->
+        <div v-show="showTrash">
+            <div class="footer-height"></div>
+            <div class="footer">
+                <div class="footer-a">
+                    <van-checkbox ref="allCheck" v-model="allChecked" @click="selectAll(allChecked)"><strong>全选</strong></van-checkbox>
+                </div>
+                <div class="footer-b" @click="deletOption()">删除({{updateNumber}})</div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 import TopHeader from "@/pages/common/header/TopHeader";
-import { Dialog } from 'vant';
-import { Toast } from 'vant';
+import Nodata from "@/pages/common/nodata/Nodata";
 export default {
     data(){
         return {
+            nodatas:{
+                'imgSrc':'/static/images/public/none.png',
+                'text':'收藏夹空空如也~',
+                'link':'/Hone'
+            },
             list:[
                 {
                     text:'自然堂化妆品补水防晒虎虎生风',
@@ -52,25 +73,55 @@ export default {
                 }
             ],
             allChecked: false,
+            showTrash: false
         };
     },
-    components: {
-        [Dialog.Component.name]: Dialog.Component
+    computed:{
+        updateNumber(){
+            let count =0;
+            this.list.forEach((data)=>{
+                if(data.isCheck){
+                    count ++
+                }
+            })
+            return count;
+        }
     },
     methods:{
+        showDelectBtn(){
+            this.showTrash =! this.showTrash;
+        },
+        selectAll(_flag){
+            for(var i =0;i<this.list.length;i++){
+                this.list[i].isCheck = ! _flag;
+            }
+        },
         selectGoods(e,key){
             var data =this.list[key];
              this.$set(data,'isCheck',!data.isCheck);
             if(!data.isCheck){
                 this.allChecked=false
+            }else{
+                if(this.countNumberCheckBoxes().length === this.list.length){
+                    this.allChecked=true
+                }
             }
+        },
+        countNumberCheckBoxes(){    //计算选中的复选框的总数
+            let counts =[];
+            this.list.forEach((data)=>{
+                if(data.isCheck){
+                    counts.push('a')    // a 可为任何数，在这里仅用于占位
+                }
+            })
+            return counts;
         },
         deletOption(){
             if(this.updateNumber < 1){
-                Toast('亲，还没有选择要删除的商品哦!');
+                this.$toast('亲，还没有选择要删除的商品哦!');
                 return
             }
-            Dialog.confirm({
+            this.$dialog.confirm({
             title: '信息提醒',
             message: '亲，再考虑考虑吧?'
             }).then(() => {
@@ -81,7 +132,9 @@ export default {
                     }
                 })
                 this.list =newArry;
-
+                if(this.list.length<1){
+                    this.showTrash=false
+                }
             // on confirm
             }).catch(() => {
             // on cancel
@@ -89,7 +142,8 @@ export default {
         }
     },
     components: {
-        TopHeader
+        TopHeader,
+        Nodata
 	}
 
 }
@@ -111,7 +165,6 @@ export default {
             color:#151515
             .conter
                 margin : 10px 24px
-                //  background:#ccc
                 .c-list-
                     width:100%
                     margin-bottom:12px
@@ -121,6 +174,8 @@ export default {
                     display:flex
                     align-items :center
                     box-sizing: border-box
+                    .van-checkbox__icon 
+                         margin-right: 17px
                     .-list-img
                         width:201px
                         height:176px
@@ -151,5 +206,37 @@ export default {
                                 font-size:20px
                                 strong
                                     font-size:30px
+            .footer-height
+                width :100%;
+                height:120px;
+            .footer
+                position :fixed;
+                bottom:0;
+                width :100%;
+                height:120px;
+                left:0;
+                background:#fff;
+                z-index :2;
+                box-shadow: 0px 0px 5px 0px #cccccc;
+                display :flex;
+                .footer-a
+                    width:530px;
+                    display :flex;
+                    padding-left:28px;
+                    .f-a-a
+                        display:flex;
+                        margin-right:96px;
+                    .f-a-b
+                        margin :14px 26px 8px 0;
+                    .f-a-b p:nth-child(1)  
+                        margin-bottom :2px;
+                .footer-b
+                    width:221px;
+                    background:#f30c0c;
+                    color:#fff;
+                    line-height:120px;
+                    text-align: center;
+                    font-size:30px;
+                    font-weight:bold;
 </style>    
 

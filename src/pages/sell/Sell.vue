@@ -35,7 +35,7 @@
 <script>
     import TopHeader from "@/pages/common/header/TopHeader";
     // import { List } from 'vant';
-    import { Toast } from 'vant';
+    // import { Toast } from 'vant';
     export default {
         data(){
             return {
@@ -138,10 +138,9 @@
             },
             toPayment(){
                 if(this.totalCount != 10){
-                    return Toast.fail('只能购买10个');
+                    return this.$toast.fail('只能购买10个');
                 }
                 this.$router.push({name:'Payment'})
-                
             }
         },
         computed:{

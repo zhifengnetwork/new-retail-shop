@@ -34,13 +34,13 @@
                             <i class="right_arrow"></i>
                         </div>
                     </div>
-                    <div class="collection">
+                    <router-link to="/user/Collect" class="collection">
                         <div class="number">148</div>
                         <div>
                             收藏
                             <i class="right_arrow"></i>
                         </div>
-                    </div>
+                    </router-link>
                 </div>
             </div>
         </div>

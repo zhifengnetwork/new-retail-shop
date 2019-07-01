@@ -36,10 +36,14 @@ import ReturnGoods from '@/pages/order/ReturnGoods'
 // 申请退款
 import ReturnRequest from '@/pages/order/ReturnRequest'
 
+// 确认订单
+import ConfirmOrder from '@/pages/pay/ConfirmOrder'
+
 // 我的
 import User from '@/pages/user/User'
 // 个人资料
 import personalData from '@/pages/user/personalData'
+
 // 预计收益
 import shouyilist from '@/pages/user/shouyilist'
 // 查看订单
@@ -170,6 +174,12 @@ export default new Router({
 			path: '/Order/ReturnRequest',
 			name: 'ReturnRequest',
 			component: (resolve) => require(['@/pages/order/ReturnRequest'],resolve),
+		},
+		// 确认订单
+		{
+			path: '/Pay/ConfirmOrder',
+			name: 'ConfirmOrder',
+			component: (resolve) => require(['@/pages/pay/ConfirmOrder'],resolve),
 		},
 
 		/**
