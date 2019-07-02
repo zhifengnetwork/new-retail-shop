@@ -26,7 +26,7 @@
                             </span>
                             <span class="-option-">
                                 <i class="subling iconfont icon-jian-" @click="reducingNumber(key)"></i>
-                                <input class="inp" type="text" :value="item.number" @change="changNumber($event,key)"/>
+                                <input class="inp" type="number" :value="item.number" @change="changNumber($event,key)"/>
                                 <i class="puls iconfont icon-jia" @click="addNumber(key)" ></i>
                             </span>
                         </div>
@@ -153,8 +153,8 @@ export default {
         changNumber(e,key){
             var val =e.target.value;
             var data =this.list[key]; 
-            if(val<=1){
-                return;
+            if(val<=1 || isNaN(val)){
+                return this.$toast('请输入正确的数量');
             }
             this.$set( data,'number',val)
         },
@@ -187,6 +187,9 @@ export default {
             this.$set( data,'number',val);
         },
         toPay(){
+            if(this.countNumberCheckBoxes().length<1){
+                return this.$toast("请选择商品")
+            }
             this.$router.push({path: '/pay/ConfirmOrder',name:'ConfirmOrder'})
         }
     },

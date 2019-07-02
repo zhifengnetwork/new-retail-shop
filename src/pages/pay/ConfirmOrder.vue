@@ -37,7 +37,7 @@
                         <span class="-b-subtitle">购买数量</span>
                         <span class="-option-">
                             <i class="subling iconfont icon-jian-" @click="reducingNumber()"></i>
-                            <input class="inp" type="text" :value="goodsNumber" @change="changNumber($event)"/>
+                            <input class="inp" type="number" :value="goodsNumber" @change="changNumber($event)"/>
                             <i class="puls iconfont icon-jia"  @click="addNumber()"></i>
                         </span>
                     </div>
@@ -98,7 +98,9 @@ export default {
         },
         changNumber(e){
             var val =e.target.value;
-            if(val<1){return;}
+            if(val<1 || isNaN(val)){
+                return this.$toast('请输入正确的数量');
+            }
             this.goodsNumber=val
         },
         addNumber(){

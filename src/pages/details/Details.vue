@@ -224,41 +224,48 @@
                     </van-tab>
                 </van-tabs>
             </div>
-
         </div>
+
+        <!-- 规格框开始 -->
         
-        <!-- 商品规格1 -->
-
-
-        <!-- 商品规格2 -->
-        <!-- <van-sku
-            v-model="showBase"
-            :sku="sku"
-            :goods="sku.goods"
-        >
-            <template slot="sku-actions" slot-scope="props">
-                <div class="van-sku-actions">
-                    <van-button
-                        square
-                        size="large"
-                        type="danger"
-                    >
-                        确定
-                    </van-button>
+        <div class="sku-box" v-show="sizeBox">
+            <transition name="slide-fade">
+                <div v-show="sizeBox" class="sku-box-inner" :class="{'box-active':sizeBox}">
+                    <span class="-close-"  @click="sizeBox=false"> &times;</span>
+                    <div class="sku-box-cont">
+                        <div class="box-list mb-30"> 
+                            <p class="-list-title">尺寸</p>
+                            <ul class="-list-info">
+                                <li v-for="(list,key) in sizes" :key="key" class="-info-a" :class="{'sku-active':key==sizeKey}" @click="sizeKey=key">{{list.sku_name}}</li>
+                            </ul>
+                        </div>
+                        <div class="box-list mb-30"> 
+                            <p class="-list-title">颜色</p>
+                            <ul class="-list-info">
+                                <li v-for="(list,key) in colors" :key="key" class="-info-a" :class="{'sku-active':key==colorKey}" @click="colorKey=key">{{list.sku_name}}</li>
+                            </ul>
+                        </div>
+                        <div class="box-list2 mb-30"> 
+                            <span class="-list-title"> 购买数量</span>
+                            <span class="-option-">
+                                <i class="subling iconfont icon-jian-" @click="reducingNumber()"></i>
+                                <input class="inp" type="number" :value="goodsNumber" @change="changNumber($event)"/>
+                                <i class="puls iconfont icon-jia"  @click="addNumber()"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <input class="sku-btn" type="button" value="确定" @click="confirmSize()"/>
                 </div>
-            </template>
-        </van-sku> -->
-
+             </transition>
+        </div>
+       
         <!-- 底部菜单 -->
         <div class="bottom-height"></div>
         <div class="bottom-bar">
             <ul class="-bar-list">
-                <li class="-list-a">
-                    <router-link to="/user/Collect">
-                        <i class="iconfont icon-aixin"></i>
-                        <span>收藏</span>
-                    </router-link>
-                    
+                <li class="-list-a" @click="changCollect()">
+                    <i class="iconfont icon-aixin" :class="{'c-active':isCollect}"></i>
+                    <span>收藏</span>
                 </li>
                 <li class="-list-a">
                     <i class="iconfont icon-54"></i>
@@ -266,113 +273,96 @@
                 </li>
             </ul>
             <div class="-bar-list">
-                <input class="bar-btn-1" type="button" @click="addToCart()" value="加入购物车"/>
-                <input class="bar-btn-2" type="button" @click="toBay()" value="立即购买"/>
+                <input class="bar-btn-1" type="button" @click="showSizeBox(0)" value="加入购物车"/>
+                <input class="bar-btn-2" type="button" @click="showSizeBox(1)" value="立即购买"/>
             </div>
         </div>
-
     </div>
 </template>
-
 <script>
 import Vue from 'vue'
-import AreaList from './area'
+// import AreaList from './area'
 import TopHeader from "@/pages/common/header/TopHeader"
-
 export default {
     name:'Details',
     components:{
-        TopHeader,
-        // GoodsAction,
+        TopHeader
     },
     data(){
         return {
+            sizeKey:0,
+            colorKey:0,
+            sizes:[
+                {'sku_id':1,'sku_name':"S"},
+                {'sku_id':2,'sku_name':"M"},
+                {'sku_id':3,'sku_name':"L"},
+                {'sku_id':4,'sku_name':"XL"}
+            ],
+            colors:[
+                {'sku_id':1,'sku_name':"墨绿色"},
+                {'sku_id':2,'sku_name':"粉红色"},
+                {'sku_id':3,'sku_name':"红色"},
+                {'sku_id':4,'sku_name':"紫色"},
+                {'sku_id':4,'sku_name':"天蓝色"}
+            ],
             goodsId:this.$route.query.goods_id,//商品id
             tabActive: 0,//tab选中
             rateVal: 3,//评分当前分值
-            areaShow:false,//省市区上拉
-            address:'广州白云区',//地址
-            areaList:AreaList,// 指定数据源
-            couponShow:false,//优惠券上拉菜单
-            skuShow:false,//规格
-            value: 1,//步进器默认值
-            
-            showBase:false,
-            sku: {
-                // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
-                // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
-                tree: [
-                    {
-                        k: '颜色', // skuKeyName：规格类目名称
-                        v: [
-                            {
-                            id: '30349', // skuValueId：规格值 id
-                            name: '红色', // skuValueName：规格值名称
-                            imgUrl: 'https://img.yzcdn.cn/1.jpg' // 规格类目图片，只有第一个规格类目可以定义图片
-                            },
-                            {
-                            id: '1215',
-                            name: '蓝色',
-                            imgUrl: 'https://img.yzcdn.cn/2.jpg'
-                            }
-                        ],
-                        k_s: 's1' // skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
-                    },
-                    {
-                        k: '尺码',
-                        v: [
-                            {
-                                id: '1193',
-                                name: 'S',
-                            },
-                            {
-                                id: '222',
-                                name: 'M',
-                            }
-                        ],
-                        k_s: 's2'
-                    }
-                ],
-                // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
-                list: [
-                    {
-                    id: 2259, // skuId，下单时后端需要
-                    price: 100, // 价格（单位分）
-                    s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
-                    s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
-                    s3: '0', // 最多包含3个规格值，为0表示不存在该规格
-                    stock_num: 110 // 当前 sku 组合对应的库存
-                    }
-                ],
-                price: '1.00', // 默认价格（单位元）
-                stock_num: 227, // 商品总库存
-                collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
-                none_sku: false, // 是否无规格商品
-                hide_stock: false, // 是否隐藏剩余库存
-                goods: {
-                    // 商品标题
-                    title: '测试商品',
-                    // 默认商品 sku 缩略图
-                    picture: 'https://img.yzcdn.cn/2.jpg'
-                },
-            },
-
+            isCollect:false,
+            goodsNumber:2,
+            sizeBox:false,
+            optionFlag:""
         }
     },
     methods:{
-        addToCart(){
-            this.$toast("添加成功,可直接去购物车下单")
+        changCollect(){
+            this.isCollect=!this.isCollect
         },
-        toBay(){
-            this.$router.push({path: '/pay/ConfirmOrder',name:'ConfirmOrder'})
+        showSizeBox(flag){
+            this.sizeBox=true
+            this.optionFlag =flag
+        },
+        confirmSize(){
+            if(this.optionFlag==0){
+                this.$toast("添加成功,可直接去购物车下单");
+            }else{
+                this.$router.push({path: '/pay/ConfirmOrder',name:'ConfirmOrder'})
+            }
+            this.sizeBox=false
+        },
+        reducingNumber(){
+            var val =parseInt(this.goodsNumber) - 1 
+           if(val<=1){val =1}
+           this.goodsNumber=val
+        },
+        changNumber(e){
+            var val =e.target.value;
+            if(val<1 || isNaN(val)){
+                return this.$toast('请输入正确的数量');
+            }
+            this.goodsNumber=val
+        },
+        addNumber(){
+            var val =parseInt(this.goodsNumber) + 1
+            this.goodsNumber=val
         }
-
 
     }
 }
 </script>
-
 <style lang="stylus" scoped>
+.slide-fade-enter-active 
+  transition all .3s ease
+
+.slide-fade-leave-active 
+  transition all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+
+.slide-fade-enter, .slide-fade-leave-to
+  transform translateY(100px)
+.slide-fade-enter, .slide-fade-leave-to .sku-box-inner
+    // bottom 24px
+.mb-30
+    margin-bottom 30px
 a
     color:#151515
 .Details
@@ -391,7 +381,7 @@ a
             .discount-price
                 font-size 30px
                 color #f30c0c
-                margin-right:40px
+                margin-right 40px
             .original-price
                 font-size 26px
                 color #838383
@@ -399,14 +389,14 @@ a
             padding 0 25px 25px
             box-sizing border-box
             .g-option
-                display:flex
-                align-items: center
-                font-size:26px
-                margin-bottom:25px
-                color:#3a3a3a
+                display flex
+                align-items center
+                font-size 26px
+                margin-bottom 25px
+                color #3a3a3a
                 .-subtitle
-                    display:inline-block
-                    width:96px
+                    display inline-block
+                    width 96px
             .goodsName
                 margin 0 auto 30px
                 h1
@@ -444,6 +434,7 @@ a
                     border none
                 .select-wrap /deep/ .van-cell__value
                     flex none
+       
         .tab-content
             color:#151515
             .van-tabs >>> .van-hairline--top-bottom::after
@@ -493,8 +484,6 @@ a
                             box-sizing border-box
             // 商品评论
             .comment-wrap
-                // padding 0 25px
-                // box-sizing border-box
                 .comment-list
                     li
                         color #4a4949
@@ -553,45 +542,132 @@ a
                     color #888888
                     text-align center
                     margin 30px auto
+    .sku-box
+        position fixed
+        width 100%
+        height 100%
+        left 0
+        bottom 0
+        z-index 101
+        background rgba(0,0,0,0.4)
+        .sku-box-inner
+            position absolute
+            bottom 0
+            left 0
+            padding 24px
+            box-sizing border-box
+            background #fff
+            border-top-left-radius 10px
+            border-top-right-radius 10px
+            height 60%
+            width 100%
+            color:#151515
+            .-close-
+                font-size 40px
+                padding 0 10px
+                position absolute
+                right 5px
+                top 0px
+                color #666
+            .sku-box-cont
+                overflow-y auto
+                max-height 91%
+                .-list-title
+                    font-size 30px
+                    font-weight bold
+                    margin-bottom 30px
+                .-list-info
+                    display flex
+                    align-items center
+                    flex-wrap wrap
+                    .-info-a
+                        flex 0 0 31%
+                        margin 0 3.5% 3% 0
+                        text-align center 
+                        border-radius 6px
+                        height 45px  
+                        line-height 45px 
+                        background #f3f3f3  
+                        font-size 26px
+                        box-sizing border-box
+                    :nth-child(3n)
+                        margin-right 0
+                    .sku-active
+                        background #ff0000
+                        color #fff
+                .box-list2
+                    display flex
+                    justify-content space-between 
+                    align-items center
+                    .-option-
+                        border 2px solid #e6e6e6
+                        width 200px
+                        height 40px
+                        line-height 40px
+                        display flex
+                        align-items center
+                        justify-content space-between
+                        border-radius 20px
+                        text-align center
+                        .iconfont
+                            width 41px
+                            height 100%
+                            font-size 12px
+                        .puls
+                            border-left 1px solid #e6e6e6
+                        .subling
+                            border-right 1px solid #e6e6e6
+                            
+                        .inp
+                            width 121px
+                            text-align center
+                            height inherit
+                            font-size 24px
+                            font-weight bold
+            .sku-btn
+                width 702px
+                height 50px
+                color #fff
+                border-radius 10px
+                background #ff2d10
+                font-size 30px
+                position absolute
+                bottom 20px
 
     .bottom-height
-        width:100%
-        height:100px
-        align-items: center
-    .bottom-bar
-        border-top:1px solid #eee
-        position:fixed
-        width:100%
-        height:98px
-        line-height:98px
-        background:#fff
-        bottom:0
-        left:0
-        z-index:100
-        display:flex
-        .-bar-list
-            flex:0 0 50%
-            display:flex
-            text-align:center
-            font-size:28px
-            .-list-a
-                width:50%
-                .iconfont
-                    vertical-align :middle  
-                .icon-54
-                    font-size:41px
-            input
-                width:50%
-                color:#fff
-            .bar-btn-1
-                background:#ff4d4d
-            .bar-btn-2
-                background:#f70a0a
-
-                    
-                    
-
-            
+        width 100%
+        height 100px
+        align-items  center
     
-        
+    .bottom-bar
+        border-top 1px solid #eee
+        position fixed
+        width 100%
+        height 98px
+        line-height 98px
+        background #fff
+        bottom 0
+        left 0
+        z-index 100
+        display flex
+        .-bar-list
+            flex 0 0 50%
+            display flex
+            text-align center
+            font-size 28px
+            .-list-a
+                width 50%
+                .iconfont
+                    vertical-align: middle;
+            .c-active
+                color #f70a0a
+                .icon-54
+                    font-size 41px
+            input
+                width 50%
+                color #fff
+            .bar-btn-1
+                background #ff4d4d
+            .bar-btn-2
+                background #f70a0a
 </style>
