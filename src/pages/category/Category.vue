@@ -224,32 +224,32 @@ export default {
 			pullDownTip:''
 		};
 	},
-	mounted(){
-		this.$nextTick( ()=>{
-			var scroll = new BScroll(this.$refs.scroll_list,{
-				click:true,
-				probeType:1,//滚动的时候会派发事件
-			});
+	// mounted(){
+	// 	this.$nextTick( ()=>{
+	// 		var scroll = new BScroll(this.$refs.scroll_list,{
+	// 			click:true,
+	// 			probeType:1,//滚动的时候会派发事件
+	// 		});
 
-			scroll.on('scroll',(pos)=>{
-				// console.log("scroll")
-				if(pos.y > 30){
-					this.pullDownTip = '正在更新中';
-				}
-			});
+	// 		scroll.on('scroll',(pos)=>{
+	// 			// console.log("scroll")
+	// 			if(pos.y > 30){
+	// 				this.pullDownTip = '正在更新中';
+	// 			}
+	// 		});
 
-			scroll.on('touchEnd',(pos)=>{
-				// console.log('touchend')
-				if(pos.y > 30){
-					this.pullDownTip = '更新成功';
-					setInterval(() => {
-						this.pullDownTip = '';
-					}, 1000);
-				}
-			})
+	// 		scroll.on('touchEnd',(pos)=>{
+	// 			// console.log('touchend')
+	// 			if(pos.y > 30){
+	// 				this.pullDownTip = '更新成功';
+	// 				setInterval(() => {
+	// 					this.pullDownTip = '';
+	// 				}, 1000);
+	// 			}
+	// 		})
 
-		})
-	},
+	// 	})
+	// },
 	methods:{
 		// 根据索引点击跳至对应内容
 		handleClick(i){
