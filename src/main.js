@@ -1,8 +1,9 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+
+// 重置样式
+import '../static/css/reset.css'
 
 // 配置移动端自适配:安装lib-flexible、安装postcss-px2rem-exclude
 import 'lib-flexible/flexible.js'
@@ -12,12 +13,21 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 Vue.use(Vant);
 
+
 // 引入axios请求数据
 import axios from "./axios/request";
 Vue.prototype.$axios = axios
 
 // 引入vuex管理数据
 import store from '@/store/store.js'
+
+// 全局注册Loading
+import Loading from '@/pages/common/loading/Loading'
+Vue.component('Loading',Loading)
+
+// 全局注册Scroller
+import Scroller from '@/pages/common/scroller/Scroller'
+Vue.component('Scroller',Scroller)
 
 Vue.config.productionTip = false
 

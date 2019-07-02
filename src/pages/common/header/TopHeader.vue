@@ -57,6 +57,9 @@ export default {
     justify-content space-between
     align-items center
     position relative
+    top 0
+    left 0
+    z-index 9
     .backBtn
         width 10%
         text-align center

@@ -48,7 +48,7 @@
 			</div>
 			<div class="hot-list">
 				<div class="single-item">
-					<a href="#">
+					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/hot-img01.png" />
 						</div>
@@ -59,10 +59,10 @@
 								<p class="original-price">原价:￥2500.00</p>
 							</div>
 						</div>
-					</a>
+					</router-link>
 				</div>
 				<div class="single-item">
-					<a href="#">
+					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/hot-img01.png" />
 						</div>
@@ -73,10 +73,10 @@
 								<p class="original-price">原价:￥2500.00</p>
 							</div>
 						</div>
-					</a>
+					</router-link>
 				</div>
 				<div class="single-item">
-					<a href="#">
+					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/hot-img01.png" />
 						</div>
@@ -87,10 +87,10 @@
 								<p class="original-price">原价:￥2500.00</p>
 							</div>
 						</div>
-					</a>
+					</router-link>
 				</div>
 				<div class="single-item">
-					<a href="#">
+					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/hot-img01.png" />
 						</div>
@@ -101,7 +101,7 @@
 								<p class="original-price">原价:￥2500.00</p>
 							</div>
 						</div>
-					</a>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -114,7 +114,7 @@
 			</div>
 			<div class="recommend-list">
 				<div class="single-item">
-					<a href="#">
+					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/recommend-goods-img01.png" />
 						</div>
@@ -125,10 +125,10 @@
 								<p class="original-price">原价:￥500.00</p>
 							</div>
 						</div>
-					</a>
+					</router-link>
 				</div>
 				<div class="single-item">
-					<a href="#">
+					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/recommend-goods-img01.png" />
 						</div>
@@ -139,10 +139,10 @@
 								<p class="original-price">原价:￥500.00</p>
 							</div>
 						</div>
-					</a>
+					</router-link>
 				</div>
 				<div class="single-item">
-					<a href="#">
+					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/recommend-goods-img01.png" />
 						</div>
@@ -153,25 +153,31 @@
 								<p class="original-price">原价:￥500.00</p>
 							</div>
 						</div>
-					</a>
+					</router-link>
 				</div>
 			</div>
 		</div>
 
 		<!-- 底部导航 -->
 		<Navigate></Navigate>
+
+		<!-- 弹窗 -->
+		<Popup></Popup>
+
 	</div>
 </template>
 
 <script>
 import Navigate from "@/pages/common/footer/Navigate";
+import Popup from "@/pages/home/Popup"
 export default {
 	name: "home",
 	data() {
 		return {};
 	},
 	components: {
-		Navigate
+		Navigate,
+		Popup
 	}
 };
 </script>
