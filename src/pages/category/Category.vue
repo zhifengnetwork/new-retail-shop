@@ -23,21 +23,18 @@
 				<div class="menu-item">面膜</div>
 				<div class="menu-item">连衣裙</div> -->
 			</div>
-			<p>{{pullDownTip}}</p>
-			<div class="scroll-list" ref="scroll_list">
-				<Scroller :handleToScroll = "handleToScroll" :hangdleToTouchEnd = "hangdleToTouchEnd">
-					<div class="list-item" v-for="(items,index) in this.listData" :key="index" v-show ="activeIndex === index">
-						<div class="single-item" v-for="(item,index) in items" :key="index">
-							<div class="img-wrap">
-								<router-link to="/Details"><img :src="item.imgUrl" /></router-link>
-							</div>
-							<div class="main">
-								<router-link to="/Details"><h3>{{item.goodsName}}</h3></router-link>
-								<p class="price">{{item.price | moneyFormat | rmb}}</p>
-							</div>
+			<div class="scroll-list">
+				<div class="list-item" v-for="(items,index) in this.listData" :key="index" v-show ="activeIndex === index">
+					<div class="single-item" v-for="(item,index) in items" :key="index">
+						<div class="img-wrap">
+							<router-link to="/Details"><img :src="item.imgUrl" /></router-link>
+						</div>
+						<div class="main">
+							<router-link to="/Details"><h3>{{item.goodsName}}</h3></router-link>
+							<p class="price">{{item.price | moneyFormat | rmb}}</p>
 						</div>
 					</div>
-				</Scroller>
+				</div>
 				<!-- <div class="single-item">
 					<div class="img-wrap">
 						<a href="#"><img src="/static/images/category/category-goods-img01.png" /></a>
@@ -75,7 +72,6 @@
 <script>
 import TopHeader from "@/pages/common/header/TopHeader"
 import Navigate from "@/pages/common/footer/Navigate"
-// import BScroll from "better-scroll"
 export default {
 	name: "Category",
 	components: {
@@ -224,52 +220,13 @@ export default {
 			pullDownTip:''
 		};
 	},
-	mounted(){
-		// this.$nextTick( ()=>{
-		// 	var scroll = new BScroll(this.$refs.scroll_list,{
-		// 		click:true,
-		// 		probeType:1,//滚动的时候会派发事件
-		// 	});
 
-		// 	scroll.on('scroll',(pos)=>{
-		// 		// console.log("scroll")
-		// 		if(pos.y > 30){
-		// 			this.pullDownTip = '正在更新中';
-		// 		}
-		// 	});
-
-		// 	scroll.on('touchEnd',(pos)=>{
-		// 		// console.log('touchend')
-		// 		if(pos.y > 30){
-		// 			this.pullDownTip = '更新成功';
-		// 			setInterval(() => {
-		// 				this.pullDownTip = '';
-		// 			}, 1000);
-		// 		}
-		// 	})
-
-		// })
-
-
-	},
 	methods:{
 		// 根据索引点击跳至对应内容
 		handleClick(i){
 			this.activeIndex = i;
 		},
-		handleToScroll(pos){
-			if(pos.y > 30){
-				this.pullDownTip = '正在更新中';
-			}
-		},
-		hangdleToTouchEnd(pos){
-			if(pos.y > 30){
-				this.pullDownTip = '更新成功';
-				setInterval(() => {
-					this.pullDownTip = '';
-				}, 1000);
-			}
-		}
+		
 	},
 	filters:{
 		moneyFormat(val){
