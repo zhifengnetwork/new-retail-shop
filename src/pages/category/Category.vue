@@ -265,7 +265,8 @@ export default {
 				&.active
 					background-color #fff
 		.scroll-list
-			height calc(100vh - 186px)
+			height calc(100vh - 195px)
+			overflow-y auto
 			flex 1
 			margin-top 25px
 			.single-item
