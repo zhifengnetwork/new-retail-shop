@@ -1,38 +1,31 @@
 <template>
-    <div class="comm_wrap">
+    <div class="det_wrap">
         <!-- 头部组件 -->
-		<Comm-Header custom-title="团队列表" custom-fixed>
+		<Det-Header custom-title="佣金明细" custom-fixed>
 			<!-- 返回按钮 -->
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
-		</Comm-Header>
+		</Det-Header>
         <div class="content">
             <div class="item_wrap">
 
                 <div class="title_wrap">
                     <ul class="title">
-                        <li>用户ID</li>
-                        <li>名称</li>
-                        <li>电话</li>
-                        <li>订单</li>
+                        <li>订单号</li>
+                        <li>金额</li>
+                        <li>描述</li>
                     </ul>
                 </div>
 
                 <div class="list_wrap">
                     <ul class="bound">
-                        <li>4584554</li>
-                        <li>冷漠之秋二小姐</li>
-                        <li>15588229900</li>
-                        <li>
-                            <router-link class="my_look" to="/user/myTeam/commissionlist/viewOrders">查看</router-link>
-                        </li>
+                        <li>201909061256301</li>
+                        <li>￥12356.00</li>
+                        <li>分享返佣</li>
                     </ul>
                     <ul class="not_bound">
-                        <li>4584554</li>
-                        <li>二小姐</li>
-                        <li>未绑定</li>
-                        <li>
-                            <router-link class="my_look" to="/user/myTeam/commissionlist/viewOrders">查看</router-link>
-                        </li>
+                        <li>201909061256301</li>
+                        <li>￥12356.00</li>
+                        <li>分享返佣</li>
                     </ul>
                 </div>
 
@@ -42,9 +35,9 @@
 </template>
 
 <script>
-	import CommHeader from "@/pages/common/header/TopHeader"
+	import DetHeader from "@/pages/common/header/TopHeader"
     export default {
-		name: 'commissionlist',
+		name: 'detailed',
 		data(){
             return{
                 
@@ -52,14 +45,14 @@
 			
 		},
         components:{
-            CommHeader,
+            DetHeader,
         },
         
     }
 </script>
 
 <style lang="stylus" scoped>
-    .comm_wrap
+    .det_wrap
         .content
             padding-top 88px
             .item_wrap
@@ -83,7 +76,4 @@
                 .list_wrap .not_bound
                     background #ecf4fc                         
 
-.my_look
-    display block
-    color #151515
 </style>

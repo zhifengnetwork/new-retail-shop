@@ -6,57 +6,69 @@
 		</TopHeader>
         <div class="height-88"></div>
        
-        <div class="conter">
-            <div class="c-list-" v-for="(item,key) in list" :key="key">
-                <van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox>
-                <div class="-list-img">
-                    <router-link to="/Details"><img :src="item.img" /></router-link>
-                </div>
-                <div class="goods-info">
-                     <router-link to="/Details"><p class="-info-msg">{{item.text}}</p></router-link>
-                    <div class="-info-option"> 
-                        <span class="price">
-                            ￥<strong>{{item.price}}</strong>
-                        </span>
-                        <span class="-option-">
-                            <i class="subling iconfont icon-jian-" @click="reducingNumber(key)"></i>
-                            <input class="inp" type="text" :value="item.number" @change="changNumber($event,key)"/>
-                            <i class="puls iconfont icon-jia" @click="addNumber(key)" ></i>
-                        </span>
+        <!-- No INFO START -->
+        <div v-show="list.length<1" class="no-info">
+            <Nodata :nodatas="nodatas"></Nodata>
+        </div>
+       <!-- GOODS LIST START -->
+       <div v-show="list.length>0" class="c-wrap">
+            <div class="conter">
+                <div class="c-list-" v-for="(item,key) in list" :key="key">
+                    <van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox>
+                    <div class="-list-img">
+                        <router-link to="/Details"><img :src="item.img" /></router-link>
+                    </div>
+                    <div class="goods-info">
+                        <router-link to="/Details"><p class="-info-msg">{{item.text}}</p></router-link>
+                        <div class="-info-option"> 
+                            <span class="price">
+                                ￥<strong>{{item.price}}</strong>
+                            </span>
+                            <span class="-option-">
+                                <i class="subling iconfont icon-jian-" @click="reducingNumber(key)"></i>
+                                <input class="inp" type="text" :value="item.number" @change="changNumber($event,key)"/>
+                                <i class="puls iconfont icon-jia" @click="addNumber(key)" ></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- CART FOOT START -->
-        <div class="footer-height"></div>
-        <div class="footer">
-            <div class="footer-a">
-                <span class="f-a-a">
-                     <van-checkbox ref="allCheck" v-model="allChecked" @click="selectAll(allChecked)"><strong>全选</strong></van-checkbox>
-                </span>
-                <div class="f-a-b">
-                    <p class="size-30">
-                        <strong>总计：</strong>
-                        <span class="colorRed">￥<strong class="size-35">{{updatePrice}}</strong></span>
-                    </p>
-                    <p class="size-24">
-                        节省: <span class="size-20">￥</span><span class="size-30">10.00</span>
-                    </p>
+            <!-- CART FOOT START -->
+            <div class="footer-height"></div>
+            <div class="footer">
+                <div class="footer-a">
+                    <span class="f-a-a">
+                        <van-checkbox ref="allCheck" v-model="allChecked" @click="selectAll(allChecked)"><strong>全选</strong></van-checkbox>
+                    </span>
+                    <div class="f-a-b">
+                        <p class="size-30">
+                            <strong>总计：</strong>
+                            <span class="colorRed">￥<strong class="size-35">{{updatePrice}}</strong></span>
+                        </p>
+                        <p class="size-24">
+                            节省: <span class="size-20">￥</span><span class="size-30">10.00</span>
+                        </p>
+                    </div>
                 </div>
+                <div class="footer-b" @click="toPay()">结算({{updateNumber}})</div>
             </div>
-            <div class="footer-b">结算({{updateNumber}})</div>
+            <Navigate></Navigate>
         </div>
-        <Navigate></Navigate>
     </div>
 </template>
 
 <script>
 import TopHeader from "@/pages/common/header/TopHeader";
 import Navigate from "@/pages/common/footer/Navigate";
-import { Dialog } from 'vant';
+import Nodata from "@/pages/common/nodata/Nodata";
 export default {
     data(){
         return {
+            nodatas:{
+                'imgSrc':'/static/images/cart/cart_icon.png',
+                'text':'购物车空空如也~',
+                'link':'/Hone'
+            },
             list:[
                 {
                     text:'自然堂化妆品补水防晒虎虎生风',
@@ -82,9 +94,6 @@ export default {
             ],
             allChecked: false,
         };
-    },
-    components: {
-        [Dialog.Component.name]: Dialog.Component
     },
     computed:{
         updatePrice(){
@@ -117,8 +126,22 @@ export default {
              this.$set(data,'isCheck',!data.isCheck);
             if(!data.isCheck){
                 this.allChecked=false
+            }else{
+                if(this.countNumberCheckBoxes().length === this.list.length){
+                    this.allChecked=true
+                }
             }
         },
+        countNumberCheckBoxes(){    //计算选中的复选框的总数
+            let counts =[];
+            this.list.forEach((data)=>{
+                if(data.isCheck){
+                    counts.push('a')    // a 可为任何数，在这里仅用于占位
+                }
+            })
+            return counts;
+        },
+
         reducingNumber(key){
             var data =this.list[key];
             var val =parseInt(data.number - 1) 
@@ -136,7 +159,11 @@ export default {
             this.$set( data,'number',val)
         },
         deletOption(){
-            Dialog.confirm({
+            if(this.updateNumber < 1){
+                this.$toast('亲，还没有选择要删除的商品哦!');
+                return
+            }
+            this.$dialog.confirm({
             title: '信息提醒',
             message: '亲，再考虑考虑吧?'
             }).then(() => {
@@ -159,10 +186,14 @@ export default {
             val =new Number(val+ 1)
             this.$set( data,'number',val);
         },
+        toPay(){
+            this.$router.push({path: '/pay/ConfirmOrder',name:'ConfirmOrder'})
+        }
     },
     components: {
         TopHeader,
-        Navigate
+        Navigate,
+        Nodata
 	}
 
 }
@@ -182,6 +213,23 @@ export default {
             width:100%;
             min-height:100%;
             color:#151515;
+            .no-info
+                text-align :center
+                .-info-img
+                    width:290px
+                    height:290px
+                    margin:145px 0 50px
+                .-info-txt
+                    color:#6c6c6c
+                    font-size:36px
+                    margin-bottom:90px
+                .-info-btn
+                    width: 460px
+                    height: 100px
+                    background: #ea2028
+                    border-radius: 50px
+                    font-size 50px
+                    color:#fff
             .conter
                 margin : 10px 24px;
                 .c-list-
