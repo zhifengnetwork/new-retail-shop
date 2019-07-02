@@ -14,7 +14,7 @@
        <div v-show="list.length>0" class="c-wrap">
             <div class="conter">
                 <div class="c-list-" v-for="(item,key) in list" :key="key">
-                    <van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox>
+                    <div class="check"><van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox></div>
                     <div class="-list-img">
                         <router-link to="/Details"><img :src="item.img" /></router-link>
                     </div>
@@ -38,7 +38,7 @@
             <div class="footer">
                 <div class="footer-a">
                     <span class="f-a-a">
-                        <van-checkbox ref="allCheck" v-model="allChecked" @click="selectAll(allChecked)"><strong>全选</strong></van-checkbox>
+                        <van-checkbox ref="allCheck" v-model="allChecked" @click="selectAll(allChecked)"><strong class="size-30">全选</strong></van-checkbox>
                     </span>
                     <div class="f-a-b">
                         <p class="size-30">
@@ -238,13 +238,16 @@ export default {
                     border-radius:6px;
                     padding: 20px 40px 20px 6px;
                     height:238px;
+                    background-color #ffffff
                     display:flex;
                     align-items :center;
                     box-sizing: border-box;
+                    .check
+                        margin-right: 8px;
                     .-list-img
                         width:201px;
                         height:176px;
-                        margin:0 10px 0 4px;
+                        margin:0 10px 0 0;
                         img
                             max-width:100%;
                             max-height 100%;
@@ -273,7 +276,7 @@ export default {
                                     font-size:30px;
                             .-option-
                                 border: 2px solid #e6e6e6;
-                                width: 200px;
+                                width: 192px;
                                 height: 40px;
                                 line-height :40px;
                                 display :flex;
@@ -282,16 +285,15 @@ export default {
                                 border-radius: 20px;
                                 text-align:center;
                                 .iconfont
-                                    width:41px;
+                                    width:50px;
                                     height:100%;
                                     font-size: 12px;
                                 .puls
                                     border-left:1px solid #e6e6e6;
                                 .subling
                                     border-right:1px solid #e6e6e6;
-                                  
                                 .inp
-                                    width:121px;
+                                    width:92px;
                                     text-align: center;
                                     height:inherit;
                                     font-size:24px;

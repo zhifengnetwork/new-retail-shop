@@ -24,17 +24,19 @@
 				<div class="menu-item">连衣裙</div> -->
 			</div>
 			<div class="scroll-list">
-				<div class="list-item" v-for="(items,index) in this.listData" :key="index" v-show ="activeIndex === index">
-					<div class="single-item" v-for="(item,index) in items" :key="index">
-						<div class="img-wrap">
-							<router-link to="/Details"><img :src="item.imgUrl" /></router-link>
-						</div>
-						<div class="main">
-							<router-link to="/Details"><h3>{{item.goodsName}}</h3></router-link>
-							<p class="price">{{item.price | moneyFormat | rmb}}</p>
+				<Scroller>
+					<div class="list-item" v-for="(items,index) in this.listData" :key="index" v-show ="activeIndex === index">
+						<div class="single-item" v-for="(item,index) in items" :key="index">
+							<div class="img-wrap">
+								<router-link to="/Details"><img :src="item.imgUrl" /></router-link>
+							</div>
+							<div class="main">
+								<router-link to="/Details"><h3>{{item.goodsName}}</h3></router-link>
+								<p class="price">{{item.price | moneyFormat | rmb}}</p>
+							</div>
 						</div>
 					</div>
-				</div>
+				</Scroller>
 				<!-- <div class="single-item">
 					<div class="img-wrap">
 						<a href="#"><img src="/static/images/category/category-goods-img01.png" /></a>
@@ -247,14 +249,14 @@ export default {
 	min-height 100vh
 	background-color #ffffff
 	.scroll-content
-		height 100%
+		height calc(100vh - 186px)
 		display flex
 		padding-right 24px
 		box-sizing border-box
-		padding-bottom 98px
 		.scroll-menu
 			width 250px
-			height calc(100vh - 186px)
+			height 100%
+			overflow-y auto
 			text-align center
 			margin-right 30px
 			background-color #f2f2f2
@@ -265,14 +267,18 @@ export default {
 				&.active
 					background-color #fff
 		.scroll-list
-			height calc(100vh - 186px)
+			height 100%
+			overflow-y auto
 			flex 1
-			margin-top 25px
+			padding-top 25px
+			box-sizing border-box
 			.single-item
 				display flex
 				padding 10px 0
 				box-sizing border-box
 				border-bottom 1px solid #eeeeee
+				&:last-child
+					border-bottom none
 				.img-wrap
 					width 160px
 					height 160px
