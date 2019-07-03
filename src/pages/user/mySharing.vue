@@ -60,7 +60,6 @@
                 height 930px
                 background rgba(255,255,255,0.9)
                 border-radius 10px
-                -opacity 0.9
             .img_head
                 padding 82px 0 0
                 .img 
@@ -89,7 +88,6 @@
                 background #fff
                 border-radius 10px
                 box-sizing border-box
-                -webkit-box-sizing border-box
                 .mark
                     padding 28px 0
                     margin 0 auto
@@ -98,7 +96,6 @@
                     background url(/static/images/user/ber.png) no-repeat
                     background-size 100% 100%
                     box-sizing border-box
-                    -webkit-box-sizing border-box
                     .mark_img
                         margin 0 auto
                         width 318px

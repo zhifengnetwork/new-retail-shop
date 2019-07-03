@@ -108,6 +108,7 @@ export default {
                     textarea   
                         width 100%
                         border none
+                        resize none
                     h3
                         color #151515
                         font-weight normal
