@@ -237,7 +237,7 @@ export default {
             .then( (res)=>{
                 var status = res.data.status
                 if(status === 1){
-										
+					console.log(res.data.data)				
                 }
             })
             .catch((error) => {
