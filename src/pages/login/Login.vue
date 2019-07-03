@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5';
 export default {
     name:'Login',
     data(){
@@ -35,6 +36,12 @@ export default {
             isHide:true,  //是否显示密码
             disabled:false
         }
+    },
+    mounted(){
+        var $mobile = '11223344556';
+        var $temp = 'reg';
+        var a = md5($mobile+$temp)
+        console.log(a)
     },
     methods:{
         /**

@@ -11,7 +11,7 @@
 		<div class="scroll-content">
 			<div class="scroll-menu">
 				<div class="menu-item" 
-				v-for="(item,index) in menuBar" 
+				v-for="(item,index) in this.menuBar" 
 				:key="index"
 				:class="{'active': activeIndex === index}"
 				@click="handleClick(index)"
@@ -25,7 +25,7 @@
 			</div>
 			<div class="scroll-list">
 				<Scroller>
-					<div class="list-item" v-for="(items,index) in this.listData" :key="index" v-show ="activeIndex === index">
+					<div class="list-item" v-for="(items,index) in this.categoryData" :key="index" v-show ="activeIndex === index">
 						<div class="single-item" v-for="(item,index) in items" :key="index">
 							<div class="img-wrap">
 								<router-link to="/Details"><img :src="item.imgUrl" /></router-link>
@@ -84,7 +84,7 @@ export default {
 		return {
 			activeIndex:0,
 			menuBar:["洁面","爽肤水","清透乳","面霜","面膜","连衣裙"],
-			listData:[
+			categoryData:[
 				[
 					{
 						"id":"001",
@@ -222,12 +222,28 @@ export default {
 			pullDownTip:''
 		};
 	},
-
+  	mounted(){
+        this.requestData();//请求数据
+    },
 	methods:{
 		// 根据索引点击跳至对应内容
 		handleClick(i){
 			this.activeIndex = i;
 		},
+		// 请求数据
+        requestData(){
+            var url = 'goods/categoryList';
+            this.$axios.get(url)
+            .then( (res)=>{
+                var status = res.data.status
+                if(status === 1){
+										
+                }
+            })
+            .catch((error) => {
+                alert('请求错误:'+ error)
+            })
+        },
 		
 	},
 	filters:{
@@ -289,7 +305,7 @@ export default {
 				.main
 					flex 1
 					h3
-						height 70px
+						// height 70px
 						font-size 26px
 						color #151515
 						font-weight normal
