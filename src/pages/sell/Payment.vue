@@ -55,37 +55,33 @@ export default {
 }
 </script>
 <style lang="stylus">
-    .content
-        padding: 0 24px 24px
-        .inner
-            padding:0 180px
-            >img 
-               width:332px
-               height 331px
-            .-imgs
-                margin-bottom :130px
-            .-payment-
-                display :flex
-                justify-content :space-between
-                margin :100px 0 130px
-                .-payment-1
-                    font-weight:30px
-                    color:#151515 
-                .-payment-2
-                    color:#ff6521
-                    font-size:28px
-                    padding:2px 6px
-                .-userinfo
-                    font-size :28px
-                    letter-spacing: 1px
-                    .box-list
-                        width: 100%
-                        height: 500px
-                        padding: 10px
-                // li
-                //     width 100%;
-                //     height 80px;
-
-
+    .payment
+        .content
+            padding: 0 24px 24px
+            .inner
+                padding:0 180px
+                >img 
+                width:332px
+                height 331px
+                .-imgs
+                    margin-bottom :130px
+                .-payment-
+                    display :flex
+                    justify-content :space-between
+                    margin :100px 0 130px
+                    .-payment-1
+                        font-weight:30px
+                        color:#151515 
+                    .-payment-2
+                        color:#ff6521
+                        font-size:28px
+                        padding:2px 6px
+                    .-userinfo
+                        font-size :28px
+                        letter-spacing: 1px
+                        .box-list
+                            width: 100%
+                            height: 500px
+                            padding: 10px
 </style>
 

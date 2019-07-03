@@ -203,136 +203,134 @@ export default {
 </script>
 
 <style lang="stylus">
+    .cart
+        width 100%
+        min-height 100%
+        color #151515
         .colorRed
-            color:#ff112f
+            color #ff112f
         .size-35
-            font-size:35px;
+            font-size 35px
         .size-30
-            font-size:30px;
+            font-size 30px
         .van-checkbox__icon--checked .van-icon
-            background-color: #f30c0c;
-            border-color: #fff;
-        .cart
-            width:100%;
-            min-height:100%;
-            color:#151515;
-            .no-info
-                text-align :center
-                .-info-img
-                    width:290px
-                    height:290px
-                    margin:145px 0 50px
-                .-info-txt
-                    color:#6c6c6c
-                    font-size:36px
-                    margin-bottom:90px
-                .-info-btn
-                    width: 460px
-                    height: 100px
-                    background: #ea2028
-                    border-radius: 50px
-                    font-size 50px
-                    color:#fff
-            .conter
-                margin : 10px 24px;
-                .c-list-
-                    width:100%;
-                    margin-bottom:12px;
-                    border-radius:6px;
-                    padding: 20px 40px 20px 6px;
-                    height:238px;
-                    background-color #ffffff
-                    display:flex;
-                    align-items :center;
-                    box-sizing: border-box;
-                    .check
-                        margin-right: 8px;
-                    .-list-img
-                        width:201px;
-                        height:176px;
-                        margin:0 10px 0 0;
-                        img
-                            max-width:100%;
-                            max-height 100%;
-                    .goods-info
-                        width:445px;
-                        .-info-msg
-                            width:100%;
-                            height:80px;
-                            font-size:24px;
-                            color #151515;
-                            overflow:hidden;
-                            text-overflow: ellipsis;
-                            -webkit-line-clamp: 2;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            margin-bottom:10px;
-                            word-break: break-all;
-                        .-info-option
-                            display:flex;
-                            justify-content:space-between;
-                            align-items center;
-                            .price
-                                color:#ff112f;
-                                font-size:20px;
-                                strong
-                                    font-size:30px;
-                            .-option-
-                                border: 2px solid #e6e6e6;
-                                width: 192px;
-                                height: 40px;
-                                line-height :40px;
-                                display :flex;
-                                align-items :center;
-                                justify-content:space-between;
-                                border-radius: 20px;
-                                text-align:center;
-                                .iconfont
-                                    width:50px;
-                                    height:100%;
-                                    font-size: 12px;
-                                .puls
-                                    border-left:1px solid #e6e6e6;
-                                .subling
-                                    border-right:1px solid #e6e6e6;
-                                .inp
-                                    width:92px;
-                                    text-align: center;
-                                    height:inherit;
-                                    font-size:24px;
-                                    font-weight:bold;
-            .footer-height
-                width :100%;
-                height:220px;
-            .footer
-                position :fixed;
-                bottom:98px;
-                width :100%;
-                height:120px;
-                left:0;
-                background:#fff;
-                z-index :2;
-                box-shadow: 0px 0px 5px 0px #cccccc;
-                display :flex;
-                .footer-a
-                    width:530px;
-                    display :flex;
-                    padding-left:28px;
-                    .f-a-a
-                        display:flex;
-                        margin-right:96px;
-                    .f-a-b
-                        margin :14px 26px 8px 0;
-                    .f-a-b p:nth-child(1)  
-                        margin-bottom :2px;
-                .footer-b
-                    width:221px;
-                    background:#f30c0c;
-                    color:#fff;
-                    line-height:120px;
-                    text-align: center;
-                    font-size:30px;
-                    font-weight:bold;
+            background-color #f30c0c
+            border-color #fff
+        .no-info
+            text-align center
+            .-info-img
+                width 290px
+                height 290px
+                margin 145px 0 50px
+            .-info-txt
+                color #6c6c6c
+                font-size 36px
+                margin-bottom 90px
+            .-info-btn
+                width 460px
+                height 100px
+                background #ea2028
+                border-radius 50px
+                font-size 50px
+                color #fff
+        .conter
+            margin 10px 24px
+            .c-list-
+                width 100%
+                margin-bottom 12px
+                border-radius 6px
+                padding 20px 40px 20px 6px
+                height 238px
+                display flex
+                align-items center
+                box-sizing border-box
+                .-list-img
+                    width 201px
+                    height 176px
+                    margin 0 10px 0 4px
+                    img
+                        max-width 100%
+                        max-height 100%
+                .goods-info
+                    width:445px
+                    .-info-msg
+                        width 100%
+                        height 80px
+                        font-size 24px
+                        color #151515
+                        overflow hidden
+                        text-overflow ellipsis
+                        -webkit-line-clamp 2
+                        text-overflow ellipsis
+                        white-space nowrap
+                        margin-bottom 10px
+                        word-break break-all
+                    .-info-option
+                        display flex
+                        justify-content space-between
+                        align-items center
+                        .price
+                            color #ff112f
+                            font-size 20px
+                            strong
+                                font-size 30px
+                        .-option-
+                            border 2px solid #e6e6e6
+                            width 200px
+                            height 40px
+                            line-height 40px
+                            display flex
+                            align-items center
+                            justify-content space-between
+                            border-radius 20px
+                            text-align center
+                            .iconfont
+                                width 41px
+                                height 100%
+                                font-size 12px
+                            .puls
+                                border-left 1px solid #e6e6e6
+                            .subling
+                                border-right 1px solid #e6e6e6
+                                
+                            .inp
+                                width 121px
+                                text-align center
+                                height inherit
+                                font-size 24px
+                                font-weight bold
+        .footer-height
+            width 100%
+            height 220px
+        .footer
+            position fixed
+            bottom 98px
+            width 100%
+            height 120px
+            left 0
+            background #fff
+            z-index 2
+            box-shadow 0px 0px 5px 0px #cccccc
+            display flex
+            .footer-a
+                width 530px
+                display flex
+                padding-left 28px
+                .f-a-a
+                    display flex
+                    margin-right 96px
+                .f-a-b
+                    margin 14px 26px 8px 0
+                .f-a-b p:nth-child(1)  
+                    margin-bottom 2px
+            .footer-b
+                width 221px
+                background #f30c0c
+                color #fff
+                line-height 120px
+                text-align center
+                font-size 30px
+                font-weight bold
 
 </style>    
 

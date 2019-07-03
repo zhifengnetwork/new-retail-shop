@@ -1,5 +1,5 @@
 <template>
-    <div class="cart">
+    <div class="collect-wrap">
       	<!-- 头部组件 -->
 		<TopHeader custom-title="收藏" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
@@ -156,13 +156,13 @@ export default {
             font-size:35px
         .size-30
             font-size:30px
-        .van-checkbox__icon--checked .van-icon
-            background-color: #f30c0c
-            border-color: #fff
-        .cart
+        .collect-wrap
             width:100%
             min-height:100%
             color:#151515
+            .van-checkbox__icon--checked .van-icon
+                background-color: #f30c0c
+                border-color: #fff
             .conter
                 margin : 10px 24px
                 .c-list-
