@@ -57,18 +57,18 @@ export default {
 <style lang="stylus">
     .payment
         .content
-            padding: 0 24px 24px
+            padding:24px 24px 30px
             .inner
                 padding:0 180px
-                >img 
-                width:332px
-                height 331px
+                img 
+                    width:332px
+                    height 331px
                 .-imgs
                     margin-bottom :130px
                 .-payment-
                     display :flex
                     justify-content :space-between
-                    margin :100px 0 130px
+                    margin :100px 0 95px
                     .-payment-1
                         font-weight:30px
                         color:#151515 
