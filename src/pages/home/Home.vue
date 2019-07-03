@@ -10,14 +10,8 @@
 		<!-- 轮播图 -->
 		<div class="banner">
 			<van-swipe :autoplay="3000" indicator-color="white">
-				<van-swipe-item>
-					<img src="/static/images/home/banner01.png" />
-				</van-swipe-item>
-				<van-swipe-item>
-					<img src="/static/images/home/banner01.png" />
-				</van-swipe-item>
-				<van-swipe-item>
-					<img src="/static/images/home/banner01.png" />
+				<van-swipe-item v-for="(list,key) in bannerList" :key="key">
+					<img :src="'http://new_retail_api.zhifengwangluo.com'+list.picture" />
 				</van-swipe-item>
 			</van-swipe>
 		</div>
@@ -173,16 +167,31 @@ import Popup from "@/pages/home/Popup"
 export default {
 	name: "home",
 	data() {
-		return {};
+		return {
+			bannerList:[]
+		};
+	},
+	created(){
+		this.getBannerData()
 	},
 	methods:{
 		getBannerData(){
-			// this.$axios((
-			// 	url:url
-			// 	mothed:get
-			// ))
+			let _that = this;
+			_that.$axios({
+                url:'/banner/banner',
+                }).then((res)=>{
+				var list =res.data;
+				if(list.status===200){
+					_that.bannerList = list.data;
+				}else{
+					this.$toast(list.msg);
+				}
+            })
 		}
 	},
+	// created(){
+	// 	console.log(this.$store.state.loginStatus)
+	// },
 	components: {
 		Navigate,
 		Popup
@@ -227,6 +236,7 @@ export default {
 		padding-top 76px
 		img 
 			width 100% 
+			height 324px
 			display block
 	.notice
 		margin-bottom 20px
