@@ -169,11 +169,12 @@ export default {
                     width:100%
                     margin-bottom:12px
                     border-radius:6px
-                    padding: 20px 40px 20px 6px
+                    padding: 20px 40px 20px 12px
                     height:238px
                     display:flex
                     align-items :center
                     box-sizing: border-box
+                    background #fff
                     .van-checkbox__icon 
                          margin-right: 17px
                     .-list-img
