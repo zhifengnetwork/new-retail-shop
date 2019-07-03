@@ -10,9 +10,6 @@
                     <div class="item-name">
                         <span class="name">小腊肉</span>
                         <span class="tel">17875592622</span>
-                        <router-link to="/user/editAddress">
-                            <span class="edit"></span>
-                        </router-link>
                     </div>
                     <div class="item-address">
                         <div class="isDefault">默认</div>
@@ -20,22 +17,29 @@
                             <p>广东省广州市番禺区荷光路快递收藏路15栋28层28层28层28层28层28层28层28层28层</p>
                         </div>
                     </div>
-                    <span class="del-icon"></span>
+                    <div class="operation-bar">
+                        <router-link to="/user/editAddress">
+                            <span class="iconfont icon-bianji1 edit"></span>
+                        </router-link>
+                        <span class="iconfont icon-guanbi del-icon"></span>
+                    </div>
                 </div>
                 <div class="address-item">
                     <div class="item-name">
                         <span class="name">荷包蛋</span>
                         <span class="tel">17875592622</span>
-                        <router-link to="/user/editAddress">
-                            <span class="edit"></span>
-                        </router-link>
                     </div>
                     <div class="item-address">
                         <div class="exact-address">
                             <p>广东省广州市番禺区荷光路快递收藏路15栋28层</p>
                         </div>
                     </div>
-                    <span class="del-icon"></span>
+                    <div class="operation-bar">
+                        <router-link to="/user/editAddress">
+                            <span class="iconfont icon-bianji1 edit"></span>
+                        </router-link>
+                        <span class="iconfont icon-guanbi del-icon"></span>
+                    </div>
                 </div>
             </div>
             
@@ -112,12 +116,6 @@ export default {
                         margin-right 50px
                     .tel
                         flex 1
-                    .edit
-                        width 27px
-                        height 27px
-                        display block
-                        background url('/static/images/user/address/address-edit-icon.png') no-repeat
-                        background-size cover   
                 .item-address
                     display flex
                     .isDefault
@@ -141,15 +139,15 @@ export default {
                             display -webkit-box
                             -webkit-line-clamp 2
                             -webkit-box-orient vertical
-                .del-icon
-                    width 22px
-                    height 22px
-                    display block
-                    background url('/static/images/user/address/del-icon.png') no-repeat
-                    background-size cover
+                .operation-bar
                     position absolute
                     right 10px
-                    top 10px 
+                    top 16px
+                    span 
+                        color #7f7f7f
+                        font-size 36px
+                    .del-icon
+                        margin-left 30px
         .add-address
             width 92%
             height 88px

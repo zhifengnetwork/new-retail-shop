@@ -14,7 +14,7 @@
        <div v-show="list.length>0" class="c-wrap">
             <div class="conter">
                 <div class="c-list-" v-for="(item,key) in list" :key="key">
-                    <van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox>
+                    <div class="check"><van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox></div>
                     <div class="-list-img">
                         <router-link to="/Details"><img :src="item.img" /></router-link>
                     </div>
@@ -38,7 +38,7 @@
             <div class="footer">
                 <div class="footer-a">
                     <span class="f-a-a">
-                        <van-checkbox ref="allCheck" v-model="allChecked" @click="selectAll(allChecked)"><strong>全选</strong></van-checkbox>
+                        <van-checkbox ref="allCheck" v-model="allChecked" @click="selectAll(allChecked)"><strong class="size-30">全选</strong></van-checkbox>
                     </span>
                     <div class="f-a-b">
                         <p class="size-30">
