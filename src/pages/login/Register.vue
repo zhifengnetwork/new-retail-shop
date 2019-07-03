@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import md5 from 'js-md5';
+import '../../../static/js/public.js'
 export default {
     name:'Register',
     data(){
@@ -52,7 +54,29 @@ export default {
         getVerifyCode(){
             if(this.validatePhone()){
                 // 发送网络请求
-                this.countDown();
+                var $phone = this.phone;
+                var $temp = 'sms_reg';
+                var $md = md5($phone+$temp)
+                this.$axios.post('user/sendVerifyCode',{
+                    phone:this.phone,
+                    temp:$temp,
+                    auth:$md,
+                    type:1
+                })
+                .then( (res)=>{
+                    var status = res.data.status
+                    if(status === 200){
+                        // 开启倒计时
+                        this.countDown();
+                        this.$toast(res.data.data)
+                    }else{
+                        this.$toast(res.data.msg)
+                    }
+                })
+                .catch((error) => {
+                    alert('请求错误:'+ error)
+                })
+
             }
         },
        
@@ -121,7 +145,26 @@ export default {
                 return false
             }else{
                 // 请求数据
-                this.$toast('校验成功，请求接口数据再次验证')
+                this.$axios.post('user/register',{
+                    phone:this.phone,
+                    verify_code:this.verifyCode,
+                    user_password:this.password,
+                    confirm_password:this.password2
+                })
+                .then( (res)=>{
+                    var status = res.data.status
+                    if(status === 200){
+                       this.$toast('注册成功') 
+                       setTimeout(() => {
+                            this.$router.push("/Login");
+                        }, 1000);
+                    }else{
+                        this.$toast(res.data.msg) 
+                    }
+                })
+                .catch((error) => {
+                    console.log('请求错误:'+ error)
+                })
             }
 
         }

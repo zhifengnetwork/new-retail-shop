@@ -175,6 +175,14 @@ export default {
 	data() {
 		return {};
 	},
+	methods:{
+		getBannerData(){
+			// this.$axios((
+			// 	url:url
+			// 	mothed:get
+			// ))
+		}
+	},
 	components: {
 		Navigate,
 		Popup
