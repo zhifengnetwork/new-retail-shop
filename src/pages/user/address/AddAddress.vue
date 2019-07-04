@@ -9,17 +9,17 @@
                 <div class="form-group">
                     <div class="label">收货人</div>
                     <div class="input-group">
-                        <input type="text" placeholder="收货人姓名">
+                        <input type="text" placeholder="收货人姓名" v-model="userName">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="label">手机号码</div>
                     <div class="input-group">
-                        <input type="number" placeholder="输入电话号码">
+                        <input type="number" placeholder="输入电话号码" v-model="userMobile">
                     </div>
                 </div>
-                <router-link to="/user/selectPoint">
-                    <div class="form-group">
+                <!-- <router-link to="/user/selectPoint"> -->
+                    <div class="form-group" @click="toSelectAddress()">
                         <div class="label">收货地址 </div>
                             <!-- <div class="input-group">
                                 <p v-if="!this.$route.params.poiname">点击选择地址</p>
@@ -36,10 +36,10 @@
                             </div>
                         <div class="right-arrow"></div>
                     </div>
-                </router-link>
+                <!-- </router-link> -->
                 <div class="details-address">
                     <div class="label">详细地址</div>
-                    <div class="textarea" contenteditable="true" placeholder ="详细地址，例D座726"></div>
+                    <div class="textarea"  ref="detailAddress" contenteditable="true" placeholder ="详细地址，例D座726"></div>
                 </div>
             </div>
 
@@ -49,7 +49,6 @@
                 <van-switch
                     v-model="checked"
                     size="24px"
-                    @change="onCheack"
                 />
             </div>
 
@@ -71,38 +70,74 @@ export default {
     data(){
         return {
             checked: false,
-            location:{}
+            userName:'',
+            userMobile:'',
+            location:{},
+            // infoList:{}
         }
     },
      created: function(){
-        // 返回的位置信息赋值
-        this.location = this.$route.params.location
-        console.log(this.location)
+        var _that=this;
+        _that.location =  _that.$route.params.location      // 返回的位置信息赋值
+        var userInfo =JSON.parse(sessionStorage.getItem('userInfo'))
+        if(!(userInfo === null || userInfo ==="")){
+            this.userName =userInfo.userName
+            this.userMobile=userInfo.userMobile
+        }
     },
     methods:{
         // 点击保存按钮时触发
+        toSelectAddress(){
+            var _that =this
+            _that.detailAddress =_that.$refs.detailAddress.innerText
+            var info={
+                'userName':_that.userName,
+                'userMobile':_that.userMobile,
+            }
+            sessionStorage.setItem('userInfo',JSON.stringify(info))
+            _that.$router.push({path:'/user/SelectPoint'})
+        },
         onSave(addressData){
-        
+            var _that=this
+            console.log(_that.location)
+            var url ='address/addAddress'
+            if(!_that._verifyUserInfo()){return}
+            _that.$axios.post(url,{
+                // token:this.$store.getters.optuser.Authorization
+                token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA',
+                address_id:"",
+                consignee:_that.userName,
+                mobile:_that.userMobile,
+                is_default:_that.checked
+            })
+            .then((res)=>{
+                console.log(res)
+            })
+            .catch( (error) => {
+                alert("请求错误:" + error)
+            })
         },
-        // 请求数据
-        // requestData(){
-        //     this.$axios.post('user/add_address',{
-        //         consignee:"",
-        //         token:window.sessionStorage.getItem("token")
-        //     })
-        //     .then( (res)=>{
-        //         console.log(res)
-        //     })
-        //     .catch( (error) => {
-        //         alert("请求错误:" + error)
-        //     })
-
-        // },
-        //选择默认地址时触发
-        onCheack(val){
-            console.log(val)
-        },
-      
+        _verifyUserInfo(){
+            var _that =this
+            var detailAddress =_that.$refs.detailAddress.innerText
+            if( _that.userName===""){
+                _that.$toast("请输入收货人姓名")
+                return false
+            }
+            if( _that.userMobile===""){
+                _that.$toast("请输入电话号码")
+                return false
+            }
+            if(_that.location==="" || typeof(_that.location) == 'undefined'){
+                _that.$toast("请选择地址")
+                return false
+            }
+            if(_that.detailAddress===""){
+                _that.$toast("请输入详情地址")
+                return false
+            }
+            return true
+        }
     }
 
 }
