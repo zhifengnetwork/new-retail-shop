@@ -1,7 +1,7 @@
 <template>
     <div class="comm_wrap">
         <!-- 头部组件 -->
-		<Comm-Header custom-title="团队列表1" custom-fixed>
+		<Comm-Header custom-title="团队列表" custom-fixed>
 			<!-- 返回按钮 -->
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</Comm-Header>

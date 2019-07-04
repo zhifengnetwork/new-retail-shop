@@ -63,7 +63,7 @@
         myData(){
             let url = '/user/team'
             this.$axios.post(url,{
-                token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIwNDI1NCwiZXhwIjoxNTYyMjQwMjU0LCJ1c2VyX2lkIjo1OX0.bLuYOYBonK5BuPQIST_f4AOVVsLVdmTdV0baM0ncvwk'
+                token:this.$store.getters.optuser.Authorization
             })
             .then((res)=>{
                 var item = res.data;
