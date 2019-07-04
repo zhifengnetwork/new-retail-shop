@@ -58,7 +58,7 @@
             seveData(){
 
                 this.$axios.post('user/team_list',{
-                    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIwNDI1NCwiZXhwIjoxNTYyMjQwMjU0LCJ1c2VyX2lkIjo1OX0.bLuYOYBonK5BuPQIST_f4AOVVsLVdmTdV0baM0ncvwk'                  
+                    token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIyMTEzOCwiZXhwIjoxNTYyMjU3MTM4LCJ1c2VyX2lkIjo4M30.RZ7zvjlGZgiJhF2yf3Z26_wpqqQ6oLcbLiOtuvC90AM'               
                 })
                 .then((res)=>{
                     var list = res.data;
