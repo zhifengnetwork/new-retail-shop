@@ -26,12 +26,18 @@
 			<div class="scroll-list">
 				<Scroller>
 					<div class="list-item" v-for="(items,index) in this.categoryData" :key="index" v-show ="activeIndex === index">
-						<div class="single-item" v-for="(item,index) in items" :key="index">
+						<div class="single-item" v-for="(item,index) in items.goods" :key="index">
 							<div class="img-wrap">
-								<router-link to="/Details"><img :src="item.imgUrl" /></router-link>
+								<router-link 
+								:to="'/Details?goods_id='+item.goods_id">
+									<img :src="item.img" />
+								</router-link>
 							</div>
 							<div class="main">
-								<router-link to="/Details"><h3>{{item.goodsName}}</h3></router-link>
+								<router-link 
+								:to="'/Details?goods_id='+item.goods_id">
+									<h3>{{item.goods_name}}</h3>
+								</router-link>
 								<p class="price">{{item.price | moneyFormat | rmb}}</p>
 							</div>
 						</div>
@@ -83,7 +89,8 @@ export default {
 	data() {
 		return {
 			activeIndex:0,
-			menuBar:["洁面","爽肤水","清透乳","面霜","面膜","连衣裙"],
+			menuBar:[],
+			// menuBar:["洁面","爽肤水","清透乳","面霜","面膜","连衣裙"],
 			categoryData:[
 				[
 					{
@@ -232,12 +239,20 @@ export default {
 		},
 		// 请求数据
         requestData(){
-            var url = 'goods/categoryList';
+            let url = 'goods/categoryList';
             this.$axios.get(url)
-            .then( (res)=>{
-                var status = res.data.status
-                if(status === 1){
-					console.log(res.data.data)				
+            .then( (res) => {
+				
+				let status = res.data.status
+                if(status === 200){
+					// console.log(res.data.data)	
+					this.categoryData = res.data.data;
+
+					this.categoryData.forEach((item) => {
+						// 左侧导航赋值
+						this.menuBar.push(item.cat_name)
+					})	
+							
                 }
             })
             .catch((error) => {

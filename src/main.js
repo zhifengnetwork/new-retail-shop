@@ -27,6 +27,9 @@ Vue.component('Loading',Loading)
 import Scroller from '@/pages/common/scroller/Scroller'
 Vue.component('Scroller',Scroller)
 
+// 拼接图片路径
+Vue.prototype.baseUrl = 'http://api.zhifengwangluo.c3w.cc/'
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
