@@ -6,7 +6,7 @@
             </div>
             <div class="tbody"></div>
             <div class="tfoot">
-                <span class="btn" @click="!popShow">取消</span>
+                <span class="btn" @click="handleCancel">取消</span>
                 <span class="confirm-btn btn"><router-link to="/Sell">去付款</router-link></span>
             </div>
         </div>
@@ -26,13 +26,15 @@ export default {
     data(){
         return {
             // popShow: true,//弹窗是否显示
+            flag:false
         }
     },
     methods:{
         //点击取消
-        // handleCancel(){
-        //     popShow = false
-        // }
+        handleCancel(){
+            // popShow = false
+            this.$emit('handleCancel',false)
+        }
     }
 }
 </script>

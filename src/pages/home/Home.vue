@@ -154,7 +154,7 @@
 		<Navigate></Navigate>
 
 		<!-- 弹窗 -->
-		<Popup :popShow = "isShow"></Popup>
+		<Popup :popShow = "isShow" v-on:handleCancel="hidePopup"></Popup>
 
 	</div>
 </template>
@@ -177,7 +177,7 @@ export default {
 		};
 	},
 	created(){
-		this.requestData();//请求数据
+		this.requestData();
 	},
 	methods:{
 		/**
@@ -199,12 +199,15 @@ export default {
                 alert('请求错误:'+ error)
             })
 		},
+		hidePopup(){
+			this.isShow = false
+		},
 		
 		/**
 		 * 进入50元专区
 		 */
 		handleInto(){
-			// this.popShow = true
+			this.isShow = true
 		}
 
 
