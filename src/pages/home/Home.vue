@@ -10,16 +10,16 @@
 		<!-- 轮播图 -->
 		<div class="banner">
 			<van-swipe :autoplay="3000" indicator-color="white">
-				<van-swipe-item v-for="(list,key) in bannerList" :key="key">
-					<img :src="'http://new_retail_api.zhifengwangluo.com'+list.picture" />
+				<van-swipe-item v-for="(item,index) in bannerData" :key="index">
+					<img :src="baseUrl+item.picture" />
 				</van-swipe-item>
 			</van-swipe>
 		</div>
 
 		<!-- 公告 -->
-		<div class="notice">
+		<div class="notice" v-for="(item,index) in filterNotice" :key="index">
 			<van-notice-bar
-				text="通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容"
+				:text = "item.title"
 				left-icon="volume-o"
 				color="#ffffff"
   				background="#f92a0f"
@@ -27,11 +27,9 @@
 		</div>
 
 		<!-- 预售 -->
-		<div class="advance-sale">
-			<a href="#">
-				<h1>50元专区</h1>
-				<span>不包邮</span>
-			</a>
+		<div class="advance-sale" @click="handleInto()">
+			<h1>50元专区</h1>
+			<span>不包邮</span>
 		</div>
 
 		<!-- 热销商品 -->
@@ -156,7 +154,7 @@
 		<Navigate></Navigate>
 
 		<!-- 弹窗 -->
-		<Popup></Popup>
+		<Popup :popShow = "isShow"></Popup>
 
 	</div>
 </template>
@@ -166,36 +164,58 @@ import Navigate from "@/pages/common/footer/Navigate";
 import Popup from "@/pages/home/Popup"
 export default {
 	name: "home",
-	data() {
-		return {
-			bannerList:[]
-		};
-	},
-	created(){
-		this.getBannerData()
-	},
-	methods:{
-		getBannerData(){
-			let _that = this;
-			_that.$axios({
-                url:'/banner/banner',
-                }).then((res)=>{
-				var list =res.data;
-				if(list.status===200){
-					_that.bannerList = list.data;
-				}else{
-					this.$toast(list.msg);
-				}
-            })
-		}
-	},
-	// created(){
-	// 	console.log(this.$store.state.loginStatus)
-	// },
 	components: {
 		Navigate,
 		Popup
+	},
+	data() {
+		return {
+			baseUrl:'',//图片url拼接
+			bannerData:[],
+			noticeData:[],
+			isShow:true,//弹窗是否显示
+		};
+	},
+	created(){
+		this.requestData();//请求数据
+	},
+	methods:{
+		/**
+		 * 请求数据
+		 */
+		requestData(){
+            let url = 'index/index';
+            this.$axios.get(url)
+            .then( (res) => {
+				let status = res.data.status
+                if(status === 200){
+					console.log(res.data.data)	
+					this.bannerData = res.data.data.banners;
+					this.noticeData = res.data.data.announce;
+					console.log(this.bannerData)		
+                }
+            })
+            .catch((error) => {
+                alert('请求错误:'+ error)
+            })
+		},
+		
+		/**
+		 * 进入50元专区
+		 */
+		handleInto(){
+			// this.popShow = true
+		}
+
+
+	},
+	computed:{
+		// 过滤公告列表
+		filterNotice(){
+			return this.noticeData.slice(0,1);
+		}
 	}
+
 };
 </script>
 
@@ -260,21 +280,18 @@ export default {
 		margin 0 auto
 		padding 0 .25rem
 		box-sizing border-box
-		a
-			width 100%
-			height 100%
-			display flex
-			align-items center
-			justify-content center
-			h1
-				font-size 48px
-				color #ffffff
-				font-weight normal
-				margin-left 35px
-				margin-right 44px
-			span 
-				font-size 28px
-				color #ffdbd9
+		display flex
+		align-items center
+		justify-content center
+		h1
+			font-size 48px
+			color #ffffff
+			font-weight normal
+			margin-left 35px
+			margin-right 44px
+		span 
+			font-size 28px
+			color #ffdbd9
 	.heading
 		height 82px
 		display flex
