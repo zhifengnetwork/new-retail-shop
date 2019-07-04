@@ -149,6 +149,9 @@
         data() {
             return {};
         },
+        created(){
+            console.log(this.$store.getters.optuser.Authorization) //如何获取token
+        },
         components: {
             userFooter,
         }

@@ -37,30 +37,26 @@ export default {
             disabled:false
         }
     },
-    mounted(){
-        var $mobile = '11223344556';
-        var $temp = 'reg';
-        var a = md5($mobile+$temp)
+    created(){
+        if(this.$store.getters.optuser.Authorization){       //返回登录页 如果有token 就返回首页
+            this.$router.push('/Home')
+        }
     },
     methods:{
         saveUserInfo() {
-            if(!this._verifyUserInfo()){ return }
+            var _that=this;
+            if(! _that._verifyUserInfo()){ return }
             let url = 'user/login'
-            this.$axios.post(url,{
-                phone:this.phone,
-                user_password:this.password
+             _that.$axios.post(url,{
+                phone: _that.phone,
+                user_password: _that.password
             })
             .then((res)=>{
-                var _that =this,list=res.data;
+                var list=res.data;
                 if(list.status==200){
                     _that.$toast({message:"登陆成功,正在跳转...",duration:1000})
-                    // var token =list.data.token
-                    // _that.$store.commit('set_token',token["Authentication-Token"])
-                    // if(_that.$store.state.token){
-                    //     _that.$router.push('/')
-                    // }else{
-                    //     this.$router.replace('/Login');
-                    // }
+                    localStorage.removeItem('Authorization');
+                    _that.$store.commit('set_token',{Authorization: list.data.token})  //保存token
                     setTimeout(()=>{
                         _that.$router.push({path:'/Home',name:'Home'})
                     },1000)
