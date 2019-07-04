@@ -13,7 +13,7 @@
                             <span>团队列表</span>
                             <i class="iconfont icon-xiangyoujiantou"></i>
                         </div>
-                        <p>8</p>
+                        <p>{{teamList.team_count}}</p>
                         <p>总人数</p>
                     <!-- </router-link>     -->
                 </div>
@@ -24,7 +24,7 @@
                             <span>佣金明细</span>
                             <i class="iconfont icon-xiangyoujiantou"></i>
                         </div>
-                        <p>2.88</p>
+                        <p>{{teamList.distribut_money}}</p>
                         <p>总收益</p>
                     </router-link>
                 </div>
@@ -35,7 +35,7 @@
                             <span>预计收益</span>
                             <i class="iconfont icon-xiangyoujiantou"></i>
                         </div>
-                        <p>547.54</p>
+                        <p>{{teamList.estimate_money}}</p>
                     </router-link>
                 </div>
 
@@ -49,35 +49,37 @@
     export default {
 	name: "myTeam",
 	data() {
-		return {};
+		return {
+            teamList:[]
+        };
+    },
+    created(){
+        this.getTeamInfo();
+        
     },
     methods:{
         goFirst(){
             this.$router.push({
-            path:'/user/myTeam/commissionlist',
-            // query:{
-            //     id:id
-            // }
-      })
-        },
-        myData(){
-            let url = '/user/team'
-            this.$axios.post(url,{
-                token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIwNDI1NCwiZXhwIjoxNTYyMjQwMjU0LCJ1c2VyX2lkIjo1OX0.bLuYOYBonK5BuPQIST_f4AOVVsLVdmTdV0baM0ncvwk'
+                path:'/user/myTeam/commissionlist',
+
             })
-            .then((res)=>{
-                var item = res.data;
-                // var _that =this,list=res.data;
-                if(item.status==200){
-                    // _that.$toast("登陆成功,正在跳转...")
+        },
+
+        getTeamInfo(){
+            let _that=this,
+                url = '/user/team';
+            _that.$axios.post(url,{
+                token: _that.$store.getters.optuser.Authorization
+            }).then((res)=>{
+                var list =res.data
+                if(list.status===200){
+                    _that.teamList =list.data;
+                    // console.log( _that.$store.getters.optuser.uid)
                 }else{
-                    // _that.$toast(list.msg)
+                    _that.toast(res.msg)
                 }
             })
         }
-    },
-    mounted(){
-        this.myData()
     },
 	components: {
 		TeamHeader,

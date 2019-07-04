@@ -1,7 +1,7 @@
 <template>
     <div class="comm_wrap">
         <!-- 头部组件 -->
-		<Comm-Header custom-title="团队列表1" custom-fixed>
+		<Comm-Header custom-title="团队列表" custom-fixed>
 			<!-- 返回按钮 -->
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</Comm-Header>
@@ -58,7 +58,7 @@
             seveData(){
 
                 this.$axios.post('user/team_list',{
-                    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIwNDI1NCwiZXhwIjoxNTYyMjQwMjU0LCJ1c2VyX2lkIjo1OX0.bLuYOYBonK5BuPQIST_f4AOVVsLVdmTdV0baM0ncvwk'                  
+                    token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIyMTEzOCwiZXhwIjoxNTYyMjU3MTM4LCJ1c2VyX2lkIjo4M30.RZ7zvjlGZgiJhF2yf3Z26_wpqqQ6oLcbLiOtuvC90AM'               
                 })
                 .then((res)=>{
                     var list = res.data;

@@ -10,7 +10,8 @@ const store =  new Vuex.Store({
     state:{
         // token:0
         userInfo:{
-            Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '' 
+            Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '' ,
+            uid: localStorage.getItem('uid') ? localStorage.getItem('uid') : '' ,
 
         }
         
@@ -21,14 +22,19 @@ const store =  new Vuex.Store({
         set_token(state,user){
             state.userInfo.Authorization = user.Authorization;//TOKEN
             localStorage.setItem('Authorization', user.Authorization);
+
+            state.userInfo.uid = user.uid;//user_id
+            localStorage.setItem('uid', user.uid);
         },
-        userInfo(state, user){
-            state.userInfo.usin = JSON.stringify(user);
-            localStorage.setItem('usin', JSON.stringify(user));
-        },
+        // userInfo(state, user){
+        //     state.userInfo.usin = JSON.stringify(user);
+        //     localStorage.setItem('uid', JSON.stringify(user));
+        // },
         del_token(state){
             state.userInfo.Authorization = ''
+            state.userInfo.uid = '';
             localStorage.removeItem('Authorization');
+            localStorage.removeItem('uid');
         }
     },
     //获取共享数据

@@ -57,6 +57,7 @@ export default {
                     _that.$toast({message:"登陆成功,正在跳转...",duration:1000})
                     localStorage.removeItem('Authorization');
                     _that.$store.commit('set_token',{Authorization: list.data.token})  //保存token
+                    console.log(list.data.id)
                     setTimeout(()=>{
                         _that.$router.push({path:'/Home',name:'Home'})
                     },1000)
