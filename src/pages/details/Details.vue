@@ -229,6 +229,8 @@
         <!-- 规格框开始 -->
         
         <div class="sku-box" v-show="sizeBox">
+            <div class="sku-box-bg" @click="sizeBox=false">
+            </div>
             <transition name="slide-fade">
                 <div v-show="sizeBox" class="sku-box-inner" :class="{'box-active':sizeBox}">
                     <span class="-close-"  @click="sizeBox=false"> &times;</span>
@@ -256,7 +258,7 @@
                     </div>
                     <input class="sku-btn" type="button" value="确定" @click="confirmSize()"/>
                 </div>
-             </transition>
+            </transition>
         </div>
        
         <!-- 底部菜单 -->
@@ -549,11 +551,15 @@ a
         left 0
         bottom 0
         z-index 101
-        background rgba(0,0,0,0.4)
+        .sku-box-bg
+            width 100%
+            height 100%
+            background rgba(0,0,0,0.4)
         .sku-box-inner
             position absolute
             bottom 0
             left 0
+            z-index 1
             padding 24px
             box-sizing border-box
             background #fff
@@ -563,7 +569,7 @@ a
             width 100%
             color:#151515
             .-close-
-                font-size 40px
+                font-size 60px
                 padding 0 10px
                 position absolute
                 right 5px
@@ -585,8 +591,8 @@ a
                         margin 0 3.5% 3% 0
                         text-align center 
                         border-radius 6px
-                        height 45px  
-                        line-height 45px 
+                        height 55px  
+                        line-height 55px 
                         background #f3f3f3  
                         font-size 26px
                         box-sizing border-box
@@ -602,17 +608,17 @@ a
                     .-option-
                         border 2px solid #e6e6e6
                         width 200px
-                        height 40px
-                        line-height 40px
+                        height 50px
+                        line-height 50px
                         display flex
                         align-items center
                         justify-content space-between
                         border-radius 20px
                         text-align center
                         .iconfont
-                            width 41px
+                            width 55px
                             height 100%
-                            font-size 12px
+                            font-size 16px
                         .puls
                             border-left 1px solid #e6e6e6
                         .subling
@@ -626,7 +632,7 @@ a
                             font-weight bold
             .sku-btn
                 width 702px
-                height 50px
+                height 70px
                 color #fff
                 border-radius 10px
                 background #ff2d10
@@ -666,6 +672,7 @@ a
             input
                 width 50%
                 color #fff
+                border-radius 0
             .bar-btn-1
                 background #ff4d4d
             .bar-btn-2

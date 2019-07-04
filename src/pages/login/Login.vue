@@ -13,7 +13,7 @@
                     <i :class="isHide?'close-eyes':'open-eyes'"></i>
                 </div>
             </div>
-            <div class="btn" @click="loginClick()">登录</div>
+            <div class="btn" @click="saveUserInfo()">登录</div>
 
             <div class="jump-link">
                 <router-link to="/Register">注册账号</router-link>
@@ -41,9 +41,38 @@ export default {
         var $mobile = '11223344556';
         var $temp = 'reg';
         var a = md5($mobile+$temp)
-        console.log(a)
     },
     methods:{
+        saveUserInfo() {
+            if(!this._verifyUserInfo()){ return }
+            let url = 'user/login'
+            this.$axios.post(url,{
+                phone:this.phone,
+                user_password:this.password
+            })
+            .then((res)=>{
+                var _that =this,list=res.data;
+                if(list.status==200){
+                    _that.$toast("登陆成功,正在跳转...")
+                    // var token =list.data.token
+                    // _that.$store.commit('set_token',token["Authentication-Token"])
+                    // if(_that.$store.state.token){
+                    //     _that.$router.push('/')
+                    // }else{
+                    //     this.$router.replace('/Login');
+                    // }
+                    setTimeout(()=>{
+                        _that.$router.push({path:'/Home',name:'Home'})
+                    },2000)
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
+            .catch((error) => {
+                alert('请求错误:'+ error)
+            }) 
+        },
+
         /**
          * 密码显示开关
          */
@@ -54,28 +83,29 @@ export default {
         /**
          * 校验登录
          */
-        loginClick(){
-            if(this.phone == ''){
-                this.$toast('手机号码不能为空')
-                return false
-            }else if(!/^1[345678]\d{9}$/.test(this.phone)){
+        _verifyUserInfo(){
+            let mobile_reg=/^1[345678]\d{9}$/
+            let pswd_reg =/^[a-z0-9_-]{6,18}$/
+            if(this.phone == '' || !mobile_reg.test(this.phone)){
+                // return this.$toast('手机号码不能为空')
                 this.$toast('请填写正确的手机号码')
                 return false
-            }else if(this.password == ''){
+            }
+            // if(!mobile_reg.test(this.phone)){
+            //     this.$toast('请填写正确的手机号码')
+            //     return false
+            // }
+            if(this.password == ''){
                 this.$toast('密码不能为空')
                 return false
-            }else if(!/^[a-z0-9_-]{6,18}$/.test(this.password)){
-                this.$toast('密码长度为6-18位')
-                return false
-            }else{
-                // 请求数据
-                this.$toast('校验成功，请求接口数据再次验证')
             }
-
+            if(!pswd_reg.test(this.password)){
+               this.$toast('密码长度为6-18位')
+                return false
+            }
+            return true
         }
-
     }
-
 }
 </script>
 

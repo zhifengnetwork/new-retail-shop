@@ -33,6 +33,9 @@
 </template>
 
 <script>
+/* md5 */
+import md5 from 'js-md5';
+import { Dialog } from 'vant';
 export default {
     name:'EditPassword',
     data(){
@@ -52,8 +55,29 @@ export default {
         getVerifyCode(){
             if(this.validatePhone()){
                 // 发送网络请求
-                this.countDown();
-            }
+                var $phone = this.phone;
+                var $temp = 'sms_forget';
+                var $md = md5($phone+$temp)
+                this.$axios.post('user/sendVerifyCode',{
+                    phone:this.phone,
+                    temp:$temp,
+                    auth:$md,
+                    type:1
+                })
+                .then( (res)=>{
+                    var status = res.data.status
+                    if(status === 200){
+                        // 开启倒计时
+                        this.countDown();
+                        this.$toast(res.data.data)
+                    }else{
+                        this.$toast(res.data.msg)
+                    }
+                })
+                .catch((error) => {
+                    alert('请求错误:'+ error)
+                })
+            } 
         },
        
         /**
@@ -98,33 +122,56 @@ export default {
         },
 
         /**
-         * 校验注册
+         * 修改密码
          */
         confirmClick(){
-            if(this.phone == ''){
-                this.$toast('手机号码不能为空')
+            var that = this;
+            if(that.phone == ''){
+                that.$toast('手机号码不能为空')
                 return false
-            }else if(!/^1[345678]\d{9}$/.test(this.phone)){
-                this.$toast('请填写正确的手机号码')
+            }else if(!/^1[345678]\d{9}$/.test(that.phone)){
+                that.$toast('请填写正确的手机号码')
                 return false
-            }else if(this.verifyCode == ''){
-                this.$toast('验证码不能为空')
+            }else if(that.verifyCode == ''){
+                that.$toast('验证码不能为空')
                 return false
-            }else if(this.password == ''){
-                this.$toast('密码不能为空')
+            }else if(that.password == ''){
+                that.$toast('密码不能为空')
                 return false
-            }else if(!/^[a-z0-9_-]{6,18}$/.test(this.password)){
-                this.$toast('密码长度为6-18位')
+            }else if(!/^[a-z0-9_-]{6,18}$/.test(that.password)){
+                that.$toast('密码长度为6-18位')
                 return false
-            }else if(this.password != this.password2){
-                this.$toast('两次密码不一致')
+            }else if(that.password != that.password2){
+                that.$toast('两次密码不一致')
                 return false
             }else{
                 // 请求数据
-                this.$toast('校验成功，请求接口数据再次验证')
+                var params = new URLSearchParams();
+                    params.append('phone', this.phone);       //你要传给后台的参数值 key/value
+                    params.append('user_password', this.password);
+                    params.append('confirm_password', this.password2);
+                    params.append('verify_code', this.verifyCode);
+                var url = "/user/resetPassword"  
+                this.$axios({
+                    method: 'post',
+                    url:url,
+                    data: params
+                })
+                .then((res)=>{
+                    console.log(res.data.status)
+                    if(res.data.status === 200){
+                        that.$toast('修改成功')                
+                        setTimeout(() => {
+                            that.$router.push("/Login");
+                        }, 1000);
+                    }else{
+                        Dialog.alert({
+                            message: res.data.msg
+                        })
+                    }
+				})  
             }
-
-        }
+        },
 
     }
 
