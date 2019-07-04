@@ -43,7 +43,29 @@
                 
             }
 			
-		},
+        },
+        methods:{
+            
+            seveData(){
+                console.log(66)
+                   let url = '/user/team_list'
+                    this.$axios.post(url,{
+                        token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIwNDI1NCwiZXhwIjoxNTYyMjQwMjU0LCJ1c2VyX2lkIjo1OX0.bLuYOYBonK5BuPQIST_f4AOVVsLVdmTdV0baM0ncvwk'
+                    })
+                    .then((res)=>{
+                        // var _that =this,list=res.data;
+                        console.log(res.data)
+                        if(list.status==200){
+                            // _that.$toast("登陆成功,正在跳转...")
+                        }else{
+                            // _that.$toast(list.msg)
+                        }
+                    })
+            }
+        },
+        mounted(){
+            this.seveData()
+        },
         components:{
             DetHeader,
         },

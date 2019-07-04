@@ -61,9 +61,9 @@ export default {
                     // }else{
                     //     this.$router.replace('/Login');
                     // }
-                    setTimeout(()=>{
-                        _that.$router.push({path:'/Home',name:'Home'})
-                    },2000)
+                    // setTimeout(()=>{
+                    //     _that.$router.push({path:'/Home',name:'Home'})
+                    // },2000)
                 }else{
                     _that.$toast(list.msg)
                 }

@@ -1,7 +1,7 @@
 <template>
     <div class="comm_wrap">
         <!-- 头部组件 -->
-		<Comm-Header custom-title="团队列表" custom-fixed>
+		<Comm-Header custom-title="团队列表1" custom-fixed>
 			<!-- 返回按钮 -->
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</Comm-Header>
@@ -50,7 +50,28 @@
                 
             }
 			
-		},
+        },
+        mounted(){
+            this.seveData()
+        },
+        methods:{
+            seveData(){
+
+                this.$axios.post('user/team_list',{
+                    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIwNDI1NCwiZXhwIjoxNTYyMjQwMjU0LCJ1c2VyX2lkIjo1OX0.bLuYOYBonK5BuPQIST_f4AOVVsLVdmTdV0baM0ncvwk'                  
+                })
+                .then((res)=>{
+                    var list = res.data;
+                    console.log(list)
+                    if(list.status == 200){
+                        // _that.$toast("登陆成功,正在跳转...")
+                    }else{
+                        // _that.$toast(list.msg)
+                    }
+                })
+            }
+        },
+
         components:{
             CommHeader,
         },

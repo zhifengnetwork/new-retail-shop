@@ -7,15 +7,15 @@
 		</Team-Header>
         <div class="content">
             <div class="main">
-                <div class="list_wrap">
-                    <router-link class="my_look" to="/user/myTeam/commissionlist">
+                <div class="list_wrap" @click="goFirst()">
+                    <!-- <router-link class="my_look" to="/user/myTeam/commissionlist?get_user_id=2"> -->
                         <div class="group">
                             <span>团队列表</span>
                             <i class="iconfont icon-xiangyoujiantou"></i>
                         </div>
                         <p>8</p>
                         <p>总人数</p>
-                    </router-link>    
+                    <!-- </router-link>     -->
                 </div>
 
                 <div class="list_wrap_1">
@@ -50,7 +50,35 @@
 	name: "myTeam",
 	data() {
 		return {};
-	},
+    },
+    methods:{
+        goFirst(){
+            this.$router.push({
+            path:'/user/myTeam/commissionlist',
+            // query:{
+            //     id:id
+            // }
+      })
+        },
+        myData(){
+            let url = '/user/team'
+            this.$axios.post(url,{
+                token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIwNDI1NCwiZXhwIjoxNTYyMjQwMjU0LCJ1c2VyX2lkIjo1OX0.bLuYOYBonK5BuPQIST_f4AOVVsLVdmTdV0baM0ncvwk'
+            })
+            .then((res)=>{
+                var item = res.data;
+                // var _that =this,list=res.data;
+                if(item.status==200){
+                    // _that.$toast("登陆成功,正在跳转...")
+                }else{
+                    // _that.$toast(list.msg)
+                }
+            })
+        }
+    },
+    mounted(){
+        this.myData()
+    },
 	components: {
 		TeamHeader,
 	}
