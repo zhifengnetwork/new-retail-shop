@@ -53,7 +53,7 @@ export default {
             .then((res)=>{
                 var _that =this,list=res.data;
                 if(list.status==200){
-                    _that.$toast("登陆成功,正在跳转...")
+                    _that.$toast({message:"登陆成功,正在跳转...",duration:1000})
                     // var token =list.data.token
                     // _that.$store.commit('set_token',token["Authentication-Token"])
                     // if(_that.$store.state.token){
@@ -63,7 +63,7 @@ export default {
                     // }
                     setTimeout(()=>{
                         _that.$router.push({path:'/Home',name:'Home'})
-                    },2000)
+                    },1000)
                 }else{
                     _that.$toast(list.msg)
                 }
