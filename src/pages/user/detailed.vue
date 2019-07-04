@@ -16,17 +16,17 @@
                     </ul>
                 </div>
 
-                <div class="list_wrap">
+                <div class="list_wrap" v-for="item in list">
                     <ul class="bound">
+                        <li>410{{item.order_sn}}</li>
+                        <li>00{{item.money}}</li>
+                        <li>44{{item.desc}}</li>
+                    </ul>
+                    <!-- <ul class="not_bound">
                         <li>201909061256301</li>
                         <li>￥12356.00</li>
                         <li>分享返佣</li>
-                    </ul>
-                    <ul class="not_bound">
-                        <li>201909061256301</li>
-                        <li>￥12356.00</li>
-                        <li>分享返佣</li>
-                    </ul>
+                    </ul> -->
                 </div>
 
             </div>
@@ -40,27 +40,29 @@
 		name: 'detailed',
 		data(){
             return{
-                
+                list:[],
             }
 			
         },
         methods:{
             
             seveData(){
-                console.log(66)
-                   let url = '/user/team_list'
-                    this.$axios.post(url,{
-                        token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIwNDI1NCwiZXhwIjoxNTYyMjQwMjU0LCJ1c2VyX2lkIjo1OX0.bLuYOYBonK5BuPQIST_f4AOVVsLVdmTdV0baM0ncvwk'
-                    })
-                    .then((res)=>{
-                        // var _that =this,list=res.data;
-                        console.log(res.data)
-                        if(list.status==200){
-                            // _that.$toast("登陆成功,正在跳转...")
-                        }else{
-                            // _that.$toast(list.msg)
-                        }
-                    })
+                let url = '/user/distribut_list'
+                this.$axios.post(url,{
+                    page:1,
+                    token:this.$store.getters.optuser.Authorization
+                })
+                .then((res)=>{
+                   
+                    var that = this
+                    var item = res.data;
+                    console.log(res.data)
+                    if(item.status==200){
+                        that.list = item.data;
+                    }else{
+                        // that.$toast(list.msg)
+                    }
+                })
             }
         },
         mounted(){
