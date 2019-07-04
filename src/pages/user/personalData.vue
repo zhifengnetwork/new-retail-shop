@@ -9,11 +9,11 @@
 			<div class="nom_wrap">
                 <div class="item_wrap">
                         <div class="text">头像</div>
-                        <van-uploader :after-read="onRead">    
+                        <!-- <van-uploader :after-read="onRead">    
                             <div class="img">
                                 <img src="/static/images/user/002.png"/>
                             </div>
-                        </van-uploader>
+                        </van-uploader> -->
                 </div>
                 <router-link class="my_look" to="/user/modifyUserName">
                     <div class="item_wrap">
@@ -34,7 +34,7 @@
                 </router-link>    
             </div>
             <!-- 按钮 -->
-            <div class="btn">退出登录</div>
+            <div class="btn" @click="unlogin()">退出登录</div>
 		</div>
 	</div>
 </template>
@@ -48,7 +48,16 @@
                 //用户头像
                 userImg:'',
 			}
-		},
+        },
+        methods:{
+            unlogin(){
+                this.$store.commit('del_token')
+                this.$router.push({
+                    path:'/Login',
+
+                })
+            }
+        },
 		components: {
 			DataHeader,
 		},
