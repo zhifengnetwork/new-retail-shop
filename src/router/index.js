@@ -82,12 +82,11 @@ import Address from '@/pages/user/address/Address'
 import AddAddress from '@/pages/user/address/AddAddress'
 // 修改收货地址
 import EditAddress from '@/pages/user/address/EditAddress'
-
-
+import { Dialog } from 'vant';
 
 Vue.use(Router)
 
-export default new Router({
+const router= new Router({
 	mode: 'history',
 	routes: [
 		/**
@@ -118,7 +117,9 @@ export default new Router({
 		{
 			path: '/Home',
 			name: 'Home',
-			component:() => import('@/pages/home/Home'),//按需加载
+			// component:() => import('@/pages/home/Home'),//按需加载
+			component: (resolve) => require(['@/pages/home/Home'],resolve),
+			meta:{requireAuth:true}
 		},
 		// 弹窗
 		{
@@ -131,6 +132,7 @@ export default new Router({
 			path: '/Sell',
 			name: 'Sell',
 			component:() => import('@/pages/sell/Sell'),
+			// meta:{requireAuth:true}
 		},
 
 		/**
@@ -140,6 +142,7 @@ export default new Router({
 			path: '/Category',
 			name: 'Category',
 			component:() => import('@/pages/category/Category'),
+			// meta:{requireAuth:true} //是否需要登录
 		},
 
 		/**
@@ -149,6 +152,7 @@ export default new Router({
 			path: '/Cart',
 			name: 'Cart',
 			component:() => import('@/pages/cart/Cart'),
+			// meta:{requireAuth:true}
 		},
 
 		//支付
@@ -338,3 +342,27 @@ export default new Router({
 
 	]
 })
+
+//注册全局钩子函数
+router.beforeEach((to,from,next) =>{
+	if(to.matched.some(r => r.meta.requireAuth)){	//当前页面是否需要登录
+		if(to.path === '/Login' || to.path ==='/Register'){
+			next()
+		}else{
+			let token =localStorage.getItem('Authorization');
+			if(token === null || token === ''){		//判断是否有token
+				Dialog.confirm({
+					message: '亲，还没有登录哦!'
+				}).then(() =>{
+					next('/Login');
+				})
+			}else{
+				next()
+			}
+		}
+	}else{
+		next()
+	}
+})
+
+export default router

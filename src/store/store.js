@@ -8,23 +8,34 @@ const store =  new Vuex.Store({
     //strict:true,//严格模式
     // 状态(一般保存数据)
     state:{
-        token:0
+        // token:0
+        userInfo:{
+            Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '' 
+
+        }
+        
     },
 
     // mutations 类似事件
     mutations:{
-        set_token(state,token){
-            state.token =token
-            sessionStorage.token =token
+        set_token(state,user){
+            state.userInfo.Authorization = user.Authorization;//TOKEN
+            localStorage.setItem('Authorization', user.Authorization);
+        },
+        userInfo(state, user){
+            state.userInfo.usin = JSON.stringify(user);
+            localStorage.setItem('usin', JSON.stringify(user));
         },
         del_token(state){
-            state.token = ''
-            sessionStorage.removeItem('token')
+            state.userInfo.Authorization = ''
+            localStorage.removeItem('Authorization');
         }
     },
     //获取共享数据
     getters:{
-         
+        optuser:function(state){
+            return state.userInfo
+        }
      },
   });
   
