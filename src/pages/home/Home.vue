@@ -174,6 +174,7 @@ export default {
 			bannerData:[],
 			noticeData:[],
 			isShow:true,//弹窗是否显示
+			hotGoods:[]
 		};
 	},
 	created(){
