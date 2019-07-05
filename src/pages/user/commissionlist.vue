@@ -7,7 +7,6 @@
 		</Comm-Header>
         <div class="content">
             <div class="item_wrap">
-
                 <div class="title_wrap">
                     <ul class="title">
                         <li>用户ID</li>
@@ -18,24 +17,15 @@
                 </div>
 
                 <div class="list_wrap">
-                    <ul class="bound">
-                        <li>4584554</li>
-                        <li>冷漠之秋二小姐</li>
-                        <li>15588229900</li>
-                        <li>
-                            <router-link class="my_look" to="/user/myTeam/commissionlist/viewOrders">查看</router-link>
-                        </li>
-                    </ul>
-                    <ul class="not_bound">
-                        <li>4584554</li>
-                        <li>二小姐</li>
-                        <li>未绑定</li>
+                    <ul class="bound" v-for="(item,key) in teamList" :key="key">
+                        <li>{{item.id}}</li>
+                        <li>{{item.realname}}</li>
+                        <li>1{{item.mobile}}</li>
                         <li>
                             <router-link class="my_look" to="/user/myTeam/commissionlist/viewOrders">查看</router-link>
                         </li>
                     </ul>
                 </div>
-
             </div>
         </div>    
     </div>
@@ -47,7 +37,7 @@
 		name: 'commissionlist',
 		data(){
             return{
-                
+                teamList:[]
             }
 			
         },
@@ -56,17 +46,17 @@
         },
         methods:{
             seveData(){
-
-                this.$axios.post('user/team_list',{
-                    token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU2MjIyMTEzOCwiZXhwIjoxNTYyMjU3MTM4LCJ1c2VyX2lkIjo4M30.RZ7zvjlGZgiJhF2yf3Z26_wpqqQ6oLcbLiOtuvC90AM'               
+                var _that =this;
+                _that.$axios.post('user/team_list',{
+                    // token:this.$store.getters.optuser.Authorization
+                    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
                 })
                 .then((res)=>{
                     var list = res.data;
-                    console.log(list)
                     if(list.status == 200){
-                        // _that.$toast("登陆成功,正在跳转...")
+                        _that.teamList =list.data
                     }else{
-                        // _that.$toast(list.msg)
+                        _that.$toast(list.msg)
                     }
                 })
             }

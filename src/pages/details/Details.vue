@@ -8,17 +8,8 @@
         <!-- 产品图轮播 -->
         <div class="detailsSwiper">
             <van-swipe :autoplay="3000" indicator-color="white">
-                <van-swipe-item>
-                    <img src="/static/images/details/00detailsSwiper-img01.png" />
-                </van-swipe-item>
-                <van-swipe-item>
-                    <img src="/static/images/details/00detailsSwiper-img01.png" />
-                </van-swipe-item>
-                <van-swipe-item>
-                    <img src="/static/images/details/00detailsSwiper-img01.png" />
-                </van-swipe-item>
-                <van-swipe-item>
-                    <img src="/static/images/details/00detailsSwiper-img01.png" />
+                <van-swipe-item v-for="(img,key) in this.goodsData.img" :key="key">
+                    <img :src="img.picture" />
                 </van-swipe-item>
             </van-swipe>
         </div>
@@ -27,12 +18,12 @@
         <div class="content">
             <div class="goodsInfo">
                 <div class="price">
-                    <span class="discount-price">￥569.00</span>
-                    <span class="original-price">原价￥569.00</span>
+                    <span class="discount-price">￥{{this.goodsData.price}}</span>
+                    <span class="original-price">原价￥{{this.goodsData.original_price}}</span>
                 </div>
                 <!-- 商品名称 -->
                 <div class="goodsName">
-                    <h1>青年说是你发手机话费连衣裙连衣裙青年说是你发手机话费连衣裙连衣裙</h1>
+                    <h1>{{this.goodsData.goods_name}}</h1>
                 </div>
                 <div class="group-warp">
                     <div class="g-option">
@@ -41,7 +32,7 @@
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 运费</span>
-                        <div class="-text"> 免运费</div>
+                        <div class="-text"> {{this.goodsData.shipping_price}}</div>
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 规格</span>
@@ -56,7 +47,9 @@
                 <van-tabs v-model="tabActive">
                     <van-tab title="商品详情">
                         <div class="details-wrap">
-                            <img src="/static/images/details/00details-img01.png" />
+                            <!-- <img src="/static/images/details/00details-img01.png" /> -->
+                            <p class="-desc">{{this.goodsData.desc}}</p>
+                            <img v-for="(img,key) in this.goodsData.img" :key="key" :src="img.picture"/>
                         </div>
                     </van-tab>
                     <van-tab title="参数">
@@ -235,16 +228,10 @@
                 <div v-show="sizeBox" class="sku-box-inner" :class="{'box-active':sizeBox}">
                     <span class="-close-"  @click="sizeBox=false"> &times;</span>
                     <div class="sku-box-cont">
-                        <div class="box-list mb-30"> 
-                            <p class="-list-title">尺寸</p>
+                        <div class="box-list mb-30" v-for="(list,index) in this.skuList" :key="index"> 
+                            <p class="-list-title" :spec-id="list.spec_id">{{list.spec_name}}</p>
                             <ul class="-list-info">
-                                <li v-for="(list,key) in sizes" :key="key" class="-info-a" :class="{'sku-active':key==sizeKey}" @click="sizeKey=key">{{list.sku_name}}</li>
-                            </ul>
-                        </div>
-                        <div class="box-list mb-30"> 
-                            <p class="-list-title">颜色</p>
-                            <ul class="-list-info">
-                                <li v-for="(list,key) in colors" :key="key" class="-info-a" :class="{'sku-active':key==colorKey}" @click="colorKey=key">{{list.sku_name}}</li>
+                                <li v-for="(item,key) in list.res" :key="key" class="-info-a" :class="{'sku-active':sel[index] == key}" :attr-id="item.attr_id" @click="selectGoods(index,key)">{{item.attr_name}}</li>
                             </ul>
                         </div>
                         <div class="box-list2 mb-30"> 
@@ -292,31 +279,68 @@ export default {
     },
     data(){
         return {
+            goodsData:[],
+            skuList:[],
+            sel:[],
             sizeKey:0,
-            colorKey:0,
-            sizes:[
-                {'sku_id':1,'sku_name':"S"},
-                {'sku_id':2,'sku_name':"M"},
-                {'sku_id':3,'sku_name':"L"},
-                {'sku_id':4,'sku_name':"XL"}
-            ],
-            colors:[
-                {'sku_id':1,'sku_name':"墨绿色"},
-                {'sku_id':2,'sku_name':"粉红色"},
-                {'sku_id':3,'sku_name':"红色"},
-                {'sku_id':4,'sku_name':"紫色"},
-                {'sku_id':4,'sku_name':"天蓝色"}
-            ],
             goodsId:this.$route.query.goods_id,//商品id
             tabActive: 0,//tab选中
             rateVal: 3,//评分当前分值
             isCollect:false,
             goodsNumber:2,
-            sizeBox:false,
+            sizeBox:true,
             optionFlag:""
         }
     },
+    created(){
+         this._getGoodsData()
+    },
+    mounted(){
+       
+        
+    },
     methods:{
+        selectGoods(pKey,key){
+            this.sel[pKey] = key;
+            this.$set(this.sel,pKey, key)
+        },
+        _initGoodsData(){
+            var _that=this,
+                newArry=[],
+                goods =_that.goodsData.spec.spec_attr
+                console.log(goods)
+                goods.forEach((data) =>{
+                    data.res.forEach((res,i)=>{
+                        if(i==0){
+                            res.isHeightL =true
+                        }else{
+                            res.isHeightL =false
+                        }
+                        res.sku =data.spec_id+':'+res.attr_id
+                    })
+                    newArry.push(data)
+                })
+                _that.skuList =newArry; 
+        },
+        _getGoodsData(){
+            var _that =this;
+            _that.$axios.post('goods/goodsDetail',{
+                'goods_id':this.goodsId,
+                // token:this.$store.getters.optuser.Authorization
+                'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
+            })
+            .then((res)=>{
+                var list = res.data;
+                console.log(list)
+                if(list.status == 200){
+                    _that.goodsData =list.data
+                    // this.skuList=list.data.spec
+                    this._initGoodsData()
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
+        },
         changCollect(){
             this.isCollect=!this.isCollect
         },
@@ -377,6 +401,8 @@ a
     .content
         padding-bottom 128px
         box-sizing border-box
+        .-desc
+            padding 20px
         .price
             height 60px
             line-height 60px

@@ -4,14 +4,15 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 // 创建一个store仓库,使用export公开，其他地方可引用
+const storage =window.localStorage;
 const store =  new Vuex.Store({
     //strict:true,//严格模式
     // 状态(一般保存数据)
     state:{
         // token:0
         userInfo:{
-            Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '' ,
-            uid: localStorage.getItem('uid') ? localStorage.getItem('uid') : '' ,
+            Authorization: storage.getItem('Authorization') ? storage.getItem('Authorization') : '' ,
+            uid: storage.getItem('uid') ? storage.getItem('uid') : '' ,
 
         }
         

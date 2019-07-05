@@ -24,25 +24,7 @@
                         <span class="iconfont icon-guanbi del-icon"></span>
                     </div>
                 </div>
-                <div class="address-item">
-                    <div class="item-name">
-                        <span class="name">荷包蛋</span>
-                        <span class="tel">17875592622</span>
-                    </div>
-                    <div class="item-address">
-                        <div class="exact-address">
-                            <p>广东省广州市番禺区荷光路快递收藏路15栋28层</p>
-                        </div>
-                    </div>
-                    <div class="operation-bar">
-                        <router-link to="/user/editAddress">
-                            <span class="iconfont icon-bianji1 edit"></span>
-                        </router-link>
-                        <span class="iconfont icon-guanbi del-icon"></span>
-                    </div>
-                </div>
             </div>
-            
             <router-link to="/user/AddAddress">
                 <div class="add-address">
                     <span class="plus-icon"><img src="/static/images/user/address/plus-icon.png" /></span>
@@ -64,26 +46,28 @@ export default {
     },
     data(){
         return {
-           
+           addressList:[]
         }
     },
-   
     mounted(){
         this.requestData();//请求数据
     },
     methods:{
         // 请求数据
         requestData(){
-            // this.$axios.post('user/address_list',{
-            //     token:window.sessionStorage.getItem("token")
-            // })
-            // .then( (res)=>{
-            //     console.log(res)
-            // })
-            // .catch( (error) => {
-            //     alert("请求错误:" + error)
-            // })
-
+            var _that =this;
+            _that.$axios.post('address/addressList',{
+                // token:this.$store.getters.optuser.Authorization
+                token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    _that.addressList =list.data
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
         }
     }
 
