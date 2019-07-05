@@ -9,6 +9,7 @@ const store =  new Vuex.Store({
     //strict:true,//严格模式
     // 状态(一般保存数据)
     state:{
+        isLoading:false,
         // token:0
         userInfo:{
             Authorization: storage.getItem('Authorization') ? storage.getItem('Authorization') : '' ,
@@ -20,6 +21,12 @@ const store =  new Vuex.Store({
 
     // mutations 类似事件
     mutations:{
+        showLoading(state){
+            state.isLoading = true
+        },
+        hideLoading(state){
+            state.isLoading = false
+        },
         set_token(state,user){
             state.userInfo.Authorization = user.Authorization;//TOKEN
             localStorage.setItem('Authorization', user.Authorization);

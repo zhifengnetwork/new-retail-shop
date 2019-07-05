@@ -229,6 +229,8 @@ export default {
 		};
 	},
   	mounted(){
+		// 调用loading 
+		this.$store.commit('showLoading')
         this.requestData();//请求数据
     },
 	methods:{
@@ -245,6 +247,9 @@ export default {
 				let status = res.data.status
                 if(status === 200){
 					// console.log(res.data.data)	
+					// 数据加载成功，关闭loading 
+					this.$store.commit('hideLoading')
+					
 					this.categoryData = res.data.data;
 
 					this.categoryData.forEach((item) => {

@@ -17,6 +17,9 @@ import Popup from '@/pages/home/Popup'
 //挂卖区
 import Sell from '@/pages/sell/Sell'
 
+// 搜索
+import Search from '@/pages/search/Search'
+
 // 分类
 import Category from '@/pages/category/Category'
 
@@ -132,6 +135,16 @@ const router= new Router({
 			path: '/Sell',
 			name: 'Sell',
 			component:() => import('@/pages/sell/Sell'),
+			// meta:{requireAuth:true}
+		},
+
+		/**
+		 * 搜索
+		 */
+		{
+			path: '/Search',
+			name: 'Search',
+			component:() => import('@/pages/search/Search'),
 			// meta:{requireAuth:true}
 		},
 

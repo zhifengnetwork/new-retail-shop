@@ -2,7 +2,7 @@
 	<div class="Home">
 		<!-- 搜索 -->
 		<div class="top-bar">
-			<div class="search">
+			<div class="search" @click.stop="jumpTo('/Search')">
 				<span class="search-icon"></span>
 				<span class="text">搜索	</span>
 			</div>
@@ -154,7 +154,7 @@
 		<Navigate></Navigate>
 
 		<!-- 弹窗 -->
-		<Popup :popShow = "isShow" v-on:handleCancel="hidePopup"></Popup>
+		<!-- <Popup :popShow = "isShow" v-on:handleCancel="hidePopup"></Popup> -->
 
 	</div>
 </template>
@@ -162,12 +162,15 @@
 <script>
 import Navigate from "@/pages/common/footer/Navigate";
 import Popup from "@/pages/home/Popup"
+import {jumpTo} from '../../../static/js/public'
+
 export default {
 	name: "home",
 	components: {
 		Navigate,
 		Popup
 	},
+
 	data() {
 		return {
 			baseUrl:'',//图片url拼接
@@ -182,6 +185,7 @@ export default {
 		this.requestData();
 	},
 	methods:{
+
 		/**
 		 * 请求数据
 		 */
@@ -203,6 +207,10 @@ export default {
                 alert('请求错误:'+ error)
             })
 		},
+
+		/**
+		 * 隐藏弹框
+		 */
 		hidePopup(){
 			this.isShow = false
 		},
@@ -212,8 +220,31 @@ export default {
 		 */
 		handleInto(){
 			this.isShow = true
+		},
+
+		/**
+		 * 路由跳转
+		 */
+		jumpTo(path,name,id){
+			// 商品路由跳转
+			if(path && name && id){
+				this.$router.push(path+'?'+ name +'=' + id);
+				return false;
+			}
+			// 跳转指定路由
+			if(path && !name && !id){
+				this.$router.push(path);
+				return false;
+			}
+			//后退
+			else{
+				this.$router.go(-1)
+			}
 		}
 
+		// jumpTo(path,name,id){
+		// 	jumpTo(path,name,id);
+		// },
 
 	},
 	computed:{
