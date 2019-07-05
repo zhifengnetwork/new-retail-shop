@@ -228,10 +228,10 @@
                 <div v-show="sizeBox" class="sku-box-inner" :class="{'box-active':sizeBox}">
                     <span class="-close-"  @click="sizeBox=false"> &times;</span>
                     <div class="sku-box-cont">
-                        <div class="box-list mb-30" v-for="(list,index) in this.skuList" :key="index"> 
+                        <div class="box-list mb-30" v-for="(list,index) in this.newSpecAttr" :key="index"> 
                             <p class="-list-title" :spec-id="list.spec_id">{{list.spec_name}}</p>
                             <ul class="-list-info">
-                                <li v-for="(item,key) in list.res" :key="key" class="-info-a" :class="{'sku-active':sel[index] == key}" :attr-id="item.attr_id" @click="selectGoods(index,key)">{{item.attr_name}}</li>
+                                <li v-for="(item,key) in list.res" :key="key"  :ref="'id_'+key"   class="-info-a" :class="{'sku-active':sel[index] == key,'no-sku':item.skuDisable==0 ,'order-sku':item.skuDisable==3 }" :attr-id="item.attr_id" @click="selectGoods(index,key,item.sku)">{{item.attr_name}}</li>
                             </ul>
                         </div>
                         <div class="box-list2 mb-30"> 
@@ -280,7 +280,9 @@ export default {
     data(){
         return {
             goodsData:[],
-            skuList:[],
+            newSpecAttr:[],
+            goodsSkuData:[],
+            selectSku:[],
             sel:[],
             sizeKey:0,
             goodsId:this.$route.query.goods_id,//商品id
@@ -293,34 +295,115 @@ export default {
         }
     },
     created(){
-         this._getGoodsData()
+        this._getGoodsData()
     },
     mounted(){
        
         
     },
     methods:{
-        selectGoods(pKey,key){
+        _selecetSku(){
+            var _that =this
+            var newSku =this._matchGoodsSku();
+            // console.log(newSku)
+            var goodsAttr=[]
+            var info,skujson;
+            var noSku=[];
+            _that.goodsSkuData.forEach((data)=>{
+                var sku_attr =data.sku_attr1.split(",");
+                if(sku_attr==newSku.sort().toString()){
+                    // console.log(sku_attr)
+                    info =data
+                    skujson =sku_attr
+                }
+                // else{
+                //     noSku.push(newSku)
+                // }
+            })
+            // console.log(info)
+            return {'info':info,'skujson':skujson}
+        },
+        _matchGoodsSku(){
+           var newArry=''
+           var newArry=[]
+           var _that =this
+           for(var i in _that.newSpecAttr){
+               var res =_that.newSpecAttr[i].res
+               for(var j in res){
+                   if(res[j].isHeightL){
+                    var t =res[j].attr_id
+                    newArry.push(t)
+                   }
+               }
+           }
+           return newArry
+        },
+
+        selectGoods(pKey,key,sku){
             this.sel[pKey] = key;
             this.$set(this.sel,pKey, key)
+            this._isHeightLine(pKey,key)
+            var skujson = this. _selecetSku().skujson;
+            // console.log(skujson)
+            // console.log(this. _selecetSku().noSku)
+            this._hasSku()
+        },
+
+        _isHeightLine(pKey,key){
+            var _that=this
+            var goods =_that.newSpecAttr
+            goods.forEach((data) =>{
+                goods[pKey].res.forEach((res) =>{
+                    _that.$set(res,'isHeightL',false);
+                })
+                _that.$set(goods[pKey].res[key],'isHeightL',true)
+            })
+        },
+        matchSpecifications(sku){
+            // console.log(sku)
+            var skujson = this. _selecetSku().skujson;
+            for(var i in skujson){
+                // console.log(skujson[i])
+                if(skujson[i] ==sku){
+                    return true
+                }
+            }
+        },
+        _hasSku(){
+            var _that=this
+            var goods =_that.newSpecAttr
+            var skujson = this. _selecetSku().skujson;
+            console.log(skujson)
+            var oldArry =[]
+            goods.forEach((data) =>{
+                data['res'].forEach((res) =>{
+                    if(_that.matchSpecifications(res.attr_id)){
+                        console.log('attr_id')
+                        _that.$set(res,'skuDisable',1)
+                    }else{
+                        console.log('flas-attr_id')
+                        // _that.$set(res,'skuDisable',0);
+                        oldArry.push(res.attr_id)
+                    }
+
+                })
+            })
+            console.log(oldArry)
         },
         _initGoodsData(){
             var _that=this,
                 newArry=[],
                 goods =_that.goodsData.spec.spec_attr
-                console.log(goods)
                 goods.forEach((data) =>{
                     data.res.forEach((res,i)=>{
-                        if(i==0){
-                            res.isHeightL =true
-                        }else{
-                            res.isHeightL =false
-                        }
+                        res.isHeightL =false
+                        res.skuDisable=3
+                        // res.sku ="+data.spec_id++""+':'+res.attr_id
                         res.sku =data.spec_id+':'+res.attr_id
                     })
                     newArry.push(data)
                 })
-                _that.skuList =newArry; 
+                _that.newSpecAttr =newArry; 
         },
         _getGoodsData(){
             var _that =this;
@@ -331,10 +414,9 @@ export default {
             })
             .then((res)=>{
                 var list = res.data;
-                console.log(list)
                 if(list.status == 200){
                     _that.goodsData =list.data
-                    // this.skuList=list.data.spec
+                    _that.goodsSkuData=_that.goodsData.spec.goods_sku
                     this._initGoodsData()
                 }else{
                     _that.$toast(list.msg)
@@ -349,12 +431,27 @@ export default {
             this.optionFlag =flag
         },
         confirmSize(){
-            if(this.optionFlag==0){
-                this.$toast("添加成功,可直接去购物车下单");
-            }else{
-                this.$router.push({path: '/pay/ConfirmOrder',name:'ConfirmOrder'})
-            }
-            this.sizeBox=false
+            var _that=this;
+            var sku_id =this. _selecetSku().info
+            _that.$axios.post('cart/addCart',{
+                'sku_id':this.goodsId,
+                'cart_number':this.goodsNumber,
+                // token:this.$store.getters.optuser.Authorization
+                'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    if(this.optionFlag==0){
+                        this.$toast("添加成功,可直接去购物车下单");
+                    }else{
+                        this.$router.push({path: '/pay/ConfirmOrder',name:'ConfirmOrder'})
+                    }
+                    this.sizeBox=false
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
         },
         reducingNumber(){
             var val =parseInt(this.goodsNumber) - 1 
@@ -624,9 +721,15 @@ a
                         box-sizing border-box
                     :nth-child(3n)
                         margin-right 0
+                    .order-sku
+                         background #f3f3f3  
+                         color:#151515
                     .sku-active
                         background #ff0000
                         color #fff
+                    .no-sku
+                        background: #cacaca;
+                        color: #fff;
                 .box-list2
                     display flex
                     justify-content space-between 
