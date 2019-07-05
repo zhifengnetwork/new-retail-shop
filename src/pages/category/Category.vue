@@ -90,7 +90,6 @@ export default {
 		return {
 			activeIndex:0,
 			menuBar:[],
-			// menuBar:["洁面","爽肤水","清透乳","面霜","面膜","连衣裙"],
 			categoryData:[
 				[
 					{

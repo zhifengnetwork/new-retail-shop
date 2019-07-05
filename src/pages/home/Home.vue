@@ -39,7 +39,21 @@
 				<h3>热销商品</h3>
 			</div>
 			<div class="hot-list">
-				<div class="single-item">
+				<div class="single-item" v-for="(item,index) in hotGoods">
+					<router-link :to="'/Details?goods_id='+item.goods_id">
+						<div class="img-wrap">
+							<img :src="item.img" />
+						</div>
+						<div class="main">
+							<h3>{{item.goods_name}}</h3>
+							<div class="price">
+								<p class="discount-price">{{item.price | rmb}}</p>
+								<p class="original-price">原价:{{item.original_price | rmb}}</p>
+							</div>
+						</div>
+					</router-link>
+				</div>
+				<!-- <div class="single-item">
 					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/hot-img01.png" />
@@ -80,21 +94,7 @@
 							</div>
 						</div>
 					</router-link>
-				</div>
-				<div class="single-item">
-					<router-link to="/Details">
-						<div class="img-wrap">
-							<img src="/static/images/home/hot-img01.png" />
-						</div>
-						<div class="main">
-							<h3>韩后化妆品 面膏 </h3>
-							<div class="price">
-								<p class="discount-price">￥1569.00</p>
-								<p class="original-price">原价:￥2500.00</p>
-							</div>
-						</div>
-					</router-link>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		
@@ -105,7 +105,21 @@
 				<h3>推荐商品</h3>
 			</div>
 			<div class="recommend-list">
-				<div class="single-item">
+				<div class="single-item" v-for="(item,index) in recommendData">
+					<router-link :to="'/Details?goods_id='+item.goods_id">
+						<div class="img-wrap">
+							<img :src="item.img" />
+						</div>
+						<div class="main">
+							<h3>{{item.goods_name}}</h3>
+							<div class="price">
+								<p class="discount-price">{{item.price}}</p>
+								<p class="original-price">原价:{{item.original_price}}</p>
+							</div>
+						</div>
+					</router-link>
+				</div>
+				<!-- <div class="single-item">
 					<router-link to="/Details">
 						<div class="img-wrap">
 							<img src="/static/images/home/recommend-goods-img01.png" />
@@ -132,21 +146,7 @@
 							</div>
 						</div>
 					</router-link>
-				</div>
-				<div class="single-item">
-					<router-link to="/Details">
-						<div class="img-wrap">
-							<img src="/static/images/home/recommend-goods-img01.png" />
-						</div>
-						<div class="main">
-							<h3>自然堂化妆品补水防晒虎自然堂化...</h3>
-							<div class="price">
-								<p class="discount-price">￥360.00</p>
-								<p class="original-price">原价:￥500.00</p>
-							</div>
-						</div>
-					</router-link>
-				</div>
+				</div> -->
 			</div>
 		</div>
 
@@ -174,7 +174,8 @@ export default {
 			bannerData:[],
 			noticeData:[],
 			isShow:true,//弹窗是否显示
-			hotGoods:[]
+			hotGoods:[],
+			recommendData:[]
 		};
 	},
 	created(){
@@ -193,7 +194,9 @@ export default {
 					console.log(res.data.data)	
 					this.bannerData = res.data.data.banners;
 					this.noticeData = res.data.data.announce;
-					console.log(this.bannerData)		
+					this.hotGoods = res.data.data.hot_goods;
+					this.recommendData = res.data.data.recommend_goods;
+					console.log(this.recommendData)		
                 }
             })
             .catch((error) => {
@@ -217,6 +220,11 @@ export default {
 		// 过滤公告列表
 		filterNotice(){
 			return this.noticeData.slice(0,1);
+		}
+	},
+	filters:{
+		rmb(val){
+			return "¥" + val
 		}
 	}
 
@@ -379,7 +387,8 @@ export default {
 						img 
 							max-width 100%
 							max-height 100%
-					.main
+					.main	
+						flex 1
 						h3
 							height 70px
 							font-size 26px
