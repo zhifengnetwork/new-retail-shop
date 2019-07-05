@@ -4,13 +4,13 @@
             <div class="info_wrap">
                 <router-link class="my_look" to="/user/personalData">
                     <div class="portrait">
-                        <img src="/static/images/user/002.png"/>
+                        <img :src="userList.avatar"/>
                     </div>
                 </router-link>    
                 <div class="name_wrap">
-                    <p class="name">美美宝宝</p>
-                    <p class="id">ID：187514</p>
-                    <p class="joinDate">加入时间：2019.06.12</p>
+                    <p class="name">{{userList.realname}}</p>
+                    <p class="id">ID：{{userList.id}}</p>
+                    <p class="joinDate">加入时间：{{userList.createtime}}</p>
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
                 <div class="user_item">
                     <div class="earnings">
                         <router-link class="look" to="/user/shouyilist">
-                            <div class="number">100</div>
+                            <div class="number">{{userList.estimate_money}}</div>
                             <div>
                                 预计收益
                                 <i class="right_arrow"></i>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="balance">
                         <router-link class="look" to="/user/theAccountBalance">
-                            <div class="number">500</div>
+                            <div class="number">{{userList.remainder_money}}</div>
                             <div>
                                 余额
                                 <i class="right_arrow"></i>
@@ -37,7 +37,7 @@
                         </router-link>
                     </div>
                     <router-link to="/user/Collect" class="collection">
-                        <div class="number">148</div>
+                        <div class="number">{{userList.collection}}</div>
                         <div>
                             收藏
                             <i class="right_arrow"></i>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="arr_wrap">
                     <span>手机号绑定</span>
-                    <span class="cell">180 8222 8888</span>
+                    <span class="cell">{{userList.mobile}}</span>
                     <span class="right_ico"></span>
                 </div>
                     <div class="arr_wrap">
@@ -147,10 +147,34 @@
     export default {
         name: "user",
         data() {
-            return {};
+            return {
+                userList:[],
+            };
+        },
+        mounted() {
+            this.userData();
+        },
+        methods: {
+            userData() {
+                let url = '/user/user_info'
+                this.$axios.post(url,{
+                    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'
+                })
+                .then((res)=>{                  
+                    var that = this
+                    var item = res.data.data;
+                    console.log(res)
+                    if(res.data.status === 200){
+                        that.userList = item;
+                        console.log(that.userList)
+                    }else{
+                        // that.$toast(list.msg)
+                    }
+                })
+            }
         },
         created(){
-            console.log(this.$store.getters.optuser.Authorization) //如何获取token
+            //console.log(this.$store.getters.optuser.Authorization) //如何获取token
         },
         components: {
             userFooter,
