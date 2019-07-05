@@ -19,7 +19,9 @@
                 <div class="mark_wrap">
                     <div class="mark">
                         <div class="mark_img">
-                            <img src="/static/images/user/mark.png"/>
+                            <!-- <img src="/static/images/user/mark.png"/> -->
+                            <!-- 必须是id 和实例化的第一参数对应 -->
+                            <div id="qrcode"></div>
                         </div>
                     </div>
                 </div>
@@ -31,14 +33,37 @@
 
 <script>
     import MyHeader from "@/pages/common/header/TopHeader"
+    import QRCode from 'qrcodejs2'
     export default {
 	name: "mySharing",
 	data() {
-		return {};
-	},
+		return {
+            link: 'https://baidu.com'//要跳转的路径或者显示的文字
+        };
+    },
+    methods: {
+        qrcode () {
+            // 和div的id相同 必须是id  class类名会报错
+            // 第二参数是他的配置项
+            let that = this
+            let qrCode = new QRCode('qrcode', {
+                width: 160,
+                height: 160,
+                text: that.link,//可以写路径或者文字，扫描后想要跳转的路径或者显示的文字
+            })
+        }
+    },
+    mounted () {
+        this.qrcode(); //调用二维码生成的方法
+    },
 	components: {
-		MyHeader,
-	}
+        MyHeader,
+        // QRCode
+    },
+    created() {
+        this.clue_title = this.$route.query.THEME;   //线索标题
+        this.code = this.$route.query.CODE;    //关联事件编号
+    },
 };
 </script>
 

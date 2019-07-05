@@ -91,8 +91,8 @@
                     line-height 50px 
                 .list_wrap .bound
                     background #f3f9ff
-                .list_wrap .not_bound
-                    background #ecf4fc                         
+                .list_wrap ul:nth-child(even)
+                    background #ecf4fc                          
 
 .my_look
     display block

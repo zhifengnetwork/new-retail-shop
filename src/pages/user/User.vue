@@ -52,7 +52,7 @@
                 <div class="title_wrap">
                     <h2>我的订单</h2>
                     <div class="check">
-                        <router-link class="look" to="/Order">
+                        <router-link class="look" to="/order?type=0">
                             查看全部订单
                             <i class="right_icon"></i>
                         </router-link>
@@ -60,36 +60,18 @@
                 </div>
                 <div class="item_wrap">
                     <ul class="item">
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/payment.png"/>
-                                <div class="info-icon van-info">10</div>
-                            </div>
-                            <div>待付款</div>
-                        </li>
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/dropShipping.png"/>
-                            </div>
-                            <div>待发货</div>
-                        </li>
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/goods.png"/>
-                            </div>
-                            <div>待收货</div>
-                        </li>
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/evaluation.png"/>
-                            </div>
-                            <div>待评价</div>
-                        </li>
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/return.png"/>
-                            </div>
-                            <div>退货</div>
+                        <li v-for="(item,index) in orderIcon" :key="index">
+                            <router-link :to="item.ar" class="look">
+                                <div class="img">
+                                    <img :src="item.imgUrl"/>
+                                    <div class="info-icon van-info" v-if="index===0">{{userList.not_pay}}</div>
+                                    <div class="info-icon van-info" v-if="index===1">{{userList.not_delivery}}</div>
+                                    <div class="info-icon van-info" v-if="index===2">{{userList.not_receiving}}</div>
+                                    <div class="info-icon van-info" v-if="index===3">{{userList.not_evaluate}}</div>
+                                    <div class="info-icon van-info" v-if="index===4">{{userList.refund}}</div>
+                                </div>
+                                <div>{{item.name}}</div>
+                            </router-link>
                         </li>
                     </ul>
                 </div>
@@ -149,6 +131,14 @@
         data() {
             return {
                 userList:[],
+                nowIndex:0,
+                orderIcon:[
+                    {id:1,name:'待付款',imgUrl:'/static/images/user/payment.png',ar:'/order?type=1'},
+                    {id:2,name:'待发货',imgUrl:'/static/images/user/dropShipping.png',ar:'/order?type=2'},
+                    {id:3,name:'待收货',imgUrl:'/static/images/user/goods.png',ar:'/order?type=3'},
+                    {id:4,name:'代评价',imgUrl:'/static/images/user/evaluation.png',ar:'/order?type=4'},
+                    {id:5,name:'退货',imgUrl:'/static/images/user/return.png',ar:'/Order/ReturnGoods'}
+                ],
             };
         },
         mounted() {
@@ -168,10 +158,18 @@
                         that.userList = item;
                         console.log(that.userList)
                     }else{
-                        // that.$toast(list.msg)
+                        that.$toast(res.msg)
                     }
                 })
-            }
+            },
+            // mySharing(item) {
+            //     this.$router.push({
+            //         path:'/user/mySharing',query: {
+            //             // THEME_ID: item.avatar,
+            //             //THEME:item.realname
+            //         }
+            //     });
+            // }
         },
         created(){
             //console.log(this.$store.getters.optuser.Authorization) //如何获取token

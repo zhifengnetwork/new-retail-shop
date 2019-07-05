@@ -8,14 +8,12 @@
         <div class="content">
             <div class="main">
                 <div class="list_wrap" @click="goFirst()">
-                    <!-- <router-link class="my_look" to="/user/myTeam/commissionlist?get_user_id=2"> -->
-                        <div class="group">
-                            <span>团队列表</span>
-                            <i class="iconfont icon-xiangyoujiantou"></i>
-                        </div>
-                        <p>{{teamList.team_count}}</p>
-                        <p>总人数</p>
-                    <!-- </router-link>     -->
+                    <div class="group">
+                        <span>团队列表</span>
+                        <i class="iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                    <p>{{teamList.team_count}}</p>
+                    <p>总人数</p>
                 </div>
 
                 <div class="list_wrap_1">

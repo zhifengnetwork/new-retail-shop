@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="list_wrap">
-                    <ul class="bound" v-for="item in list">
+                    <ul class="bound" v-for="(item,index) in list" :key="index">
                         <li>{{item.order_sn}}</li>
                         <li>{{item.money}}</li>
                         <li>{{item.desc}}</li>
@@ -41,7 +41,6 @@
 			
         },
         methods:{
-            
             seveData(){
                 let url = '/user/distribut_list'
                 this.$axios.post(url,{
@@ -55,7 +54,7 @@
                         that.list = item.data;
                         console.log(that.list)
                     }else{
-                        // that.$toast(list.msg)
+                        that.$toast(res.msg)
                     }
                 })
             }

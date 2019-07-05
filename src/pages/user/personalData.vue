@@ -34,13 +34,15 @@
                 </router-link>    
             </div>
             <!-- 按钮 -->
-            <div class="btn" @click="unlogin()">退出登录</div>
+            <div class="btn" @click="quitOut()">退出登录</div>
 		</div>
 	</div>
 </template>
 
 <script>
-	import DataHeader from "@/pages/common/header/TopHeader"
+    import DataHeader from "@/pages/common/header/TopHeader"
+    import { Dialog } from 'vant'
+    import { Toast } from 'vant'
 	export default {
 		name: "personalData",
 		data() {
@@ -50,11 +52,26 @@
 			}
         },
         methods:{
-            unlogin(){
-                this.$store.commit('del_token')
-                this.$router.push({
-                    path:'/Login',
+            // unlogin(){
+            //     this.$store.commit('del_token')
+            //     this.$router.push({
+            //         path:'/Login',
 
+            //     })
+            // },
+            //退出登录
+            quitOut() {
+                Dialog.confirm({
+                    title: '温馨提示',
+                    message: '你确定要退出登录?'
+                }).then(() => {
+                    Toast('退出成功')
+                    this.$store.commit('del_token'); //token，清除它;
+                    setTimeout(() => {
+                        this.$router.push("/Login");
+                    }, 1000);
+                }).catch(() => {
+                    // on cancel
                 })
             }
         },
