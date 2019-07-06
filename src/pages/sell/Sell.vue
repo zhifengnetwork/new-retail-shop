@@ -9,11 +9,11 @@
         <div class="content">
             <a href="javascript:void(0)" class="sell-list" v-for="(item,key) in list" :key="key">
                 <div class="-list-msg">
-                    <p>{{item.title}}</p>
-                    <p>{{item.msg}}</p>
+                    <p>{{item.goods_name}}</p>
+                    <p></p>
                 </div>
-                <img class="-list-img" :src="item.img" @click="showPopup"/>
-                <div class="-list-radus-num">{{item.number}}</div>
+                <img class="-list-img" :src="item.img" @click="showPopup(item.pay_code)"/>
+                <div class="-list-radus-num">{{item.stock}}</div>
                 <div class="-list-radus-box">
                     <van-checkbox v-model="item.isCheck" :check ="item.isCheck"></van-checkbox>
                 </div>
@@ -37,102 +37,38 @@
     export default {
         data(){
             return {
-                list:[
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell1.png',
-                        number:11,
-                        isCheck:false
-                    },
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell2.png',
-                        number:11,
-                        isCheck:false
-                    },
-                   {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell3.png',
-                        number:11,
-                        isCheck:false
-                    },
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell1.png',
-                        number:11,
-                        isCheck:false
-                    },
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell1.png',
-                        number:11,
-                        isCheck:false
-                    },
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell2.png',
-                        number:11,
-                        isCheck:false
-                    },
-                   {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell3.png',
-                        number:11,
-                        isCheck:false
-                    },
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell1.png',
-                        number:11,
-                        isCheck:false
-                    },
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell1.png',
-                        number:11,
-                        isCheck:false
-                    },
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell2.png',
-                        number:11,
-                        isCheck:false
-                    },
-                   {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell3.png',
-                        number:11,
-                        isCheck:false
-                    },
-                    {
-                        title:'风风火火',
-                        msg:'DI:58962',
-                        img:'/static/images/sell/sell1.png',
-                        number:11,
-                        isCheck:false
-                    },
-                ],
+                list:[],
                 shopsCode:'/static/images/sell/payCode.png',
-                show: false
+                show: false,
+                token:this.$store.getters.optuser.Authorization
             }
         },
+        mounted(){
+            this._getSellList()
+            console.log(this.token)
+        },
         methods:{
+            _getSellList(){
+                var _that =this;
+                _that.$axios.post('fifty_zone/shop_list',{
+                    'token':this.token         
+                })
+                .then((res)=>{
+                    var list = res.data;
+                    console.log(list)
+                    if(list.status == 200){
+                        _that.list =list.data
+                    }else{
+                        _that.$toast(list.msg)
+                    }
+                })
+            },
             changStatus(key){
                 this.$set(this.list[key],'isCheck',!this.list[key].isCheck)
             },
-            showPopup() {
+            showPopup(paycode) {
                 this.show = true;
+                this.shopsCode =paycode
             },
             toPayment(){
                 if(this.totalCount != 10){
@@ -182,7 +118,8 @@
                 position relative
                 .-list-img
                     width 100%
-                    max-height 100%
+                    max-height 280px
+                    // max-height 100%
                 .-list-msg
                     position absolute
                     top 20px

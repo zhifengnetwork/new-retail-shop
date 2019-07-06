@@ -7,8 +7,9 @@
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
+            <img class="-imgs" src="/static/images/sell/sell1.png" />
             <div class="inner">
-                <img class="-imgs" src="/static/images/sell/goods2.png" />
+                
                 <img class="-img2"  src="/static/images/sell/payCode.png" />
                 <div class="-payment-">
                     <span v-for="(item,key) in list" :key="key" class="-payment-1" v-show="key==saveId">{{item.msg}}</span>
@@ -24,6 +25,8 @@
                <p class="-userinfo"><strong>联系方式: 13480197692</strong></p>
             </div>
         </div>
+        <p class="height90"></p>
+        <input class="submit" type="button" value="提交" />
     </div>
 </template>
 <script>
@@ -58,16 +61,18 @@ export default {
     .payment
         .content
             padding:24px 24px 30px
+            .-imgs
+                margin-bottom 130px
+                width 100%
+                height 280px
             .inner
                 padding:0 180px
-                img 
+                .-img2 
                     width:332px
                     height 331px
-                .-imgs
-                    margin-bottom :130px
                 .-payment-
                     display :flex
-                    justify-content :space-between
+                    justify-content space-between
                     margin :100px 0 95px
                     .-payment-1
                         font-weight:30px
@@ -83,5 +88,17 @@ export default {
                             width: 100%
                             height: 500px
                             padding: 10px
+        .height90
+            width 100%
+            height 100px
+        .submit
+            width 702px
+            height 88px
+            background-color #ff4d4d
+            border-radius 44px
+            color #fff
+            position fixed
+            bottom 24px
+            left 24px
 </style>
 

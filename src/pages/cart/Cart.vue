@@ -9,7 +9,7 @@
        <div v-show="list.length>0" class="c-wrap">
             <div class="conter">
                 <div class="c-list-" v-for="(item,key) in list" :key="key">
-                    <div class="check"><van-checkbox v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox></div>
+                    <div class="check"><van-checkbox v-model="item.selected==0" :check ="item.selected==0" @click="selectGoods($event,key)"></van-checkbox></div>
                     <div class="-list-img">
                         <router-link to="/Details"><img :src="item.img" /></router-link>
                     </div>
@@ -70,6 +70,7 @@ export default {
                 'link':'/Hone'
             },
             list:[],
+            token:"",
             allChecked: false,
         };
     },
@@ -77,7 +78,7 @@ export default {
         updatePrice(){
             let totalPrice=0;
             this.list.forEach((data)=>{
-                if(data.isCheck){
+                if(data.selected==0){
                     totalPrice += new Number(data.goods_price) * new Number(data.goods_num);
                 }
             })
@@ -86,78 +87,101 @@ export default {
         updateNumber(){
             let count =0;
             this.list.forEach((data)=>{
-                if(data.isCheck){
+                if(data.selected==0){
                     count ++
                 }
             })
             return count;
         }
     },
-    mounted(){
+    created(){
+        this.token =this.$store.getters.optuser.Authorization
         this._getGoodsList()
     },
     methods:{
-        _updataGoodsNumber(sku_id,val){
+        _updataGoodsNumber(key,sku_id,val){     //修改商品数量接口
             var _that=this
              _that.$axios.post('cart/addCart',{
                 'sku_id':sku_id,
                 'cart_number':val,
                 'edit':1,
-                // token:this.$store.getters.optuser.Authorization
-                'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
+                'token':this.token
             })
             .then((res)=>{
-                // var info = res.data;
-                console.log(res)
-                // if(info.status == 200){
-                //     // _that.list =info.data
-                // }else{
-                //     _that.$toast(list.msg)
-                // }
+                var info = res.data;
+                if(info.status == 200){
+                    var data =_that.list[key];
+                     _that.$set( data,'goods_num',val)
+                }else{
+                    _that.$toast(info.msg)
+                }
             })
-
+        },
+        _upDataSelecet(cart_id){
+            var _that=this
+             _that.$axios.post('cart/selected',{
+                'cart_id':cart_id,
+                'token':this.token  
+            })
+            .then((res)=>{
+                var info = res.data;
+                // console.log(res)
+                if(info.status == 200){
+                   
+                }else{
+                    _that.$toast(info.msg)
+                }
+            })
         },
         _getGoodsList(){
             var _that=this
-             _that.$axios.post('cart/cartlist',{
-                // token:this.$store.getters.optuser.Authorization
-                'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
+            _that.$axios.post('cart/cartlist',{
+                'token':this.token 
             })
             .then((res)=>{
                 var info = res.data;
                 if(info.status == 200){
                     _that.list =info.data
+                    if(_that.updateNumber == _that.list.length){
+                        _that.allChecked=true
+                    }
                 }else{
                     _that.$toast(list.msg)
                 }
             })
         },
+        getSlectedGoodsCartID(){    //获取选中的商品的cart_id
+            var catIds ="";
+            this.list.forEach((data)=>{
+                if(data.selected==0){
+                    if(catIds==""){
+                        catIds =data.cart_id
+                    }else{
+                        catIds =catIds+','+data.cart_id
+                    }
+                }
+            })
+            return catIds
+        },
         selectAll(_flag){
+            var num =1
             for(var i =0;i<this.list.length;i++){
-                this.$set(this.list[i],'isCheck',! _flag);
+                if(_flag){num =0 }
+                this.$set(this.list[i],'selected',! num);
             }
         },
         selectGoods(e,key){
             var data =this.list[key];
-            this.$set(data,'isCheck',!data.isCheck);
-            if(!data.isCheck){
+            this.$set(data,'selected',!data.selected);
+            if(data.selected!=0){
                 this.allChecked=false
             }else{
-                if(this.countNumberCheckBoxes().length === this.list.length){
+                if(this.updateNumber == this.list.length){
                     this.allChecked=true
                 }
             }
+            this._upDataSelecet(data.cart_id)
         },
-        countNumberCheckBoxes(){    //计算选中的复选框的总数
-            let counts =[];
-            this.list.forEach((data)=>{
-                if(data.isCheck){
-                    counts.push('a')    // a 可为任何数，在这里仅用于占位
-                }
-            })
-            return counts;
-        },
-
         reducingNumber(key,sku_id){
             var _that =this
             var data =_that.list[key];
@@ -165,8 +189,7 @@ export default {
            if(val<=1){
                val =1
            }
-           _that.$set( data,'goods_num',val)
-           _that._updataGoodsNumber(sku_id,val)
+           _that._updataGoodsNumber(key,sku_id,val)
         },
         changNumber(e,key,sku_id){
             var _that =this
@@ -175,8 +198,28 @@ export default {
             if(val<=1 || isNaN(val)){
                 return _that.$toast('请输入正确的数量');
             }
-            _that.$set( data,'goods_num',val)
-            _that._updataGoodsNumber(sku_id,val)
+            if(val>data.single_number){
+                 _that.$set(data,'goods_num',data.single_number)
+                return _that.$toast('该商品最大购买量为:'+data.single_number+'件');
+            }
+            if(val>data.inventory){
+                 _that.$set(data,'goods_num',data.inventory)
+                return _that.$toast('该商品库存为:'+data.inventory+'件');
+            }
+            _that._updataGoodsNumber(key,sku_id,val)
+        },
+        addNumber(key,sku_id){
+            var _that =this
+            var data =_that.list[key];
+            var val =parseInt(data.goods_num) 
+            val =new Number(val+ 1)
+            if(val>data.single_number){
+                return _that.$toast('该商品购买两为:'+data.single_number+'件');
+            }
+            if(val>data.inventory){
+                return _that.$toast('该商品库存为:'+data.inventory+'件');
+            }
+            _that._updataGoodsNumber(key,sku_id,val)
         },
         deletOption(){
             var _that =this
@@ -191,7 +234,7 @@ export default {
                 let newArry=[];
                 let json=""
                 _that.list.forEach((data,index)=>{
-                    if(!data.isCheck){
+                    if(!data.selected==0){
                         newArry.push(data)
                     }else{
                         // json=""? data.cart_id : json =+','+ data.cart_id
@@ -202,11 +245,9 @@ export default {
                         }
                     }
                 })
-                
                 _that.$axios.post('cart/delCart',{
-                    // token:_that.$store.getters.optuser.Authorization
-                    cart_id:json,
-                    'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
+                    'token':_that.$store.getters.optuser.Authorization,
+                    'cart_id':json,
                 })
                 .then((res)=>{
                     var info = res.data;
@@ -217,40 +258,21 @@ export default {
                         _that.$toast(list.msg)
                     }
                 })
-                console.log(111)
             // on confirm
             }).catch(() => {
             // on cancel
             });
         },
-        addNumber(key,sku_id){
-            var _that =this
-            var data =_that.list[key];
-            var val =parseInt(data.goods_num) 
-            val =new Number(val+ 1)
-            _that.$set( data,'goods_num',val);
-            _that._updataGoodsNumber(sku_id,val)
-        },
         toPay(){
-            if(this.countNumberCheckBoxes().length<1){
+            if(this.updateNumber<1){
                 return this.$toast("请选择商品")
             }
-            var catIds ="";
-            this.list.forEach((data)=>{
-                if(data.isCheck){
-                    if(catIds==""){
-                        catIds =data.cart_id
-                    }else{
-                        catIds =catIds+','+data.cart_id
-                    }
-                }
+            sessionStorage.setItem('cartInfo',JSON.stringify({'cart_id': this.getSlectedGoodsCartID()}))
+            this.$router.push({
+                path: '/pay/ConfirmOrder',
+                name: 'ConfirmOrder',
+                // params: {'cart_id': this.getSlectedGoodsCartID()}
             })
-           var token ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'   
-           this.$router.push({
-                    path: '/pay/ConfirmOrder',
-                    name: 'ConfirmOrder',
-                    params: {cart_id: catIds,token:token}
-               })
         }
     },
     components: {
