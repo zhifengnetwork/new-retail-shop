@@ -461,7 +461,7 @@ export default {
 
                 var url = 'Order/order_list'
                 var token = window.sessionStorage.getItem("token")
-                this.$axios.get( url +'?type='+ type +'&page=' + this.page + '&token='+ token)
+                this.$axios.post( url +'?type='+ type +'&page=' + this.page + '&token='+ token)
                 .then( (res)=>{
                     console.log(res)
                 })

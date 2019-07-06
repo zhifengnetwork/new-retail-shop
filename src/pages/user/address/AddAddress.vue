@@ -19,21 +19,26 @@
                     </div>
                 </div>
                 <!-- <router-link to="/user/selectPoint"> -->
-                    <div class="form-group" @click="toSelectAddress()">
+                    <div class="form-group">
                         <div class="label">收货地址 </div>
-                            <!-- <div class="input-group">
+                            <!-- <div class="input-group" @click="toSelectAddress()">
                                 <p v-if="!this.$route.params.poiname">点击选择地址</p>
                                 <h3 v-if="this.$route.params.poiname">{{this.$route.params.poiname}}</h3>
                                 <p v-if="this.$route.params.poiaddress">{{this.$route.params.poiaddress}}</p>
                             </div> -->
                              <div class="input-group">
-                                <p v-if="!this.location">点击选择地址</p>
+                                <!-- <p v-if="!this.location">点击选择地址</p>
                                 <template v-else>
                                     <h3>{{this.location.poiname}}</h3>
                                     <p>{{this.location.poiaddress}}</p>
-                                </template>
-                                
+                                </template> -->
+                                <van-button type="primary" @click="showPopup">{{this.address}}</van-button>
+                                <van-popup v-model="show" position="bottom" :style="{ height: '50%' }">
+                                    <van-area :area-list="areaList" :columns-num="3" @confirm="onAddrConfirm" @cancel="onAddrCancel" />
+                                </van-popup>
                             </div>
+                            
+                            
                         <div class="right-arrow"></div>
                     </div>
                 <!-- </router-link> -->
@@ -62,6 +67,9 @@
 
 <script>
 import TopHeader from "@/pages/common/header/TopHeader"
+import { Popup,Area } from 'vant'
+// import { Area } from 'vant'
+import AreaList from './area'
 export default {
     name:'addAddress',
     components: {
@@ -69,48 +77,83 @@ export default {
     },
     data(){
         return {
+            show: false,
             checked: false,
             userName:'',
+            areaList:[],
+            detailAddress:"",
             userMobile:'',
+            address:'选择省/市/区',//地址
+            areaList:AreaList,// 指定数据源
             location:{},
+            code:'',
+            city:''
             // infoList:{}
         }
     },
-     created: function(){
-        var _that=this;
-        _that.location =  _that.$route.params.location      // 返回的位置信息赋值
-        var userInfo =JSON.parse(sessionStorage.getItem('userInfo'))
-        if(!(userInfo === null || userInfo ==="")){
-            this.userName =userInfo.userName
-            this.userMobile=userInfo.userMobile
-        }
+    //  created: function(){
+    //     var _that=this;
+    //     _that.location =  _that.$route.params.location      // 返回的位置信息赋值
+    //     var userInfo =JSON.parse(sessionStorage.getItem('userInfo'))
+    //     if(!(userInfo === null || userInfo ==="")){
+    //         this.userName =userInfo.userName
+    //         this.userMobile=userInfo.userMobile
+    //     }
+    // },
+    mounted() {
+
     },
     methods:{
-        // 点击保存按钮时触发
-        toSelectAddress(){
-            var _that =this
-            _that.detailAddress =_that.$refs.detailAddress.innerText
-            var info={
-                'userName':_that.userName,
-                'userMobile':_that.userMobile,
-            }
-            sessionStorage.setItem('userInfo',JSON.stringify(info))
-            _that.$router.push({path:'/user/SelectPoint'})
+        // 省市区上拉
+        showPopup() {
+            this.show = true;
         },
+        // 地区确定选择
+        onAddrConfirm(val){  
+            this.show = false;
+            console.log(val[2].code)
+            console.log(val[1].code)
+            this.code=val[2].code
+            this.city=val[1].code
+            this.address = val[0].name+ val[1].name +val[2].name
+        },
+        // 地区取消选择
+        onAddrCancel(){  
+            this.show = false
+        },
+        // 点击保存按钮时触发
+        // toSelectAddress(){
+        //     var _that =this
+        //     _that.detailAddress =_that.$refs.detailAddress.innerText
+        //     console.log(_that.detailAddress)
+        //     var info={
+        //         'userName':_that.userName,
+        //         'userMobile':_that.userMobile,
+        //     }
+        //     sessionStorage.setItem('userInfo',JSON.stringify(info))
+        //     _that.$router.push({path:'/user/SelectPoint'})
+        // },
         onSave(addressData){
             var _that=this
-            console.log(_that.location)
+            _that.detailAddress =_that.$refs.detailAddress.innerText
             var url ='address/addAddress'
             if(!_that._verifyUserInfo()){return}
             _that.$axios.post(url,{
-                // token:this.$store.getters.optuser.Authorization
-                token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA',
-                address_id:"",
-                consignee:_that.userName,
-                mobile:_that.userMobile,
-                is_default:_that.checked
+                // 传给后台的参数
+                'token':this.$store.getters.optuser.Authorization,
+                'address_id':"",
+                'consignee':_that.userName,
+                'mobile':_that.userMobile,
+                'is_default':_that.checked,
+                'district':_that.code,
+                'city':_that.city,
+                'address':_that.detailAddress
             })
             .then((res)=>{
+                _that.$toast('添加成功')                
+                setTimeout(() => {
+                    _that.$router.push("/user/Address");
+                }, 1000);
                 console.log(res)
             })
             .catch( (error) => {
@@ -120,6 +163,7 @@ export default {
         _verifyUserInfo(){
             var _that =this
             var detailAddress =_that.$refs.detailAddress.innerText
+            console.log(detailAddress)
             if( _that.userName===""){
                 _that.$toast("请输入收货人姓名")
                 return false
@@ -132,13 +176,28 @@ export default {
                 _that.$toast("请选择地址")
                 return false
             }
-            if(_that.detailAddress===""){
+            if(_that.detailAddress==""){
                 _that.$toast("请输入详情地址")
                 return false
             }
             return true
         }
-    }
+    },
+    created() {
+        var url = "/address/get_region"
+        var params = new URLSearchParams();
+            params.append('token', this.$store.getters.optuser.Authorization);       //你要传给后台的参数值 key/value   //token
+            this.$axios({
+                method:"get",
+                url:url,
+                data:params
+            }).then((res)=>{
+                if(res.data.status ===200){
+                    this.areaList = res.data.data
+                    console.log(this.areaList)
+                }
+            })
+    },        
 
 }
 </script>
@@ -170,6 +229,16 @@ export default {
                 .input-group
                     width 460px
                     font-size 24px
+                    .van-button--primary
+                        padding 0
+                        width 460px
+                        height 56px
+                        line-height 56px
+                        text-align left 
+                        background #fff
+                        color #151515
+                        border none
+                        outline none
                     input
                         width 100%
                         height 30px
@@ -187,7 +256,7 @@ export default {
                 .right-arrow
                     width 8px
                     height 14px
-                    background url("/static/img/user/address/right-arrow.png") no-repeat
+                    background url("/static/images/user/address/right-arrow.png") no-repeat
                     background-size 100%
                     margin-left 20px
             .details-address

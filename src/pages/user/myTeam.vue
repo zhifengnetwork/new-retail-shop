@@ -67,8 +67,7 @@
             let _that=this,
                 url = '/user/team';
             _that.$axios.post(url,{
-                // token: _that.$store.getters.optuser.Authorization
-                token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'
+                token:this.$store.getters.optuser.Authorization
             }).then((res)=>{
                 var list =res.data
                 if(list.status===200){
