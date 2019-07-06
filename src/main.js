@@ -27,8 +27,20 @@ Vue.component('Loading',Loading)
 import Scroller from '@/pages/common/scroller/Scroller'
 Vue.component('Scroller',Scroller)
 
+
 // 拼接图片路径
 Vue.prototype.baseUrl = 'http://api.zhifengwangluo.c3w.cc/'
+
+
+/**
+ * 注册全局自定义指令,获取焦点
+ */
+Vue.directive('focus', {
+	inserted: function (el) {
+	  // 聚焦元素
+	  el.focus()
+	}
+})
 
 Vue.config.productionTip = false
 
