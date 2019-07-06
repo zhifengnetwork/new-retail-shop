@@ -17,15 +17,10 @@
                 </div>
 
                 <div class="list_wrap">
-                    <ul class="bound">
-                        <li>哈萨克粉红色二小姐</li>
-                        <li>01234567890</li>
-                        <li>￥96.00</li>
-                    </ul>
-                    <ul class="not_bound">
-                        <li>45932</li>
-                        <li>01234567890</li>
-                        <li>￥96.00</li>
+                    <ul class="bound" v-for="(item,index) in list" :key="index">
+                        <li>{{item.user_id}}</li>
+                        <li>{{item.order_sn}}</li>
+                        <li>{{item.money}}</li>
                     </ul>
                 </div>
 
@@ -40,10 +35,33 @@
 		name: 'shouyilist',
 		data(){
             return{
-                
+                page:1,
+                list:[],
             }
 			
-		},
+        },
+        mounted() {
+            this.shouData();
+        },
+        methods: {
+            shouData(){
+                var url = "/user/estimate_list"
+                this.$axios.post(url,{
+                    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'
+                })
+                .then((res)=>{                  
+                    var that = this
+                    var item = res.data.data;
+                    console.log(res)
+                    if(res.data.status === 200){
+                        that.list = item.data;
+                        console.log(that.list)
+                    }else{
+                        that.$toast(res.msg)
+                    }
+                })
+            }
+        },
         components:{
             ShouHeader,
         },
@@ -73,7 +91,7 @@
                     line-height 50px 
                 .list_wrap .bound
                     background #f3f9ff
-                .list_wrap .not_bound
+                .list_wrap ul:nth-child(even)
                     background #ecf4fc                         
 
 </style>

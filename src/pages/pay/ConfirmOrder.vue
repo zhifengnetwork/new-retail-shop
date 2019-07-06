@@ -22,7 +22,7 @@
             </div>
             <!-- GOODS START -->
             <div class="goods-list">
-                <router-link to="/Details" class="g-list-a">
+                <router-link to="/Details"  v-for="(item,index) in goodsList.goods_res" :key="index" class="g-list-a">
                     <img class="-list-img" src="/static/images/order/goods_4.png" />
                     <div class="-detial-">
                         <p class="-d-msg apostrophe">商品简介商品简介商品简介商品简介商品简介</p>
@@ -33,14 +33,14 @@
                     </div>
                 </router-link>
                 <div class="g-list-b">
-                    <div class="-list-1">
+                    <!-- <div class="-list-1">
                         <span class="-b-subtitle">购买数量</span>
                         <span class="-option-">
                             <i class="subling iconfont icon-jian-" @click="reducingNumber()"></i>
                             <input class="inp" type="number" :value="goodsNumber" @change="changNumber($event)"/>
                             <i class="puls iconfont icon-jia"  @click="addNumber()"></i>
                         </span>
-                    </div>
+                    </div> -->
                     <div class="-list-1">
                         <span class="-b-subtitle">配送方式</span>
                         <span class="-b-msg">普通配送</span>
@@ -87,10 +87,50 @@ export default {
         return {
             checked: true,
             goodsNumber:2,
-            goodsPrice:'3860.00'
+            goodsPrice:'3860.00',
+            c_cart_id:"",
+            goodsList:[]
         };
     },
+    created(){
+        var _that =this
+        var cartInfo =JSON.parse(sessionStorage.getItem('info'))
+        if(typeof(cartInfo)=="undefined" || cartInfo==""){
+             _that.c_cart_id =_that.$route.params.cart_id
+            
+        }else{
+            _that.c_cart_id =cartInfo.cart_id
+        }
+    },
+    mounted(){
+        this._getCartInfo()
+    },
     methods:{
+        _getCartInfo(){
+            var _that =this
+            var info={
+                'cart_id':_that.c_cart_id
+            }
+            sessionStorage.setItem('info',JSON.stringify(info))
+            _that.$axios.post('Order/temporary',{
+               'cart_id': _that.c_cart_id,
+                // token:this.$store.getters.optuser.Authorization
+               'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'    
+            })
+            .then((res)=>{
+                var list = res.data;
+                _that.goodsList =list
+                // conso
+                console.log(list)
+                if(list.status == 200){
+                    _that.teamList =list.data
+                }else{
+                    // _that.$toast(_that.list.msg)
+                }
+            })
+
+
+        },
         reducingNumber(){
             var val =parseInt(this.goodsNumber) - 1 
            if(val<=1){val =1}

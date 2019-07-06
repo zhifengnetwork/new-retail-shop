@@ -16,17 +16,12 @@
                     </ul>
                 </div>
 
-                <div class="list_wrap" v-for="item in list">
-                    <ul class="bound">
-                        <li>410{{item.order_sn}}</li>
-                        <li>00{{item.money}}</li>
-                        <li>44{{item.desc}}</li>
+                <div class="list_wrap">
+                    <ul class="bound" v-for="(item,index) in list" :key="index">
+                        <li>{{item.order_sn}}</li>
+                        <li>{{item.money}}</li>
+                        <li>{{item.desc}}</li>
                     </ul>
-                    <!-- <ul class="not_bound">
-                        <li>201909061256301</li>
-                        <li>￥12356.00</li>
-                        <li>分享返佣</li>
-                    </ul> -->
                 </div>
 
             </div>
@@ -40,27 +35,26 @@
 		name: 'detailed',
 		data(){
             return{
+                page:1,
                 list:[],
             }
 			
         },
         methods:{
-            
             seveData(){
                 let url = '/user/distribut_list'
                 this.$axios.post(url,{
-                    page:1,
-                    token:this.$store.getters.optuser.Authorization
+                    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'
                 })
-                .then((res)=>{
-                   
+                .then((res)=>{                  
                     var that = this
-                    var item = res.data;
-                    console.log(res.data)
-                    if(item.status==200){
+                    var item = res.data.data;
+                    console.log(res.data.data)
+                    if(res.data.status === 200){
                         that.list = item.data;
+                        console.log(that.list)
                     }else{
-                        // that.$toast(list.msg)
+                        that.$toast(res.msg)
                     }
                 })
             }
@@ -97,7 +91,7 @@
                     line-height 50px 
                 .list_wrap .bound
                     background #f3f9ff
-                .list_wrap .not_bound
-                    background #ecf4fc                         
+                .list_wrap ul:nth-child(even)
+                    background #ecf4fc                            
 
 </style>

@@ -4,13 +4,13 @@
             <div class="info_wrap">
                 <router-link class="my_look" to="/user/personalData">
                     <div class="portrait">
-                        <img src="/static/images/user/002.png"/>
+                        <img :src="userList.avatar"/>
                     </div>
                 </router-link>    
                 <div class="name_wrap">
-                    <p class="name">美美宝宝</p>
-                    <p class="id">ID：187514</p>
-                    <p class="joinDate">加入时间：2019.06.12</p>
+                    <p class="name">{{userList.realname}}</p>
+                    <p class="id">ID：{{userList.id}}</p>
+                    <p class="joinDate">加入时间：{{userList.createtime}}</p>
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
                 <div class="user_item">
                     <div class="earnings">
                         <router-link class="look" to="/user/shouyilist">
-                            <div class="number">100</div>
+                            <div class="number">{{userList.estimate_money}}</div>
                             <div>
                                 预计收益
                                 <i class="right_arrow"></i>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="balance">
                         <router-link class="look" to="/user/theAccountBalance">
-                            <div class="number">500</div>
+                            <div class="number">{{userList.remainder_money}}</div>
                             <div>
                                 余额
                                 <i class="right_arrow"></i>
@@ -37,7 +37,7 @@
                         </router-link>
                     </div>
                     <router-link to="/user/Collect" class="collection">
-                        <div class="number">148</div>
+                        <div class="number">{{userList.collection}}</div>
                         <div>
                             收藏
                             <i class="right_arrow"></i>
@@ -52,7 +52,7 @@
                 <div class="title_wrap">
                     <h2>我的订单</h2>
                     <div class="check">
-                        <router-link class="look" to="/Order">
+                        <router-link class="look" to="/order?type=0">
                             查看全部订单
                             <i class="right_icon"></i>
                         </router-link>
@@ -60,36 +60,18 @@
                 </div>
                 <div class="item_wrap">
                     <ul class="item">
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/payment.png"/>
-                                <div class="info-icon van-info">10</div>
-                            </div>
-                            <div>待付款</div>
-                        </li>
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/dropShipping.png"/>
-                            </div>
-                            <div>待发货</div>
-                        </li>
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/goods.png"/>
-                            </div>
-                            <div>待收货</div>
-                        </li>
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/evaluation.png"/>
-                            </div>
-                            <div>待评价</div>
-                        </li>
-                        <li>
-                            <div class="img">
-                                <img src="/static/images/user/return.png"/>
-                            </div>
-                            <div>退货</div>
+                        <li v-for="(item,index) in orderIcon" :key="index">
+                            <router-link :to="item.ar" class="look">
+                                <div class="img">
+                                    <img :src="item.imgUrl"/>
+                                    <div class="info-icon van-info" v-if="index===0">{{userList.not_pay}}</div>
+                                    <div class="info-icon van-info" v-if="index===1">{{userList.not_delivery}}</div>
+                                    <div class="info-icon van-info" v-if="index===2">{{userList.not_receiving}}</div>
+                                    <div class="info-icon van-info" v-if="index===3">{{userList.not_evaluate}}</div>
+                                    <div class="info-icon van-info" v-if="index===4">{{userList.refund}}</div>
+                                </div>
+                                <div>{{item.name}}</div>
+                            </router-link>
                         </li>
                     </ul>
                 </div>
@@ -116,7 +98,7 @@
                 </div>
                 <div class="arr_wrap">
                     <span>手机号绑定</span>
-                    <span class="cell">180 8222 8888</span>
+                    <span class="cell">{{userList.mobile}}</span>
                     <span class="right_ico"></span>
                 </div>
                     <div class="arr_wrap">
@@ -147,10 +129,50 @@
     export default {
         name: "user",
         data() {
-            return {};
+            return {
+                userList:[],
+                nowIndex:0,
+                orderIcon:[
+                    {id:1,name:'待付款',imgUrl:'/static/images/user/payment.png',ar:'/order?type=1'},
+                    {id:2,name:'待发货',imgUrl:'/static/images/user/dropShipping.png',ar:'/order?type=2'},
+                    {id:3,name:'待收货',imgUrl:'/static/images/user/goods.png',ar:'/order?type=3'},
+                    {id:4,name:'代评价',imgUrl:'/static/images/user/evaluation.png',ar:'/order?type=4'},
+                    {id:5,name:'退货',imgUrl:'/static/images/user/return.png',ar:'/Order/ReturnGoods'}
+                ],
+            };
+        },
+        mounted() {
+            this.userData();
+        },
+        methods: {
+            userData() {
+                let url = '/user/user_info'
+                this.$axios.post(url,{
+                    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'
+                })
+                .then((res)=>{                  
+                    var that = this
+                    var item = res.data.data;
+                    console.log(res)
+                    if(res.data.status === 200){
+                        that.userList = item;
+                        console.log(that.userList)
+                    }else{
+                        that.$toast(res.msg)
+                    }
+                })
+            },
+            // mySharing(item) {
+            //     this.$router.push({
+            //         path:'/user/mySharing',query: {
+            //             // THEME_ID: item.avatar,
+            //             //THEME:item.realname
+            //         }
+            //     });
+            // }
         },
         created(){
-            console.log(this.$store.getters.optuser.Authorization) //如何获取token
+            //console.log(this.$store.getters.optuser.Authorization) //如何获取token
         },
         components: {
             userFooter,

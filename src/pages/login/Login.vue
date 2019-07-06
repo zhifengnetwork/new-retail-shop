@@ -56,7 +56,9 @@ export default {
                 if(list.status==200){
                     _that.$toast({message:"登陆成功,正在跳转...",duration:1000})
                     localStorage.removeItem('Authorization');
-                    _that.$store.commit('set_token',{Authorization: list.data.token})  //保存token
+                    // var tokens =list.data.token
+                    var tokens ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'
+                    _that.$store.commit('set_token',{Authorization: tokens})  //保存token
                     console.log(list.data.id)
                     setTimeout(()=>{
                         _that.$router.push({path:'/Home',name:'Home'})
