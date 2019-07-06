@@ -18,37 +18,71 @@
             </div>
 
             <div class="tab-con">
-                <ul>
-                    <li v-show="nowIndex === 0">
-                        <div class="item-card">
-                            <div class="card-head">
-                                <span class="order-date">2019-02-03 00:28:20</span>
-                                <span class="order-state">交易成功</span>
-                            </div>
-                            <div class="goods-item">
-                                <div class="img-wrap">
-                                    <img src="/static/images/order/00order-goods-img01.png" />
-                                </div>
-                                <div class="text">
-                                    <h3>Haoduoyi2018秋季新品女装 欧美宽松休闲套头卫衣欧美宽松休闲套头卫衣欧美宽松休闲套头卫衣</h3>
-                                    <div class="good-sku">
-                                        <span class="sku-coll">颜色:蓝色；尺寸:M码</span>
-                                        <span class="price">￥368</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="total-bar">
-                                <div class="total-count">共2件商品 </div>
-                                <div class="payment">
-                                    <span class="label">合计 : </span>
-                                    <span class="price">￥736.00</span>
-                                </div>
-                            </div>
-                            <div class="order-btn">
-                                <span class="btn">删除订单</span>
-                                <span class="btn red">查看物流</span>
+                <div class="item-card" v-for="(item,index) in allOrders" :key="index">
+                    <div class="card-head">
+                        <span class="order-date">{{item.add_time | formatDate}}</span>
+                        <span class="order-state" v-if="item.status===1">待付款</span>
+                        <span class="order-state" v-if="item.status===2">待发货</span>
+                        <span class="order-state" v-if="item.status===3">待收货</span>
+                        <span class="order-state" v-if="item.status===4">交易成功</span>
+                        <span class="order-state" v-if="item.status===5">已取消</span>
+                        <span class="order-state" v-if="item.status===6">待退款</span>
+                        <span class="order-state" v-if="item.status===7">已退款</span>
+                        <span class="order-state" v-if="item.status===8">拒绝退款</span>
+                    </div>
+                    <div class="goods-item">
+                        <div class="img-wrap">
+                            <img :src="item.img" />
+                        </div>
+                        <div class="text">
+                            <h3>{{item.goods_name}}</h3>
+                            <div class="good-sku">
+                                <span class="sku-coll">{{item.spec_key_name}}</span>
+                                <span class="price">{{item.goods_price | formatMoney}}</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="total-bar">
+                        <div class="total-count">共{{item.goods_num}}件商品 </div>
+                        <div class="payment">
+                            <span class="label">合计 : </span>
+                            <span class="price">{{item.goods_price * item.goods_num | formatMoney}}</span>
+                        </div>
+                    </div>
+                    <div class="order-btn">
+                        <div v-if="item.status == 1">
+                            <span class="btn" @click="cancelOrder(index,item.order_id,item.status)">取消订单</span>
+                            <span class="btn red">去付款</span>
+                        </div>
+                        <div v-if="item.status == 2">
+                            <span class="btn red" >退款</span>
+                        </div>
+                        <div v-if="item.status == 3">
+                            <span class="btn">查看物流</span>
+                            <span class="btn red" @click="confirmReceipt(index,item.order_id,item.status)">确定收货</span>
+                        </div>
+                        <div v-if="item.status == 4">
+                            <span class="btn">查看物流</span>
+                            <span class="btn red">去评价</span>
+                        </div>
+                        <div v-if="item.status == 5">
+                            <span class="btn" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
+                            <span class="btn red">重新购买</span>
+                        </div>
+                        <div v-if="item.status == 6">
+                            <span class="btn red"></span>
+                        </div>
+                        <div v-if="item.status == 7">
+                            <span class="btn red"></span>
+                        </div>
+                         <div v-if="item.status == 8">
+                            <span class="btn red"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <ul>
+                    <li v-show="nowIndex === 0">
                         <div class="item-card">
                             <div class="card-head">
                                 <span class="order-date">2019-02-03 00:28:20</span>
@@ -134,8 +168,8 @@
                                 <span class="btn red">查看物流</span>
                                 <span class="btn red">确认收货</span>
                             </div>
-                        </div>
-                    </li>
+                        </div> 
+                    </li> 
                     <li v-show="nowIndex === 1">
                         <div class="item-card">
                             <div class="card-head">
@@ -374,19 +408,36 @@
                             </div>
                         </div>
                     </li>
-                </ul>
+                </ul> -->
 
                  <!-- 数据加载完提示 -->
-                <div class="end-wrap">
+                <div class="end-wrap" style="display:none">
                     <p>我是有底线哦~~</p>
                 </div>
 
                 <!-- 无数据 -->
-                <div class="none" style="display:none">
-                    <img src="/static/images/order/orderNone.png"/>
-                    <p>亲，订单空空如也~</p>
+                <div class="none" v-show="allOrders.length == 0">
+                    <img src="/static/images/public/none.png"/>
+                    <p>您还没相关的订单</p>
                 </div>
-                <div class="addBtn" style="display:none">去添加订单</div>
+
+                <!-- 密码输入框 -->
+                <van-popup v-model="showPwd" class="popup" @click-overlay="hidePwd()">
+                    <van-password-input
+                    :value="payPassword"
+                    info="密码为 6 位数字"
+                    @focus="showKeyboard = true"
+                    />
+                </van-popup>
+
+                <!-- 数字键盘 -->
+                <van-number-keyboard
+                :show="showKeyboard"
+                @input="onInput"
+                @delete="onDelete"
+                @blur="showKeyboard = false"
+                />
+
             </div>
 
         </div>
@@ -423,66 +474,205 @@ export default {
                     tabTitle:"待评价"
                 }
             ],
-            baseUrl:[],// 商品图片路径
+            baseUrl:'',// 商品图片路径
+            allOrders:[],//全部订单
             page:1,//页数
             ispage:true,//是否请求数据
-            token:window.sessionStorage.getItem("token")
+            token:this.$store.getters.optuser.Authorization,
+            payPassword:'',//支付密码
+            showPwd:false,
+            showKeyboard: false,
         }
+    },
+    // 模板渲染完成后执行
+    mounted(){
+        this.requestData();
     },
     methods:{
         // tab切换标题
         handleClick(index){
-            this.nowIndex = index
-            this.$router.push('/order?type='+index)
-            this.type = this.$route.query.type
-            this.dataRendering()
+            this.nowIndex = index;
+            this.$router.replace('/Order?type='+index);
+            this.type = this.$route.query.type;
+            this.requestData();
+            
         },
         // 页面数据渲染
-        dataRendering(){
-            this.baseUrl = this.url
-            this.nowIndex = parseInt(this.type)
-            var type;
-            if (this.nowIndex === 0) {
-                type = "all"
-            }
-            if (this.nowIndex === 1) {
-                type = "dfk"
-            }
-            if (this.nowIndex === 2) {
-                type = "dfh"
-            }
-            if (this.nowIndex === 3) {
-                type = "dsh"
-            }
-            if (this.nowIndex === 4) {
-                type = "dpj"
+        requestData(){
+            let type = null;
+            switch(this.$route.query.type){
+                case '0':
+                    type = 'all'
+                    break;
+                case '1':
+                    type = 'dfk'
+                    break;
+                case '2':
+                    type = 'dfh'
+                    break;
+                case '3':
+                    type = 'dsh'
+                    break;
+                case '4':
+                    type = 'dpj'
+                    break;
             }
             if(this.ispage){
-
-                var url = 'Order/order_list'
-                var token = window.sessionStorage.getItem("token")
-                this.$axios.get( url +'?type='+ type +'&page=' + this.page + '&token='+ token)
+                var url = 'order/order_list';
+                this.$axios.post(url,{
+                    token:this.token,
+                    type:type,
+                    page:this.page
+                })
                 .then( (res)=>{
-                    console.log(res)
+                    if(res.data.status == 200){
+                        if(this.page == 1){
+                            this.allOrders = res.data.data
+                            console.log(this.allOrders)
+                        }else{
+                            if(res.data.data.length != ''){
+                               //如果有数据,拼接数组
+                                this.allOrders = this.allOrders.concat(res.data.data); 
+                            }else{
+                                this.ispage = false
+                            }
+                        }                        
+                    }else if(res.data.status == 301){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
                 })
                 .catch((error) => {
                     alert('请求错误:'+ error)
                 })
-
-                // var params = new URLSearchParams()
-                    // params.append('type', type)
-                    // params.append('page', this.page)
-                    // params.append('token', this.token)
-
-                // this.$axios({
-                //     method: "post",
-				// 	   url: url,
-				// 	   data: params
-                // })
-               
             }
+        },
+        
+        /**
+         * 封装修改状态方法
+         */
+        editStatus(index,order_id,status,items,tips){
+            let url = 'Order/edit_status';
+            this.$dialog.confirm({
+               message: tips
+            })
+            .then(() => {
+                this.$axios.post(url,{
+                    token:this.token,
+                    order_id:order_id,
+                    status:status
+                }).then( (res) => {
+                    if(res.data.status === 200){
+                        items.splice(index,1)
+                        this.$toast(res.data.msg)
+                    }else{
+                        this.$toast(res.data.msg)
+                    }
+                })
+                .catch((error) => {
+                    console.log('请求错误:'+ error)
+                })
+            })
+        },
+        /**
+         * 取消订单 
+         */
+        cancelOrder(index,order_id,status){
+            var tips = '您确定要取消订单吗？';
+            this.editStatus(index,order_id,status,this.allOrders,tips);    
+        },
+        /**
+         * 删除订单
+         */
+        delOrder(index,order_id,status){
+            var tips = '您确定要删除订单吗？'
+            this.editStatus(index,order_id,status,this.allOrders,tips) 
+        },
+        /**
+         * 立即付款
+         */
+        payment(order_id,type){
+
+        },
+        /**
+         * 确认收货
+         */
+        confirmReceipt(index,order_id,status){
+            var tips = '您要确认收货吗？'
+            this.editStatus(index,id,status,this.allOrders,tips) 
+        },
+        /**
+         * 输入密码
+         */
+        onInput(key) {
+            this.payPassword = (this.payPassword + key).slice(0, 6);
+        },
+        /**
+         * 删除密码
+         */
+        onDelete() {
+            this.payPassword = this.payPassword.slice(0, this.payPassword.length - 1);
+        },
+        /**
+         * 关闭密码蒙层，清空密码
+         */
+        hidePwd(){
+            this.showPwd=false;
+            this.payPassword = '';
+        },
+
+        /**
+         * 路由跳转
+         */
+        jumpTo(path,name,id){
+			// 商品路由跳转
+			if(path && name && id){
+				this.$router.push(path+'?'+ name +'=' + id);
+				return false;
+			}
+			// 跳转指定路由
+			if(path && !name && !id){
+				this.$router.push(path);
+				return false;
+			}
+			//后退
+			else{
+				this.$router.go(-1)
+			}
+		}
+    },
+    filters: {
+        // 日期格式化
+        formatDate: function (time) {
+            let date = new Date(time*1000);
+            let y = date.getFullYear();
+
+            let MM = date.getMonth() + 1;
+            MM = MM < 10 ? ('0' + MM) : MM;
+
+            let d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+
+            let h = date.getHours();
+            h = h < 10 ? ('0' + h) : h;
+
+            let m = date.getMinutes();
+            m = m < 10 ? ('0' + m) : m;
+
+            let s = date.getSeconds();
+            s = s < 10 ? ('0' + s) : s;
+
+            return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+        },
+        //格式化金钱
+        formatMoney:function(val){
+            return "¥" + parseInt(val).toFixed(2)
         }
     }
+   
 
 }
 </script>
@@ -560,7 +750,11 @@ export default {
                             display flex
                             justify-content space-between
                             .sku-coll
+                                width 290px
                                 font-size 22px
+                                overflow hidden
+                                text-overflow ellipsis
+                                white-space nowrap
                         .count
                             text-align right 
                             font-size 24px
@@ -613,12 +807,12 @@ export default {
                 margin 30px auto
             .none
                 text-align center
-                margin-top 70px
-                font-size 36px
+                margin-top 50%
+                font-size 28px
                 img
-                    width 308px
+                    width 80px
                 p
-                    margin 70px auto
+                    margin 20px auto
             .addBtn
                 width 460px
                 height 100px

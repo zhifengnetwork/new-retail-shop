@@ -154,7 +154,7 @@
 		<Navigate></Navigate>
 
 		<!-- 弹窗 -->
-		<!-- <Popup :popShow = "isShow" v-on:handleCancel="hidePopup"></Popup> -->
+		<Popup :popShow = "isShow" v-on:handleCancel="hidePopup"></Popup>
 
 	</div>
 </template>
