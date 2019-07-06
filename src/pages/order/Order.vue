@@ -52,7 +52,7 @@
                     <div class="order-btn">
                         <div v-if="item.status == 1">
                             <span class="btn" @click="cancelOrder(index,item.order_id,item.status)">取消订单</span>
-                            <span class="btn red">去付款</span>
+                            <span class="btn red" @click="payment(item.order_id,item.pay_type)">去付款</span>
                         </div>
                         <div v-if="item.status == 2">
                             <span class="btn red" >退款</span>
@@ -63,7 +63,7 @@
                         </div>
                         <div v-if="item.status == 4">
                             <span class="btn">查看物流</span>
-                            <span class="btn red">去评价</span>
+                            <span class="btn red" @click="evaluateOrder(item)">去评价</span>
                         </div>
                         <div v-if="item.status == 5">
                             <span class="btn" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
@@ -422,12 +422,12 @@
                 </div>
 
                 <!-- 密码输入框 -->
-                <van-popup v-model="showPwd" class="popup" @click-overlay="hidePwd()">
-                    <van-password-input
-                    :value="payPassword"
-                    info="密码为 6 位数字"
-                    @focus="showKeyboard = true"
-                    />
+                <van-popup v-model="showPwd" class="popup"  @click-overlay="hidePwd()">
+                <van-password-input
+                :value="payPassword"
+                info="密码为 6 位数字"
+                @focus="showKeyboard = true"
+                />
                 </van-popup>
 
                 <!-- 数字键盘 -->
@@ -437,6 +437,10 @@
                 @delete="onDelete"
                 @blur="showKeyboard = false"
                 />
+
+              
+
+               
 
             </div>
 
@@ -478,10 +482,12 @@ export default {
             allOrders:[],//全部订单
             page:1,//页数
             ispage:true,//是否请求数据
-            token:this.$store.getters.optuser.Authorization,
+            orderId:'',
+            pay_type:'',//支付方式
             payPassword:'',//支付密码
             showPwd:false,
             showKeyboard: false,
+            token:this.$store.getters.optuser.Authorization,
         }
     },
     // 模板渲染完成后执行
@@ -595,20 +601,74 @@ export default {
          * 立即付款
          */
         payment(order_id,type){
-
+            if(type === type){
+                this.showPwd = true;
+                this.showKeyboard = true;
+                this.orderId = order_id
+                this.pay_type = type
+            }
         },
         /**
          * 确认收货
          */
         confirmReceipt(index,order_id,status){
             var tips = '您要确认收货吗？'
-            this.editStatus(index,id,status,this.allOrders,tips) 
+            this.editStatus(index,order_id,status,this.allOrders,tips) 
+        },
+        /**
+         * 评价订单
+         */ 
+        evaluateOrder(item){
+            if(item.comment === 1){
+                this.$toast("你已评价过此商品")
+            }else{
+                this.$router.push('/Order/Evaluate?order_id='+ item.order_id);
+            }
         },
         /**
          * 输入密码
          */
         onInput(key) {
             this.payPassword = (this.payPassword + key).slice(0, 6);
+            if(this.payPassword.length === 6){
+                // let url = 'user/check_pwd';
+                // this.$axios.post(url,{
+                //     token:this.token,
+                //     pwd:this.payPassword
+                // }).then((res)=>{
+                //     console.log(66)
+                // })
+                // 关闭密码输入
+                this.showKeyboard = false;
+                this.showPwd = false;
+                this.payPassword = '';
+
+                // 请求数据
+                let url = 'pay/payment';
+                this.$axios.post(url,{
+                    token:this.token,
+                    order_id:this.order_id,
+                    pay_type:this.pay_type
+                }).then((res)=>{
+                    console.log(res)
+                    if(res.data.status === 200){
+                        // 支付成功
+                        this.$toast(res.data.msg)
+                        setTimeout(() => {
+                            console.log("支付成功，2s跳转到支付成功页面")
+                        },2000)
+                    }else{
+                        // 支付失败
+                        this.$toast(res.data.msg);
+                        setTimeout(() => {
+                            console.log("支付失败，2s跳转到支付失败页面")
+                        },2000)
+                           
+                    }
+                })
+
+
+            }
         },
         /**
          * 删除密码
@@ -823,7 +883,18 @@ export default {
                 background-color #ea2028 
                 margin 0 auto
                 border-radius 46px              
-                                
+        .popup
+            width 100%
+            .van-password-input__security li:first-child
+                border-left 1px solid #999
+            .van-password-input__security li
+                border 1px solid #999
+                border-left 0
+            .van-password-input
+                padding 30px 0 20px
+        .van-number-keyboard
+            z-index 3000!important
+            
 
 
                 
