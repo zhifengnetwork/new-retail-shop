@@ -44,6 +44,10 @@ import ReturnRequest from '@/pages/order/ReturnRequest'
 
 // 确认订单
 import ConfirmOrder from '@/pages/pay/ConfirmOrder'
+import PaySucceed from '@/pages/pay/PaySucceed'
+import PayFail from '@/pages/pay/PayFail'
+
+
 // 我的
 import User from '@/pages/user/User'
 // 个人资料
@@ -173,7 +177,7 @@ const router= new Router({
 			// meta:{requireAuth:true}
 		},
 
-		//支付
+		//50元专区支付
 		{
 			path: '/Payment',
 			name: 'Payment',
@@ -217,11 +221,27 @@ const router= new Router({
 			name: 'ReturnRequest',
 			component: (resolve) => require(['@/pages/order/ReturnRequest'],resolve),
 		},
+
+		/**
+		 * 支付模块
+		 */
 		// 确认订单
 		{
 			path: '/Pay/ConfirmOrder',
 			name: 'ConfirmOrder',
 			component: (resolve) => require(['@/pages/pay/ConfirmOrder'],resolve),
+		},
+		// 支付成功
+		{
+			path: '/Pay/PaySucceed',
+			name: 'PaySucceed',
+			component: (resolve) => require(['@/pages/pay/PaySucceed'],resolve),
+		},
+		// 支付失败
+		{
+			path: '/Pay/PayFail',
+			name: 'PayFail',
+			component: (resolve) => require(['@/pages/pay/PayFail'],resolve),
 		},
 
 		/**

@@ -7,33 +7,33 @@
         <!-- 主内容 -->
         <div class="content">
             <!-- 商品信息 -->
-            <div class="goods-item">
+            <div class="goods-item" v-for="(item,index) in refundData" :key="index">
                 <div class="img-wrap">
-                    <img src="/static/images/order/00order-goods-img01.png" />
+                    <router-link :to="'/Details?goods_id='+item.goods_id"><img :src="item.img" /></router-link>
                 </div>
                 <div class="text">
-                    <h3>Haoduoyi2018秋季新品女装 欧美宽松休闲套头卫衣欧美宽松休闲套头卫衣欧美宽松休闲套头卫衣</h3>
+                    <router-link :to="'/Details?goods_id='+item.goods_id"><h3>{{item.goods_name}}</h3></router-link>
                      <div class="good-sku">
-                        <span class="sku-coll">颜色:蓝色；尺寸:M码</span>
-                        <span class="price">￥368</span>
+                        <span class="sku-coll">{{item.spec_key_name}}</span>
+                        <span class="price">{{item.goods_price | formatMoney}}</span>
                     </div>
-                    <div class="count">x2</div>
+                    <div class="count">x {{item.goods_num}}</div>
                 </div>
             </div>
 
             <!-- 退款原因 -->
             <div class="reason-wrap">
-                <textarea placeholder="退款原因"></textarea>
+                <textarea placeholder="退款原因" v-model="refund_reason"></textarea>
             </div>
 
             <!-- 退款金额 -->
             <div class="refund-amount">
                 <span class="label">退款金额</span>
-                <span class="amount">￥736.00</span>
+                <span class="amount">{{(total * totalNum) | formatMoney}}</span>
             </div>
 
             <!-- 按钮 -->
-            <div class="refundBtn">提交申请</div>
+            <div class="refundBtn" @click="refunds()">提交申请</div>
 
         </div>
 
@@ -47,6 +47,97 @@ export default {
     components: {
         TopHeader
     },
+
+    data(){
+        return{
+            order_id:this.$route.query.order_id,//退款订单id
+            refundData:'',
+            totalNum:'',//总件数
+            total:'',//总价
+            refund_reason:''
+
+        }
+    },
+
+    mounted(){
+        let url = 'Order/get_refund';
+        this.$axios.post(url,{
+            token:this.$store.getters.optuser.Authorization,
+            order_id:this.order_id	
+        }).then( (res) => {
+            if(res.data.status === 200){
+                this.refundData = res.data.data.goods
+                this.totalNumber() //总件
+                this.totalPrice() //总金额
+            }
+        })
+    },
+
+    methods:{
+        /**
+         * 总价
+         */
+        totalPrice(index){
+            for(var i = 0;i<this.refundData.length;i++){
+                this.total += parseInt(this.refundData[i].goods_price)
+            }
+        },
+        /**
+         * 总件数
+         */
+        totalNumber(){
+            for(var i = 0;i<this.refundData.length;i++){
+                this.totalNum += parseInt(this.refundData[i].goods_num)
+            }
+        },
+        /**
+         * 封装修改状态方法
+         */
+        editStatus(index,order_id,status,items,tips){
+            let url = 'Order/edit_status';
+            this.$dialog.confirm({
+               message: tips
+            })
+            .then(() => {
+                this.$axios.post(url,{
+                    token:this.token,
+                    order_id:order_id,
+                    status:status
+                }).then( (res) => {
+                    if(res.data.status === 200){
+                        items.splice(index,1)
+                        this.$toast(res.data.msg)
+                    }else{
+                        this.$toast(res.data.msg)
+                    }
+                })
+                .catch((error) => {
+                    console.log('请求错误:'+ error)
+                })
+            })
+        },
+        /**
+         * 退款
+         */
+        refunds(index,order_id){
+            var tips = '您确定要申请退款吗？';
+            this.editStatus(index,order_id,status,this.allOrders,tips);
+            let url = 'Order/apply_refund';
+            this.$axios.post(url,{
+                order_id:this.order_id,
+                refund_type:1,
+                refund_reason:this.refund_reason
+            }).then((res) => {
+                console.log(res)
+            }) 
+        },
+    },
+    filters: {
+        //格式化金钱
+        formatMoney:function(val){
+            return "¥" + parseInt(val).toFixed(2)
+        }
+    }
  
 }
 </script>
@@ -81,6 +172,7 @@ export default {
                     -webkit-line-clamp 2
                     -webkit-box-orient vertical
                     margin-bottom 15px
+                    color #151515
                 .good-sku
                     color #151515
                     font-size 24px

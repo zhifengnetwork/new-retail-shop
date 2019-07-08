@@ -9,7 +9,8 @@
             <div class="tab-tit">
                 <ul>
                     <li v-for="(item,index) in tabList"
-                        :class="{active:index === nowIndex}"
+                        :class="{active:index == nowIndex}"
+                        
                         @click="handleClick(index)"
                         :key="index">
                         {{item.tabTitle}}
@@ -55,7 +56,7 @@
                             <span class="btn red" @click="payment(item.order_id,item.pay_type)">去付款</span>
                         </div>
                         <div v-if="item.status == 2">
-                            <span class="btn red" >退款</span>
+                            <router-link :to="'/Order/ReturnRequest?order_id='+item.order_id"><span class="btn red">退款</span></router-link>
                         </div>
                         <div v-if="item.status == 3">
                             <span class="btn">查看物流</span>
@@ -63,7 +64,7 @@
                         </div>
                         <div v-if="item.status == 4">
                             <span class="btn">查看物流</span>
-                            <span class="btn red" @click="evaluateOrder(item)">去评价</span>
+                            <router-link :to="'/Order/Evaluate?order_id='+item.order_id"><span class="btn red">{{item.comment == 0?'去评价':'追加评价'}}</span></router-link>
                         </div>
                         <div v-if="item.status == 5">
                             <span class="btn" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
@@ -437,11 +438,6 @@
                 @delete="onDelete"
                 @blur="showKeyboard = false"
                 />
-
-              
-
-               
-
             </div>
 
         </div>
@@ -482,7 +478,7 @@ export default {
             allOrders:[],//全部订单
             page:1,//页数
             ispage:true,//是否请求数据
-            orderId:'',
+            order_id:'',
             pay_type:'',//支付方式
             payPassword:'',//支付密码
             showPwd:false,
@@ -492,6 +488,7 @@ export default {
     },
     // 模板渲染完成后执行
     mounted(){
+        this.nowIndex = this.$route.query.type;
         this.requestData();
     },
     methods:{
@@ -601,13 +598,24 @@ export default {
          * 立即付款
          */
         payment(order_id,type){
-            if(type === type){
+            if(type == 1){
+                console.log("余额支付")
                 this.showPwd = true;
                 this.showKeyboard = true;
-                this.orderId = order_id
+                this.order_id = order_id
                 this.pay_type = type
             }
+            else if(type == 2){
+               this.$toast("调用微信支付接口");
+            }
+            else if(type == 3){
+                this.$toast("调用支付宝支付接口");
+            }
+            else if(type == 4){
+                this.$toast("货到付款");
+            }
         },
+    
         /**
          * 确认收货
          */
@@ -626,7 +634,7 @@ export default {
             }
         },
         /**
-         * 输入密码
+         * 余额支付:输入密码
          */
         onInput(key) {
             this.payPassword = (this.payPassword + key).slice(0, 6);
@@ -642,7 +650,7 @@ export default {
                 this.showKeyboard = false;
                 this.showPwd = false;
                 this.payPassword = '';
-
+ 
                 // 请求数据
                 let url = 'pay/payment';
                 this.$axios.post(url,{
@@ -650,19 +658,22 @@ export default {
                     order_id:this.order_id,
                     pay_type:this.pay_type
                 }).then((res)=>{
-                    console.log(res)
-                    if(res.data.status === 200){
-                        // 支付成功
-                        this.$toast(res.data.msg)
+                    if(res.data.status === 200){    
+                        // 余额支付成功                   
+                        // this.$toast(res.data.msg)
+                        this.requestData();
                         setTimeout(() => {
                             console.log("支付成功，2s跳转到支付成功页面")
+                            this.$router.push('/Pay/PaySucceed')
                         },2000)
+                        
                     }else{
-                        // 支付失败
-                        this.$toast(res.data.msg);
-                        setTimeout(() => {
-                            console.log("支付失败，2s跳转到支付失败页面")
-                        },2000)
+                        // 余额支付失败
+                        // this.$toast(res.data.msg);
+                        // setTimeout(() => {
+                        //     console.log("支付失败，2s跳转到支付失败页面")
+                        //     this.$router.push('/Pay/PayFail')
+                        // },2000)
                            
                     }
                 })
