@@ -36,7 +36,7 @@
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 规格</span>
-                        <div class="-text"> 显示默认规格</div>
+                        <div class="-text" v-for="(item,key) in this.goodsData.attr_name" :key="key"> {{item}} </div>
                     </div>
                 </div>
 
@@ -83,23 +83,23 @@
                         </div>
 
                     </van-tab>
-                    <van-tab title="商品评价(891)">
+                    <van-tab :title="'商品评价('+this.goodsData.comment_count+')'">
                         <div class="comment-wrap">
                             <ul class="comment-list">
-                                <li>
+                                <li v-for="(list,key) in commentList" :key="key">
                                     <div class="eval-user">
                                         <div class="user">
                                             <div class="avatar">
                                                 <img src="/static/images/details/00avatar01.png" />
                                             </div>
                                             <div class="text">
-                                                <span class="name">小腊肉</span>
+                                                <span class="name">用户：{{list.comment_id}}</span>
                                                 <span class="date">2019-05-06</span>
                                             </div>
                                         </div>
                                         <div class="score">
                                             <van-rate
-                                                v-model="rateVal"
+                                                v-model="list.star_rating"
                                                 icon="like-o"
                                                 void-icon="like-o"
                                                 color="#f70a0a"
@@ -108,109 +108,19 @@
                                         </div>
                                     </div> 
                                     <div class="eval-content">
-                                        <p>你的衣服最好的 快递也好快</p>
+                                        <p>{{list.content}}</p>
+                                        <p class="-e-c">{{list.spec}}</p>
                                     </div>
                                     <div class="imgView">
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="eval-user">
-                                        <div class="user">
-                                            <div class="avatar">
-                                                <img src="/static/images/details/00avatar01.png" />
-                                            </div>
-                                            <div class="text">
-                                                <span class="name">小腊肉</span>
-                                                <span class="date">2019-05-06</span>
-                                            </div>
-                                        </div>
-                                        <div class="score">
-                                            <van-rate
-                                                v-model="rateVal"
-                                                icon="like-o"
-                                                void-icon="like-o"
-                                                color="#f70a0a"
-                                                readonly
-                                            />
-                                        </div>
-                                    </div> 
-                                    <div class="eval-content">
-                                        <p>你的衣服最好的 快递也好快</p>
-                                    </div>
-                                     <div class="imgView">
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="eval-user">
-                                        <div class="user">
-                                            <div class="avatar">
-                                                <img src="/static/images/details/00avatar01.png" />
-                                            </div>
-                                            <div class="text">
-                                                <span class="name">小腊肉</span>
-                                                <span class="date">2019-05-06</span>
-                                            </div>
-                                        </div>
-                                        <div class="score">
-                                            <van-rate
-                                                v-model="rateVal"
-                                                icon="like-o"
-                                                void-icon="like-o"
-                                                color="#f70a0a"
-                                                readonly
-                                            />
-                                        </div>
-                                    </div> 
-                                    <div class="eval-content">
-                                        <p>你的衣服最好的 快递也好快</p>
-                                    </div>
-                                     <div class="imgView">
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="eval-user">
-                                        <div class="user">
-                                            <div class="avatar">
-                                                <img src="/static/images/details/00avatar01.png" />
-                                            </div>
-                                            <div class="text">
-                                                <span class="name">小腊肉</span>
-                                                <span class="date">2019-05-06</span>
-                                            </div>
-                                        </div>
-                                        <div class="score">
-                                            <van-rate
-                                                v-model="rateVal"
-                                                icon="like-o"
-                                                void-icon="like-o"
-                                                color="#f70a0a"
-                                                readonly
-                                            />
-                                        </div>
-                                    </div> 
-                                    <div class="eval-content">
-                                        <p>你的衣服最好的 快递也好快</p>
-                                    </div>
-                                     <div class="imgView">
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
-                                        <span><img src="static/images/details/evaluation-img01.png"></span>
+                                        <span v-for="(imgs,key) in list.img" :key="key"><img :src="imgs"></span>
+                                        <!-- <span><img src="static/images/details/evaluation-img01.png"></span> -->
                                     </div>
                                 </li>
                             </ul>
-
+                            <p v-show="commentList.length<1" class="none-comment">暂无评论</p>
                              <!-- 数据加载完提示 -->
                             <div class="end-wrap">
-                                <p>我是有底线哦~~</p>
+                                <p v-show="commentList.length>1">我是有底线哦~~</p>
                             </div>
 
                         </div>
@@ -284,35 +194,67 @@ export default {
             goodsSkuData:[],
             selectSku:[],
             sel:[],
+            stars:[],
+            commentList:[],
             sizeKey:0,
             goodsId:this.$route.query.goods_id,//商品id
             tabActive: 0,//tab选中
-            rateVal: 3,//评分当前分值
-            isCollect:false,
+            isCollect:0,
             goodsNumber:2,
-            sizeBox:true,
-            optionFlag:""
+            sizeBox:false,
+            optionFlag:"",
+            token:"",
+            page:'1'
         }
     },
     created(){
+        this.token =this.$store.getters.optuser.Authorization
         this._getGoodsData()
+        this._getCommentList()
     },
     mounted(){
-       
-        
     },
     methods:{
+        _timeStampForwardAate(time){
+            var date = new Date(time);
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            var D = date.getDate() ;
+            // console.log(Y+M+D);
+            return Y+M+D
+        },
+        _getCommentList(){
+            var _that =this;
+            _that.$axios.post('Goods/comment_list',{
+                'goods_id':_that.goodsId,
+                'page':_that.page,
+                'token':_that.token         
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 1){
+                    _that.commentList =list.data
+                    for(var i in _that.commentList){
+                        _that.commentList[i].times =_that._timeStampForwardAate(_that.commentList[i].add_time)
+                    }
+                    var star = _that.commentList.star_rating
+                    for(var i=0; i<star;i++){
+                        stars.push(1);
+                    }
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
+        },
         _selecetSku(){
             var _that =this
             var newSku =this._matchGoodsSku();
-            // console.log(newSku)
             var goodsAttr=[]
             var info,skujson;
             var noSku=[];
             _that.goodsSkuData.forEach((data)=>{
                 var sku_attr =data.sku_attr1.split(",");
                 if(sku_attr==newSku.sort().toString()){
-                    // console.log(sku_attr)
                     info =data
                     skujson =sku_attr
                 }
@@ -344,8 +286,6 @@ export default {
             this.$set(this.sel,pKey, key)
             this._isHeightLine(pKey,key)
             var skujson = this. _selecetSku().skujson;
-            // console.log(skujson)
-            // console.log(this. _selecetSku().noSku)
             this._hasSku()
         },
 
@@ -373,22 +313,21 @@ export default {
             var _that=this
             var goods =_that.newSpecAttr
             var skujson = this. _selecetSku().skujson;
-            console.log(skujson)
+            // console.log(skujson)
             var oldArry =[]
             goods.forEach((data) =>{
                 data['res'].forEach((res) =>{
                     if(_that.matchSpecifications(res.attr_id)){
-                        console.log('attr_id')
+                        // console.log('attr_id')
                         _that.$set(res,'skuDisable',1)
                     }else{
-                        console.log('flas-attr_id')
-                        // _that.$set(res,'skuDisable',0);
+                        // console.log('flas-attr_id')
                         oldArry.push(res.attr_id)
                     }
 
                 })
             })
-            console.log(oldArry)
+            // console.log(oldArry)
         },
         _initGoodsData(){
             var _that=this,
@@ -409,14 +348,15 @@ export default {
             var _that =this;
             _that.$axios.post('goods/goodsDetail',{
                 'goods_id':this.goodsId,
-                // token:this.$store.getters.optuser.Authorization
-                'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
+                'token':this.token         
             })
             .then((res)=>{
                 var list = res.data;
+                console.log(list)
                 if(list.status == 200){
                     _that.goodsData =list.data
                     _that.goodsSkuData=_that.goodsData.spec.goods_sku
+                    _that.isCollect=this.goodsData.collection
                     this._initGoodsData()
                 }else{
                     _that.$toast(list.msg)
@@ -424,7 +364,21 @@ export default {
             })
         },
         changCollect(){
-            this.isCollect=!this.isCollect
+            var _that =this;
+            _that.isCollect=!_that.isCollect
+            _that.$axios.post('Collection/collection',{
+                'goods_id':_that.goodsId,
+                'token':_that.token         
+            })
+            .then((res)=>{
+                var list = res.data;
+                console.log(list)
+                if(list.status == 200){
+           
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
         },
         showSizeBox(flag){
             this.sizeBox=true
@@ -432,12 +386,12 @@ export default {
         },
         confirmSize(){
             var _that=this;
-            var sku_id =this. _selecetSku().info
+            var sku_id =this. _selecetSku().info.sku_id
+            if(sku_id==""){ this.$toast("改规格已售完"); return}
             _that.$axios.post('cart/addCart',{
-                'sku_id':this.goodsId,
+                'sku_id':sku_id,
                 'cart_number':this.goodsNumber,
-                // token:this.$store.getters.optuser.Authorization
-                'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
+                'token':this.$store.getters.optuser.Authorization 
             })
             .then((res)=>{
                 var list = res.data;
@@ -445,7 +399,12 @@ export default {
                     if(this.optionFlag==0){
                         this.$toast("添加成功,可直接去购物车下单");
                     }else{
-                        this.$router.push({path: '/pay/ConfirmOrder',name:'ConfirmOrder'})
+                        sessionStorage.setItem('cartInfo',JSON.stringify({'cart_id': list.data.cart_id}))
+                        this.$router.push({
+                            path: '/pay/ConfirmOrder',
+                            name:'ConfirmOrder',
+                            // params: {'cart_id': list.data.cart_id}
+                        })
                     }
                     this.sizeBox=false
                 }else{
@@ -490,6 +449,11 @@ a
     color:#151515
 .Details
     background-color #ffffff
+    .none-comment
+        font-size:28px
+        color:#151515
+        padding:30px
+        text-align center
     // 产品主图轮播
     .detailsSwiper
         img 
@@ -647,6 +611,9 @@ a
                             margin-bottom 20px
                             p
                                 font-size 22px
+                            .-e-c
+                                color:#888
+                                margin-top:10px
                         .imgView
                             overflow hidden
                             span

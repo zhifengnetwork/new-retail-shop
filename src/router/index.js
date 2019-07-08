@@ -16,7 +16,8 @@ import Home from '@/pages/home/Home'
 import Popup from '@/pages/home/Popup'
 //挂卖区
 import Sell from '@/pages/sell/Sell'
-
+//上传评证
+import UploadDocuments from '@/pages/sell/UploadDocuments'
 // 搜索
 import Search from '@/pages/search/Search'
 
@@ -43,7 +44,6 @@ import ReturnRequest from '@/pages/order/ReturnRequest'
 
 // 确认订单
 import ConfirmOrder from '@/pages/pay/ConfirmOrder'
-
 // 我的
 import User from '@/pages/user/User'
 // 个人资料
@@ -137,7 +137,12 @@ const router= new Router({
 			component:() => import('@/pages/sell/Sell'),
 			// meta:{requireAuth:true}
 		},
-
+		{
+			path: '/Sell/UploadDocuments',
+			name: 'uploadDocuments',
+			component:() => import('@/pages/sell/uploadDocuments'),
+			// meta:{requireAuth:true}
+		},
 		/**
 		 * 搜索
 		 */

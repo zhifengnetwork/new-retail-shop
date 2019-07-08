@@ -15,7 +15,6 @@
 				</van-swipe-item>
 			</van-swipe>
 		</div>
-
 		<!-- 公告 -->
 		<div class="notice" v-for="(item,index) in filterNotice" :key="index">
 			<van-notice-bar
@@ -39,7 +38,7 @@
 				<h3>热销商品</h3>
 			</div>
 			<div class="hot-list">
-				<div class="single-item" v-for="(item,index) in hotGoods">
+				<div class="single-item" v-for="(item,index) in hotGoods" :key="index">
 					<router-link :to="'/Details?goods_id='+item.goods_id">
 						<div class="img-wrap">
 							<img :src="item.img" />
@@ -53,48 +52,6 @@
 						</div>
 					</router-link>
 				</div>
-				<!-- <div class="single-item">
-					<router-link to="/Details">
-						<div class="img-wrap">
-							<img src="/static/images/home/hot-img01.png" />
-						</div>
-						<div class="main">
-							<h3>韩后化妆品 面膏 </h3>
-							<div class="price">
-								<p class="discount-price">￥1569.00</p>
-								<p class="original-price">原价:￥2500.00</p>
-							</div>
-						</div>
-					</router-link>
-				</div>
-				<div class="single-item">
-					<router-link to="/Details">
-						<div class="img-wrap">
-							<img src="/static/images/home/hot-img01.png" />
-						</div>
-						<div class="main">
-							<h3>韩后化妆品 面膏 </h3>
-							<div class="price">
-								<p class="discount-price">￥1569.00</p>
-								<p class="original-price">原价:￥2500.00</p>
-							</div>
-						</div>
-					</router-link>
-				</div>
-				<div class="single-item">
-					<router-link to="/Details">
-						<div class="img-wrap">
-							<img src="/static/images/home/hot-img01.png" />
-						</div>
-						<div class="main">
-							<h3>韩后化妆品 面膏 </h3>
-							<div class="price">
-								<p class="discount-price">￥1569.00</p>
-								<p class="original-price">原价:￥2500.00</p>
-							</div>
-						</div>
-					</router-link>
-				</div> -->
 			</div>
 		</div>
 		
@@ -105,7 +62,7 @@
 				<h3>推荐商品</h3>
 			</div>
 			<div class="recommend-list">
-				<div class="single-item" v-for="(item,index) in recommendData">
+				<div class="single-item" v-for="(item,index) in recommendData" :key="index">
 					<router-link :to="'/Details?goods_id='+item.goods_id">
 						<div class="img-wrap">
 							<img :src="item.img" />
@@ -119,34 +76,6 @@
 						</div>
 					</router-link>
 				</div>
-				<!-- <div class="single-item">
-					<router-link to="/Details">
-						<div class="img-wrap">
-							<img src="/static/images/home/recommend-goods-img01.png" />
-						</div>
-						<div class="main">
-							<h3>自然堂化妆品补水防晒虎自然堂化...</h3>
-							<div class="price">
-								<p class="discount-price">￥360.00</p>
-								<p class="original-price">原价:￥500.00</p>
-							</div>
-						</div>
-					</router-link>
-				</div>
-				<div class="single-item">
-					<router-link to="/Details">
-						<div class="img-wrap">
-							<img src="/static/images/home/recommend-goods-img01.png" />
-						</div>
-						<div class="main">
-							<h3>自然堂化妆品补水防晒虎自然堂化...</h3>
-							<div class="price">
-								<p class="discount-price">￥360.00</p>
-								<p class="original-price">原价:￥500.00</p>
-							</div>
-						</div>
-					</router-link>
-				</div> -->
 			</div>
 		</div>
 
@@ -176,9 +105,10 @@ export default {
 			baseUrl:'',//图片url拼接
 			bannerData:[],
 			noticeData:[],
-			isShow:true,//弹窗是否显示
+			isShow:false,//弹窗是否显示
 			hotGoods:[],
-			recommendData:[]
+			recommendData:[],
+			token: this.$store.getters.optuser.Authorization
 		};
 	},
 	created(){
@@ -219,7 +149,25 @@ export default {
 		 * 进入50元专区
 		 */
 		handleInto(){
-			this.isShow = true
+			var _that =this
+			
+			_that.$axios.post('fifty_zone/get_release',{
+                'token': _that.token
+            })
+            .then((res)=>{
+				var list = res.data;
+				console.log(list)
+                if(list.status == 200){
+					this.$router.push({
+						path: '/sell/Sell',
+						name: 'Sell',
+					})
+                }else{
+					_that.isShow = true
+                    // _that.$toast(list.msg)
+                }
+            })
+
 		},
 
 		/**

@@ -5,23 +5,23 @@
 		</TopHeader>
 
         <div class="content">
-            <div class="address-list">
+            <div class="address-list" v-for="(item,index) in siteList" :key="index">
                 <div class="address-item">
                     <div class="item-name">
-                        <span class="name">小腊肉</span>
-                        <span class="tel">17875592622</span>
+                        <span class="name">{{item.consignee}}</span>
+                        <span class="tel">{{item.mobile}}</span>
                     </div>
                     <div class="item-address">
-                        <div class="isDefault">默认</div>
+                        <div class="isDefault" v-if="item.is_default===1">默认</div>
                         <div class="exact-address">
-                            <p>广东省广州市番禺区荷光路快递收藏路15栋28层28层28层28层28层28层28层28层28层</p>
+                            <p>{{item.address}}</p>
                         </div>
                     </div>
                     <div class="operation-bar">
-                        <router-link to="/user/editAddress">
-                            <span class="iconfont icon-bianji1 edit"></span>
+                        <router-link to="/user/AddAddress">
+                            <span class="iconfont icon-bianji1 edit" @click="xiuhai(item,index)"></span>
                         </router-link>
-                        <span class="iconfont icon-guanbi del-icon"></span>
+                        <span class="iconfont icon-guanbi del-icon" @click="delSite(item,index)"></span>
                     </div>
                 </div>
             </div>
@@ -39,6 +39,7 @@
 
 <script>
 import TopHeader from "@/pages/common/header/TopHeader"
+import { Dialog,Toast  } from 'vant'
 export default {
     name:'AddressView',
     components: {
@@ -46,29 +47,112 @@ export default {
     },
     data(){
         return {
-           addressList:[]
+           siteList:[]
         }
     },
-    mounted(){
-        this.requestData();//请求数据
+    // mounted(){
+    //     this.requestData();//请求数据
+    // },
+    created() {
+        // 获取用户地址列表
+        var url = '/address/addressList'
+        var params = new URLSearchParams();
+        params.append('token', this.$store.getters.optuser.Authorization);       //你要传给后台的参数值 key/value
+        this.$axios({
+            method:"post",
+            url:url,
+            data:params
+        }).then((res)=>{
+            if(res.data.status === 200){
+                this.siteList = res.data.data
+                console.log(this.siteList)
+            } else if (res.data.status === -200){  
+                Dialog.alert({
+                    message:res.data.msg
+                }).then(()=>{
+                store.commit('del_token'); //token，清除它;
+                    setTimeout(() => {
+                        this.$router.push("/Login");  
+                    })
+                })
+            } else {
+                Dialog.alert({
+                    message:res.data.msg
+                })
+            }
+        })
     },
     methods:{
-        // 请求数据
-        requestData(){
-            var _that =this;
-            _that.$axios.post('address/addressList',{
-                // token:this.$store.getters.optuser.Authorization
-                token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'             
-            })
-            .then((res)=>{
-                var list = res.data;
-                if(list.status == 200){
-                    _that.addressList =list.data
-                }else{
-                    _that.$toast(list.msg)
-                }
-            })
-        }
+        // // 请求数据
+        // requestData(){
+        //     var _that =this;
+        //     _that.$axios.post('/address/addressList',{
+        //         token:this.$store.getters.optuser.Authorization             
+        //     })
+        //     .then((res)=>{
+        //         var list = res.data;
+        //         if(list.status == 200){
+        //             _that.addressList =list.data
+        //         }else{
+        //             _that.$toast(list.msg)
+        //         }
+        //     })
+        // },
+        //修改地址
+        xiugai(item,index) {        
+            let addressInfo = new Object;
+            if( item.is_default){
+                item.is_default=true
+            } else {
+                item.is_default=false
+            }
+            // this.show1 = true;
+            addressInfo = {
+                // address_id:item.address_id,    //地址id
+                // consignee:item.consignee,   //收货人
+                // mobile:item.mobile,         //电话
+                // province:item.district,    //区
+                // addressDetail:item.address,  //详细地址
+                // isDefault:item.is_default,   //是否默认地址
+                'address_id':"",
+                'consignee':_that.userName,
+                'mobile':_that.userMobile,
+                'is_default':_that.checked,
+                'district':_that.code,
+                'city':_that.city,
+                'address':_that.detailAddress
+            }
+                this.addressInfo = addressInfo;
+        },
+
+        //删除地址
+        delSite(item,index) {
+            var url = '/address/delAddress'
+            var params = new URLSearchParams();
+                params.append('id',item.address_id);       //传给后台的参数值 key/value
+                params.append('token', this.$store.getters.optuser.Authorization); //传给后台的参数值 key/value
+            Dialog.confirm({
+                title: '温馨提示',
+                message: '你确定要删除当前地址吗?',
+            }).then(() => {
+                this.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
+                }).then((res)=>{
+                    if (res.data.status === 200){
+                        Toast(res.data.msg);
+                        this.siteList.splice(index,1)
+                    } else {
+                        Dialog.alert({
+                            message:res.data.msg
+                        })
+                    }
+                })
+            }).catch(() => {
+                // on cancel
+            }); 
+        },
     }
 
 }
@@ -85,7 +169,7 @@ export default {
         .address-list   
             .address-item
                 width 100%
-                height 205px
+                // height 205px
                 font-size 30px
                 box-shadow 1px 1px 8px #ccc
                 padding 30px 80px 28px 30px
@@ -119,10 +203,10 @@ export default {
                         p
                             line-height 40px
                             font-size 30px
-                            overflow hidden
-                            display -webkit-box
-                            -webkit-line-clamp 2
-                            -webkit-box-orient vertical
+                            // overflow hidden
+                            // display -webkit-box
+                            // -webkit-line-clamp 2
+                            // -webkit-box-orient vertical
                 .operation-bar
                     position absolute
                     right 10px
