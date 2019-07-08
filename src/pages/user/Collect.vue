@@ -9,18 +9,18 @@
         <div class="height-88"></div>
        
         <!-- NO INFO START -->
-        <div v-show="list.length<1">
+        <div v-show="collectList.length<1">
             <Nodata :nodatas="nodatas"></Nodata>
         </div>
         <!-- GOODS INFO START -->
-        <div  v-show="list.length>0" class="conter">
-            <div class="c-list-" v-for="(item,key) in list" :key="key">
+        <div  v-show="collectList.length>0" class="conter">
+            <div class="c-list-" v-for="(item,key) in collectList" :key="key">
                 <van-checkbox  v-show="showTrash" v-model="item.isCheck" :check ="item.isCheck" @click="selectGoods($event,key)"></van-checkbox>
                 <div class="-list-img">
-                    <router-link to="/Details"><img :src="item.img" /></router-link>
+                    <router-link :to="'/Details?goods_id='+item.goods_id"><img :src="item.img" /></router-link>
                 </div>
                 <div class="goods-info">
-                     <router-link to="/Details"><p class="-info-msg">{{item.text}}</p></router-link>
+                     <router-link :to="'/Details?goods_id='+item.goods_id"><p class="-info-msg">{{item.goods_name}}</p></router-link>
                     <div class="-info-option"> 
                         <span class="price">
                             ￥<strong>{{item.price}}</strong>
@@ -52,34 +52,16 @@ export default {
                 'text':'收藏夹空空如也~',
                 'link':'/Hone'
             },
-            list:[
-                {
-                    text:'自然堂化妆品补水防晒虎虎生风',
-                    img:'/static/images/user/goods_3.png',
-                    price:'360.00',
-                    isCheck:false
-                },
-               {
-                    text:'自然堂化妆品补水防晒虎虎生风',
-                    img:'/static/images/user/goods_3.png',
-                    price:'380.00',
-                    isCheck:false
-                },
-                {
-                    text:'自然堂化妆品补水防晒虎虎生风',
-                    img:'/static/images/user/goods_3.png',
-                    price:'360.00',
-                    isCheck:false
-                }
-            ],
+            collectList:[],
             allChecked: false,
-            showTrash: false
+            showTrash: false,
+            token:this.$store.getters.optuser.Authorization
         };
     },
     computed:{
         updateNumber(){
             let count =0;
-            this.list.forEach((data)=>{
+            this.collectList.forEach((data)=>{
                 if(data.isCheck){
                     count ++
                 }
@@ -87,59 +69,97 @@ export default {
             return count;
         }
     },
+    created(){
+        this.requestData()
+    },
     methods:{
+		requestData(){
+            var _that =this
+            let url = 'Collection/collection_list?token='+_that.token;
+            _that.$axios.get(url)
+            .then( (res) => {
+                console.log(res)
+                var list =res.data
+                if(list.status === 200){
+                    _that.collectList =list.data
+                }
+            })
+            .catch((error) => {
+                alert('请求错误:'+ error)
+            })
+		},
         showDelectBtn(){
             this.showTrash =! this.showTrash;
         },
         selectAll(_flag){
-            for(var i =0;i<this.list.length;i++){
-                this.list[i].isCheck = ! _flag;
+            for(var i =0;i<this.collectList.length;i++){
+                this.collectList[i].isCheck = ! _flag;
             }
         },
         selectGoods(e,key){
-            var data =this.list[key];
-             this.$set(data,'isCheck',!data.isCheck);
+            var _that=this
+            var data =_that.collectList[key];
+            _that.$set(data,'isCheck',!data.isCheck);
             if(!data.isCheck){
-                this.allChecked=false
+                _that.allChecked=false
             }else{
-                if(this.countNumberCheckBoxes().length === this.list.length){
-                    this.allChecked=true
+                if(_that.updateNumber === _that.collectList.length){
+                    _that.allChecked=true
                 }
             }
         },
-        countNumberCheckBoxes(){    //计算选中的复选框的总数
-            let counts =[];
-            this.list.forEach((data)=>{
-                if(data.isCheck){
-                    counts.push('a')    // a 可为任何数，在这里仅用于占位
-                }
-            })
-            return counts;
-        },
+        // countNumberCheckBoxes(){    //计算选中的复选框的总数
+        //     let counts =[];
+        //     this.collectList.forEach((data)=>{
+        //         if(data.isCheck){
+        //             counts.push('a')    // a 可为任何数，在这里仅用于占位
+        //         }
+        //     })
+        //     return counts;
+        // },
         deletOption(){
-            if(this.updateNumber < 1){
-                this.$toast('亲，还没有选择要删除的商品哦!');
+            var _that=this
+            if(_that.updateNumber < 1){
+                _that.$toast('亲，还没有选择要删除的商品哦!');
                 return
             }
-            this.$dialog.confirm({
+            _that.$dialog.confirm({
             title: '信息提醒',
             message: '亲，再考虑考虑吧?'
             }).then(() => {
-                let newArry=[];
-                this.list.forEach((data,index)=>{
+                console.log(_that.collectList)
+                let newArry=[],goods_Ids ='';
+                _that.collectList.forEach((data,index)=>{
                     if(!data.isCheck){
                         newArry.push(data)
+                    }else{
+                        if(goods_Ids==''){
+                           goods_Ids=data.goods_id
+                        }else{
+                            goods_Ids=goods_Ids+','+data.goods_id
+                        }
                     }
                 })
-                this.list =newArry;
-                if(this.list.length<1){
-                    this.showTrash=false
-                }
+                _that.$axios.post('Collection/collection',{
+                    'goods_id':goods_Ids,
+                    'token':_that.token         
+                })
+                .then((res)=>{
+                    var list = res.data;
+                    if(list.status == 200){
+                        _that.collectList =newArry;
+                        if(_that.collectList.length<1){
+                            _that.showTrash=false
+                        }
+                    }else{
+                        _that.$toast(list.msg)
+                    }
+                })
             // on confirm
             }).catch(() => {
             // on cancel
             });
-        }
+        },
     },
     components: {
         TopHeader,

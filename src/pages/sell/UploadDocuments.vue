@@ -14,7 +14,7 @@
                 :max-count="1"
                 />
         </div>
-        <input class="submit" type="button" value="提交" />
+        <input class="submit" type="button" value="提交" @click="setDocuments()" />
     </div>
 </template>
 <script>
@@ -26,6 +26,28 @@ export default {
         }
     },
     methods:{
+        setDocuments(){
+            var _that =this;
+            var post =_that.fileList[0];
+            console.log(_that.fileList[0])
+            if(post=="" || 'undefined'==typeof(post)){
+               return  _that.$toast('亲,还没有选择上传的凭证哦!')
+            }else{
+                post =_that.fileList[0].content;
+            }
+            _that.$axios.post('fifty_zone/upload_proof',{
+                'proof':post,
+                'token':this.$store.getters.optuser.Authorization            
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    _that.teamList =list.data
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
+        }
     },
     components:{
         TopHeader

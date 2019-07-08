@@ -7,7 +7,7 @@
             <div class="tbody"></div>
             <div class="tfoot">
                 <span class="btn" @click="handleCancel">取消</span>
-                <span class="confirm-btn btn"><router-link to="/Sell">去付款</router-link></span>
+                <span class="confirm-btn btn"><input type="button" value="去付款" @click="topPayServiceCharge()"/></span>
             </div>
         </div>
     </div>
@@ -30,6 +30,25 @@ export default {
         }
     },
     methods:{
+        //给平台支付30服务费
+        topPayServiceCharge(){
+            var _that =this;
+            _that.$axios.post('fifty_zone/get_release',{
+                token:this.$store.getters.optuser.Authorization            
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    // _that.$router.push({
+					// 	path: '/sell/Sell',
+					// 	name: 'Sell',
+					// })
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
+        },
+
         //点击取消
         handleCancel(){
             // popShow = false
@@ -81,8 +100,7 @@ export default {
                 background-color #f56917
                 background linear-gradient(to right, #f56b18 , #f94c07)
                 border none 
-                a
-                    color #ffffff
+                color #ffffff
 
 
 </style>

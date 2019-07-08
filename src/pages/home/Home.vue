@@ -105,7 +105,7 @@ export default {
 			baseUrl:'',
 			bannerData:[],
 			noticeData:[],
-			isShow:false,//弹窗是否显示
+			isShow:false,	//弹窗是否显示
 			hotGoods:[],
 			recommendData:[],
 			token: this.$store.getters.optuser.Authorization
@@ -125,12 +125,10 @@ export default {
             .then( (res) => {
 				let status = res.data.status
                 if(status === 200){
-					console.log(res.data.data)	
 					this.bannerData = res.data.data.banners;
 					this.noticeData = res.data.data.announce;
 					this.hotGoods = res.data.data.hot_goods;
 					this.recommendData = res.data.data.recommend_goods;
-					console.log(this.recommendData)		
                 }
             })
             .catch((error) => {
@@ -144,30 +142,34 @@ export default {
 		hidePopup(){
 			this.isShow = false
 		},
-		
+
 		/**
 		 * 进入50元专区
 		 */
 		handleInto(){
 			var _that =this
-			
-			_that.$axios.post('fifty_zone/get_release',{
+			_that.$axios.post('fifty_zone/shop_list',{
                 'token': _that.token
             })
             .then((res)=>{
 				var list = res.data;
-				console.log(list)
-                if(list.status == 200){
+				if(list.status == 200){
 					this.$router.push({
 						path: '/sell/Sell',
 						name: 'Sell',
 					})
-                }else{
-					_that.isShow = true
-                    // _that.$toast(list.msg)
-                }
+				}else if(list.status ==302){
+					return _that.isShow = true
+				}else if(list.status ==304){
+					_that.$toast(list.msg)
+					return this.$router.push({
+						path: '/sell/Payment',
+						name: 'Payment',
+					})
+				}else{
+					_that.$toast(list.msg)
+				}
             })
-
 		},
 
 		/**
