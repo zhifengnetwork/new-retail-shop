@@ -1,5 +1,133 @@
 <template>
     <div class="Details">
+        <!-- 头部组件 -->
+		<TopHeader custom-title="商品详情" custom-fixed>
+			<i slot="backBtn" class="iconfont icon-fanhui"></i>
+		</TopHeader>
+        <div class="height-88"></div>
+        <!-- 产品图轮播 -->
+        <div class="detailsSwiper">
+            <van-swipe :autoplay="3000" indicator-color="white">
+                <van-swipe-item v-for="(img,key) in this.goodsData.img" :key="key">
+                    <img :src="img.picture" />
+                </van-swipe-item>
+            </van-swipe>
+        </div>
+
+         <!-- 主内容 -->
+        <div class="content">
+            <div class="goodsInfo">
+                <div class="price">
+                    <span class="discount-price">￥{{this.goodsData.price}}</span>
+                    <span class="original-price">原价￥{{this.goodsData.original_price}}</span>
+                </div>
+                <!-- 商品名称 -->
+                <div class="goodsName">
+                    <h1>{{this.goodsData.goods_name}}</h1>
+                </div>
+                <div class="group-warp">
+                    <div class="g-option">
+                        <span class="-subtitle"> 配送</span>
+                        <div class="-text"> 广州白云区</div>
+                    </div>
+                    <div class="g-option">
+                        <span class="-subtitle"> 运费</span>
+                        <div class="-text"> {{this.goodsData.shipping_price}}</div>
+                    </div>
+                    <div class="g-option">
+                        <span class="-subtitle"> 规格</span>
+                        <div class="-text" v-for="(item,key) in this.goodsData.attr_name" :key="key"> {{item}} </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- tab切换 -->
+            <div class="tab-content">
+                <van-tabs v-model="tabActive">
+                    <van-tab title="商品详情">
+                        <div class="details-wrap">
+                            <!-- <img src="/static/images/details/00details-img01.png" /> -->
+                            <p class="-desc">{{this.goodsData.desc}}</p>
+                            <img v-for="(img,key) in this.goodsData.img" :key="key" :src="img.picture"/>
+                        </div>
+                    </van-tab>
+                    <van-tab title="参数">
+                        <div class="params-wrap">
+                            <ul class="param-list">
+                                <li>
+                                    <div class="param-name">商品编号 </div>
+                                    <div class="param-value">55666666</div>
+                                </li>
+                                <li>
+                                    <div class="param-name">面料</div>
+                                    <div class="param-value">蕾丝</div>
+                                </li>
+                                <li>
+                                    <div class="param-name">使用尺寸</div>
+                                    <div class="param-value">S M L XL</div>
+                                </li>
+                                <li>
+                                    <div class="param-name">款式</div>
+                                    <div class="param-value">中长款</div>
+                                </li>
+                                <li>
+                                    <div class="param-name">风格</div>
+                                    <div class="param-value">其他</div>
+                                </li>
+                                <li>
+                                    <div class="param-name">图案</div>
+                                    <div class="param-value">碎花</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </van-tab>
+                    <van-tab :title="'商品评价('+this.goodsData.comment_count+')'">
+                        <div class="comment-wrap">
+                            <ul class="comment-list">
+                                <li v-for="(list,key) in commentList" :key="key">
+                                    <div class="eval-user">
+                                        <div class="user">
+                                            <div class="avatar">
+                                                <img src="/static/images/details/00avatar01.png" />
+                                            </div>
+                                            <div class="text">
+                                                <span class="name">用户：{{list.comment_id}}</span>
+                                                <span class="date">2019-05-06</span>
+                                            </div>
+                                        </div>
+                                        <div class="score">
+                                            <van-rate
+                                                v-model="list.star_rating"
+                                                icon="like-o"
+                                                void-icon="like-o"
+                                                color="#f70a0a"
+                                                readonly
+                                            />
+                                        </div>
+                                    </div> 
+                                    <div class="eval-content">
+                                        <p>{{list.content}}</p>
+                                        <p class="-e-c">{{list.spec}}</p>
+                                    </div>
+                                    <div class="imgView">
+                                        <span v-for="(imgs,key) in list.img" :key="key"><img :src="imgs"></span>
+                                        <!-- <span><img src="static/images/details/evaluation-img01.png"></span> -->
+                                    </div>
+                                </li>
+                            </ul>
+                            <p v-show="commentList.length<1" class="none-comment">暂无评论</p>
+                             <!-- 数据加载完提示 -->
+                            <div class="end-wrap">
+                                <p v-show="commentList.length>1">我是有底线哦~~</p>
+                            </div>
+
+                        </div>
+                    </van-tab>
+                </van-tabs>
+            </div>
+        </div>
 
         <!-- 规格框开始 -->
         
@@ -13,10 +141,9 @@
                         <div class="box-list mb-30" v-for="(list,index) in this.newSpecAttr" :key="index"> 
                             <p class="-list-title" :spec-id="list.spec_id">{{list.spec_name}}</p>
                             <ul class="-list-info">
+                                <li v-for="(item,key) in list.res" :key="key" class="-info-a" :class="[item.isShow ? '' : 'no-sku',sel[index] == key?'sku-active':'']" :attr-id="item.attr_id" @click="selectGoods(item.attr_id,index,$event,key)">{{item.attr_name}}</li>
                                 <!-- <li v-for="(item,key) in list.res" :key="key"  :ref="'id_'+key"   class="-info-a" :class="{'sku-active':sel[index] == key,'no-sku':item.skuDisable==0 ,'order-sku':item.skuDisable==3 }" :attr-id="item.attr_id" @click="selectGoods(index,key,item.sku)">{{item.attr_name}}</li> -->
-                                <li v-for="(item,key) in list.res" :key="key" class="-info-a" :class="[item.isShow ? '' : 'no-sku',sel[index] == key?'sku-active':'']" :attr-id="item.attr_id" @click="selectGoods(item.attr_id,index,$event,key)">{{item.attr_id}}: {{item.attr_name}}</li>
-
-                            </ul> 
+                            </ul>
                         </div>
                         <div class="box-list2 mb-30"> 
                             <span class="-list-title"> 购买数量</span>
@@ -31,122 +158,136 @@
                 </div>
             </transition>
         </div>
+       
+        <!-- 底部菜单 -->
+        <div class="bottom-height"></div>
+        <div class="bottom-bar">
+            <ul class="-bar-list">
+                <li class="-list-a" @click="changCollect()">
+                    <i class="iconfont icon-aixin" :class="{'c-active':isCollect}"></i>
+                    <span>收藏</span>
+                </li>
+                <li class="-list-a">
+                    <i class="iconfont icon-54"></i>
+                    <span>客服</span>
+                </li>
+            </ul>
+            <div class="-bar-list">
+                <input class="bar-btn-1" type="button" @click="showSizeBox(0)" value="加入购物车"/>
+                <input class="bar-btn-2" type="button" @click="showSizeBox(1)" value="立即购买"/>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 import Vue from 'vue'
+// import AreaList from './area'
+import TopHeader from "@/pages/common/header/TopHeader"
 export default {
     name:'Details',
+    components:{
+        TopHeader
+    },
     data(){
         return {
-            sizeKey:0,
-            tabActive: 0,//tab选中
-            goodsNumber:2,
-            sizeBox:true,
-            optionFlag:"",
             goodsData:[],
-            newSpecAttr:[
+            // newSpecAttr:[],
+            // goodsSkuData:[],
 
-                { //这里是要被渲染字段
-                   res:[
-                    {attr_id: 34478, attr_name: "默认"},
-                    {attr_id: 34480, attr_name: "升级版"},
-                    {attr_id: 34494, attr_name: "超级版"}
-                   ],
+            newSpecAttr:[
+                {
+                    res:[
+                        {'attr_id': '34478', attr_name: "默认"},
+                        {'attr_id': '34480', attr_name: "升级版"},
+                        {'attr_id':'34494', attr_name: "超级版"},
+                    ],
                     spec_id: 1,
                     spec_name: "规格"
                 },
                 {
-                    res: [
-                            {attr_id: 34479, attr_name: "阳光米"}, 
-                            {attr_id: 34481, attr_name: "星空灰"},
-                            {attr_id: 34495, attr_name: "天空黑"}
-                        ],
+                    res:[
+                        {'attr_id': '34479', attr_name: "阳光米"},
+                        {'attr_id': '34481', attr_name: "星空灰"},
+                        {'attr_id': '34495', attr_name: "天空黑"},
+                   ],
                     spec_id: 2,
                     spec_name: "颜色"
                 },
                 {
-                    res:[
-                        {attr_id: 34484, attr_name: "中"},
-                        {attr_id: 34485, attr_name: "大"},
-                        {attr_id: 34486, attr_name: "小"},
-                        {attr_id: 34496, attr_name: "加大"},
-                    ],
+                    res: [
+                            {'attr_id': '34484', attr_name: "中"},
+                            {'attr_id': '34485', attr_name: "大"},
+                            {'attr_id': '34486', attr_name: "小"},
+                            {'attr_id': '34496', attr_name: "加大"},
+                        ],
                     spec_id: 4,
                     spec_name: "尺寸"
                 }
             ],
             goodsSkuData:[
-                { //所有的规格可能情况都在这个数组里
-                    'goods_id': 18,
-                    'groupon_price': "1999.00",
-                    'inventory': 0,
-                    'price': "2199.00",
-                    'sales': 0,
-                    'sku_attr1': "34478,34479,34484",
-                    'sku_id': 1,
-                },
-                {
-                    'goods_id': 18,
-                    'groupon_price': "2288.00",
-                    'inventory': 479,
-                   'price': "2388.00",
-                    'sales': 0,
-                    'sku_attr1': "34480,34481,34485",
-                    'sku_id': 2,
-                },
-                {
-                    'goods_id': 18,
-                    'groupon_price': "1799.00",
-                    'inventory': 298,
-                    'price': "1988.00",
-                    'sales': 0,
-                    'sku_attr1': "34480,34479,34486",
-                    'sku_id': 4,
-                },
-                {
-                    'goods_id': 18,
-                    'groupon_price': "2300.00",
-                    'inventory': 199,
-                    'price': "2500.00",
-                    'sales': 0,
-                    'sku_attr1': "34494,34495,34496",
-                    'sku_id': 10
-                },
-                {
-                    'goods_id': 18,
-                    'groupon_price': "2388.00",
-                    'inventory': 200,
-                    'price': "2488.00",
-                    'sales': 0,
-                    'sku_attr1': "34494,34481,34485",
-                    'sku_id': 11,
-                }
+                {'sku_id': '1', 'goods_id': '18', 'price': "2199.00",'stock':'10','sku_attr1': "34478,34479,34484"},
+                {'sku_id':' 2', 'goods_id': '18', 'price': "2388.00",'stock':'0','sku_attr1': "34480,34481,34485"},
+                {'sku_id':'4', 'goods_id': '18', 'price': "1988.00",'stock':'0','sku_attr1': "34480,34479,34486"},
+                {'sku_id':' 10', 'goods_id': '18', 'price': "2500.00",'stock':'2','sku_attr1': "34494,34495,34496"},
+                {'sku_id':'11', 'goods_id': '18', 'price': "2488.00",'stock':'5','sku_attr1': "34494,34481,34485"},
             ],
-            selectSku:[],       //保存选中的值
-            goodsSku:{},        //存放要和选中的值进行匹配的数据
-            sel:[],
-            selSkuId:[]
 
+            goodsSku:{},        //存放要和选中的值进行匹配的数据
+            selectSku:[],       //保存选中的值
+            selSkuId:[],
+            sel:[],
+            // stars:[],
+            commentList:[],
+            // sizeKey:0,
+            goodsId:this.$route.query.goods_id,//商品id
+            tabActive: 0,//tab选中
+            isCollect:0,
+            goodsNumber:2,
+            sizeBox:true,       //规格选择框
+            optionFlag:"",
+            token:this.$store.getters.optuser.Authorization,
+            page:'1'
         }
     },
     created(){
         var _that =this
-       for(var i in _that.goodsSkuData){
-            _that.goodsSku[_that.goodsSkuData[i].sku_attr1] =_that.goodsSkuData[i]
-            // console.log(_that.goodsSku)
-       }
-        _that.checkItem()
+        // _that._getGoodsData()
+        _that._getCommentList()
+        // _that._getGoodsData()
+        // console.log(_that.goodsSkuData)
+             for(var i in _that.goodsSkuData){
+                    _that.goodsSku[_that.goodsSkuData[i].sku_attr1] =_that.goodsSkuData[i]
+                }
+                 _that.checkItem()
+       
     },
-
     methods:{
+        _getGoodsData(){
+            var _that =this
+            _that.$axios.post('goods/goodsDetail',{
+                'goods_id':_that.goodsId,
+                'token':_that.token         
+            })
+            .then((res)=>{
+                var list = res.data;
+                _that.goodsData =list.data
+                _that.newSpecAttr=_that.goodsData.spec.spec_attr
+                _that.goodsSkuData =_that.goodsData.spec.goods_sku
+
+              
+                
+            })
+        },
+
+
         selectGoods(itemId,pKey,e,key){
+            console.log(itemId)
             var _that =this
             if(_that.selectSku[pKey] != itemId) {
                 _that.selectSku[pKey]=itemId
                 _that.sel[pKey] =key
                 _that.selSkuId[pKey]=itemId
-                // _that.$set(_that.sel,pKey, key)
+                _that.$set(_that.sel,pKey, key)
             }else{
                 _that.selectSku[pKey] =""
                 _that.sel[pKey] =-1
@@ -154,11 +295,10 @@ export default {
             }
             _that.checkItem()
 
-            // console.log(_that.sel)
-            // console.log(_that.selSkuId)
+            // console.log(_that.newSpecAttr)
+            // console.log(_that.goodsSkuData)
+            // console.log(_that.goodsSku)
         },
-
-
         checkItem(){
             var _that=this
             var option =_that.newSpecAttr;
@@ -172,7 +312,8 @@ export default {
                 // console.log(res)
                 for(var j in res){
                     result[i]=res[j].attr_id //赋值，存在就直接替换，不存在就往里加
-                    // console.log(result[i])
+
+                    
                     res[j].isShow =_that.isMay(result)  
                     // 在数据里面添加字段isShow来判断是否可以选择 
                 }
@@ -181,29 +322,16 @@ export default {
 
             _that.$forceUpdate()    //重绘
         },
-
         isMay(result){
-            console.log(this.goodsSku[result])
             for(var i in result){
-                if (result[i] == '' || 'undefined'==typeof(result[i])) {
+                if (result[i] == '') {
                     return true //判断是否有空值
                 };
             }
 
-            if('undefined'!=typeof(this.goodsSku[result])){
-                if(this.goodsSku[result]){
-                    return this.goodsSku[result].inventory == 0 ? false :true // 匹配库存
-                }
-                
-            }else{
-                return true
-            }
-        //    if(this.goodsSku[result]){
-        //        return this.goodsSku[result].inventory == 0 ? false :true // 匹配库存
-        //    }else{
-        //        return true
-        //    }
-           
+            console.log(this.goodsSku)
+            console.log(this.goodsSku[result])
+           return this.goodsSku[result].stock == 0 ? false :true // 匹配库存
         },
 
         _selecetSku(){
@@ -219,139 +347,94 @@ export default {
                     info =data
                 }
             })
-            // console.log(info)
             return {'info':info}
         },
 
 
 
-
-
-
-
-
-      /********************************/
-
-        _matchGoodsSku(){
-           var newArry=''
-           var newArry=[]
-           var _that =this
-           for(var i in _that.newSpecAttr){
-               var res =_that.newSpecAttr[i].res
-               for(var j in res){
-                   if(res[j].isHeightL){
-                    var t =res[j].attr_id
-                    newArry.push(t)
-                   }
-               }
-           }
-           return newArry
+        /*****************************我的收藏*********************8***** */
+        _timeStampForwardAate(time){
+            var date = new Date(time);
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            var D = date.getDate() ;
+            // console.log(Y+M+D);
+            return Y+M+D
         },
-        _isHeightLine(pKey,key){
-            var _that=this
-            var goods =_that.newSpecAttr
-            goods.forEach((data) =>{
-                goods[pKey].res.forEach((res) =>{
-                    _that.$set(res,'isHeightL',false);
-                })
-                _that.$set(goods[pKey].res[key],'isHeightL',true)
-            })
-        },
-        matchSpecifications(sku){
-            // console.log(sku)
-            var skujson = this. _selecetSku().skujson;
-            for(var i in skujson){
-                // console.log(skujson[i])
-                if(skujson[i] ==sku){
-                    return true
-                }
-            }
-        },
-        _hasSku(){
-            var _that=this
-            var goods =_that.newSpecAttr
-            var skujson = this. _selecetSku().skujson;
-            // console.log(skujson)
-            var oldArry =[]
-            goods.forEach((data) =>{
-                data['res'].forEach((res) =>{
-                    if(_that.matchSpecifications(res.attr_id)){
-                        // console.log('attr_id')
-                        _that.$set(res,'skuDisable',1)
-                    }else{
-                        // console.log('flas-attr_id')
-                        oldArry.push(res.attr_id)
-                    }
-
-                })
-            })
-            // console.log(oldArry)
-        },
-        _initGoodsData(){
-            var _that=this,
-                newArry=[],
-                goods =_that.goodsData.spec.spec_attr
-                goods.forEach((data) =>{
-                    data.res.forEach((res,i)=>{
-                        res.isHeightL =false
-                        res.skuDisable=3
-                        // res.sku ="+data.spec_id++""+':'+res.attr_id
-                        res.sku =data.spec_id+':'+res.attr_id
-                    })
-                    newArry.push(data)
-                })
-                _that.newSpecAttr =newArry; 
-        },
-        _getGoodsData(){
+        _getCommentList(){
             var _that =this;
-            _that.$axios.post('goods/goodsDetail',{
-                'goods_id':this.goodsId,
-                'token':this.token         
+            _that.$axios.post('Goods/comment_list',{
+                'goods_id':_that.goodsId,
+                'page':_that.page,
+                'token':_that.token         
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 1){
+                    _that.commentList =list.data
+                    for(var i in _that.commentList){
+                        _that.commentList[i].times =_that._timeStampForwardAate(_that.commentList[i].add_time)
+                    }
+                    var star = _that.commentList.star_rating
+                    for(var i=0; i<star;i++){
+                        stars.push(1);
+                    }
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
+        },
+        changCollect(){
+            var _that =this;
+            _that.isCollect=!_that.isCollect
+            _that.$axios.post('Collection/collection',{
+                'goods_id':_that.goodsId,
+                'token':_that.token         
             })
             .then((res)=>{
                 var list = res.data;
                 console.log(list)
                 if(list.status == 200){
-                    _that.goodsData =list.data
-                    _that.goodsSkuData=_that.goodsData.spec.goods_sku
-                    _that.isCollect=this.goodsData.collection
-                    this._initGoodsData()
+           
                 }else{
+                    _that.$toast(list.msg)
                 }
             })
         },
 
+
+        /********************************************************** */
         showSizeBox(flag){
             this.sizeBox=true
             this.optionFlag =flag
         },
         confirmSize(){
             var _that=this;
-            var sku_id =this. _selecetSku().info   //获取所有组合中选中的数据
-            console.log(sku_id)
-            // if(sku_id==""){ this.$toast("改规格已售完"); return}
-            // _that.$axios.post('cart/addCart',{
-            //     'sku_id':sku_id,
-            //     'cart_number':this.goodsNumber,
-            //     'token':this.$store.getters.optuser.Authorization 
-            // })
-            // .then((res)=>{
-            //     var list = res.data;
-            //     if(list.status == 200){
-            //         if(this.optionFlag==0){
-            //             this.$toast("添加成功,可直接去购物车下单");
-            //         }else{
-            //             sessionStorage.setItem('cartInfo',JSON.stringify({'cart_id': list.data.cart_id}))
-            //             this.$router.push({
-            //                 path: '/pay/ConfirmOrder',
-            //                 name:'ConfirmOrder',
-            //                 // params: {'cart_id': list.data.cart_id}
-            //             })
-            //         }
-            //         this.sizeBox=false
-            //     }else{
-            //     }
-            // })
+            var sku_id =this. _selecetSku().info.sku_id
+            if(sku_id==""){ this.$toast("改规格已售完"); return}
+            _that.$axios.post('cart/addCart',{
+                'sku_id':sku_id,
+                'cart_number':this.goodsNumber,
+                'token':this.$store.getters.optuser.Authorization 
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    if(this.optionFlag==0){
+                        this.$toast("添加成功,可直接去购物车下单");
+                    }else{
+                        sessionStorage.setItem('cartInfo',JSON.stringify({'cart_id': list.data.cart_id}))
+                        this.$router.push({
+                            path: '/pay/ConfirmOrder',
+                            name:'ConfirmOrder',
+                            // params: {'cart_id': list.data.cart_id}
+                        })
+                    }
+                    this.sizeBox=false
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
         },
         reducingNumber(){
             var val =parseInt(this.goodsNumber) - 1 
@@ -390,7 +473,6 @@ a
     color:#151515
 .Details
     background-color #ffffff
-    font-size 16px !important
     .none-comment
         font-size:28px
         color:#151515

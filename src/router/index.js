@@ -140,7 +140,7 @@ const router= new Router({
 		{
 			path: '/Sell/UploadDocuments',
 			name: 'uploadDocuments',
-			component:() => import('@/pages/sell/uploadDocuments'),
+			component:() => import('@/pages/sell/UploadDocuments'),
 			// meta:{requireAuth:true}
 		},
 		/**
