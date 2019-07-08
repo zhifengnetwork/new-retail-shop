@@ -38,6 +38,22 @@
 				</li>
 			</ul>
 		</div>
+		<!-- 最近搜索 -->
+		<div class="search-item">
+			<h3>最近搜索</h3>
+			<div class="search-list">
+				<div class="list-item">空调</div>
+				<div class="list-item">冰箱</div>
+				<div class="list-item">洗衣机</div>
+				<div class="list-item">厨房小电器</div>
+				<div class="list-item">厨房大电器</div>
+				<div class="list-item">生活家电</div>
+				<div class="list-item">热水器</div>
+				<div class="list-item">配件及周边</div>
+				<div class="list-item">热水器</div>
+			</div>
+		</div>
+
 		<!-- 热搜 -->
 		<div class="search-item">
 			<h3>热搜</h3>
@@ -54,20 +70,7 @@
 			</div>
 		</div>
 
-		<div class="search-item">
-			<h3>最近搜索</h3>
-			<div class="search-list">
-				<div class="list-item">空调</div>
-				<div class="list-item">冰箱</div>
-				<div class="list-item">洗衣机</div>
-				<div class="list-item">厨房小电器</div>
-				<div class="list-item">厨房大电器</div>
-				<div class="list-item">生活家电</div>
-				<div class="list-item">热水器</div>
-				<div class="list-item">配件及周边</div>
-				<div class="list-item">热水器</div>
-			</div>
-		</div>
+	
 
   </div>
 </template>
