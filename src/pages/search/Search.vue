@@ -128,11 +128,9 @@ export default {
 				token:_that.token,
 				keywords:_that.searchVal
 			}).then((res)=>{
-				console.log(res)
 				var list =res.data
 				if(list.status === 200){    
 					_that.selectResult =list.data.goods_list
-					console.log(_that.selectResult)
 					if(_that.selectResult.length<1 || _that.selectResult==""){
 						_that.isShow=true
 					}
@@ -151,7 +149,6 @@ export default {
             let url = 'search/get_search?token='+_that.token;
             _that.$axios.get(url)
             .then( (res) => {
-                console.log(res)
                 var list =res.data
                 if(list.status === 200){
 					_that.history =list.data.history

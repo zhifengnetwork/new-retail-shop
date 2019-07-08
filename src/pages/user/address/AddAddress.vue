@@ -111,12 +111,6 @@ export default {
         // 地区确定选择
         onAddrConfirm(val){  
             this.show = false;
-            // console.log(val[0].code)
-            // console.log(val[1].code)
-            // console.log(val[2].code)
-            // this.city=val[0].code
-            // this.code=val[1].code
-            // this.code=val.code
             this.address = val[0].name+ val[1].name +val[2].name
         },
         // 地区取消选择
@@ -126,7 +120,7 @@ export default {
         onSave(addressData){
             var _that=this
             _that.detailAddress =_that.$refs.detailAddress.innerText
-            var url ='/address/addAddress'
+            var url ='/address/delAddress'
             if(!_that._verifyUserInfo()){return}
             _that.$axios.post(url,{
                 // 传给后台的参数
