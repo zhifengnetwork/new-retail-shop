@@ -102,6 +102,7 @@ export default {
 
 	data() {
 		return {
+			baseUrl:'',
 			bannerData:[],
 			noticeData:[],
 			isShow:false,//弹窗是否显示
