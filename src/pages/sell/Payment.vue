@@ -31,7 +31,9 @@
             </div>
         </div>
         <p class="height90"></p>
+        <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" >
         <input class="submit" type="button" value="提交" />
+        </router-link>
     </div>
 </template>
 <script>
@@ -50,7 +52,8 @@ export default {
             ],
             orderList:[],
             currentOrder:[],
-            token:this.$store.getters.optuser.Authorization
+            token:this.$store.getters.optuser.Authorization,
+
         }
     },
      mounted(){
