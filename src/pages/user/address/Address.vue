@@ -14,12 +14,13 @@
                     <div class="item-address">
                         <div class="isDefault" v-if="item.is_default===1">默认</div>
                         <div class="exact-address">
+                            <p>{{item.c_cn}}&nbsp;{{item.p_cn}}&nbsp;{{item.d_cn}}</p>
                             <p>{{item.address}}</p>
                         </div>
                     </div>
                     <div class="operation-bar">
                         <router-link to="/user/AddAddress">
-                            <span class="iconfont icon-bianji1 edit" @click="xiuhai(item,index)"></span>
+                            <span class="iconfont icon-bianji1 edit" @click="xiugai()"></span>
                         </router-link>
                         <span class="iconfont icon-guanbi del-icon" @click="delSite(item,index)"></span>
                     </div>
@@ -99,30 +100,13 @@ export default {
         //     })
         // },
         //修改地址
-        xiugai(item,index) {        
-            let addressInfo = new Object;
-            if( item.is_default){
-                item.is_default=true
-            } else {
-                item.is_default=false
-            }
-            // this.show1 = true;
-            addressInfo = {
-                // address_id:item.address_id,    //地址id
-                // consignee:item.consignee,   //收货人
-                // mobile:item.mobile,         //电话
-                // province:item.district,    //区
-                // addressDetail:item.address,  //详细地址
-                // isDefault:item.is_default,   //是否默认地址
-                'address_id':"",
-                'consignee':_that.userName,
-                'mobile':_that.userMobile,
-                'is_default':_that.checked,
-                'district':_that.code,
-                'city':_that.city,
-                'address':_that.detailAddress
-            }
-                this.addressInfo = addressInfo;
+        xiugai() {        
+            this.$router.push({
+            name: 'AddAddress',
+                params: {
+                    address_id: 1055
+                }
+            })
         },
 
         //删除地址

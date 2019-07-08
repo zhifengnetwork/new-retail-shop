@@ -68,8 +68,6 @@
 <script>
 import TopHeader from "@/pages/common/header/TopHeader"
 import { Popup,Area } from 'vant'
-// import { Area } from 'vant'
-import AreaList from './area'
 export default {
     name:'addAddress',
     components: {
@@ -79,16 +77,14 @@ export default {
         return {
             show: false,
             checked: false,
-            userName:'',
-            areaList:[],
-            detailAddress:"",
-            userMobile:'',
-            address:'选择省/市/区',//地址
-            areaList:AreaList,// 指定数据源
-            location:{},
+            userName:'',// 收货人姓名
+            areaList:{},// 选择地区上拉列表
+            detailAddress:"",// 详细地址
+            userMobile:'',// 手机号
+            address:'选择省/市/区',//点击地址按钮
+            location:{},// 请选择地址
+            addressId:this.$route.query.address_id,
             code:'',
-            city:''
-            // infoList:{}
         }
     },
     //  created: function(){
@@ -100,6 +96,10 @@ export default {
     //         this.userMobile=userInfo.userMobile
     //     }
     // },
+    created() {
+        this.modify();
+        this.codes();
+    },
     mounted() {
 
     },
@@ -111,43 +111,33 @@ export default {
         // 地区确定选择
         onAddrConfirm(val){  
             this.show = false;
-            console.log(val[2].code)
-            console.log(val[1].code)
-            this.code=val[2].code
-            this.city=val[1].code
+            // console.log(val[0].code)
+            // console.log(val[1].code)
+            // console.log(val[2].code)
+            // this.city=val[0].code
+            // this.code=val[1].code
+            // this.code=val.code
             this.address = val[0].name+ val[1].name +val[2].name
         },
         // 地区取消选择
         onAddrCancel(){  
             this.show = false
         },
-        // 点击保存按钮时触发
-        // toSelectAddress(){
-        //     var _that =this
-        //     _that.detailAddress =_that.$refs.detailAddress.innerText
-        //     console.log(_that.detailAddress)
-        //     var info={
-        //         'userName':_that.userName,
-        //         'userMobile':_that.userMobile,
-        //     }
-        //     sessionStorage.setItem('userInfo',JSON.stringify(info))
-        //     _that.$router.push({path:'/user/SelectPoint'})
-        // },
         onSave(addressData){
             var _that=this
             _that.detailAddress =_that.$refs.detailAddress.innerText
-            var url ='address/addAddress'
+            var url ='/address/addAddress'
             if(!_that._verifyUserInfo()){return}
             _that.$axios.post(url,{
                 // 传给后台的参数
                 'token':this.$store.getters.optuser.Authorization,
-                'address_id':"",
+                'address_id':_that.addressId,
                 'consignee':_that.userName,
                 'mobile':_that.userMobile,
                 'is_default':_that.checked,
                 'district':_that.code,
-                'city':_that.city,
-                'address':_that.detailAddress
+                //'city':_that.city,
+                'address':_that.detailAddress,
             })
             .then((res)=>{
                 _that.$toast('添加成功')                
@@ -159,6 +149,7 @@ export default {
             .catch( (error) => {
                 alert("请求错误:" + error)
             })
+            console.log(_that.code)
         },
         _verifyUserInfo(){
             var _that =this
@@ -181,22 +172,51 @@ export default {
                 return false
             }
             return true
-        }
-    },
-    created() {
-        var url = "/address/get_region"
-        var params = new URLSearchParams();
-            params.append('token', this.$store.getters.optuser.Authorization);       //你要传给后台的参数值 key/value   //token
+        },
+        modify() {
+            var url = "/address/addressList"
+            var that = this
+            var params = new URLSearchParams();
+                params.append('token', that.$store.getters.optuser.Authorization);//要传给后台的参数值 key/value //token
+                params.append('consignee',that.userName);
+                params.append('district',that.code);
+                params.append('address',that.detailAddress);
+                params.append('mobile',that.userMobile);
+                params.append('is_default',that.checked);
+                params.append('address_id','');
+                // params.append('area_type',that.area_type)
             this.$axios({
-                method:"get",
+                method:"post",
                 url:url,
                 data:params
             }).then((res)=>{
+                var that = this
+                console.log(res)
                 if(res.data.status ===200){
+                    that.arrList = res.data
+                    // console.log(that.arList)
+                }
+                console.log(that.arrList)
+            })
+        },
+        codes() {
+            var url = '/user/get_address'
+            var params = new URLSearchParams();
+                params.append('token', this.$store.getters.optuser.Authorization);//要传给后台的参数值 key/value //token
+                //params.append('code',this.code);
+                // params.append('area_name',this.area_name);
+                // params.append('area_type',this.area_type)
+            this.$axios({
+                method:"post",
+                url:url,
+                data:params
+            }).then((res)=>{
+                console.log(res)
+                if(res.data.status === 200){
                     this.areaList = res.data.data
-                    console.log(this.areaList)
                 }
             })
+        }
     },        
 
 }

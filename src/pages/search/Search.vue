@@ -19,7 +19,7 @@
 					<i class="iconfont icon-ai54"></i>
 				</div>
 			</form>
-			<button class="search-btn" @click="onSearch(searchVal)">搜索</button>
+			<button class="search-btn" @click="onSearch()">搜索</button>
 		</div>
 		<!-- 搜索关键字 -->
 		<div class="search-associate" style="display:none">
@@ -38,39 +38,51 @@
 				</li>
 			</ul>
 		</div>
-		<!-- 最近搜索 -->
-		<div class="search-item">
-			<h3>最近搜索</h3>
-			<div class="search-list">
-				<div class="list-item">空调</div>
-				<div class="list-item">冰箱</div>
-				<div class="list-item">洗衣机</div>
-				<div class="list-item">厨房小电器</div>
-				<div class="list-item">厨房大电器</div>
-				<div class="list-item">生活家电</div>
-				<div class="list-item">热水器</div>
-				<div class="list-item">配件及周边</div>
-				<div class="list-item">热水器</div>
+		<div v-show="selectResult.length<1 && searchVal==''">
+			<!-- 最近搜索 -->
+			<div class="search-item">
+				<h3>最近搜索</h3>
+				<div class="search-list">
+					<div v-for="(item,key) in history" class="list-item" :key="key" @click="checkedKeywords(item.keywords)">{{item.keywords}}</div>
+				</div>
+			</div>
+
+			<!-- 热搜 -->
+			<div class="search-item">
+				<h3>热搜</h3>
+				<div class="search-list">
+					<div v-for="(item,key) in hot" class="list-item" :key="key" @click="checkedKeywords(item.keywords)">{{item.keywords}}</div>
+				</div>
 			</div>
 		</div>
 
-		<!-- 热搜 -->
-		<div class="search-item">
-			<h3>热搜</h3>
-			<div class="search-list">
-				<div class="list-item">空调</div>
-				<div class="list-item">冰箱</div>
-				<div class="list-item">洗衣机</div>
-				<div class="list-item">厨房小电器</div>
-				<div class="list-item">厨房大电器</div>
-				<div class="list-item">生活家电</div>
-				<div class="list-item">热水器</div>
-				<div class="list-item">配件及周边</div>
-				<div class="list-item">热水器</div>
+		<!-- 搜索内容 -->
+
+
+		<!-- 暂无数据 -->
+
+		<div class="no-data" v-show="isShow && searchVal!=''">
+			 <p>暂无数据....</p>
+	    </div>
+		<!-- 搜索内容 -->
+		<div class="hot-wrap">
+			<div class="hot-list">
+				<div class="single-item" v-for="(item,index) in selectResult" :key="index">
+					<router-link :to="'/Details?goods_id='+item.goods_id">
+						<div class="img-wrap">
+							<img :src="item.img" />
+						</div>
+						<div class="main">
+							<h3>{{item.goods_name}}</h3>
+							<div class="price">
+								<p class="discount-price">￥{{item.price}}</p>
+								<p class="original-price">原价:{{item.original_price}}</p>
+							</div>
+						</div>
+					</router-link>
+				</div>
 			</div>
 		</div>
-
-	
 
   </div>
 </template>
@@ -84,8 +96,16 @@ export default {
 	},
 	data(){
 		return{
-			searchVal:''
+			history:[],
+			hot:[],
+			searchVal:'',
+			isShow:false,
+			selectResult:[],
+			token:this.$store.getters.optuser.Authorization
 		}
+	},
+	created(){
+		this.getData()
 	},
 	methods:{
 		/**
@@ -95,12 +115,62 @@ export default {
 			this.searchVal = ''
 			this.$refs.keyword.focus()
 		},
+
+		checkedKeywords(keywords){		//关键字搜索
+			this.searchVal =keywords
+		},
+
+
+		onSearch(){
+			let _that =this
+			let url = 'search/search';
+			_that.$axios.post(url,{
+				token:_that.token,
+				keywords:_that.searchVal
+			}).then((res)=>{
+				console.log(res)
+				var list =res.data
+				if(list.status === 200){    
+					_that.selectResult =list.data.goods_list
+					console.log(_that.selectResult)
+					if(_that.selectResult.length<1 || _that.selectResult==""){
+						_that.isShow=true
+					}
+					else{
+						_that.isShow=false
+					}
+				}else{
+					_that.$toast(list.msg)
+						
+				}
+			})
+		},
+
+		getData(){
+			var _that =this
+            let url = 'search/get_search?token='+_that.token;
+            _that.$axios.get(url)
+            .then( (res) => {
+                console.log(res)
+                var list =res.data
+                if(list.status === 200){
+					_that.history =list.data.history
+					_that.hot=list.data.hot
+                }
+            })
+            .catch((error) => {
+                alert('请求错误:'+ error)
+            })
+		},
 		/**
 		 * 获取关联数据
 		 */
 		getAssociate(e){
 			console.log(e)
 		},
+
+
+
 		jumpTo(path,name,id){
 			// 商品路由跳转
 			if(path && name && id){
@@ -119,8 +189,6 @@ export default {
 		}
 
 	},
-	
-
 };
 </script>
 
@@ -128,16 +196,23 @@ export default {
 .Search
 	width 100%
 	min-height 100vh
-	background-color #fff
+	background-color: #eee;
+	.no-data
+		margin:150px 20px 20px
+		text-align center
+		font-size 32px
+		color:#888
 	.search
 		padding  20px 24px 20px 0
 		box-sizing border-box
 		border-bottom 1px solid #eeeeee
 		display flex
+		background #fff
+		margin-bottom 20px
 		.icon-fanhui
 			width 10%
 			height 60px
-			color #0092d8
+			color #f57121
 			font-size 36px
 			display flex
 			align-items center
@@ -173,7 +248,7 @@ export default {
 			width 80px
 			height 60px
 			display inline-block
-			background #0092d8
+			background #f57121
 			color #ffffff
 			font-size 24px
 			border-radius 5px
@@ -203,7 +278,8 @@ export default {
 		h3
 			line-height 60px
 			font-size 28px
-			color #999999
+			color: #151515
+			margin-bottom 10px
 		.search-list
 			display flex
 			flex-wrap wrap
@@ -213,7 +289,54 @@ export default {
 				text-align center
 				border 1px solid #cccccc
 				padding 0 14px 
-				margin-right 10px
-				margin-bottom 10px
+				margin-right 15px
+				margin-bottom 15px
+				background #ffffff
+				border-radius: 10px;
+
+	.hot-wrap
+		padding 0 .25rem
+		box-sizing border-box
+		.hot-list
+			display flex
+			flex-wrap wrap
+			.single-item
+				width 48%
+				height 494px
+				background-color #fff
+				border-radius 8px
+				overflow hidden
+				margin 0 20px 20px 0
+				padding 10px
+				box-sizing border-box
+				&:nth-child(2n)
+					margin-right 0
+				.img-wrap
+					width 320px
+					height 320px
+					overflow hidden
+					img 
+						max-width 100%
+						max-height 100%
+				.main
+					flex 1
+					h3
+						font-size 22px
+						color #151515
+						height 64px
+						-webkit-box-orient vertical
+						-webkit-line-clamp 2
+						display -webkit-box
+						overflow hidden
+						text-overflow ellipsis
+					.price
+						.discount-price
+							font-size 30px
+							color #ed0d0d
+							line-height 50px
+						.original-price
+							font-size 24px
+							color #a1a1a1
+	
 
 </style>
