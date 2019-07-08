@@ -563,6 +563,7 @@ export default {
                message: tips
             })
             .then(() => {
+                // on confirm
                 this.$axios.post(url,{
                     token:this.token,
                     order_id:order_id,
@@ -578,6 +579,9 @@ export default {
                 .catch((error) => {
                     console.log('请求错误:'+ error)
                 })
+            }).catch(() => {
+                // on cancel
+               
             })
         },
         /**
