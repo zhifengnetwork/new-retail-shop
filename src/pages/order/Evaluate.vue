@@ -118,7 +118,7 @@ export default {
                 width 46px
                 height 38px
                 display block
-                background url("/static/img/order/camera-icon.png") no-repeat
+                background url("/static/images/order/camera-icon.png") no-repeat
                 background-size cover
                 margin-bottom 20px
             .input-file

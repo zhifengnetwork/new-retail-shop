@@ -68,7 +68,7 @@
                         </div>
                         <div v-if="item.status == 5">
                             <span class="btn" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
-                            <span class="btn red">重新购买</span>
+                            <router-link :to="'/Details?goods_id='+item.goods_id"><span class="btn red">重新购买</span></router-link>
                         </div>
                         <div v-if="item.status == 6">
                             <span class="btn red"></span>
@@ -618,6 +618,26 @@ export default {
             else if(type == 4){
                 this.$toast("货到付款");
             }
+        },
+        /**
+         * 取消退款
+         */
+        cancelRefund(index,order_id){
+            this.$dialog.confirm({
+               message: '您确定要取消申请退款吗？'
+            })
+            .then( () => {
+                let url = 'Order/cancel_refund';
+                this.$axios.post(url,{
+                    token:this.$store.getters.optuser.Authorization,
+                    order_id:this.order_id
+                }).then( (res) => {
+                    console.log(222)
+                })
+            }).catch(() => {
+                // on cancel
+            })
+
         },
     
         /**

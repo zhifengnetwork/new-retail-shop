@@ -29,11 +29,11 @@
             <!-- 退款金额 -->
             <div class="refund-amount">
                 <span class="label">退款金额</span>
-                <span class="amount">{{(total * totalNum) | formatMoney}}</span>
+                <span class="amount">{{(total) | formatMoney}}</span>
             </div>
 
             <!-- 按钮 -->
-            <div class="refundBtn" @click="refunds()">提交申请</div>
+            <div class="refundBtn" @click="applyRefund()">提交申请</div>
 
         </div>
 
@@ -52,14 +52,14 @@ export default {
         return{
             order_id:this.$route.query.order_id,//退款订单id
             refundData:'',
-            totalNum:'',//总件数
-            total:'',//总价
+            totalNum:0,//总件数
+            total:0,//总价
             refund_reason:''
-
         }
     },
 
     mounted(){
+        console.log(this.total)
         let url = 'Order/get_refund';
         this.$axios.post(url,{
             token:this.$store.getters.optuser.Authorization,
@@ -69,6 +69,7 @@ export default {
                 this.refundData = res.data.data.goods
                 this.totalNumber() //总件
                 this.totalPrice() //总金额
+                
             }
         })
     },
@@ -79,7 +80,7 @@ export default {
          */
         totalPrice(index){
             for(var i = 0;i<this.refundData.length;i++){
-                this.total += parseInt(this.refundData[i].goods_price)
+                this.total += parseInt(this.refundData[i].goods_price * this.refundData[i].goods_num)
             }
         },
         /**
@@ -90,50 +91,33 @@ export default {
                 this.totalNum += parseInt(this.refundData[i].goods_num)
             }
         },
-        /**
-         * 封装修改状态方法
-         */
-        editStatus(index,order_id,status,items,tips){
-            let url = 'Order/edit_status';
-            this.$dialog.confirm({
-               message: tips
-            })
-            .then(() => {
-                // on confirm
-                this.$axios.post(url,{
-                    token:this.token,
-                    order_id:order_id,
-                    status:status
-                }).then( (res) => {
-                    if(res.data.status === 200){
-                        items.splice(index,1)
-                        this.$toast(res.data.msg)
-                    }else{
-                        this.$toast(res.data.msg)
-                    }
-                })
-                .catch((error) => {
-                    console.log('请求错误:'+ error)
-                })
-            }).catch(() => {
-                // on cancel
-                
-            })
-        },
+       
         /**
          * 退款
          */
-        refunds(index,order_id){
-            var tips = '您确定要申请退款吗？';
-            this.editStatus(index,order_id,status,this.allOrders,tips);
-            let url = 'Order/apply_refund';
-            this.$axios.post(url,{
-                order_id:this.order_id,
-                refund_type:1,
-                refund_reason:this.refund_reason
-            }).then((res) => {
-                console.log(res)
-            }) 
+        applyRefund(index,order_id){
+            this.$dialog.confirm({
+               message: '您确定要申请退款吗？'
+            })
+            .then(() => {
+                // on confirm
+                let url = 'Order/apply_refund';
+                this.$axios.post(url,{
+                    order_id:this.order_id,
+                    refund_type:1,
+                    refund_reason:this.refund_reason,
+                    token:this.$store.getters.optuser.Authorization,
+                }).then((res) => {
+                    this.$toast(res.data.msg)
+                    setTimeout( () => {
+                        this.$router.push('/Order/ReturnGoods?order_id=' + order_id)
+                    },1000)
+                    
+                }) 
+            }).catch(() => {
+                // on cancel
+            })
+            
         },
     },
     filters: {
