@@ -110,8 +110,10 @@ export default {
         },
         // 地区确定选择
         onAddrConfirm(val){  
+            console.log(val)
             this.show = false;
             this.address = val[0].name+ val[1].name +val[2].name
+            this.code =val[2].code
         },
         // 地区取消选择
         onAddrCancel(){  
@@ -120,7 +122,7 @@ export default {
         onSave(addressData){
             var _that=this
             _that.detailAddress =_that.$refs.detailAddress.innerText
-            var url ='/address/delAddress'
+            var url ='/address/addAddress'
             if(!_that._verifyUserInfo()){return}
             _that.$axios.post(url,{
                 // 传给后台的参数
@@ -136,14 +138,12 @@ export default {
             .then((res)=>{
                 _that.$toast('添加成功')                
                 setTimeout(() => {
-                    _that.$router.push("/user/Address");
+                    // _that.$router.push("/user/Address");
                 }, 1000);
-                console.log(res)
             })
             .catch( (error) => {
                 alert("请求错误:" + error)
             })
-            console.log(_that.code)
         },
         _verifyUserInfo(){
             var _that =this
