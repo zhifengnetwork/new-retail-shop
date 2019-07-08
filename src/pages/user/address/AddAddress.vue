@@ -110,14 +110,10 @@ export default {
         },
         // 地区确定选择
         onAddrConfirm(val){  
+            console.log(val)
             this.show = false;
-            // console.log(val[0].code)
-            // console.log(val[1].code)
-            // console.log(val[2].code)
-            // this.city=val[0].code
-            // this.code=val[1].code
-            // this.code=val.code
             this.address = val[0].name+ val[1].name +val[2].name
+            this.code =val[2].code
         },
         // 地区取消选择
         onAddrCancel(){  
@@ -142,14 +138,12 @@ export default {
             .then((res)=>{
                 _that.$toast('添加成功')                
                 setTimeout(() => {
-                    _that.$router.push("/user/Address");
+                    // _that.$router.push("/user/Address");
                 }, 1000);
-                console.log(res)
             })
             .catch( (error) => {
                 alert("请求错误:" + error)
             })
-            console.log(_that.code)
         },
         _verifyUserInfo(){
             var _that =this
