@@ -26,7 +26,7 @@
                                 <h3 v-if="this.$route.params.poiname">{{this.$route.params.poiname}}</h3>
                                 <p v-if="this.$route.params.poiaddress">{{this.$route.params.poiaddress}}</p>
                             </div> -->
-                             <div class="input-group">
+                            <div class="input-group">
                                 <!-- <p v-if="!this.location">点击选择地址</p>
                                 <template v-else>
                                     <h3>{{this.location.poiname}}</h3>

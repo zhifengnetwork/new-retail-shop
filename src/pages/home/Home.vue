@@ -102,7 +102,6 @@ export default {
 
 	data() {
 		return {
-			baseUrl:'',//图片url拼接
 			bannerData:[],
 			noticeData:[],
 			isShow:false,//弹窗是否显示
