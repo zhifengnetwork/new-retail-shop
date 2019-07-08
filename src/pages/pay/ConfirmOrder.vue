@@ -65,12 +65,13 @@
                     <div class="-list-a-">
                         <span>{{pay.pay_name}}</span>
                         <div v-show="payId==1 && key==1">
-                            <p  class="-list2-msg">余额：{{goodsList.pay_type.remainder_money}}</p>
+                            <p  class="-list2-msg">余额：{{goodsList.remainder_money}}</p>
                             <div class="-list-a-a">
                                 支付密码：
                                 <van-cell-group>
                                     <van-field v-model="payPassword" type="password" placeholder="请输入支付密码" />
                                 </van-cell-group>
+
                             </div>
                             
                         </div>
