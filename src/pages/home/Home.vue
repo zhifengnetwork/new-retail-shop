@@ -249,7 +249,7 @@ export default {
 		padding-top 76px
 		img 
 			width 100% 
-			height 324px
+			height 380px
 			display block
 	.notice
 		margin-bottom 20px

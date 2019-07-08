@@ -5,96 +5,116 @@
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</TopHeader>
         <div class="height-88"></div>
-        <div class="content">
-            <div class="user-info-wrap mb-10">
-                <div @click="toEditAddress(addrRes.address_id)"  class="user-info">
-                    <i class="iconfont icon-ditu"></i>
-                    <div class="-info-list">
-                        <p class="-list-a">
-                            <strong class="mr-44">{{addrRes.consignee}}</strong>
-                            <strong>{{addrRes.mobile}}</strong>
-                        </p>
-                        <p class="-list-b">
-                            {{addrRes.address}}
-                        </p>
+        <div v-if="carId!=''" class="com-list">
+            <div class="content">
+                <div class="user-info-wrap mb-10">
+                    <div @click="toEditAddress(addrRes.address_id)"  class="user-info">
+                        <i class="iconfont icon-ditu"></i>
+                        <div class="-info-list">
+                            <p class="-list-a">
+                                <strong class="mr-44">{{addrRes.consignee}}</strong>
+                                <strong>{{addrRes.mobile}}</strong>
+                            </p>
+                            <p class="-list-b">
+                                {{addrRes.address}}
+                            </p>
+                        </div>
+                        <div class="-list-edit"><i class="iconfont icon-bianji"></i></div>
                     </div>
-                    <div class="-list-edit"><i class="iconfont icon-bianji"></i></div>
+                    <img class="-info-img" src="/static/images/order/color_line.png" />
                 </div>
-                <img class="-info-img" src="/static/images/order/color_line.png" />
-            </div>
-            <!-- GOODS START -->
-            <div class="goods-list">
-                <router-link to="/Details"  v-for="(item,index) in goodsList.goods_res" :key="index" class="g-list-a">
-                    <img class="-list-img" :src="item.img" />
-                    <div class="-detial-">
-                        <p class="-d-msg apostrophe">{{item.goods_name}} {{item.spec_key_name}}</p>
-                        <p class="-d-msg2">
-                            <span>￥ {{item.goods_price}}</span>
-                            <span>x {{item.goods_num}}</span>
-                        </p>
-                    </div>
-                </router-link>
-                <div class="g-list-b">
-                    <!-- <div class="-list-1">
-                        <span class="-b-subtitle">购买数量</span>
-                        <span class="-option-">
-                            <i class="subling iconfont icon-jian-" @click="reducingNumber()"></i>
-                            <input class="inp" type="number" :value="goodsNumber" @change="changNumber($event)"/>
-                            <i class="puls iconfont icon-jia"  @click="addNumber()"></i>
-                        </span>
-                    </div> -->
-                    <div class="-list-1">
-                        <span class="-b-subtitle">配送方式</span>
-                        <span class="-b-msg">普通配送</span>
-                        <span class="">快递 {{goodsList.shipping_price}} 元</span>
-                    </div>
-                    <div class="-list-1">
-                        <span class="-b-subtitle">订单备注</span>
-                        <input type="text"  placeholder-class="placehor" v-model="userNote" placeholder="选填 请先和商家协商一致" />  
-                    </div>
-                    <div class="goods-price">
-                        <span>共 {{count}} 件</span>
-                        <span>共计：</span>
-                        <span>￥ {{updatePrice}} </span>
+                <!-- GOODS START -->
+                <div class="goods-list">
+                    <router-link to="/Details"  v-for="(item,index) in goodsList.goods_res" :key="index" class="g-list-a">
+                        <img class="-list-img" :src="item.img" />
+                        <div class="-detial-">
+                            <p class="-d-msg apostrophe">{{item.goods_name}} {{item.spec_key_name}}</p>
+                            <p class="-d-msg2">
+                                <span>￥ {{item.goods_price}}</span>
+                                <span>x {{item.goods_num}}</span>
+                            </p>
+                        </div>
+                    </router-link>
+                    <div class="g-list-b">
+                        <!-- <div class="-list-1">
+                            <span class="-b-subtitle">购买数量</span>
+                            <span class="-option-">
+                                <i class="subling iconfont icon-jian-" @click="reducingNumber()"></i>
+                                <input class="inp" type="number" :value="goodsNumber" @change="changNumber($event)"/>
+                                <i class="puls iconfont icon-jia"  @click="addNumber()"></i>
+                            </span>
+                        </div> -->
+                        <div class="-list-1">
+                            <span class="-b-subtitle">配送方式</span>
+                            <span class="-b-msg">普通配送</span>
+                            <span class="">快递 {{goodsList.shipping_price}} 元</span>
+                        </div>
+                        <div class="-list-1">
+                            <span class="-b-subtitle">订单备注</span>
+                            <input type="text"  placeholder-class="placehor" v-model="userNote" placeholder="选填 请先和商家协商一致" />  
+                        </div>
+                        <div class="goods-price">
+                            <span>共 {{count}} 件</span>
+                            <span>共计：</span>
+                            <span>￥ {{updatePrice}} </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!--  -->
-            <div class="goods-list goods-list2">
-                <div class="goods-list-a" v-for="(pay,key) in goodsList.pay_type" :key="key">
-                    <div class="-list-a-">
-                        <span>{{pay.pay_name}}</span>
-                        <div v-show="payId==1 && key==1">
-                            <p  class="-list2-msg">余额：{{goodsList.remainder_money}}</p>
-                            <div class="-list-a-a">
-                                支付密码：
-                                <van-cell-group>
-                                    <van-field v-model="payPassword" type="password" placeholder="请输入支付密码" />
-                                </van-cell-group>
+                <!--  -->
+                <div class="goods-list goods-list2">
+                    <div class="goods-list-a" v-for="(pay,key) in goodsList.pay_type" :key="key">
+                        <div class="-list-a-">
+                            <span>{{pay.pay_name}}</span>
+                            <div v-show="pay_type==1 && key==1">
+                                <p  class="-list2-msg">余额：{{goodsList.remainder_money}}</p>
+                                <!-- <div class="-list-a-a">
+                                    支付密码：
+                                    <van-cell-group>
+                                        <van-field v-model="payPassword" type="password" placeholder="请输入支付密码" />
+                                    </van-cell-group>
 
+                                </div> -->
+                                
                             </div>
                             
                         </div>
-                        
+                        <van-radio-group v-model="pay_type">
+                            <van-radio  @change="this.pay_type ==pay.pay_type" :name="pay.pay_type"></van-radio>
+                        </van-radio-group>
                     </div>
-                    <van-radio-group v-model="payId">
-                        <van-radio  @change="this.payId ==pay.pay_type" :name="pay.pay_type"></van-radio>
-                    </van-radio-group>
                 </div>
             </div>
-        </div>
-        <!-- FOOTER START -->
-        <div class="footer-height"></div>
-        <div class="footer">
-            <div class="footer-a">
-                <strong class="f-a-a"> 实付款：</strong>
-                <div class="f-a-b">
-                    <span class="colorRed size-20">￥<strong class="size-36">{{updatePrice}}</strong></span>
-                    <span class="-freight" v-show="goodsList.shipping_price ==0">免运费</span>
-                    <!-- <span class="-freight">{if goodsList.shipping_price ==0} 免运费 {else} {{goodsList.shipping_price}} {/if}</span> -->
+
+            <!-- 密码输入框 -->
+            <van-popup v-model="showPwd" class="popup"  @click-overlay="hidePwd()">
+            <van-password-input
+            :value="payPassword"
+            info="密码为 6 位数字"
+            @focus="showKeyboard = true"
+            />
+            </van-popup>
+
+            <!-- 数字键盘 -->
+            <van-number-keyboard
+            :show="showKeyboard"
+            @input="onInput"
+            @delete="onDelete"
+            @blur="showKeyboard = false"
+            />
+
+            <!-- FOOTER START -->
+            <div class="footer-height"></div>
+            <div class="footer">
+                <div class="footer-a">
+                    <strong class="f-a-a"> 实付款：</strong>
+                    <div class="f-a-b">
+                        <span class="colorRed size-20">￥<strong class="size-36">{{updatePrice}}</strong></span>
+                        <span class="-freight" v-show="goodsList.shipping_price ==0">免运费</span>
+                        <!-- <span class="-freight">{if goodsList.shipping_price ==0} 免运费 {else} {{goodsList.shipping_price}} {/if}</span> -->
+                    </div>
                 </div>
+                <div class="footer-b" @click="topay()">立即付款</div>
             </div>
-            <div class="footer-b" @click="topay()">立即付款</div>
         </div>
     </div>
 </template>
@@ -104,21 +124,24 @@ export default {
     data() {
         return {
             checked: true,
-            // goodsNumber:2,
-            payPassword:'',      //支付密码
-            count:0,            //下单商品件数
-            payId: 0,           //支付默认选中1
-            goodsList:[],       //商品列表
-            userNote:"",        //下单备注
+            count:0,             //下单商品件数
+            goodsList:[],        //商品列表
+            userNote:"",         //下单备注
             addrRes:{},          //地址列表
-            // carId:this.$route.params.cart_id  //购物车传过来的id
-            carId:""
+            pay_type:0,         //支付方式
+            carId:"",           //购物车id
+            order_id:'',         //订单id
+            payPassword:'',      //支付密码
+            showPwd:false,
+            showKeyboard: false,
+            token:this.$store.getters.optuser.Authorization,
         };
     },
     created(){
         var info =JSON.parse(sessionStorage.getItem('cartInfo'))
         if(typeof(info.cart_id)!="undifined"){
             this.carId=info.cart_id
+            console.log(this.carId)
         }
     },
     mounted(){  
@@ -131,7 +154,7 @@ export default {
             var _that =this
             _that.$axios.post('Order/temporary',{
                 'cart_id':this.carId,
-                'token':this.$store.getters.optuser.Authorization
+                'token':_that.token
             })
             .then((res)=>{
                 var list = res.data;
@@ -152,48 +175,80 @@ export default {
         },
         topay(){
             var _that =this
-            var tt ={
-                'cart_id': _that.carId,
-                'address_id': _that.addrRes.address_id,
-                'pay_type':_that.payId,
-                'user_note':_that.userNote,
-                'pwd':_that.payPassword,
-                'token': _that.$store.getters.optuser.Authorization
-            }
-            console.log(tt);
-           
             _that.$axios.post('Order/submitOrder',{
                 'cart_id': _that.carId,
                 'address_id': _that.addrRes.address_id,
-                'pay_type':_that.payId,
+                'pay_type':_that.pay_type,
                 'user_note':_that.userNote,
-                'token': _that.$store.getters.optuser.Authorization
+                'token': _that.token
             })
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
-                    _that.$toast({message:"下单成功,正在跳转...",duration:1000})
+                    this.order_id = list.data
+                    if(_that.pay_type == 1){
+                        this.showPwd = true;
+                        this.showKeyboard = true;
+                    }else{
+                         _that.$toast({message:"下单成功,正在跳转...",duration:1000})
+                    }
                 }else{
                     _that.$toast(list.msg)
                 }
             })
         },
-        // reducingNumber(){
-        //     var val =parseInt(this.goodsNumber) - 1 
-        //    if(val<=1){val =1}
-        //    this.goodsNumber=val
-        // },
-        // changNumber(e){
-        //     var val =e.target.value;
-        //     if(val<1 || isNaN(val)){
-        //         return this.$toast('请输入正确的数量');
-        //     }
-        //     this.goodsNumber=val
-        // },
-        // addNumber(){
-        //     var val =parseInt(this.goodsNumber) + 1
-        //     this.goodsNumber=val
-        // }
+
+        /**
+         * 余额支付:输入密码
+         */
+        onInput(key) {
+            var _that =this
+            _that.payPassword = (_that.payPassword + key).slice(0, 6);
+            if(_that.payPassword.length === 6){
+                // 关闭密码输入
+                _that.showKeyboard = false;
+                _that.showPwd = false;
+                _that.payPassword = '';
+ 
+                // 请求数据
+                let url = 'pay/payment';
+                _that.$axios.post(url,{
+                    token:_that.token,
+                    order_id:_that.order_id,
+                    pay_type:_that.pay_type
+                }).then((res)=>{
+                    if(res.data.status === 200){    
+                        setTimeout(() => {
+                            _that.$router.push('/Pay/PaySucceed')
+                        },2000)
+                        
+                    }else{
+                        // 余额支付失败
+                        // this.$toast(res.data.msg);
+                        // setTimeout(() => {
+                        //     console.log("支付失败，2s跳转到支付失败页面")
+                        //     this.$router.push('/Pay/PayFail')
+                        // },2000)
+                           
+                    }
+                })
+
+
+            }
+        },
+        /**
+         * 删除密码
+         */
+        onDelete() {
+            this.payPassword = this.payPassword.slice(0, this.payPassword.length - 1);
+        },
+        /**
+         * 关闭密码蒙层，清空密码
+         */
+        hidePwd(){
+            this.showPwd=false;
+            this.payPassword = '';
+        }
     },
     computed:{
         updatePrice(){
@@ -366,6 +421,17 @@ export default {
             .van-radio__icon--checked .van-icon
                 background-color: #ff7800;
                 border-color: #ff7800;
+        .popup
+            width 100%
+            .van-password-input__security li:first-child
+                border-left 1px solid #999
+            .van-password-input__security li
+                border 1px solid #999
+                border-left 0
+            .van-password-input
+                padding 30px 0 20px
+        .van-number-keyboard
+            z-index 3000!important
 
         .footer-height
             width :100%;

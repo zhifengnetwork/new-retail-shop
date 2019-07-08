@@ -27,9 +27,9 @@ export default {
     },
     methods:{
         setDocuments(){
+            console.log()
             var _that =this;
             var post =_that.fileList[0];
-            console.log(_that.fileList[0])
             if(post=="" || 'undefined'==typeof(post)){
                return  _that.$toast('亲,还没有选择上传的凭证哦!')
             }else{
@@ -37,12 +37,16 @@ export default {
             }
             _that.$axios.post('fifty_zone/upload_proof',{
                 'proof':post,
+                'fz_order_id':this.$route.query.fz_order_id,
                 'token':this.$store.getters.optuser.Authorization            
             })
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
-                    _that.teamList =list.data
+                    _that.$toast('上传成功...')
+                    // setTimeout(() => {
+                    //     _that.$router.push('/Payment')
+                    // },2000)
                 }else{
                     _that.$toast(list.msg)
                 }
