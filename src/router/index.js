@@ -179,8 +179,8 @@ const router= new Router({
 		{
 			path: '/Cart',
 			name: 'Cart',
-			component:() => import('@/pages/cart/Cart'),
-			// meta:{requireAuth:true}
+			component: (resolve) => require(['@/pages/cart/Cart'],resolve),
+			meta:{requireAuth:true}
 		},
 
 		//50元专区支付
@@ -273,7 +273,7 @@ const router= new Router({
 			name: 'User',
 			// component:() => import('@/pages/user/User'),
 			component: (resolve) => require(['@/pages/user/User'],resolve),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 		// 个人资料
 		{
