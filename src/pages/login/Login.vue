@@ -59,7 +59,8 @@ export default {
                     var tokens =list.data.token
                     // var tokens ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'
                     _that.$store.commit('set_token',{Authorization: tokens})  //保存token
-                    console.log(list.data.id)
+                    console.log(tokens)
+                    return
                     setTimeout(()=>{
                         _that.$router.push({path:'/Home',name:'Home'})
                     },1000)
