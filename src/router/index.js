@@ -145,13 +145,13 @@ const router= new Router({
 			path: '/Sell',
 			name: 'Sell',
 			component:() => import('@/pages/sell/Sell'),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 		{
 			path: '/Sell/UploadDocuments',
 			name: 'uploadDocuments',
 			component:() => import('@/pages/sell/UploadDocuments'),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 		/**
 		 * 搜索
@@ -160,7 +160,7 @@ const router= new Router({
 			path: '/Search',
 			name: 'Search',
 			component:() => import('@/pages/search/Search'),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 
 		/**
@@ -170,7 +170,7 @@ const router= new Router({
 			path: '/Category',
 			name: 'Category',
 			component:() => import('@/pages/category/Category'),
-			meta:{requireAuth:true} //是否需要登录
+			// meta:{requireAuth:true} //是否需要登录
 		},
 
 		/**
@@ -180,7 +180,7 @@ const router= new Router({
 			path: '/Cart',
 			name: 'Cart',
 			component:() => import('@/pages/cart/Cart'),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 
 		//50元专区支付
@@ -248,21 +248,21 @@ const router= new Router({
 			path: '/Pay/PayWay',
 			name: 'PayWay',
 			component: (resolve) => require(['@/pages/pay/PayWay'],resolve),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 		// 支付成功
 		{
 			path: '/Pay/PaySucceed',
 			name: 'PaySucceed',
 			component: (resolve) => require(['@/pages/pay/PaySucceed'],resolve),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 		// 支付失败
 		{
 			path: '/Pay/PayFail',
 			name: 'PayFail',
 			component: (resolve) => require(['@/pages/pay/PayFail'],resolve),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 
 		/**
@@ -273,7 +273,7 @@ const router= new Router({
 			name: 'User',
 			// component:() => import('@/pages/user/User'),
 			component: (resolve) => require(['@/pages/user/User'],resolve),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 		// 个人资料
 		{
@@ -281,7 +281,7 @@ const router= new Router({
 			name: 'personalData',
 			// component:() => import('@/pages/user/personalData'),
 			component: (resolve) => require(['@/pages/user/personalData'],resolve),
-			meta:{requireAuth:true}
+			// meta:{requireAuth:true}
 		},
 		// 预计收益
 		{
@@ -414,11 +414,11 @@ router.beforeEach((to,from,next) =>{
 		}else{
 			let token =localStorage.getItem('Authorization');
 			if(token === null || token === ''){		//判断是否有token
-				// Dialog.confirm({
-				// 	message: '亲，还没有登录哦!'
-				// }).then(() =>{
-				// 	next('/Login');
-				// })
+				Dialog.confirm({
+					message: '亲，还没有登录哦!'
+				}).then(() =>{
+					next('/Login');
+				})
 				next('/Login');
 			}else{
 				next()
