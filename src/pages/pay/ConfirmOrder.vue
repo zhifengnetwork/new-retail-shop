@@ -25,7 +25,7 @@
                 </div>
                 <!-- GOODS START -->
                 <div class="goods-list">
-                    <router-link to="/Details"  v-for="(item,index) in goodsList.goods_res" :key="index" class="g-list-a">
+                    <router-link :to="'/Details?goods_id='+item.goods_id"  v-for="(item,index) in goodsList.goods_res" :key="index" class="g-list-a">
                         <img class="-list-img" :src="item.img" />
                         <div class="-detial-">
                             <p class="-d-msg apostrophe">{{item.goods_name}} {{item.spec_key_name}}</p>
@@ -74,9 +74,7 @@
                                     </van-cell-group>
 
                                 </div> -->
-                                
                             </div>
-                            
                         </div>
                         <van-radio-group v-model="pay_type">
                             <van-radio  @change="this.pay_type ==pay.pay_type" :name="pay.pay_type"></van-radio>

@@ -138,10 +138,12 @@
                 <div v-show="sizeBox" class="sku-box-inner" :class="{'box-active':sizeBox}">
                     <span class="-close-"  @click="sizeBox=false"> &times;</span>
                     <div class="sku-box-cont">
-                        <div class="box-list mb-30" v-for="(list,index) in this.good" :key="index"> 
+                        <div class="box-list mb-30" v-for="(list,index) in this.newSpecAttr" :key="index"> 
                             <p class="-list-title" :spec-id="list.spec_id">{{list.spec_name}}</p>
                             <ul class="-list-info">
-                                <li class="-info-a"  v-for="(oItem,key) in list.res" :key="key" :class="[oItem.isShow?'':'noneActive',oItem.isSelect?'chosed':'']" :data-id='oItem.attr_id'  @click="tabInfoChange(index,key,oItem.attr_id,$event)">{{oItem.attr_name}}</li>
+                                <li v-for="(item,key) in list.res" :key="key" class="-info-a" :class="[selectArr[index] === item.attr_id ? 'sku-active' : '',item.inventory===0 ? 'no-sku' : '']" :attr-id="item.attr_id" @click="selectGoods(item,index,key)">{{item.attr_name}}</li>
+                                <!-- <li v-for="(item,key) in list.res" :key="key" class="-info-a" :class="[item.isShow ? '' : 'no-sku',sel[index] == key?'sku-active':'']" :attr-id="item.attr_id" @click="selectGoods(item.attr_id,index,$event,key)">{{item.attr_name}}</li> -->
+                                <!-- <li v-for="(item,key) in list.res" :key="key"  :ref="'id_'+key"   class="-info-a" :class="{'sku-active':sel[index] == key,'no-sku':item.skuDisable==0 ,'order-sku':item.skuDisable==3 }" :attr-id="item.attr_id" @click="selectGoods(index,key,item.sku)">{{item.attr_name}}</li> -->
                             </ul>
                         </div>
                         <div class="box-list2 mb-30"> 
@@ -157,7 +159,8 @@
                 </div>
             </transition>
         </div>
-       
+    
+
         <!-- 底部菜单 -->
         <div class="bottom-height"></div>
         <div class="bottom-bar">
@@ -189,48 +192,200 @@ export default {
     },
     data(){
         return {
-            tabActive: 0,//tab选中
-            isCollect:0,
-            goodsNumber:1,
+            commentList:[],    //评论列表
+            goodsId:this.$route.query.goods_id,//商品id
+            tabActive: 0,       //tab选中
+            isCollect:0,        //是否收藏
+            goodsNumber:2,
             sizeBox:true,       //规格选择框
             optionFlag:"",
-            token:this.$store.getters.optuser.Authorization,
-            page:'1',
-            goodsId:this.$route.query.goods_id,             //商品id
-            goodsData:[],
-            commentList:[],
-            is_sku: false,  //规格弹窗
-
-            sku_stock_s: false,     //规格.库存状态
-            sku_stock: 0,   //规格.库存
-            selectArr: '',  //存放被选中的值
-            
-            shopItemInfo:{}, //存放要和选中的值进行匹配的数据
-
-            selectArarr:[],  //发给后台
-            
-            goods: [], //渲染的商品,
-
-            good:[],
-            sizeBox:false,       //规格选择框
+            token:this.$store.getters.optuser.Authorization,  
+            newSpecAttr:[],     //sku渲染数据
+            goodsData:[],       //所有数据
+            goodsSkuData:[],    //已有sku组合
+            // goodsSku:{},        //存放要和选中的值进行匹配的数据
+            selectArr:[],       //保存选中的值
+            selSkuId:'',
+            sel:[],
         }
     },
     created(){
-        // var that = this;
-        this._getGoodsData()        //商品信息
-        this._getCommentList()      //评论
+        var _that =this
+        _that._getGoodsData()
+        _that._getCommentList()
     },
     methods:{
+ 
+        selectGoods(it,index,key){                         //it 为newSpecAttr中的一项， index 为 newSpecAttr的索引，key 为res 的索引
+            var _that =this
+            if(it.inventory ===0){return}
+            if(_that.selectArr[index] === it.attr_id){   // 选中的规格数组组成:[蓝色，M码]
+                _that.$set(_that.selectArr,index,'')
+                // _that.formData.sku_id =''               //清空将要传给后台的SKU_ID
+               _that.selSkuId=''
+            }else{
+                _that.$set(_that.selectArr,index,it.attr_id)
+            }
+            if(_that.selectArr.length === _that.newSpecAttr.length){    //选取所有规格时，拿出sku_id
+                let str =''
+                _that.selectArr.forEach(item =>{
+                    str += ',' +item
+                })
+                str =str.slice(1)
+                // console.log(str)
+                //所有规格都选择时，进行匹配sku_id,此处数据用于传给后台
+                _that.goodsSkuData.forEach(item=>{    
+                    if(item.sku_attr1===str){
+                        // console.log(item.sku_attr1)
+                        _that.selSkuId=item.sku_id
+                    }
+                })
+                // console.log(_that.selSkuId)
+            }
+            _that.getData(_that.selectArr, _that.newSpecAttr, _that.goodsSkuData)
+        },
+        getData(selectArr, specAttr, goodSku){
+            // console.log(specAttr)
+            var _that =this
+            let checkLen = specAttr.length - 1    //3行规格 选2行时校验，2行规格，选1行时校验
+            if(selectArr <checkLen) {return}
+            specAttr.forEach((item,index)=>{
+                item.res.forEach((it,idx)=>{
+                    let cle =_that.deepCopy(selectArr)      // 这里进行循环组合， 例如：红色,m码，
+                    
+                    cle[index] =it.attr_id
+                    // console.log(cle[index])
+                    console.log(specAttr.length)
+                    let sku_attr1 =_that.getCid(cle,specAttr, goodSku)
+                    console.log(sku_attr1)
+                    let stock =_that.getStock(sku_attr1,specAttr, goodSku)
+                    // console.log(it.inventory)
+                    it.inventory=stock
+                    // console.log(stock)
+                })
+            })
+        },
 
-         /*****************************收藏、评论*********************8***** */
-        _timeStampForwardAate(time){            //时间戳转日期
+        getCid(cle,specAttr, goodSku){
+            if(cle.length !== specAttr.length){return}          // 首先进行判断，避免单纯的红色，蓝色也进行循环。
+            let cStr =cle.join(',')  
+            console.log(cStr)                          
+            for(let i in goodSku){                              // 对后台传来的sku组合进行循环遍历,若匹配上，则返回这个组合的skuName，例如：红色_M码 
+                if(goodSku[i].sku_attr1 === cStr){
+                    return goodSku[i].sku_attr1
+                }
+            } 
+        },
+
+        getStock(sku_attr1,specAttr, goodSku){
+            // console.log(sku_attr1,'sku_attr1')
+            if(!sku_attr1){return}
+            for(let a in specAttr){     
+                for(let b in specAttr[a].res){
+                    // 对每项Spu中children进行循环，若此children中包含sku_attr1，则返回当前组合的库存到当前Spu中
+                    if(specAttr[a].res[b].children.indexOf(sku_attr1) !== -1){
+                        for(let i in goodSku){
+                            if(goodSku[i].sku_attr1 === sku_attr1){
+                                // console.log(goodSku[i],'skuss')
+                                return goodSku[i]
+                            }
+                        }
+                    }
+                }
+            }
+            // console.log(specAttr, 'skuSpecskuSpec')
+        },
+
+
+
+        //重组要渲染的属性
+        regroupSpecAttr(){
+            var _that =this
+            console.log(_that.goodsSkuData)
+            _that.newSpecAttr.forEach(it =>{
+                it.res.forEach(i=>{
+                    _that.$set(i,'children',[])
+                    _that.goodsSkuData.forEach(item=>{
+                        if(item.sku_attr1.includes(i.attr_id)){
+                            i.children.push(item.sku_attr1)
+                        }
+                    })
+                })
+            })
+            // console.log(_that.goodsSkuData)
+        },
+
+       deepCopy(initalObj) {
+            // var obj = finalObj || {};
+            // for (var i in initalObj) {
+            //     var prop = initalObj[i];
+          
+            //     // 避免相互引用对象导致死循环，如initalObj.a = initalObj的情况
+            //     if(prop === obj) {
+            //         continue;
+            //     }
+          
+            //     if (typeof prop === 'object') {
+            //         obj[i] = (prop.constructor === Array) ? [] : Object.create(prop);
+            //     } else {
+            //         obj[i] = prop;
+            //     }
+            // }
+            // return obj;
+            var obj = {};    
+            for ( var i in initalObj) {
+                obj[i] = initalObj[i];
+            }    
+            return obj;
+        },
+        _getGoodsData(){
+            var _that =this;
+            _that.$axios.post('goods/goodsDetail',{
+                'goods_id':_that.goodsId,
+                'token':_that.token         
+            })
+            .then((res)=>{
+                var list = res.data;
+                // console.log(list)
+                if(list.status == 200){
+                    _that.goodsData =list.data
+                    _that.goodsSkuData=_that.goodsData.spec.goods_sku
+                    _that.newSpecAttr=_that.goodsData.spec.spec_attr
+                    _that.isCollect=this.goodsData.collection
+                    _that.regroupSpecAttr()
+                    console.log(_that.newSpecAttr)
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
+        },
+
+
+        _selecetSku(){
+            
+            var _that =this
+            var newSku =_that.selSkuId
+            for(var i in _that.goodsSkuData){
+                var sku_attr =_that.goodsSkuData[i].sku_attr1.split(",");
+                if(sku_attr==newSku.sort().toString()){
+                    console.log(_that.goodsSkuData[i])
+                    return _that.goodsSkuData[i]
+                }
+            }
+        },
+
+
+
+        /*****************************我的收藏*********************8***** */
+        _timeStampForwardAate(time){
             var date = new Date(time);
             var Y = date.getFullYear() + '-';
             var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
             var D = date.getDate() ;
+            // console.log(Y+M+D);
             return Y+M+D
         },
-        _getCommentList(){              //收藏
+        _getCommentList(){
             var _that =this;
             _that.$axios.post('Goods/comment_list',{
                 'goods_id':_that.goodsId,
@@ -244,16 +399,11 @@ export default {
                     for(var i in _that.commentList){
                         _that.commentList[i].times =_that._timeStampForwardAate(_that.commentList[i].add_time)
                     }
-                    var star = _that.commentList.star_rating
-                    for(var i=0; i<star;i++){
-                        stars.push(1);
-                    }
                 }else{
                     // _that.$toast(list.msg)
                 }
             })
         },
-
         changCollect(){
             var _that =this;
             _that.isCollect=!_that.isCollect
@@ -263,17 +413,55 @@ export default {
             })
             .then((res)=>{
                 var list = res.data;
+                console.log(list)
                 if(list.status == 200){
+           
                 }else{
                     _that.$toast(list.msg)
                 }
             })
         },
 
-        /*****************************商品详情*********************8***** */
+
+        /********************************************************** */
         showSizeBox(flag){
             this.sizeBox=true
             this.optionFlag =flag
+        },
+        confirmSize(){
+            var _that=this;
+            var sku_id="",inventory=0
+            console.log(_that._selecetSku)
+            if("undefined"!=typeof(_that._selecetSku)){
+                console.log('www')
+                sku_id =_that. _selecetSku().sku_id
+                inventory=_that. _selecetSku().inventory
+            }
+          
+            if(sku_id==""  || inventory==0){ this.$toast("改商品已售完"); return}
+            _that.$axios.post('cart/addCart',{
+                'sku_id':sku_id,
+                'cart_number':this.goodsNumber,
+                'token':this.$store.getters.optuser.Authorization 
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    if(this.optionFlag==0){
+                        this.$toast("添加成功,可直接去购物车下单");
+                    }else{
+                        sessionStorage.setItem('cartInfo',JSON.stringify({'cart_id': list.data.cart_id}))
+                        this.$router.push({
+                            path: '/pay/ConfirmOrder',
+                            name:'ConfirmOrder',
+                            // params: {'cart_id': list.data.cart_id}
+                        })
+                    }
+                    this.sizeBox=false
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
         },
         reducingNumber(){
             var val =parseInt(this.goodsNumber) - 1 
@@ -290,326 +478,8 @@ export default {
         addNumber(){
             var val =parseInt(this.goodsNumber) + 1
             this.goodsNumber=val
-        },
-        confirmSize(){           // 下单
-            var _that=this;
-            var sku_id =this.selectArarr.sku_id
-            if(sku_id==""){ this.$toast("改规格已售完"); return}
-            _that.$axios.post('cart/addCart',{
-                'sku_id':sku_id,
-                'cart_number':this.goodsNumber,
-                'token':this.$store.getters.optuser.Authorization 
-            })
-            .then((res)=>{
-                var list = res.data;
-                if(list.status == 200){
-                    if(this.optionFlag==0){
-                        this.$toast("添加成功,可直接去购物车下单");
-                    }else{
-                        sessionStorage.setItem('cartInfo',JSON.stringify({'cart_id': list.data.cart_id}))
-                        this.$router.push({
-                            path: '/pay/ConfirmOrder',
-                            name:'ConfirmOrder',
-                        })
-                    }
-                    this.sizeBox=false
-                }else{
-                    _that.$toast(list.msg)
-                }
-            })
-        },
+        }
 
-        _getGoodsData(){
-            var that = this;
-            var params = new URLSearchParams();
-            params.append('goods_id', this.goodsId);       //你要传给后台的参数值 key/value
-            params.append('token', this.token);       //你要传给后台的参数值 key/value
-            var that = this;
-            var url = "/goods/goodsDetail"
-            that.$axios({
-                method:"post",
-                url:url,
-                data: params
-            }).then((res)=>{
-                if(res.data.status ===200){
-                    that.goodsData =res.data.data; 
-                    that.goods = res.data.data;    //商品详情
-                    that.good =  res.data.data.spec.spec_attr; //商品规格
-                    that.isCollect=that.goods.collection
-                }
-                for (var i in that.goods.spec.goods_sku){  
-                    that.shopItemInfo[that.goods.spec.goods_sku[i].sku_attr1] = that.goods.spec.goods_sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
-                }
-                //初始化规格
-                this.initializeSpecification();
-            })
-        },
-        initializeSpecification(){
-            this.initSKU();         //初始化，得到SKUResult
-            var that = this;
-            for (let i = 0; i < that.good.length; i++) {
-                for (let j = 0; j < that.good[i].res.length; j++) {
-                    that.good[i].res[j].isSelect = false;
-                    that.good[i].res[j].isShow = true;
-                    if (that.shopItemInfo[that.good[i].res[j].attr_id] === null) {      //如果一开始库存为0 默认不可选
-                        this.$set(that.good[i].res[j],'isShow',false)
-                        this.$set(that.good[i].res[j],'isSelect',true)
-                    }
-                }
-            }
-        },
-          //获得对象的key
-        getObjKeys(obj) {
-        if (obj !== Object(obj)) throw new TypeError("Invalid object");
-        var keys = [];
-        for (var key in obj)
-            if (Object.prototype.hasOwnProperty.call(obj, key))
-            keys[keys.length] = key;
-                return keys;
-        },
-        add2SKUResult(combArrItem, sku) {       //把组合的key放入结果集SKUResult
-            var key = combArrItem.join(";");
-            if (this.shopItemInfo[key]) {
-                //SKU信息key属性·
-                this.shopItemInfo[key].inventory += sku.inventory;
-                this.shopItemInfo[key].prices.push(sku.price);
-            } else {
-                this.shopItemInfo[key] = {
-                goods_id:sku.goods_id,      //商品Id
-                sku_id:sku.sku_id,          //skuId  
-                inventory: sku.inventory,   //库存
-                prices: [sku.price],        //sku价格
-                sku_attr:sku.sku_attr       //sku组合
-                };
-            }
-        },
-        //初始化得到结果集
-        initSKU() {
-            var i,j,skuKeys = this.getObjKeys(this.shopItemInfo);
-            for (i = 0; i < skuKeys.length; i++) {
-                var skuKey = skuKeys[i];                                //一条SKU信息key
-                var sku = this.shopItemInfo[skuKey];                    //一条SKU信息value
-                var skuKeyAttrs = skuKey.split(",");                    //SKU信息key属性值数组
-                skuKeyAttrs.sort(function(value1, value2) {
-                    return parseInt(value1) - parseInt(value2);
-                });
-                //对每个SKU信息key属性值进行拆分组合
-                var combArr = this.combInArray(skuKeyAttrs);
-                for (j = 0; j < combArr.length; j++) {
-                    this.add2SKUResult(combArr[j], sku);
-                }
-                this.shopItemInfo[skuKeyAttrs.join(";")] = {         //结果集接放入SKUResult
-                    goods_id:sku.goods_id,                           //商品Id
-                    sku_id:sku.sku_id,                               //skuId
-                    inventory: sku.inventory,                       //库存
-                    prices: [sku.price],                            //sku价格
-                    sku_attr:sku.sku_attr                           //sku组合
-                };
-            }
-        },
-
-        /**
-         * 从数组中生成指定长度的组合
-         * 方法: 先生成[0,1...]形式的数组, 然后根据0,1从原数组取元素，得到组合数组
-         */
-        combInArray(aData) {
-        if (!aData || !aData.length) {return [];}
-            var len = aData.length;
-            var aResult = [];
-            for (var n = 1; n < len; n++) {
-                var aaFlags = this.getCombFlags(len, n);
-                while (aaFlags.length) {
-                    var aFlag = aaFlags.shift();
-                    var aComb = [];
-                    for (var i = 0; i < len; i++) {
-                        aFlag[i] && aComb.push(aData[i]);
-                    }
-                    aResult.push(aComb);
-                }
-            }
-            return aResult;
-        },
-
-        /**
-         * 得到从 m 元素中取 n 元素的所有组合
-         * 结果为[0,1...]形式的数组, 1表示选中，0表示不选
-         */
-        getCombFlags(m, n) {
-            if (!n || n < 1) { return [];}
-            var aResult = [];
-            var aFlag = [];
-            var bNext = true;
-            var i, j, iCnt1;
-            for (i = 0; i < m; i++) {
-                aFlag[i] = i < n ? 1 : 0;
-            }
-            aResult.push(aFlag.concat());
-            while (bNext) {
-                iCnt1 = 0;
-                for (i = 0; i < m - 1; i++) {
-                    if (aFlag[i] == 1 && aFlag[i + 1] == 0) {
-                        for (j = 0; j < i; j++) {
-                            aFlag[j] = j < iCnt1 ? 1 : 0;
-                        }
-                        aFlag[i] = 0;
-                        aFlag[i + 1] = 1;
-                        var aTmp = aFlag.concat();
-                        aResult.push(aTmp);
-                        if (aTmp.slice(-n).join("") .indexOf("0") == -1) {
-                            bNext = false;
-                        }
-                        break;
-                    }
-                    aFlag[i] == 1 && iCnt1++;
-                }
-            }
-            return aResult;
-        },
-        
-        /*商品条件筛选*/
-        tabInfoChange(n,index,cid,$event) {
-            var self = this
-            let orderInfo = this.good; /*所有规格**所有规格*/
-            let orderInfoChild = this.good[n].res; /*当前点击的规格的所有子属性内容*/
-            if (orderInfoChild[index].isShow == true) {          //选中自己，兄弟节点取消选中
-                if (orderInfoChild[index].isSelect == true) {
-                    orderInfoChild[index].isSelect = false;
-                        // this.sku_num = 1,  //只要取消选中 商品选择数量自动默认为1
-                        this.pitch=true;
-                } else {
-                    for (let i = 0; i < orderInfoChild.length; i++) {
-                        orderInfoChild[i].isSelect = false;
-                        this.pitch=true;
-                    }
-                    orderInfoChild[index].isSelect = true;
-                    this.pitch=false; 
-                }
-            }
-            self.$forceUpdate(); //重绘
-            let li = []
-            for(let i = 0; i < this.good.length; i++){          //已选择的显示已选择的规格
-                for(let j = 0; j < this.good[i].res.length; j++){
-                    if(this.good[i].res[j].isSelect==true){
-                        this.pitch=false;
-                        li.push(this.good[i].res[j].attr_name)
-                    }
-                }
-                this.selectArr=li.join('、')
-            }
-        
-            // //已经选择的节点
-            let haveChangedId = [];
-            for (let i = 0; i < this.good.length; i++) {
-                for (let j = 0; j < this.good[i].res.length; j++) {
-                if (this.good[i].res[j].isSelect == true) {
-                    haveChangedId.push(this.good[i].res[j].attr_id);
-                    
-                }
-                }
-            }
-            if (haveChangedId.length) {
-                //点击显示库存
-                
-                this.sku_stock_s = true;
-                //获得组合key价格
-        
-                haveChangedId.sort(function(value1, value2) {
-                return parseInt(value1) - parseInt(value2);
-                });
-                var len = haveChangedId.length;
-                this.sku_stock = this.shopItemInfo[haveChangedId.join(";")].inventory  //库存
-                //用已选中的节点验证待测试节点
-                let daiceshi = []; //待测试节点
-                let daiceshiId = [];
-                for (let i = 0; i < this.good.length; i++) {
-                for (let j = 0; j < this.good[i].res.length; j++) {
-                    if (this.good[n].res[index].attr_id != this.good[i].res[j].attr_id ) {
-                    daiceshi.push({
-                        index: i,
-                        cindex: j,
-                        id: this.good[i].res[j].attr_id
-                    }) ;
-                    daiceshiId.push(this.good[i].res[j].attr_id);
-                    }
-                    if(this.good[n].res[index].attr_id.length === this.good[i].res[j].attr_id.length){   //如果规格相等的
-                    daiceshi.push({
-                        index: i,
-                        cindex: j,
-                        id: this.good[i].res[j].attr_id
-                    }) ;
-                    daiceshiId.push(this.good[i].res[j].attr_id);
-                    }
-                }
-                }
-                if(haveChangedId.length===1){
-                
-                }else{
-                    for (let i = 0; i < haveChangedId.length; i++) {
-                        var indexs = daiceshiId.indexOf(haveChangedId[i]);
-                        if (indexs > -1) {
-                            daiceshi.splice(indexs, 1);
-                        }
-                    }
-                }
-                for (let i = 0; i < daiceshi.length; i++) {
-                    let testAttrIds = [];                     //从选中节点中去掉选中的兄弟节点
-                    let siblingsId = "";
-                    for (let m = 0; m < this.good[daiceshi[i].index].res.length; m++) {
-                        if (this.good[daiceshi[i].index].res[m].isSelect == true) {
-                        siblingsId = this.good[daiceshi[i].index].res[m].attr_id;
-                        }
-                    }
-                    if (siblingsId != "") {
-                        for (let j = 0; j < len; j++) {
-                        haveChangedId[j] != siblingsId && testAttrIds.push(haveChangedId[j]);
-                        }
-                    } else {
-                        testAttrIds = haveChangedId.concat();
-                    }
-                    testAttrIds = testAttrIds.concat(
-                        this.good[daiceshi[i].index].res[daiceshi[i].cindex].attr_id
-                    );
-                    testAttrIds.sort(function(value1, value2) {
-                        return parseInt(value1) - parseInt(value2);
-                    });
-                    if (!this.shopItemInfo[testAttrIds.join(";")] ) {
-                        this.good[daiceshi[i].index].res[
-                        daiceshi[i].cindex
-                        ].isShow = false;
-                        this.good[daiceshi[i].index].res[
-                        daiceshi[i].cindex
-                        ].isSelect = false;
-                    } else {
-                        this.good[daiceshi[i].index].res[
-                        daiceshi[i].cindex
-                        ].isShow = true;
-
-                        //如果库存 == 0 的时候 sku组合不可选
-                        if(this.shopItemInfo[testAttrIds.join(";")].inventory == 0){
-                        this.good[daiceshi[i].index].res[
-                        daiceshi[i].cindex
-                        ].isShow = false;
-                        }
-                        this.selectArarr =  this.shopItemInfo[testAttrIds.join(";")]    
-                    }
-                }
-            } 
-            else {
-                this.sku_stock = 0 ;             //设置默认库存 
-                this.sku_stock_s = false;        //设置默认隐藏库存
-                //设置属性状态
-                for (let i = 0; i < this.good.length; i++) {
-                    for (let j = 0; j < this.good[i].res.length; j++) {
-                        if (this.shopItemInfo[this.good[i].res[j].attr_id]) {
-                        this.good[i].res[j].isShow = true;
-                        } else {
-                        this.good[i].res[j].isShow = false;
-                        this.good[i].res[j].isSelect = true;
-                        }
-                    }
-                } 
-            }
-        },
     }
 }
 </script>
@@ -872,19 +742,12 @@ a
                     .order-sku
                          background #f3f3f3  
                          color:#151515
-                   .chosed 
-                        background: #d0021b !important
-                        border-color: #e10
-                        color: #fff !important
-                
-                    .noneActive
-                        background: silver
-                        border-color: #e0e0e0
-                        opacity: 0.4
-                        color: #000
-                        pointer-events: none
-                    
-                        
+                    .sku-active
+                        background #ff0000
+                        color #fff
+                    .no-sku
+                        background: #cacaca;
+                        color: #fff;
                 .box-list2
                     display flex
                     justify-content space-between 

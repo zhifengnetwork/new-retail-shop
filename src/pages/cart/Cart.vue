@@ -9,9 +9,9 @@
        <div v-show="list.length>0" class="c-wrap">
             <div class="conter">
                 <div class="c-list-" v-for="(item,key) in list" :key="key">
-                    <div class="check"><van-checkbox v-model="item.selected==0" :check ="item.selected==0" @click="selectGoods($event,key)"></van-checkbox></div>
+                    <div class="check"><van-checkbox v-model="item.selected" :check ="item.selected==0" @click="selectGoods($event,key)"></van-checkbox></div>
                     <div class="-list-img">
-                        <router-link to="/Details"><img :src="item.img" /></router-link>
+                        <router-link :to="'/Details?goods_id='+item.goods_id"><img :src="item.img" /></router-link>
                     </div>
                     <div class="goods-info">
                         <router-link to="/Details"><p class="-info-msg">{{item.goods_name}}</p></router-link>
