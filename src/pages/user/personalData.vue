@@ -9,11 +9,12 @@
 			<div class="nom_wrap">
                 <div class="item_wrap">
                         <div class="text">头像</div>
-                        <!-- <van-uploader :after-read="onRead">    
+                        <van-uploader :after-read="onRead">    
                             <div class="img">
-                                <img src="/static/images/user/002.png"/>
+                                <img :src="userImg" alt=""/>
                             </div>
-                        </van-uploader> -->
+                            <i class="iconfont icon-xiangyoujiantou"></i>
+                        </van-uploader>
                 </div>
                 <router-link class="my_look" to="/user/modifyUserName">
                     <div class="item_wrap">
@@ -52,28 +53,58 @@
 			}
         },
         methods:{
-            // unlogin(){
-            //     this.$store.commit('del_token')
-            //     this.$router.push({
-            //         path:'/Login',
-
-            //     })
-            // },
+            onRead(file) {
+                var url = "/user/updateTou"
+                var params = new URLSearchParams();
+                params.append('image',file.content);// 传给后台的参数值
+                params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+                this.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
+                })
+                .then((res)=>{
+                    console.log(res)
+                    if(res.data.status ===200){
+                        this.userImg = res.data.data;
+                        console.log(this.userImg)
+                        Toast(res.data.msg)
+                    }else{
+                        Toast(res.data.msg)
+                    }
+                })
+                
+            },
             //退出登录
             quitOut() {
+                var url = '/user/logout'
+                var params = new URLSearchParams();
+                    params.append('token', this.$store.getters.optuser.Authorization); //传给后台的参数值 key/value
                 Dialog.confirm({
                     title: '温馨提示',
                     message: '你确定要退出登录?'
                 }).then(() => {
-                    Toast('退出成功')
-                    this.$store.commit('del_token'); //token，清除它;
-                    setTimeout(() => {
-                        this.$router.push("/Login");
-                    }, 1000);
+                    this.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
+                }).then((res)=>{
+                    if (res.data.status === 200){
+                        Toast(res.data.msg);
+                        this.$store.commit('del_token'); //token，清除它;
+                        setTimeout(() => {
+                            this.$router.push("/Login");
+                        }, 1000);
+                    } else {
+                        Dialog.alert({
+                            message:res.data.msg
+                        })
+                    }
+                });
                 }).catch(() => {
                     // on cancel
                 })
-            }
+            },
         },
 		components: {
 			DataHeader,

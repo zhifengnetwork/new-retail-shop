@@ -98,10 +98,10 @@ export default {
     // },
     created() {
         this.modify();
-        this.codes();
+        this.codes();// 获取省、市、区接口
     },
     mounted() {
-
+        
     },
     methods:{
         // 省市区上拉
@@ -110,15 +110,16 @@ export default {
         },
         // 地区确定选择
         onAddrConfirm(val){  
-            console.log(val)
             this.show = false;
             this.address = val[0].name+ val[1].name +val[2].name
-            this.code =val[2].code
+            this.code =val[2].code// 传给后台的district-区id
+            console.log(this.code)
         },
         // 地区取消选择
         onAddrCancel(){  
             this.show = false
         },
+        // 保存按钮
         onSave(addressData){
             var _that=this
             _that.detailAddress =_that.$refs.detailAddress.innerText
@@ -132,19 +133,19 @@ export default {
                 'mobile':_that.userMobile,
                 'is_default':_that.checked,
                 'district':_that.code,
-                //'city':_that.city,
                 'address':_that.detailAddress,
             })
             .then((res)=>{
                 _that.$toast('添加成功')                
                 setTimeout(() => {
-                    // _that.$router.push("/user/Address");
+                    _that.$router.push("/user/Address");
                 }, 1000);
             })
             .catch( (error) => {
                 alert("请求错误:" + error)
             })
         },
+        // 判断输入
         _verifyUserInfo(){
             var _that =this
             var detailAddress =_that.$refs.detailAddress.innerText
@@ -167,6 +168,7 @@ export default {
             }
             return true
         },
+
         modify() {
             var url = "/address/addressList"
             var that = this
@@ -178,7 +180,6 @@ export default {
                 params.append('mobile',that.userMobile);
                 params.append('is_default',that.checked);
                 params.append('address_id','');
-                // params.append('area_type',that.area_type)
             this.$axios({
                 method:"post",
                 url:url,
@@ -188,24 +189,20 @@ export default {
                 console.log(res)
                 if(res.data.status ===200){
                     that.arrList = res.data
-                    // console.log(that.arList)
                 }
                 console.log(that.arrList)
             })
         },
+        // 获取省、市、区接口
         codes() {
             var url = '/user/get_address'
             var params = new URLSearchParams();
                 params.append('token', this.$store.getters.optuser.Authorization);//要传给后台的参数值 key/value //token
-                //params.append('code',this.code);
-                // params.append('area_name',this.area_name);
-                // params.append('area_type',this.area_type)
             this.$axios({
                 method:"post",
                 url:url,
                 data:params
             }).then((res)=>{
-                console.log(res)
                 if(res.data.status === 200){
                     this.areaList = res.data.data
                 }
