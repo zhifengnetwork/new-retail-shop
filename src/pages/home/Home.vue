@@ -127,7 +127,6 @@ export default {
 					this.noticeData = res.data.data.announce;
 					this.hotGoods = res.data.data.hot_goods;
 					this.recommendData = res.data.data.recommend_goods;
-					console.log(this.recommendData)
                 }else{
 					this.$toast(res.data.msg)
 				}
