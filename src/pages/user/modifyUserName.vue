@@ -7,24 +7,55 @@
 		</Name-Header>
         <div class="content">
             <div class="inp_wrap">
-                <input type="text" placeholder="输入修改用户名"/>
+                <input type="text" placeholder="输入修改用户名" v-model="userName"/>
             </div>
 			<!-- 确认按钮 -->
-			<div class="btn">确认修改</div>
+			<div class="btn" @click="modify(userName)">确认修改</div>
 		</div>
 
 	</div>
 </template>
 
 <script>
-	import NameHeader from "@/pages/common/header/TopHeader"
+    import NameHeader from "@/pages/common/header/TopHeader"
+    import { Toast } from 'vant'
 	export default {
 		name: "modifyUserName",
 		data() {
 			return{
-                
+                userName:''
 			}
-		},
+        },
+        methods: {
+            // 修改用户名
+            modify(name) {
+                if(name === '') {
+                    Toast('用户昵称不能为空!')
+                    return
+                } else {
+                    var url = '/user/edit_name'
+                    var params = new URLSearchParams();
+                        params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+                        params.append('realname', name);
+                    this.$axios({
+                        method:"post",
+                        url:url,
+                        data:params
+                    }).then((res)=>{
+                        console.log(res)
+                        if(res.data.status === 200){
+                            this.userName = name
+                            Toast('修改成功')
+                            setTimeout(() => {
+                                this.$router.push("/user/personalData");
+                            }, 1000);
+                        } else {
+                            Toast(res.data.msg)
+                        }
+                    })
+                }
+            },
+        },
 		components: {
 			NameHeader,
 		},

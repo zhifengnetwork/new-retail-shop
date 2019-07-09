@@ -11,7 +11,7 @@
                     <div class="center_box">
                         <p class="can">金额</p>
                         <div class="sum">
-                            <span>￥</span><span>10014.52</span>
+                            <span>￥</span><span>{{the.remainder_money}}</span>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,8 @@
 </template>
 
 <script>
-	import AccHeader from "@/pages/common/header/TopHeader"
+    import AccHeader from "@/pages/common/header/TopHeader"
+    import { Toast } from 'vant'
 	export default {
         name: 'theAccountBalance',
         components: {
@@ -53,9 +54,34 @@
 		},
 		data() {
 			return{
-                
+                the:[],
 			}
-		},
+        },
+        mounted() {
+            this.Acc();
+        },
+        methods: {
+            // 余额
+            Acc() {
+                var url = "/user/user_remainder"
+                var params = new URLSearchParams();
+                params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+                this.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
+                })
+                .then((res)=>{
+                    console.log(res)
+                    if(res.data.status ===200){
+                        this.the = res.data.data;
+                        console.log(this.the)
+                    }else{
+                        Toast(res.data.msg)
+                    }
+                })
+            },
+        }
 	}
 </script>
 
