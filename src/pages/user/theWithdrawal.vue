@@ -51,6 +51,7 @@
 
 <script>
 	import TxHeader from "@/pages/common/header/TopHeader"
+	import { Toast } from 'vant'
 	export default {
         name: 'theWithdrawal',
 		data() {
@@ -61,7 +62,31 @@
 		components: {
 			TxHeader,
 		},
-		
+		mounted() {
+			this.detailList();
+		},
+		methods: {
+			// 明细列表
+			detailList() {
+                var url = "user/withdrawal_list"
+                var params = new URLSearchParams();
+				params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+                this.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
+                })
+                .then((res)=>{
+                    console.log(res)
+                    if(res.data.status ===200){
+                        this.detList = res.data.data;
+                        console.log(this.detList)
+                    }else{
+                        Toast(res.data.msg)
+                    }
+                })
+            },
+		}
 	}
 </script>
 

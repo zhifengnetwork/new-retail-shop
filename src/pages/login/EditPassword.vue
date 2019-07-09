@@ -145,13 +145,13 @@ export default {
                 that.$toast('两次密码不一致')
                 return false
             }else{
-                // 请求数据
+                // 请求修改密码接口
+                var url = "/user/resetPassword"
                 var params = new URLSearchParams();
-                    params.append('phone', this.phone);       //你要传给后台的参数值 key/value
+                    params.append('phone', this.phone);       // 要传给后台的参数值
                     params.append('user_password', this.password);
                     params.append('confirm_password', this.password2);
-                    params.append('verify_code', this.verifyCode);
-                var url = "/user/resetPassword"  
+                    params.append('verify_code', this.verifyCode);  
                 this.$axios({
                     method: 'post',
                     url:url,

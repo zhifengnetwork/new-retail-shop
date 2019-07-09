@@ -162,17 +162,6 @@
                     }
                 })
             },
-            // mySharing(item) {
-            //     this.$router.push({
-            //         path:'/user/mySharing',query: {
-            //             // THEME_ID: item.avatar,
-            //             //THEME:item.realname
-            //         }
-            //     });
-            // }
-        },
-        created(){
-            //console.log(this.$store.getters.optuser.Authorization) //如何获取token
         },
         components: {
             userFooter,

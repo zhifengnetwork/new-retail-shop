@@ -284,7 +284,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
     .cart
         width 100%
         min-height 100%

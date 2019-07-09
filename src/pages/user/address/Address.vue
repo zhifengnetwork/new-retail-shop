@@ -20,7 +20,7 @@
                     </div>
                     <div class="operation-bar">
                         <router-link :to="'/user/EditAddress?address_id='+item.address_id">
-                            <span class="iconfont icon-bianji1 edit" @click="xiugai()"></span>
+                            <span class="iconfont icon-bianji1 edit"></span>
                         </router-link>
                         <span class="iconfont icon-guanbi del-icon" @click="delSite(item,index)"></span>
                     </div>
@@ -51,70 +51,36 @@ export default {
            siteList:[]
         }
     },
-    // mounted(){
-    //     this.requestData();//请求数据
-    // },
-    created() {
-        // 获取用户地址列表
-        var url = '/address/addressList'
-        var params = new URLSearchParams();
-        params.append('token', this.$store.getters.optuser.Authorization);       //你要传给后台的参数值 key/value
-        this.$axios({
-            method:"post",
-            url:url,
-            data:params
-        }).then((res)=>{
-            if(res.data.status === 200){
-                this.siteList = res.data.data
-                console.log(this.siteList)
-            } else if (res.data.status === -200){  
-                Dialog.alert({
-                    message:res.data.msg
-                }).then(()=>{
-                store.commit('del_token'); //token，清除它;
-                    setTimeout(() => {
-                        this.$router.push("/Login");  
-                    })
-                })
-            } else {
-                Dialog.alert({
-                    message:res.data.msg
-                })
-            }
-        })
+    mounted(){
+        this.requestData();// 请求用户地址列表数据
     },
     methods:{
-        // // 请求数据
-        // requestData(){
-        //     var _that =this;
-        //     _that.$axios.post('/address/addressList',{
-        //         token:this.$store.getters.optuser.Authorization             
-        //     })
-        //     .then((res)=>{
-        //         var list = res.data;
-        //         if(list.status == 200){
-        //             _that.addressList =list.data
-        //         }else{
-        //             _that.$toast(list.msg)
-        //         }
-        //     })
-        // },
-        // 修改地址按钮
-        modify(id) {        
-            this.$router.push({
-            name: 'AddAddress',
-                params: {
-                    address_id: id
+        // 请求用户地址列表数据
+        requestData() {
+            var url = '/address/addressList'
+            var params = new URLSearchParams();
+            params.append('token', this.$store.getters.optuser.Authorization);  
+            this.$axios({
+                method:"post",
+                url:url,
+                data:params
+            }).then((res)=>{
+                if(res.data.status === 200){
+                    this.siteList = res.data.data
+                    console.log(this.siteList)
+                } else {
+                    Dialog.alert({
+                        message:res.data.msg
+                    })
                 }
             })
         },
-
-        //删除地址
+        // 删除地址
         delSite(item,index) {
             var url = '/address/delAddress'
             var params = new URLSearchParams();
-                params.append('id',item.address_id);       //传给后台的参数值 key/value
-                params.append('token', this.$store.getters.optuser.Authorization); //传给后台的参数值 key/value
+                params.append('id',item.address_id);       // 传给后台的参数值 
+                params.append('token', this.$store.getters.optuser.Authorization); // 传给后台的参数值 
             Dialog.confirm({
                 title: '温馨提示',
                 message: '你确定要删除当前地址吗?',
@@ -125,8 +91,8 @@ export default {
                     data:params
                 }).then((res)=>{
                     if (res.data.status === 200){
-                        Toast(res.data.msg);
                         this.siteList.splice(index,1)
+                        Toast('删除成功');
                     } else {
                         Dialog.alert({
                             message:res.data.msg
@@ -147,7 +113,7 @@ export default {
     min-height 100vh
     background-color #ffffff
     .content
-        padding 108px 24px 0
+        padding 108px 24px 128px
         box-sizing border-box
         background-color #ffffff
         .address-list   

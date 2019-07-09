@@ -11,7 +11,7 @@
                         <div class="text">头像</div>
                         <van-uploader :after-read="onRead">    
                             <div class="img">
-                                <img :src="userImg" alt=""/>
+                                <img :src="userName.avatar" alt="" ref="userImg"/>
                             </div>
                             <i class="iconfont icon-xiangyoujiantou"></i>
                         </van-uploader>
@@ -20,7 +20,7 @@
                     <div class="item_wrap">
                         <div class="text">用户名</div>
                         <div class="name_wrap">
-                            <span class="name">风风火火</span>
+                            <span class="name">{{userName.realname}}</span>
                             <i class="iconfont icon-xiangyoujiantou"></i>
                         </div>
                     </div>
@@ -48,12 +48,17 @@
 		name: "personalData",
 		data() {
 			return{
-                //用户头像
-                userImg:'',
+                userImg:'',// 用户头像
+                userName:''// 用户名
 			}
+        },
+        created() {
+            this.Name();// 用户名
         },
         methods:{
             onRead(file) {
+                console.log(file)
+                this.$refs.userImg.src = file.content;
                 var url = "/user/updateTou"
                 var params = new URLSearchParams();
                 params.append('image',file.content);// 传给后台的参数值
@@ -68,12 +73,32 @@
                     if(res.data.status ===200){
                         this.userImg = res.data.data;
                         console.log(this.userImg)
-                        Toast(res.data.msg)
+                        Toast('头像上传成功')
                     }else{
                         Toast(res.data.msg)
                     }
                 })
                 
+            },
+            // 用户头像，名称接口
+            Name() {
+                var url = "/user/personal"
+                var params = new URLSearchParams();
+                params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+                this.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
+                })
+                .then((res)=>{
+                    console.log(res)
+                    if(res.data.status ===200){
+                        this.userName = res.data.data;
+                        console.log(this.userName)
+                    }else{
+                        Toast(res.data.msg)
+                    }
+                })
             },
             //退出登录
             quitOut() {

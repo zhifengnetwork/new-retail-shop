@@ -21,24 +21,12 @@
                 <!-- <router-link to="/user/selectPoint"> -->
                     <div class="form-group">
                         <div class="label">收货地址 </div>
-                            <!-- <div class="input-group" @click="toSelectAddress()">
-                                <p v-if="!this.$route.params.poiname">点击选择地址</p>
-                                <h3 v-if="this.$route.params.poiname">{{this.$route.params.poiname}}</h3>
-                                <p v-if="this.$route.params.poiaddress">{{this.$route.params.poiaddress}}</p>
-                            </div> -->
                             <div class="input-group">
-                                <!-- <p v-if="!this.location">点击选择地址</p>
-                                <template v-else>
-                                    <h3>{{this.location.poiname}}</h3>
-                                    <p>{{this.location.poiaddress}}</p>
-                                </template> -->
                                 <van-button type="primary" @click="showPopup">{{this.address}}</van-button>
                                 <van-popup v-model="show" position="bottom" :style="{ height: '50%' }">
                                     <van-area :area-list="areaList" :columns-num="3" @confirm="onAddrConfirm" @cancel="onAddrCancel" />
                                 </van-popup>
                             </div>
-                            
-                            
                         <div class="right-arrow"></div>
                     </div>
                 <!-- </router-link> -->
@@ -67,7 +55,7 @@
 
 <script>
 import TopHeader from "@/pages/common/header/TopHeader"
-import { Popup,Area } from 'vant'
+import { Popup,Area,Toast } from 'vant'
 export default {
     name:'addAddress',
     components: {
@@ -75,29 +63,21 @@ export default {
     },
     data(){
         return {
-            show: false,
-            checked: false,
+            show: false,// 地区上拉列表显示隐藏
+            checked: false,// 设置默认地址
             userName:'',// 收货人姓名
             areaList:{},// 选择地区上拉列表
             detailAddress:"",// 详细地址
             userMobile:'',// 手机号
-            address:'选择省/市/区',//点击地址按钮
+            address:'选择省/市/区',//点击选择省/市/区展示
             location:{},// 请选择地址
-            addressId:this.$route.query.address_id,
-            code:'',
+            addressId:'',// id
+            code:'',// 区id
+            address_id:0,// 传过来的id
         }
     },
-    //  created: function(){
-    //     var _that=this;
-    //     _that.location =  _that.$route.params.location      // 返回的位置信息赋值
-    //     var userInfo =JSON.parse(sessionStorage.getItem('userInfo'))
-    //     if(!(userInfo === null || userInfo ==="")){
-    //         this.userName =userInfo.userName
-    //         this.userMobile=userInfo.userMobile
-    //     }
-    // },
     created() {
-        this.modify();
+        // this.modify();
         this.codes();// 获取省、市、区接口
     },
     mounted() {
@@ -119,7 +99,7 @@ export default {
         onAddrCancel(){  
             this.show = false
         },
-        // 保存按钮
+        // 保存地址按钮
         onSave(addressData){
             var _that=this
             _that.detailAddress =_that.$refs.detailAddress.innerText
@@ -136,13 +116,13 @@ export default {
                 'address':_that.detailAddress,
             })
             .then((res)=>{
-                _that.$toast('添加成功')                
+                _that.$toast('地址添加成功')                
                 setTimeout(() => {
                     _that.$router.push("/user/Address");
                 }, 1000);
             })
             .catch( (error) => {
-                alert("请求错误:" + error)
+                Toast("请求错误:" + error)
             })
         },
         // 判断输入
@@ -168,31 +148,6 @@ export default {
             }
             return true
         },
-
-        modify() {
-            var url = "/address/addressList"
-            var that = this
-            var params = new URLSearchParams();
-                params.append('token', that.$store.getters.optuser.Authorization);//要传给后台的参数值 key/value //token
-                params.append('consignee',that.userName);
-                params.append('district',that.code);
-                params.append('address',that.detailAddress);
-                params.append('mobile',that.userMobile);
-                params.append('is_default',that.checked);
-                params.append('address_id','');
-            this.$axios({
-                method:"post",
-                url:url,
-                data:params
-            }).then((res)=>{
-                var that = this
-                console.log(res)
-                if(res.data.status ===200){
-                    that.arrList = res.data
-                }
-                console.log(that.arrList)
-            })
-        },
         // 获取省、市、区接口
         codes() {
             var url = '/user/get_address'
@@ -205,6 +160,8 @@ export default {
             }).then((res)=>{
                 if(res.data.status === 200){
                     this.areaList = res.data.data
+                } else {
+                    Toast(res.data.msg)
                 }
             })
         }

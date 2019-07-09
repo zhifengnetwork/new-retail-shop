@@ -272,7 +272,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
     .confrim-order
         .colorRed
             color:#f70a0a
