@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="operation-bar">
-                        <router-link to="/user/AddAddress">
+                        <router-link :to="'/user/EditAddress?address_id='+item.address_id">
                             <span class="iconfont icon-bianji1 edit" @click="xiugai()"></span>
                         </router-link>
                         <span class="iconfont icon-guanbi del-icon" @click="delSite(item,index)"></span>
