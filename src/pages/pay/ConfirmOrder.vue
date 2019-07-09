@@ -119,7 +119,7 @@ export default {
             goodsList:[],        //商品列表
             userNote:"",         //下单备注
             addrRes:{},          //地址列表
-            pay_type:0,         //支付方式
+            pay_type:1,         //支付方式
             carId:"",           //购物车id
             // order_id:'',         //订单id
             // payPassword:'',      //支付密码

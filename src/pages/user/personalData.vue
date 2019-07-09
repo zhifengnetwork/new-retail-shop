@@ -102,7 +102,6 @@
             },
             //退出登录
             quitOut() {
-                this.$store.commit('del_token'); //token，清除它;
                 var url = '/user/logout'
                 var params = new URLSearchParams();
                     params.append('token', this.$store.getters.optuser.Authorization); //传给后台的参数值 key/value
