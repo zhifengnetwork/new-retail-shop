@@ -176,6 +176,7 @@ export default {
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
+                    console.log(9999)
                     // this.order_id = list.data
                     // if(_that.pay_type == 1){
                     //     this.showPwd = true;

@@ -47,13 +47,14 @@
                 </div>
                 <div class="footer-b" @click="toPay()">结算({{updateNumber}})</div>
             </div>
-            <Navigate></Navigate>
+            
         </div>
        <!-- No INFO START -->
         <div v-show="list.length<1" class="no-info">
             <Nodata :nodatas="nodatas"></Nodata>
         </div>
        <!-- GOODS LIST START -->
+       <Navigate></Navigate>
     </div>
 </template>
 

@@ -28,11 +28,13 @@
             font-size:36px
             margin-bottom:90px
         .-info-btn
-            width: 460px
-            height: 100px
+            width: 350px
+            height: 80px
+            line-height 80px
             background: #ea2028
             border-radius: 50px
-            font-size 50px
+            font-size 42px
+            letter-spacing 2px
             color:#fff
 </style>
 
