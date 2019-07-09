@@ -10,7 +10,7 @@
                 <div class="name_wrap">
                     <p class="name">{{userList.realname}}</p>
                     <p class="id">ID：{{userList.id}}</p>
-                    <p class="joinDate">加入时间：{{userList.createtime}}</p>
+                    <p class="joinDate">加入时间：{{userList.createtime | formatDate}}</p>
                 </div>
             </div>
 
@@ -176,6 +176,30 @@
         },
         components: {
             userFooter,
+        },
+        filters: {
+            // 日期格式化
+            formatDate: function (time) {
+                let date = new Date(time*1000);
+                let y = date.getFullYear();
+
+                let MM = date.getMonth() + 1;
+                MM = MM < 10 ? ('0' + MM) : MM;
+
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+
+                let h = date.getHours();
+                h = h < 10 ? ('0' + h) : h;
+
+                let m = date.getMinutes();
+                m = m < 10 ? ('0' + m) : m;
+
+                let s = date.getSeconds();
+                s = s < 10 ? ('0' + s) : s;
+
+                return y + '-' + MM + '-' + d ;
+            }
         }
     };
 </script>

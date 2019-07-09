@@ -59,7 +59,6 @@ export default {
     },
 
     mounted(){
-        console.log(this.total)
         let url = 'Order/get_refund';
         this.$axios.post(url,{
             token:this.$store.getters.optuser.Authorization,
@@ -69,7 +68,8 @@ export default {
                 this.refundData = res.data.data.goods
                 this.totalNumber() //总件
                 this.totalPrice() //总金额
-                
+            }else{
+                this.$toast(res.data.msg)
             }
         })
     },
@@ -108,11 +108,14 @@ export default {
                     refund_reason:this.refund_reason,
                     token:this.$store.getters.optuser.Authorization,
                 }).then((res) => {
-                    this.$toast(res.data.msg)
-                    setTimeout( () => {
-                        // this.$router.push('/Order/ReturnGoods?order_id=' + order_id)
-                    },1000)
-                    
+                    if(res.data.status === 200){
+                        this.$toast(res.data.msg)
+                        setTimeout( () => {
+                            this.$router.push('/Order?type=0')
+                        },3000)
+                    }else{
+                        this.$toast(res.data.msg)
+                    }  
                 }) 
             }).catch(() => {
                 // on cancel

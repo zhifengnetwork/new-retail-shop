@@ -99,37 +99,38 @@ export default {
 		Navigate,
 		Popup
 	},
-
 	data() {
 		return {
 			baseUrl:'',
 			bannerData:[],
 			noticeData:[],
-			isShow:false,	//弹窗是否显示
+			isShow:false,//弹窗是否显示
 			hotGoods:[],
 			recommendData:[],
 			token: this.$store.getters.optuser.Authorization
 		};
 	},
 	created(){
+		
 		this.requestData();
 	},
 	methods:{
-
 		/**
 		 * 请求数据
 		 */
 		requestData(){
             let url = 'index/index';
-            this.$axios.get(url)
+            this.$axios.post(url)
             .then( (res) => {
-				let status = res.data.status
-                if(status === 200){
+                if(res.data.status === 200){
 					this.bannerData = res.data.data.banners;
 					this.noticeData = res.data.data.announce;
 					this.hotGoods = res.data.data.hot_goods;
 					this.recommendData = res.data.data.recommend_goods;
-                }
+					console.log(this.recommendData)
+                }else{
+					this.$toast(res.data.msg)
+				}
             })
             .catch((error) => {
                 alert('请求错误:'+ error)

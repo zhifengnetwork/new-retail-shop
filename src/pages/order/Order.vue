@@ -31,18 +31,20 @@
                         <span class="order-state" v-if="item.status===7">已退款</span>
                         <span class="order-state" v-if="item.status===8">拒绝退款</span>
                     </div>
-                    <div class="goods-item">
-                        <div class="img-wrap">
-                            <img :src="item.img" />
-                        </div>
-                        <div class="text">
-                            <h3>{{item.goods_name}}</h3>
-                            <div class="good-sku">
-                                <span class="sku-coll">{{item.spec_key_name}}</span>
-                                <span class="price">{{item.goods_price | formatMoney}}</span>
+                    <router-link :to="'/Order/OrderDetails?order_id=' + item.order_id">
+                        <div class="goods-item">
+                            <div class="img-wrap">
+                                <img :src="item.img" />
+                            </div>
+                            <div class="text">
+                                <h3>{{item.goods_name}}</h3>
+                                <div class="good-sku">
+                                    <span class="sku-coll">{{item.spec_key_name}}</span>
+                                    <span class="price">{{item.goods_price | formatMoney}}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </router-link>
                     <div class="total-bar">
                         <div class="total-count">共{{item.goods_num}}件商品 </div>
                         <div class="payment">
@@ -51,31 +53,39 @@
                         </div>
                     </div>
                     <div class="order-btn">
+                        <!-- 待付款 -->
                         <div v-if="item.status == 1">
                             <span class="btn" @click="cancelOrder(index,item.order_id,item.status)">取消订单</span>
                             <span class="btn red" @click="payment(item.order_id,item.pay_type)">去付款</span>
                         </div>
+                        <!-- 待发货 -->
                         <div v-if="item.status == 2">
                             <router-link :to="'/Order/ReturnRequest?order_id='+item.order_id"><span class="btn red">退款</span></router-link>
                         </div>
+                        <!-- 待收货 -->
                         <div v-if="item.status == 3">
                             <span class="btn">查看物流</span>
                             <span class="btn red" @click="confirmReceipt(index,item.order_id,item.status)">确定收货</span>
                         </div>
+                        <!-- 交易成功 -->
                         <div v-if="item.status == 4">
                             <span class="btn">查看物流</span>
-                            <router-link :to="'/Order/Evaluate?order_id='+item.order_id"><span class="btn red">{{item.comment == 0?'去评价':'追加评价'}}</span></router-link>
+                            <span class="btn red"><router-link :to="'/Order/Evaluate?order_id='+item.order_id">{{item.comment == 0?'去评价':'追加评价'}}</router-link></span>
                         </div>
+                        <!-- 已取消 -->
                         <div v-if="item.status == 5">
                             <span class="btn" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
                             <router-link :to="'/Details?goods_id='+item.goods_id"><span class="btn red">重新购买</span></router-link>
                         </div>
+                        <!-- 待退款 -->
                         <div v-if="item.status == 6">
                             <span class="btn red" @click="cancelRefund(index,item.order_id,item.status)">取消退款</span>
                         </div>
+                        <!-- 已退款 -->
                         <div v-if="item.status == 7">
                             <span class="btn red"></span>
                         </div>
+                        <!-- 拒绝退款 -->
                          <div v-if="item.status == 8">
                             <span class="btn red"></span>
                         </div>
@@ -472,6 +482,9 @@ export default {
                 },
                 {
                     tabTitle:"待评价"
+                },
+                {
+                    tabTitle:"50元专区"
                 }
             ],
             baseUrl:'',// 商品图片路径
@@ -615,9 +628,9 @@ export default {
             else if(type == 3){
                 this.$toast("调用支付宝支付接口");
             }
-            else if(type == 4){
-                this.$toast("货到付款");
-            }
+            // else if(type == 4){
+            //     this.$toast("货到付款");
+            // }
         },
         /**
          * 取消申请退款
@@ -807,6 +820,8 @@ export default {
                 border-radius 8px
                 box-shadow 0 0 8px #e6e6e6
                 margin-bottom 14px
+                a
+                    display block
                 .card-head
                     height 55px
                     border-bottom 2px solid #e6e6e6
@@ -837,6 +852,7 @@ export default {
                         h3
                             font-size 24px
                             line-height 34px
+                            color #151515
                             font-weight normal
                             overflow hidden
                             text-overflow ellipsis
@@ -900,6 +916,8 @@ export default {
                             color #f20c0c
                             border-color #f20c0c
                             background-color #faf8f5
+                            a
+                                color #f20c0c
             .end-wrap
                 font-size 18px
                 color #888888

@@ -35,6 +35,8 @@ import Payment from '@/pages/sell/Payment'
 
 // 订单列表
 import Order from '@/pages/order/Order'
+// 订单详情
+import OrderDetails from '@/pages/order/OrderDetails'
 // 提交评价
 import Evaluate from '@/pages/order/Evaluate'
 // 退货
@@ -44,7 +46,11 @@ import ReturnRequest from '@/pages/order/ReturnRequest'
 
 // 确认订单
 import ConfirmOrder from '@/pages/pay/ConfirmOrder'
+// 支付方式
+import PayWay from '@/pages/pay/PayWay'
+// 支付成功
 import PaySucceed from '@/pages/pay/PaySucceed'
+// 支付失败
 import PayFail from '@/pages/pay/PayFail'
 
 
@@ -203,6 +209,12 @@ const router= new Router({
 			name: 'Order',
 			component:() => import('@/pages/order/Order'),
 		},
+		// 订单详情
+		{
+			path: '/Order/OrderDetails',
+			name: 'OrderDetails',
+			component:() => import('@/pages/order/OrderDetails'),
+		},
 		// 提交评价
 		{
 			path: '/Order/Evaluate',
@@ -230,6 +242,12 @@ const router= new Router({
 			path: '/Pay/ConfirmOrder',
 			name: 'ConfirmOrder',
 			component: (resolve) => require(['@/pages/pay/ConfirmOrder'],resolve),
+		},
+		// 支付方式
+		{
+			path: '/Pay/PayWay',
+			name: 'PayWay',
+			component: (resolve) => require(['@/pages/pay/PayWay'],resolve),
 		},
 		// 支付成功
 		{

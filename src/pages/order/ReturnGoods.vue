@@ -6,32 +6,32 @@
         <div class="height-88"></div>
         <!-- 内容 -->
         <div class="content">
-            <div class="item-card">
+            <div class="item-card" v-for="(item,index) in returnGoods">
                 <div class="card-head">
-                    <span class="order-date">2019-02-03 00:28:20</span>
+                    <span class="order-date">{{item.add_time}}</span>
                     <span class="order-state">退货成功</span>
                 </div>
                 <div class="goods-item">
                     <div class="img-wrap">
-                        <img src="/static/images/order/00order-goods-img01.png" />
+                        <router-link :to="'/Details?goods_id='+item.goods_id"><img :src="item.img" /></router-link>
                     </div>
                     <div class="text">
-                        <h3>Haoduoyi2018秋季新品女装 欧美宽松休闲套头卫衣欧美宽松休闲套头卫衣欧美宽松休闲套头卫衣</h3>
+                        <router-link :to="'/Details?goods_id='+item.goods_id"><h3>{{item.goods_name}}</h3></router-link>
                         <div class="good-sku">
-                            <span class="sku-coll">颜色:蓝色；尺寸:M码</span> 
-                            <span class="price">￥368</span>
+                            <span class="sku-coll">{{item.spec_key_name}}</span> 
+                            <span class="price">{{item.goods_price}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="total-bar">
-                    <div class="total-count">共2件商品 </div>
+                    <div class="total-count">共{{item.goods_num}}件商品 </div>
                     <div class="payment">
                         <span class="label">合计 : </span>
-                        <span class="price">￥736.00</span>
+                        <span class="price">{{(item.goods_num * item.goods_price) | formatMoney}}</span>
                     </div>
                 </div>
             </div>
-            <div class="item-card">
+            <!-- <div class="item-card">
                 <div class="card-head">
                     <span class="order-date">2019-02-03 00:28:20</span>
                     <span class="order-state">退货成功</span>
@@ -55,7 +55,7 @@
                         <span class="price">￥736.00</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- 数据加载完提示 -->
             <div class="end-wrap">
@@ -74,7 +74,40 @@ export default {
     components: {
         TopHeader
     },
-   
+    data(){
+        return{
+            returnGoods:[],
+            page:1,//页数
+        }
+    },
+    mounted(){
+        this.requestData();
+    },
+    methods:{
+        requestData(){
+            let url = 'Order/order_list';
+            let type = 'tk';
+            this.$axios.post(url,{
+                token:this.$store.getters.optuser.Authorization,
+                page:this.page,
+                type:type
+            }).then((res) => {
+                if(res.data.status === 200){
+                    this.returnGoods = res.data.data;
+                }else{
+                    this.$toast(res.data.msg)
+                }
+            })
+
+        }
+        
+    },
+    filters: {
+        //格式化金钱
+        formatMoney:function(val){
+            return "¥" + parseInt(val).toFixed(2)
+        }
+    }
 }
 </script>
 
@@ -118,6 +151,7 @@ export default {
                 h3
                     font-size 28px
                     line-height 40px
+                    color #151515
                     font-weight normal
                     margin-bottom 30px
                     overflow hidden
