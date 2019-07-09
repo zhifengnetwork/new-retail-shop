@@ -96,28 +96,28 @@
 			}
         },
         mounted() {
-            this.with();
+            // this.with();
         },
         methods:{
-            with() {
-                var url = "user/withdrawal"
-                var params = new URLSearchParams();
-                params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
-                this.$axios({
-                    method:"post",
-                    url:url,
-                    data:params
-                })
-                .then((res)=>{
-                    console.log(res)
-                    if(res.data.status ===200){
-                        this.withItem = res.data.data;
-                        console.log(this.withItem)
-                    }else{
-                        Toast(res.data.msg)
-                    }
-                })
-            }
+            // with() {
+            //     var url = "user/withdrawal"
+            //     var params = new URLSearchParams();
+            //     params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+            //     this.$axios({
+            //         method:"post",
+            //         url:url,
+            //         data:params
+            //     })
+            //     .then((res)=>{
+            //         console.log(res)
+            //         if(res.data.status ===200){
+            //             this.withItem = res.data.data;
+            //             console.log(this.withItem)
+            //         }else{
+            //             Toast(res.data.msg)
+            //         }
+            //     })
+            // }
         }
 	}
 </script>
