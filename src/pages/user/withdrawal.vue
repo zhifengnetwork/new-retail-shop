@@ -29,7 +29,7 @@
 						<div class="sum_wrap" v-for="(list,index) in as" :key="index" v-show="cur===index">
 							<h4>提现金额</h4>
 							<!-- 支付宝账号编辑 -->
-							<router-link to="/user/alipay" v-if="cur===1">
+							<router-link to="/user/alipay">
 								<div class="fee_wrap">
 									<div class="fee">
                                         <span>周</span>
@@ -74,7 +74,8 @@
 </template>
 
 <script>
-	import WithHeader from "@/pages/common/header/TopHeader"
+    import WithHeader from "@/pages/common/header/TopHeader"
+    import { Toast } from 'vant'
 	export default {
         name: 'withdrawal',
         components: {
@@ -83,7 +84,7 @@
 		data() {
 			return{
                 pay:[
-					{id:1,img:'/static/images/user/weixi.png'},
+					// {id:1,img:'/static/images/user/weixi.png'},
 					{id:2,img:'/static/images/user/zfb.png'},
 				],
 				as:[
@@ -93,7 +94,31 @@
                 //默认选中第一个
                 cur: 0
 			}
-		},
+        },
+        mounted() {
+            this.with();
+        },
+        methods:{
+            with() {
+                var url = "user/withdrawal"
+                var params = new URLSearchParams();
+                params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+                this.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
+                })
+                .then((res)=>{
+                    console.log(res)
+                    if(res.data.status ===200){
+                        this.withItem = res.data.data;
+                        console.log(this.withItem)
+                    }else{
+                        Toast(res.data.msg)
+                    }
+                })
+            }
+        }
 	}
 </script>
 

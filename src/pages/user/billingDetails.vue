@@ -53,6 +53,7 @@
 
 <script>
 	import BillHeader from "@/pages/common/header/TopHeader"
+	import { Toast } from 'vant'
 	export default {
         name: 'billingDetails',
 		data() {
@@ -83,9 +84,32 @@
 		components: {
 			BillHeader,
 		},
+		mounted() {
+			this.det();
+		},
 		methods: {
-             handleClick(index){
+            handleClick(index){
                 this.nowIndex = index;
+			},
+			// 账单列表
+			det() {
+                var url = "user/remainder_list"
+                var params = new URLSearchParams();
+				params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+                this.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
+                })
+                .then((res)=>{
+                    console.log(res)
+                    if(res.data.status ===200){
+                        this.detItem= res.data.data;
+                        console.log(this.detItem)
+                    }else{
+                        Toast(res.data.msg)
+                    }
+                })
             },
 		}
 	}

@@ -25,7 +25,7 @@
                 </div>
                 <!-- GOODS START -->
                 <div class="goods-list">
-                    <router-link to="/Details"  v-for="(item,index) in goodsList.goods_res" :key="index" class="g-list-a">
+                    <router-link :to="'/Details?goods_id='+item.goods_id"  v-for="(item,index) in goodsList.goods_res" :key="index" class="g-list-a">
                         <img class="-list-img" :src="item.img" />
                         <div class="-detial-">
                             <p class="-d-msg apostrophe">{{item.goods_name}} {{item.spec_key_name}}</p>
@@ -61,46 +61,37 @@
                     </div>
                 </div>
                 <!--  -->
-                <div class="goods-list goods-list2">
+                <!-- <div class="goods-list goods-list2">
                     <div class="goods-list-a" v-for="(pay,key) in goodsList.pay_type" :key="key">
                         <div class="-list-a-">
                             <span>{{pay.pay_name}}</span>
                             <div v-show="pay_type==1 && key==1">
                                 <p  class="-list2-msg">余额：{{goodsList.remainder_money}}</p>
-                                <!-- <div class="-list-a-a">
-                                    支付密码：
-                                    <van-cell-group>
-                                        <van-field v-model="payPassword" type="password" placeholder="请输入支付密码" />
-                                    </van-cell-group>
-
-                                </div> -->
-                                
                             </div>
-                            
                         </div>
                         <van-radio-group v-model="pay_type">
                             <van-radio  @change="this.pay_type ==pay.pay_type" :name="pay.pay_type"></van-radio>
                         </van-radio-group>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <!-- 密码输入框 -->
-            <van-popup v-model="showPwd" class="popup"  @click-overlay="hidePwd()">
+            <!-- <van-popup v-model="showPwd" class="popup"  @click-overlay="hidePwd()">
             <van-password-input
             :value="payPassword"
             info="密码为 6 位数字"
             @focus="showKeyboard = true"
             />
-            </van-popup>
+            </van-popup> -->
 
             <!-- 数字键盘 -->
-            <van-number-keyboard
+            <!-- <van-number-keyboard
             :show="showKeyboard"
             @input="onInput"
             @delete="onDelete"
             @blur="showKeyboard = false"
-            />
+            /> -->
 
             <!-- FOOTER START -->
             <div class="footer-height"></div>
@@ -128,12 +119,12 @@ export default {
             goodsList:[],        //商品列表
             userNote:"",         //下单备注
             addrRes:{},          //地址列表
-            pay_type:0,         //支付方式
+            pay_type:1,         //支付方式
             carId:"",           //购物车id
-            order_id:'',         //订单id
-            payPassword:'',      //支付密码
-            showPwd:false,
-            showKeyboard: false,
+            // order_id:'',         //订单id
+            // payPassword:'',      //支付密码
+            // showPwd:false,
+            // showKeyboard: false,
             token:this.$store.getters.optuser.Authorization,
         };
     },
@@ -185,13 +176,25 @@ export default {
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
-                    this.order_id = list.data
-                    if(_that.pay_type == 1){
-                        this.showPwd = true;
-                        this.showKeyboard = true;
-                    }else{
-                         _that.$toast({message:"下单成功,正在跳转...",duration:1000})
-                    }
+                    // this.order_id = list.data
+                    // if(_that.pay_type == 1){
+                    //     this.showPwd = true;
+                    //     this.showKeyboard = true;
+                    // }else{
+                        
+                    // }
+
+                    _that.$toast({message:"下单成功,正在跳转...",duration:1000})
+
+                    setTimeout(function(){
+                        this.$router.push({
+                            path: '/Pay/PayWay?order_id='+ist.data,
+                            name: 'PayWay',
+                            // params: {'cart_id': this.getSlectedGoodsCartID()}
+                        })
+                    },1100)
+                   
+                    
                 }else{
                     _that.$toast(list.msg)
                 }
@@ -201,41 +204,41 @@ export default {
         /**
          * 余额支付:输入密码
          */
-        onInput(key) {
-            var _that =this
-            _that.payPassword = (_that.payPassword + key).slice(0, 6);
-            if(_that.payPassword.length === 6){
-                // 关闭密码输入
-                _that.showKeyboard = false;
-                _that.showPwd = false;
-                _that.payPassword = '';
+        // onInput(key) {
+        //     var _that =this
+        //     _that.payPassword = (_that.payPassword + key).slice(0, 6);
+        //     if(_that.payPassword.length === 6){
+        //         // 关闭密码输入
+        //         _that.showKeyboard = false;
+        //         _that.showPwd = false;
+        //         _that.payPassword = '';
  
-                // 请求数据
-                let url = 'pay/payment';
-                _that.$axios.post(url,{
-                    token:_that.token,
-                    order_id:_that.order_id,
-                    pay_type:_that.pay_type
-                }).then((res)=>{
-                    if(res.data.status === 200){    
-                        setTimeout(() => {
-                            _that.$router.push('/Pay/PaySucceed')
-                        },2000)
+        //         // 请求数据
+        //         let url = 'pay/payment';
+        //         _that.$axios.post(url,{
+        //             token:_that.token,
+        //             order_id:_that.order_id,
+        //             pay_type:_that.pay_type
+        //         }).then((res)=>{
+        //             if(res.data.status === 200){    
+        //                 setTimeout(() => {
+        //                     _that.$router.push('/Pay/PaySucceed')
+        //                 },2000)
                         
-                    }else{
-                        // 余额支付失败
-                        // this.$toast(res.data.msg);
-                        // setTimeout(() => {
-                        //     console.log("支付失败，2s跳转到支付失败页面")
-                        //     this.$router.push('/Pay/PayFail')
-                        // },2000)
+        //             }else{
+        //                 // 余额支付失败
+        //                 // this.$toast(res.data.msg);
+        //                 // setTimeout(() => {
+        //                 //     console.log("支付失败，2s跳转到支付失败页面")
+        //                 //     this.$router.push('/Pay/PayFail')
+        //                 // },2000)
                            
-                    }
-                })
+        //             }
+        //         })
 
 
-            }
-        },
+        //     }
+        // },
         /**
          * 删除密码
          */
@@ -272,7 +275,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
     .confrim-order
         .colorRed
             color:#f70a0a

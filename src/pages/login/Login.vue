@@ -13,7 +13,7 @@
                     <i :class="isHide?'close-eyes':'open-eyes'"></i>
                 </div>
             </div>
-            <div class="btn" @click="saveUserInfo()">登录</div>
+            <div class="btn" :class="{'hiLine':phone!='', 'hiLine':password!=''}"  @click="saveUserInfo()">登录</div>
 
             <div class="jump-link">
                 <router-link to="/Register">注册账号</router-link>
@@ -56,10 +56,9 @@ export default {
                 if(list.status==200){
                     _that.$toast({message:"登陆成功,正在跳转...",duration:1000})
                     localStorage.removeItem('Authorization');
-                    var tokens = list.data.token
+                    var tokens =list.data.token
                     // var tokens ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEQyIsImlhdCI6MTU1OTYzOTg3MCwiZXhwIjoxNTU5Njc1ODcwLCJ1c2VyX2lkIjo3Nn0.YUQ3hG3TiXzz_5U594tLOyGYUzAwfzgDD8jZFY9n1WA'
                     _that.$store.commit('set_token',{Authorization: tokens})  //保存token
-                    console.log(list.data.id)
                     setTimeout(()=>{
                         _that.$router.push({path:'/Home',name:'Home'})
                     },1000)
@@ -168,6 +167,8 @@ export default {
             color #ffffff
             background linear-gradient(to right, #f9a775,#fb946a)
             margin-top 88px
+        .hiLine
+            background linear-gradient(to right, #f66716,#f94e08)
         .jump-link
             width 100%
             font-size 28px

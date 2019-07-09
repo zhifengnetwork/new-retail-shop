@@ -179,8 +179,8 @@ const router= new Router({
 		{
 			path: '/Cart',
 			name: 'Cart',
-			component:() => import('@/pages/cart/Cart'),
-			// meta:{requireAuth:true}
+			component: (resolve) => require(['@/pages/cart/Cart'],resolve),
+			meta:{requireAuth:true}
 		},
 
 		//50元专区支付
@@ -243,23 +243,26 @@ const router= new Router({
 			name: 'ConfirmOrder',
 			component: (resolve) => require(['@/pages/pay/ConfirmOrder'],resolve),
 		},
-		// 支付方式
+				// 支付方式
 		{
 			path: '/Pay/PayWay',
 			name: 'PayWay',
 			component: (resolve) => require(['@/pages/pay/PayWay'],resolve),
+			// meta:{requireAuth:true}
 		},
 		// 支付成功
 		{
 			path: '/Pay/PaySucceed',
 			name: 'PaySucceed',
 			component: (resolve) => require(['@/pages/pay/PaySucceed'],resolve),
+			// meta:{requireAuth:true}
 		},
 		// 支付失败
 		{
 			path: '/Pay/PayFail',
 			name: 'PayFail',
 			component: (resolve) => require(['@/pages/pay/PayFail'],resolve),
+			// meta:{requireAuth:true}
 		},
 
 		/**
@@ -268,13 +271,17 @@ const router= new Router({
 		{
 			path: '/User',
 			name: 'User',
-			component:() => import('@/pages/user/User'),
+			// component:() => import('@/pages/user/User'),
+			component: (resolve) => require(['@/pages/user/User'],resolve),
+			meta:{requireAuth:true}
 		},
 		// 个人资料
 		{
 			path: '/user/personalData',
 			name: 'personalData',
-			component:() => import('@/pages/user/personalData'),
+			// component:() => import('@/pages/user/personalData'),
+			component: (resolve) => require(['@/pages/user/personalData'],resolve),
+			// meta:{requireAuth:true}
 		},
 		// 预计收益
 		{
@@ -407,11 +414,11 @@ router.beforeEach((to,from,next) =>{
 		}else{
 			let token =localStorage.getItem('Authorization');
 			if(token === null || token === ''){		//判断是否有token
-				// Dialog.confirm({
-				// 	message: '亲，还没有登录哦!'
-				// }).then(() =>{
-				// 	next('/Login');
-				// })
+				Dialog.confirm({
+					message: '亲，还没有登录哦!'
+				}).then(() =>{
+					next('/Login');
+				})
 				next('/Login');
 			}else{
 				next()

@@ -9,11 +9,11 @@
             <div class="main">
                 <div class="img_head">
                     <div class="img">
-                        <img src="/static/images/user/002.png"/>
+                        <img :src="siteList.avatar"/>
                     </div>
                     <div class="name">
                         <span>我是</span>
-                        <span>风风火火</span>
+                        <span>{{siteList.realname}}</span>
                     </div>
                 </div>
                 <div class="mark_wrap">
@@ -38,7 +38,8 @@
 	name: "mySharing",
 	data() {
 		return {
-            link: 'https://baidu.com'//要跳转的路径或者显示的文字
+            link: 'https://baidu.com',// 要跳转的路径或者显示的文字
+            siteList:[]
         };
     },
     methods: {
@@ -51,18 +52,34 @@
                 height: 160,
                 text: that.link,//可以写路径或者文字，扫描后想要跳转的路径或者显示的文字
             })
+        },
+        // 接口
+        sharing() {
+            var url = '/user/personal'
+            var params = new URLSearchParams();
+            params.append('token', this.$store.getters.optuser.Authorization);  
+            this.$axios({
+                method:"post",
+                url:url,
+                data:params
+            }).then((res)=>{
+                if(res.data.status === 200){
+                    this.siteList = res.data.data
+                    console.log(this.siteList)
+                } else {
+                    Dialog.alert({
+                        message:res.data.msg
+                    })
+                }
+            })
         }
     },
     mounted () {
         this.qrcode(); //调用二维码生成的方法
+        this.sharing();
     },
 	components: {
         MyHeader,
-        // QRCode
-    },
-    created() {
-        this.clue_title = this.$route.query.THEME;   //线索标题
-        this.code = this.$route.query.CODE;    //关联事件编号
     },
 };
 </script>
@@ -125,6 +142,10 @@
                         margin 0 auto
                         width 318px
                         height 318px
+                        #qrcode
+                            margin 0 auto
+                            width 318px
+                            height 318px
             .touch
                 font-size 30px
                 text-align center
@@ -135,5 +156,5 @@ img
     display block
     margin 0 auto
     max-width 100%
-    height 100%                    
+    height 100%                        
 </style>
