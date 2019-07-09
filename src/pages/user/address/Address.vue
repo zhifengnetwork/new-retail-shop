@@ -99,12 +99,12 @@ export default {
         //         }
         //     })
         // },
-        //修改地址
-        xiugai() {        
+        // 修改地址按钮
+        modify(id) {        
             this.$router.push({
             name: 'AddAddress',
                 params: {
-                    address_id: 1055
+                    address_id: id
                 }
             })
         },
