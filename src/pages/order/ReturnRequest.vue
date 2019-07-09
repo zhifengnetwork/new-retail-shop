@@ -110,7 +110,7 @@ export default {
                 }).then((res) => {
                     this.$toast(res.data.msg)
                     setTimeout( () => {
-                        this.$router.push('/Order/ReturnGoods?order_id=' + order_id)
+                        // this.$router.push('/Order/ReturnGoods?order_id=' + order_id)
                     },1000)
                     
                 }) 

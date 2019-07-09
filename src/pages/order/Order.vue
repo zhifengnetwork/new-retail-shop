@@ -71,7 +71,7 @@
                             <router-link :to="'/Details?goods_id='+item.goods_id"><span class="btn red">重新购买</span></router-link>
                         </div>
                         <div v-if="item.status == 6">
-                            <span class="btn red"></span>
+                            <span class="btn red" @click="cancelRefund(index,item.order_id,item.status)">取消退款</span>
                         </div>
                         <div v-if="item.status == 7">
                             <span class="btn red"></span>
@@ -620,7 +620,7 @@ export default {
             }
         },
         /**
-         * 取消退款
+         * 取消申请退款
          */
         cancelRefund(index,order_id){
             this.$dialog.confirm({
@@ -629,10 +629,15 @@ export default {
             .then( () => {
                 let url = 'Order/cancel_refund';
                 this.$axios.post(url,{
-                    token:this.$store.getters.optuser.Authorization,
-                    order_id:this.order_id
+                    order_id:order_id,
+                    token:this.$store.getters.optuser.Authorization                    
                 }).then( (res) => {
-                    console.log(222)
+                    if(res.data.status === 200){
+                        this.allOrders.splice(index,1);  
+                        this.$toast("取消申请退款成功！");
+                    }else{
+                        this.$toast(res.data.msg);
+                    }
                 })
             }).catch(() => {
                 // on cancel
