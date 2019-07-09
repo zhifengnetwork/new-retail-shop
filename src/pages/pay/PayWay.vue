@@ -9,7 +9,7 @@
             <div class="pay-way">
                 <van-radio-group v-model="payDefault">
                     <van-cell-group>
-                        <van-cell v-for="(item,index) in pay_type" :key="item.pay_type" :title="item.pay_name" clickable @click="selectPay(item)">
+                        <van-cell v-for="(item,index) in pay_type" :key="index" :title="item.pay_name" clickable @click="selectPay(item)">
                             <van-radio :name="item.pay_name"/>
                         </van-cell>
                     </van-cell-group>    

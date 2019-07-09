@@ -9,7 +9,7 @@
        <div v-show="list.length>0" class="c-wrap">
             <div class="conter">
                 <div class="c-list-" v-for="(item,key) in list" :key="key">
-                    <div class="check"><van-checkbox v-model="item.selected" :check ="item.selected==0" @click="selectGoods($event,key)"></van-checkbox></div>
+                    <div class="check"><van-checkbox v-model="item.selected==0" :check ="item.selected==0" @click="selectGoods($event,key)"></van-checkbox></div>
                     <div class="-list-img">
                         <router-link :to="'/Details?goods_id='+item.goods_id"><img :src="item.img" /></router-link>
                     </div>
@@ -146,7 +146,7 @@ export default {
                         _that.allChecked=true
                     }
                 }else{
-                    _that.$toast(list.msg)
+                    _that.$toast(info.msg)
                 }
             })
         },

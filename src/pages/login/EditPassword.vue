@@ -20,7 +20,7 @@
                 <input type="password" placeholder="再次输入密码" v-model="password2" >
             </div>
 
-            <div class="btn" @click="confirmClick()">确定</div>
+            <div class="btn" :class="{'hiLine':phone!='','hiLine':verifyCode!='','hiLine':password!='' ,'hiLine':password2!=''}" @click="confirmClick()">确定</div>
 
             <div class="jump-link">
                 <router-link to="/Login">登录</router-link>
@@ -235,6 +235,8 @@ export default {
             color #ffffff
             background linear-gradient(to right, #f9a775,#fb946a)
             margin-top 88px
+        .hiLine
+            background linear-gradient(to right, #f66716,#f94e08)
         .jump-link
             width 100%
             font-size 28px
