@@ -35,6 +35,8 @@ import Payment from '@/pages/sell/Payment'
 
 // 订单列表
 import Order from '@/pages/order/Order'
+// 订单详情
+import OrderDetails from '@/pages/order/OrderDetails'
 // 提交评价
 import Evaluate from '@/pages/order/Evaluate'
 // 退货
@@ -44,7 +46,11 @@ import ReturnRequest from '@/pages/order/ReturnRequest'
 
 // 确认订单
 import ConfirmOrder from '@/pages/pay/ConfirmOrder'
+// 支付方式
+import PayWay from '@/pages/pay/PayWay'
+// 支付成功
 import PaySucceed from '@/pages/pay/PaySucceed'
+// 支付失败
 import PayFail from '@/pages/pay/PayFail'
 
 
@@ -139,13 +145,13 @@ const router= new Router({
 			path: '/Sell',
 			name: 'Sell',
 			component:() => import('@/pages/sell/Sell'),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 		{
 			path: '/Sell/UploadDocuments',
 			name: 'uploadDocuments',
 			component:() => import('@/pages/sell/UploadDocuments'),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 		/**
 		 * 搜索
@@ -154,7 +160,7 @@ const router= new Router({
 			path: '/Search',
 			name: 'Search',
 			component:() => import('@/pages/search/Search'),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 
 		/**
@@ -164,7 +170,7 @@ const router= new Router({
 			path: '/Category',
 			name: 'Category',
 			component:() => import('@/pages/category/Category'),
-			// meta:{requireAuth:true} //是否需要登录
+			meta:{requireAuth:true} //是否需要登录
 		},
 
 		/**
@@ -174,7 +180,7 @@ const router= new Router({
 			path: '/Cart',
 			name: 'Cart',
 			component:() => import('@/pages/cart/Cart'),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 
 		//50元专区支付
@@ -202,6 +208,12 @@ const router= new Router({
 			path: '/Order',
 			name: 'Order',
 			component:() => import('@/pages/order/Order'),
+		},
+		// 订单详情
+		{
+			path: '/Order/OrderDetails',
+			name: 'OrderDetails',
+			component:() => import('@/pages/order/OrderDetails'),
 		},
 		// 提交评价
 		{
@@ -231,17 +243,26 @@ const router= new Router({
 			name: 'ConfirmOrder',
 			component: (resolve) => require(['@/pages/pay/ConfirmOrder'],resolve),
 		},
+				// 支付方式
+		{
+			path: '/Pay/PayWay',
+			name: 'PayWay',
+			component: (resolve) => require(['@/pages/pay/PayWay'],resolve),
+			meta:{requireAuth:true}
+		},
 		// 支付成功
 		{
 			path: '/Pay/PaySucceed',
 			name: 'PaySucceed',
 			component: (resolve) => require(['@/pages/pay/PaySucceed'],resolve),
+			meta:{requireAuth:true}
 		},
 		// 支付失败
 		{
 			path: '/Pay/PayFail',
 			name: 'PayFail',
 			component: (resolve) => require(['@/pages/pay/PayFail'],resolve),
+			meta:{requireAuth:true}
 		},
 
 		/**
@@ -250,13 +271,17 @@ const router= new Router({
 		{
 			path: '/User',
 			name: 'User',
-			component:() => import('@/pages/user/User'),
+			// component:() => import('@/pages/user/User'),
+			component: (resolve) => require(['@/pages/user/User'],resolve),
+			meta:{requireAuth:true}
 		},
 		// 个人资料
 		{
 			path: '/user/personalData',
 			name: 'personalData',
-			component:() => import('@/pages/user/personalData'),
+			// component:() => import('@/pages/user/personalData'),
+			component: (resolve) => require(['@/pages/user/personalData'],resolve),
+			meta:{requireAuth:true}
 		},
 		// 预计收益
 		{
