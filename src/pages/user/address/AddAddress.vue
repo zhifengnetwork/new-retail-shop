@@ -138,7 +138,7 @@ export default {
                 _that.$toast("请输入电话号码")
                 return false
             }
-               if(!(/^1[3456789]\d{9}$/.test(_that.mobile))){ 
+               if(!(/^1[3456789]\d{9}$/.test(_that.userMobile))){ 
                 _that.$toast("手机格式有误");  
                 return false; 
             } 
