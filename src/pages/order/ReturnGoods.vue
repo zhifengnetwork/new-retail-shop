@@ -6,7 +6,7 @@
         <div class="height-88"></div>
         <!-- 内容 -->
         <div class="content">
-            <div class="item-card" v-for="(item,index) in returnGoods">
+            <div class="item-card" v-for="(item,index) in returnGoods" v-if="item.status == 7">
                 <div class="card-head">
                     <span class="order-date">{{item.add_time}}</span>
                     <span class="order-state">退货成功</span>
@@ -58,8 +58,14 @@
             </div> -->
 
             <!-- 数据加载完提示 -->
-            <div class="end-wrap">
+            <div class="end-wrap" style="display:none">
                 <p>我是有底线哦~~</p>
+            </div>
+
+            <!-- 无数据 -->
+            <div class="none">
+                <img src="/static/images/public/none.png"/>
+                <p>您还没相关订单</p>
             </div>
 
         </div>
@@ -192,5 +198,13 @@ export default {
         color #888888
         text-align center
         margin 30px auto
+    .none
+        text-align center
+        margin-top 50%
+        font-size 28px
+        img
+            width 80px
+        p
+            margin 20px auto
 
 </style>

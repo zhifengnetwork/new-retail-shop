@@ -1,5 +1,7 @@
 <template>
-    <div class="loader"></div>
+    <div class="Loading">
+      <div class="loader"></div>
+    </div>
 
 </template>
 
@@ -10,6 +12,15 @@ export default {
 </script>
 
 <style scoped>
+.Loading{
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
 .loader {
   position: relative;
   width: 2.5em;
