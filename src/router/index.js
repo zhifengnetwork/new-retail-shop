@@ -89,6 +89,8 @@ import modifyUserName from '@/pages/user/modifyUserName'
 // 收藏
 import Collect from '@/pages/user/Collect'
 
+// 我的发布
+import release from '@/pages/user/release'
 // 收货地址
 import Address from '@/pages/user/address/Address'
 // 添加收货地址
@@ -343,6 +345,12 @@ const router= new Router({
 			path: '/user/detailed',
 			name: 'detailed',
 			component:() => import('@/pages/user/detailed'),
+		},
+		// 我的发布
+		{
+			path: '/user/release',
+			name: 'release',
+			component:() => import('@/pages/user/release'),
 		},
 		// 我的分享
 		{

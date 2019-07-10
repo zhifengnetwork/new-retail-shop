@@ -101,16 +101,22 @@
                     <span class="cell">{{userList.mobile}}</span>
                     <span class="right_ico"></span>
                 </div>
-                    <div class="arr_wrap">
-                        <router-link class="my_look" to="/user/Address">
-                            <span>地址管理</span>
-                            <span class="right_ico"></span>
-                        </router-link>
-                    </div>
+                <div class="arr_wrap">
+                    <router-link class="my_look" to="/user/Address">
+                        <span>地址管理</span>
+                        <span class="right_ico"></span>
+                    </router-link>
+                </div>
                 <div class="arr_wrap">
                     <span>邀请链接</span>
                     <span class="right_ico"></span>
-                </div>               
+                </div>
+                <div class="arr_wrap">
+                    <router-link class="my_look" to="/user/release">
+                        <span>我的发布</span>
+                        <span class="right_ico"></span>
+                    </router-link>
+                </div>                
                 <div class="arr_wrap">
                     <router-link class="my_look" to="/user/mySharing">
                         <span>我的分享</span>

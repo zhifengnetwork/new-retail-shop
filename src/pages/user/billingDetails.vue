@@ -23,29 +23,29 @@
 							<li>金额</li>
 						</ul>
 					</div>
-					<div class="list" v-show="nowIndex===0">
-						<ul v-for="(tes,index) in tits" :key="index">
+					<div class="list" v-show="nowIndex === 0">
+						<ul v-for="(tes,index) in detItem" :key="index">
 							<li>
-								<div>{{tes.zhi}}</div>
-								<div>{{tes.dan}}</div>
+								<div>{{tes.source_id}}</div>
+								<div v-if="tes.log_type === 0">{{tes.note}}</div>
 							</li>
-							<li>{{tes.title}}</li>
-							<li>{{tes.ge}}</li>
+							<li>{{tes.create_time}}</li>
+							<li>-{{tes.balance}}</li>
 						</ul>
 					</div>
-					<div class="list" v-show="nowIndex===1">
-						<ul v-for="(list,index) in futits" :key="index">
+					<div class="list" v-show="nowIndex === 1">
+						<ul v-for="(list,index) in detList" :key="index">
 							<li>
-								<div>{{list.zi}}</div>
-								<div>{{list.an}}</div>
+								<div>{{list.source_id}}</div>
+								<div v-if="list.log_type === 1">{{list.note}}</div>
 							</li>
-							<li>{{list.itle}}</li>
-							<li>{{list.gs}}</li>
+							<li>{{list.create_time}}</li>
+							<li>{{list.balance}}</li>
 						</ul>
 					</div>
 
 				</div>
-
+				<div class="foot" v-if="flag">我是有底线的哦~~</div>
 			</div>
 		</div>
     </div>    
@@ -66,19 +66,11 @@
 						tabTitle:"赚取"
 					}
 				],
-				tits:[
-					{id:1,zhi:'01234567890',dan:'下单消费',title:'2019-06-03',ge:'-￥4584.00'},
-					{id:2,zhi:'01234567890',dan:'下单消费',title:'2019-06-03',ge:'-￥4584.00'},
-					{id:3,zhi:'01234567890',dan:'下单消费',title:'2019-06-03',ge:'-￥4584.00'},
-					{id:4,zhi:'01234567890',dan:'下单消费',title:'2019-06-03',ge:'-￥4584.00'}
-				],
-				futits:[
-					{id:1,zi:'01234567890',an:'分享赚取',itle:'2019-06-03',gs:'-￥4584.00'},
-					{id:2,zi:'01234567890',an:'分享赚取',itle:'2019-06-03',gs:'-￥4584.00'},
-					{id:3,zi:'01234567890',an:'分享赚取',itle:'2019-06-03',gs:'-￥4584.00'},
-					{id:4,zi:'01234567890',an:'分享赚取',itle:'2019-06-03',gs:'-￥4584.00'}
-				],
 				nowIndex:0,
+				detItem:[],
+				detList:[],
+				flag:false,
+				type:'',
 			}
 		},
 		components: {
@@ -89,14 +81,18 @@
 		},
 		methods: {
             handleClick(index){
-                this.nowIndex = index;
+				this.nowIndex = index;
+				this.flag = false;
+				this.det();
 			},
 			// 账单列表
 			det() {
+				var that = this
                 var url = "user/remainder_list"
                 var params = new URLSearchParams();
-				params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
-                this.$axios({
+				params.append('token', that.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+				params.append('log_type', that.type)
+                that.$axios({
                     method:"post",
                     url:url,
                     data:params
@@ -104,8 +100,13 @@
                 .then((res)=>{
                     console.log(res)
                     if(res.data.status ===200){
-                        this.detItem= res.data.data;
-                        console.log(this.detItem)
+						this.detItem= res.data.data.list;
+						if(that.nowIndex === 0) {
+							that.detItem= res.data.data.list;
+						} else {
+							that.detList= res.data.data.list;
+						}
+                        
                     }else{
                         Toast(res.data.msg)
                     }

@@ -38,7 +38,7 @@
 	name: "mySharing",
 	data() {
 		return {
-            link: 'https://baidu.com',// 要跳转的路径或者显示的文字
+            link: 'http://new_retail_web.zhifengwangluo.com/Register+url',// 要跳转的路径或者显示的文字
             siteList:[]
         };
     },
