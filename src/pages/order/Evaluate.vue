@@ -98,6 +98,7 @@ export default {
             //     content:_that.content,
             //     img:_that.postData
             // }
+<<<<<<< HEAD
             // console.log(json)
             // comments.push(json)
 
@@ -137,6 +138,16 @@ export default {
             //    console.log(res)
             //     var item = res.data.data;
             //     if(res.data.status === 200){
+=======
+            _that.$axios.post(url,{
+                token:this.$store.getters.optuser.Authorization,
+                comments:''
+            })
+            .then((res)=>{                  
+               console.log(res)
+                var item = res.data.data;
+                if(res.data.status === 200){
+>>>>>>> ede810056d7eedc03c4c9bb724b9143108e326e5
                     
             //         // this.$store.commit('hideLoading')
             //     }else{

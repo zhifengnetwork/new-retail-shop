@@ -16,29 +16,13 @@
 					</ul>
 				</div>
 				<div class="list_wrap">
-					<ul>
-						<li>2019-09-06</li>
-						<li>￥9155.00</li>
-						<li>￥55.00</li>
-						<li class="state">审核成功</li>
-					</ul>
-					<ul>
-						<li>2019-09-06</li>
-						<li>￥9155.00</li>
-						<li>￥55.00</li>
-						<li class="status">审核失败</li>
-					</ul>
-					<ul>
-						<li>2019-09-06</li>
-						<li>￥9155.00</li>
-						<li>￥55.00</li>
-						<li class="state">审核成功</li>
-					</ul>
-					<ul>
-						<li>2019-09-06</li>
-						<li>￥9155.00</li>
-						<li>￥55.00</li>
-						<li class="status">审核失败</li>
+					<ul v-for="(item,index) in detList" :key="index">
+						<li>{{item.createtime | formatDate}}</li>
+						<li>￥{{item.money}}</li>
+						<li>￥{{item.taxfee}}</li>
+						<li class="state" v-if="item.status === -1">审核失败</li>
+						<li class="status" v-if="item.status === 2">审核成功</li>
+						<li class="review" v-if="item.status === 1">审核中</li>
 					</ul>
 				</div>
 			</div>
@@ -56,7 +40,7 @@
         name: 'theWithdrawal',
 		data() {
 			return{
-                
+				detList:[],
 			}
 		},
 		components: {
@@ -66,7 +50,7 @@
 			this.detailList();
 		},
 		methods: {
-			// 明细列表
+			// 提现明细列表
 			detailList() {
                 var url = "user/withdrawal_list"
                 var params = new URLSearchParams();
@@ -79,14 +63,38 @@
                 .then((res)=>{
                     console.log(res)
                     if(res.data.status ===200){
-                        this.detList = res.data.data;
+                        this.detList = res.data.data.list;
                         console.log(this.detList)
                     }else{
                         Toast(res.data.msg)
                     }
                 })
             },
-		}
+		},
+		filters: {
+            // 日期格式化
+            formatDate: function (time) {
+                let date = new Date(time*1000);
+                let y = date.getFullYear();
+
+                let MM = date.getMonth() + 1;
+                MM = MM < 10 ? ('0' + MM) : MM;
+
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+
+                let h = date.getHours();
+                h = h < 10 ? ('0' + h) : h;
+
+                let m = date.getMinutes();
+                m = m < 10 ? ('0' + m) : m;
+
+                let s = date.getSeconds();
+                s = s < 10 ? ('0' + s) : s;
+
+                return y + '-' + MM + '-' + d ;
+            }
+        }
 	}
 </script>
 
@@ -124,6 +132,8 @@
                 color #f70a0a
             .status
                 color #12eb22
+				.review
+					color #1989fa	
     .none
         margin 20px 0 0	
         font-size 20px

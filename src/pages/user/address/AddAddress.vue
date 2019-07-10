@@ -70,7 +70,7 @@ export default {
             detailAddress:"",// 详细地址
             userMobile:'',// 手机号
             address:'选择省/市/区',//点击选择省/市/区展示
-            location:{},// 请选择地址
+            // location:{},// 请选择地址
             addressId:'',// id
             code:'',// 区id
             address_id:0,// 传过来的id
@@ -93,6 +93,7 @@ export default {
             this.show = false;
             this.address = val[0].name+ val[1].name +val[2].name
             this.code =val[2].code// 传给后台的district-区id
+            this.district=val[2].code
             console.log(this.code)
         },
         // 地区取消选择
@@ -128,25 +129,25 @@ export default {
         // 判断输入
         _verifyUserInfo(){
             var _that =this
+            let mobile_reg=/^1[345678]\d{9}$/
             var detailAddress =_that.$refs.detailAddress.innerText
             console.log(detailAddress)
-            if( _that.userName===""){
+            if( _that.userName === ""){
                 _that.$toast("请输入收货人姓名")
                 return false
             }
-            if( _that.userMobile===""){
+            if( _that.userMobile === ""){
                 _that.$toast("请输入电话号码")
                 return false
             }
                if(!(/^1[3456789]\d{9}$/.test(_that.userMobile))){ 
                 _that.$toast("手机格式有误");  
                 return false; 
-            } 
-            if(_that.location==="" || typeof(_that.location) == 'undefined'){
-                _that.$toast("请选择地址")
-                return false
             }
-            if(!_that.district){_that.$toast("请选择省市区");return}
+            if(!_that.code){
+                _that.$toast("请选择省市区");
+                return
+            }
             if(_that.detailAddress==""){
                 _that.$toast("请输入详情地址")
                 return false
