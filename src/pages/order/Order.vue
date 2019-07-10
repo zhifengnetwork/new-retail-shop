@@ -567,9 +567,6 @@ export default {
                     }else{
                         this.$toast(res.data.msg)
                     }
-                    else{
-                       this.$toast(res.data.msg) 
-                    }
                 })
                 .catch((error) => {
                     alert('请求错误:'+ error)
