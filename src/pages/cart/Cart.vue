@@ -50,7 +50,7 @@
             
         </div>
        <!-- No INFO START -->
-        <div v-show="list.length<1" class="no-info">
+        <div v-show="isShow" class="no-info" >
             <Nodata :nodatas="nodatas"></Nodata>
         </div>
        <!-- GOODS LIST START -->
@@ -71,6 +71,7 @@ export default {
                 'link':'/Hone'
             },
             list:[],
+            isShow:false,
             token:"",
             allChecked: false,
         };
@@ -96,6 +97,7 @@ export default {
         }
     },
     created(){
+        this.$store.commit('showLoading')       //加载login
         this.token =this.$store.getters.optuser.Authorization
         this._getGoodsList()
     },
@@ -109,7 +111,8 @@ export default {
                 'token':this.token
             })
             .then((res)=>{
-                var info = res.data;
+               
+                console.log(info)
                 if(info.status == 200){
                     var data =_that.list[key];
                      _that.$set( data,'goods_num',val)
@@ -141,11 +144,16 @@ export default {
             })
             .then((res)=>{
                 var info = res.data;
+                var info = res.data;
                 if(info.status == 200){
                     _that.list =info.data
                     if(_that.updateNumber == _that.list.length){
                         _that.allChecked=true
                     }
+                    if(info.data.length<1){         //显示没有数据提示
+                        _that.isShow=true
+                    }
+                    this.$store.commit('hideLoading')
                 }else{
                     _that.$toast(info.msg)
                 }
@@ -254,6 +262,9 @@ export default {
                     var info = res.data;
                     if(info.status == 200){
                         _that.list =newArry;
+                        if(newArry.length<1){
+                            _that.isShow=true
+                        }
                         _that.$toast('删除成功');
                     }else{
                         _that.$toast(list.msg)

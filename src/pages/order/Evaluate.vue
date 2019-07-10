@@ -29,7 +29,7 @@
                         color="#f70a0a"
                     />
                 </div>
-                <div class="rate-item">
+                <!-- <div class="rate-item">
                     <div class="label">物流服务</div>
                     <van-rate
                         v-model="rateVal2"
@@ -37,8 +37,8 @@
                         void-icon="like-o"
                         color="#f70a0a"
                     />
-                </div>
-                <div class="rate-item">
+                </div> -->
+                <!-- <div class="rate-item">
                     <div class="label">服务态度</div>
                     <van-rate
                         v-model="rateVal3"
@@ -46,10 +46,10 @@
                         void-icon="like-o"
                         color="#f70a0a"
                     />
-                </div>
+                </div> -->
             </div>
             
-            <div class="btn">发布评价</div>
+            <div class="btn" @click="submitData()">发布评价</div>
 
         </div>
 
@@ -73,7 +73,30 @@ export default {
     methods:{
         onRead(e){
             console.log(e)
-    
+        },
+        submitData(){
+            var _that = this
+            let url = '/Order/order_comment'
+            // var comments=[
+
+            // ]
+            // var json ={
+            //     'order_id':
+            // }
+            _that.$axios.post(url,{
+                token:this.$store.getters.optuser.Authorization,
+                comments:''
+            })
+            .then((res)=>{                  
+               console.log(res)
+                var item = res.data.data;
+                if(res.data.status === 200){
+                    
+                    // this.$store.commit('hideLoading')
+                }else{
+                    that.$toast(res.msg)
+                }
+            })
         }
     }
 
