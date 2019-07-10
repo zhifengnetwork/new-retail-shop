@@ -93,6 +93,7 @@ export default {
             this.show = false;
             this.address = val[0].name+ val[1].name +val[2].name
             this.code =val[2].code// 传给后台的district-区id
+            this.district=val[2].code
             console.log(this.code)
         },
         // 地区取消选择
