@@ -20,9 +20,10 @@ import Sell from '@/pages/sell/Sell'
 import UploadDocuments from '@/pages/sell/UploadDocuments'
 //编辑付款码
 import EditPaymentCode from '@/pages/sell/EditPaymentCode'
-
 //申请代理
 import Agents from '@/pages/sell/Agents'
+//付款码
+import PaycodeList from '@/pages/sell/PaycodeList'
 // 搜索
 import Search from '@/pages/search/Search'
 
@@ -172,7 +173,12 @@ const router= new Router({
 			component:() => import('@/pages/sell/Agents'),
 			meta:{requireAuth:true}
 		},
-
+		{		// 付款码列表
+			path: '/Sell/PaycodeList',
+			name: 'PaycodeList',
+			component:() => import('@/pages/sell/PaycodeList'),
+			meta:{requireAuth:true}
+		},
 		/**
 		 * 搜索
 		 */
