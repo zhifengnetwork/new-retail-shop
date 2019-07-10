@@ -128,21 +128,22 @@ export default {
         // 判断输入
         _verifyUserInfo(){
             var _that =this
+            let mobile_reg=/^1[345678]\d{9}$/
             var detailAddress =_that.$refs.detailAddress.innerText
             console.log(detailAddress)
-            if( _that.userName===""){
+            if( _that.userName === ""){
                 _that.$toast("请输入收货人姓名")
                 return false
             }
-            if( _that.userMobile===""){
+            if( _that.userMobile === "" || !mobile_reg.test(_that.userMobile)){
                 _that.$toast("请输入电话号码")
                 return false
             }
-            if(_that.location==="" || typeof(_that.location) == 'undefined'){
+            if(_that.location === "" || typeof(_that.location) === 'undefined'){
                 _that.$toast("请选择地址")
                 return false
             }
-            if(_that.detailAddress==""){
+            if(_that.detailAddress === ""){
                 _that.$toast("请输入详情地址")
                 return false
             }
