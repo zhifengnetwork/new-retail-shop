@@ -85,6 +85,8 @@ import viewOrders from '@/pages/user/viewOrders'
 import receiptInformation from '@/pages/user/receiptInformation'
 // 佣金明细
 import detailed from '@/pages/user/detailed'
+// 邀请链接
+import InviteLink from '@/pages/user/InviteLink'
 // 我的分享
 import mySharing from '@/pages/user/mySharing'
 // 支付宝账号编辑
@@ -392,6 +394,13 @@ const router= new Router({
 			path: '/user/release',
 			name: 'release',
 			component:() => import('@/pages/user/release'),
+		},
+		// 邀请链接
+		{
+			path: '/user/InviteLink',
+			name: 'InviteLink',
+			component:() => import('@/pages/user/InviteLink'),
+			meta:{requireAuth:true}
 		},
 		// 我的分享
 		{
