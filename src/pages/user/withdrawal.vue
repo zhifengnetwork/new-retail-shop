@@ -90,15 +90,40 @@
 				as:[
 					{id:1,num:0,mas:92.20},
 					{id:2,num:0,mas:92.20},
-				],
+                ],
+                
+                alipayInfo:[],
                 //默认选中第一个
                 cur: 0
 			}
+        },
+        created(){
+            this.$store.commit('showLoading')
+            this.getUserAlipayInfo()
         },
         mounted() {
             // this.with();
         },
         methods:{
+
+            
+            getUserAlipayInfo(){
+                var url ='user/zfb_info'
+				this.$axios.post(url,{         // 传给后台的参数
+					'token':this.$store.getters.optuser.Authorization
+				})
+				.then((res)=>{
+                    var list =res.data
+                    console.log(list)
+                    if(list.status==200){
+                        this.alipayInfo =list.data
+                        this.$store.commit('hideLoading')
+                    }
+                    if(list.status==999){
+                        this.$store.commit('del_token'); //token，清除它;
+                    }
+				})
+            }
             // with() {
             //     var url = "user/withdrawal"
             //     var params = new URLSearchParams();

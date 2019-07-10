@@ -25,11 +25,12 @@
                         <span class="order-state" v-if="item.status===1">待付款</span>
                         <span class="order-state" v-if="item.status===2">待发货</span>
                         <span class="order-state" v-if="item.status===3">待收货</span>
-                        <span class="order-state" v-if="item.status===4">交易成功</span>
+                        <span class="order-state" v-if="item.status===4 && item.comment == 0">交易成功</span>
                         <span class="order-state" v-if="item.status===5">已取消</span>
                         <span class="order-state" v-if="item.status===6">待退款</span>
                         <span class="order-state" v-if="item.status===7">已退款</span>
                         <span class="order-state" v-if="item.status===8">拒绝退款</span>
+                        <span class="order-state" v-if="item.status===4 && item.comment == 1">已评价</span>
                     </div>
                     <router-link :to="'/Order/OrderDetails?order_id=' + item.order_id">
                         <div class="goods-item">
@@ -70,8 +71,9 @@
                         <!-- 交易成功 -->
                         <div v-if="item.status == 4">
                             <span class="btn">查看物流</span>
-                            <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id">去评价</router-link></span>
-                            <span class="btn red" v-else><router-link :to="'/Order/Evaluate?order_id='+item.order_id">追加评价</router-link></span>
+                            <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id+'&sku_id='+item.sku_id+'&goods_id='+item.goods_id">去评价</router-link></span>
+                            <!-- <span class="btn red" v-else><router-link :to="'/Order/Evaluate?order_id='+item.order_id">订单已完成</router-link></span> -->
+                            <span class="btn red" v-else @click="delOrder(index,item.order_id,item.status)">删除订单</span>
                         </div>
                         <!-- 已取消 -->
                         <div v-if="item.status == 5">

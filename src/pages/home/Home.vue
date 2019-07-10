@@ -136,6 +136,7 @@ export default {
 		};
 	},
 	created(){
+		this.$store.commit('showLoading')       //加载login
 		this.requestData();
 	},
 	methods:{
@@ -151,7 +152,7 @@ export default {
 					this.noticeData = res.data.data.announce;
 					this.hotGoods = res.data.data.hot_goods;
 					this.recommendData = res.data.data.recommend_goods;
-					this.giftData = res.data.data.goods_gift;
+					this.$store.commit('hideLoading')
                 }else{
 					this.$toast(res.data.msg)
 				}

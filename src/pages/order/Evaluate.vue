@@ -8,14 +8,16 @@
             <div class="evaluate-wrap">
                 <!-- 评价框 -->
                 <div class="textBox">
-                    <textarea placeholder="物流真快"></textarea>
+                    <textarea placeholder="物流真快" v-model="content"></textarea>
                 </div>
                 <!-- 添加图片 -->
-                <div class="addPic">
+                <!-- <div class="addPic">
                     <span class="camera-icon"></span>
                     <span>添加图片</span>
                     <input type="file" class="input-file" multiple="multiple" @change="onRead($event)" accept="image/gif,image/jpeg,image/jpg,image/png" >
-                </div>
+                </div> -->
+
+                <van-uploader v-model="fileList" :after-read="onRead" :accept="'image/*'" multiple  :max-count="3" />
             </div>
 
             <div class="rate-wrap">
@@ -29,7 +31,7 @@
                         color="#f70a0a"
                     />
                 </div>
-                <div class="rate-item">
+                <!-- <div class="rate-item">
                     <div class="label">物流服务</div>
                     <van-rate
                         v-model="rateVal2"
@@ -37,8 +39,8 @@
                         void-icon="like-o"
                         color="#f70a0a"
                     />
-                </div>
-                <div class="rate-item">
+                </div> -->
+                <!-- <div class="rate-item">
                     <div class="label">服务态度</div>
                     <van-rate
                         v-model="rateVal3"
@@ -46,10 +48,10 @@
                         void-icon="like-o"
                         color="#f70a0a"
                     />
-                </div>
+                </div> -->
             </div>
             
-            <div class="btn">发布评价</div>
+            <div class="btn" @click="submitData()">发布评价</div>
 
         </div>
 
@@ -66,14 +68,50 @@ export default {
     data(){
         return {
             rateVal:5,   
-            rateVal2:0,  
-            rateVal3:2   
+            content:'',
+            postData:[],
+            fileList:[],
         }
     },
     methods:{
-        onRead(e){
-            console.log(e)
-    
+        // onRead(e){
+        //     console.log(e)
+        // },
+        onRead (file) { 
+            this.postData.push(file.content)
+            // this.postData=file.content
+            // 上传图片到图片服务器
+        },
+        submitData(){
+            var _that = this,comments=[]
+            let url = '/Order/order_comment'
+            // var comments=[
+
+            // ]
+            // console.log(this.fileList)
+            // 
+            // var json ={
+            //     order_id:query.order_id,
+            //     goods_id:query.goods_id,
+            //     sku_id:query.sku_id,
+            //     star_rating:_that.rateVal,
+            //     content:_that.content,
+            //     img:_that.postData
+            // }
+            _that.$axios.post(url,{
+                token:this.$store.getters.optuser.Authorization,
+                comments:''
+            })
+            .then((res)=>{                  
+               console.log(res)
+                var item = res.data.data;
+                if(res.data.status === 200){
+                    
+            //         // this.$store.commit('hideLoading')
+            //     }else{
+            //         _that.$toast(res.msg)
+            //     }
+            // })
         }
     }
 
@@ -86,7 +124,7 @@ export default {
     box-sizing border-box
     .evaluate-wrap
         width 100%
-        height 450px
+        // height 450px
         border 1px solid #a7a7a7
         border-radius 8px
         padding 30px
@@ -96,12 +134,18 @@ export default {
             margin-bottom 20px
             textarea
                 width 100%
-                height 240px
+                height 200px
                 font-size 26px
                 color #888888
                 border none 
                 background none
                 resize none
+        .van-uploader__upload
+            width 60px
+            height 60px
+        // .van-uploader__preview-image
+        //     width 60px
+        //     height 60px
         .addPic
             width 120px
             height 120px
@@ -128,6 +172,7 @@ export default {
                 left 0
                 top 0
                 opacity 0
+            
     .rate-wrap
         h2
             font-size 30px
