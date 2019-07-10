@@ -18,6 +18,11 @@ import Popup from '@/pages/home/Popup'
 import Sell from '@/pages/sell/Sell'
 //上传评证
 import UploadDocuments from '@/pages/sell/UploadDocuments'
+//编辑付款码
+import EditPaymentCode from '@/pages/sell/EditPaymentCode'
+
+//申请代理
+import Agents from '@/pages/sell/Agents'
 // 搜索
 import Search from '@/pages/search/Search'
 
@@ -157,6 +162,19 @@ const router= new Router({
 			component:() => import('@/pages/sell/UploadDocuments'),
 			meta:{requireAuth:true}
 		},
+		{		//编辑付款码
+			path: '/Sell/EditPaymentCode',
+			name: 'EditPaymentCode',
+			component:() => import('@/pages/sell/EditPaymentCode'),
+			meta:{requireAuth:true}
+		},	
+		{		// 代理 Agents
+			path: '/Sell/Agents',
+			name: 'Agents',
+			component:() => import('@/pages/sell/Agents'),
+			meta:{requireAuth:true}
+		},
+
 		/**
 		 * 搜索
 		 */

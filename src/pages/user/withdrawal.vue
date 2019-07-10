@@ -11,7 +11,7 @@
                     <div class="k_box">
                         <p class="can">可提现金额</p>
                         <div class="sum">
-                            <span>￥</span><span>10014.52</span>
+                            <span>￥</span><span>{{remainderMoney}}</span>
                         </div>
                     </div>
                 </div>
@@ -32,8 +32,8 @@
 							<router-link to="/user/alipay">
 								<div class="fee_wrap">
 									<div class="fee">
-                                        <span>周</span>
-                                        <span>180 2222 6666</span>
+                                        <span>{{alipayInfo.alipay_name}}</span>
+                                        <span>{{alipayInfo.alipay}}</span>
                                     </div>
 									<div class="unit icon"></div>
 								</div>
@@ -42,7 +42,7 @@
 							<div class="put">
                                 <span class="dollars">￥</span>
 								<div class="inp">
-									<input type="text" placeholder="请输入提现金额"/>
+									<input type="number" placeholder="请输入提现金额" v-model="money"/>
 								</div>
 								<div class="all_btn">全部提现</div>
 							</div>
@@ -50,7 +50,7 @@
 							<div class="fee_wrap">
 								<div class="fee">
 									<span>手续费 ：</span>
-									<span>{{list.num}}</span>
+									<span>{{rate}}</span>
 								</div>
 								<div class="unit">元</div>
 							</div>
@@ -58,7 +58,7 @@
 							<div class="fee_wrap">
 								<div class="fee">
 									<span>实际到账 ：</span>
-									<span>{{list.mas}}</span>
+									<span>{{computeMoney}}</span>
 								</div>
 								<div class="unit">元</div>
 							</div>
@@ -67,7 +67,7 @@
 					</div>
 				</div>
 				<!-- 申请提现按钮 -->
-				<div class="apply_btn">申请提现</div>
+				<div class="apply_btn" @click="saveWithdrawal()">申请提现</div>
 			</div>
 		</div>
 	</div>
@@ -84,15 +84,17 @@
 		data() {
 			return{
                 pay:[
-					// {id:1,img:'/static/images/user/weixi.png'},
-					{id:2,img:'/static/images/user/zfb.png'},
+					{id:4,img:'/static/images/user/zfb.png'},
 				],
 				as:[
 					{id:1,num:0,mas:92.20},
 					{id:2,num:0,mas:92.20},
                 ],
-                
+                money:'',
+                // tMoney:'',
                 alipayInfo:[],
+                remainderMoney:this.$route.query.remainder_money,
+                rate:this.$route.query.rate,
                 //默认选中第一个
                 cur: 0
 			}
@@ -101,12 +103,35 @@
             this.$store.commit('showLoading')
             this.getUserAlipayInfo()
         },
+        computed:{
+            computeMoney() {
+                var fee = this.money * this.rate
+                var tMoney= new Number(this.money - fee)
+                return tMoney.toFixed(2)
+            }
+        },
         mounted() {
-            // this.with();
         },
         methods:{
-
-            
+            saveWithdrawal(){
+                var url ='user/withdrawal'
+				this.$axios.post(url,{         // 传给后台的参数
+                    'token':this.$store.getters.optuser.Authorization,
+                    'money':this.computeMoney,
+                    'withdraw_type':4
+				})
+				.then((res)=>{
+                    var list =res.data
+                    if(list.status==200){
+                         this.$toast(res.data.msg)
+                    }
+                    else if(res.data.status == 999){
+                        this.$store.commit('del_token'); //清除token
+                    }else{
+                        this.$toast(res.data.msg)
+                    }
+				})
+            },
             getUserAlipayInfo(){
                 var url ='user/zfb_info'
 				this.$axios.post(url,{         // 传给后台的参数
@@ -114,35 +139,23 @@
 				})
 				.then((res)=>{
                     var list =res.data
-                    console.log(list)
                     if(list.status==200){
                         this.alipayInfo =list.data
                         this.$store.commit('hideLoading')
+                        if(this.alipayInfo.length<1){
+                            this.$router.push({
+                                path: '/user/alipay',
+                                name: 'alipay',
+                            })
+                        }
                     }
-                    if(list.status==999){
-                        this.$store.commit('del_token'); //token，清除它;
+                    else if(res.data.status == 999){
+                        this.$store.commit('del_token'); //清除token
+                    }else{
+                        this.$toast(res.data.msg)
                     }
 				})
             }
-            // with() {
-            //     var url = "user/withdrawal"
-            //     var params = new URLSearchParams();
-            //     params.append('token', this.$store.getters.optuser.Authorization);// 要传给后台的参数值token
-            //     this.$axios({
-            //         method:"post",
-            //         url:url,
-            //         data:params
-            //     })
-            //     .then((res)=>{
-            //         console.log(res)
-            //         if(res.data.status ===200){
-            //             this.withItem = res.data.data;
-            //             console.log(this.withItem)
-            //         }else{
-            //             Toast(res.data.msg)
-            //         }
-            //     })
-            // }
         }
 	}
 </script>

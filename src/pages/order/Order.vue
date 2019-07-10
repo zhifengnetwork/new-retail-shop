@@ -550,7 +550,6 @@ export default {
                     if(res.data.status == 200){
                         if(this.page == 1){ 
                             this.allOrders = res.data.data
-                            console.log(this.allOrders)
                         }else{
                             if(res.data.data.length != ''){
                                //如果有数据,拼接数组
@@ -559,12 +558,14 @@ export default {
                                 this.ispage = false
                             }
                         }                        
-                    }else if(res.data.status == 301){
+                    }else if(res.data.status == 999){
                         this.$toast(res.data.msg)
                         this.$store.commit('del_token'); //清除token
                         setTimeout(()=>{
                             this.$router.push('/Login')
                         },1000)
+                    }else{
+                        this.$toast(res.data.msg)
                     }
                 })
                 .catch((error) => {
