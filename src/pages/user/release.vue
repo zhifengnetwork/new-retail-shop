@@ -8,18 +8,18 @@
 		</Rel-Header>
         <div class="content">
             <div class="main_wrap">
-                <div class="main">
+                <div class="main" v-for="(item,index) in releaseList" :key="index">
                     <div class="time">
-                        <span>2019-06-07</span>
-                        <span>14:55:02</span>
+                        <span>{{item.ymdTime}}</span>
+                        <span>{{item.hisTime}}</span>
                     </div>
                     <div class="img_wrap">
-                        <img src="/static/images/home/banner01.png"/>
+                        <img :src="item.img"/>
                     </div>
-                    <div class="num">剩余商品数量11</div>
+                    <div class="num">剩余商品数量{{item.stock}}</div>
                 </div>
 
-                <div class="main">
+                <!-- <div class="main">
                     <div class="time">
                         <span>2019-06-07</span>
                         <span>14:55:02</span>
@@ -28,7 +28,7 @@
                         <img src="/static/images/home/banner01.png"/>
                     </div>
                     <div class="num">剩余商品数量11</div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -40,30 +40,33 @@
 	name: "mySharing",
 	data() {
 		return {
-            
+            releaseList:'',
         };
+    },
+    mounted(){
+        this.shop_list()
     },
     methods: {
         // 接口
-        // sharing() {
-        //     var url = '/user/personal'
-        //     var params = new URLSearchParams();
-        //     params.append('token', this.$store.getters.optuser.Authorization);  
-        //     this.$axios({
-        //         method:"post",
-        //         url:url,
-        //         data:params
-        //     }).then((res)=>{
-        //         if(res.data.status === 200){
-        //             this.siteList = res.data.data
-        //             console.log(this.siteList)
-        //         } else {
-        //             Dialog.alert({
-        //                 message:res.data.msg
-        //             })
-        //         }
-        //     })
-        // }
+        shop_list() {
+            var url = '/user/shop_list'
+            var params = new URLSearchParams();
+            params.append('token', this.$store.getters.optuser.Authorization);  
+            this.$axios({
+                method:"post",
+                url:url,
+                data:params
+            }).then((res)=>{
+                if(res.data.status === 200){
+                    this.releaseList = res.data.data
+                    // console.log(this.siteList)
+                } else {
+                    Dialog.alert({
+                        message:res.data.msg
+                    })
+                }
+            })
+        }
     },
 	components: {
         RelHeader,
