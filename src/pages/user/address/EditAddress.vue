@@ -87,6 +87,7 @@ export default {
             _that.detailAddress =_that.$refs.detailAddress.innerText
             var url ='/address/addAddress'
             if(!_that._verifyUserInfo()){return}
+          
             if(!_that.district){_that.$toast("请选择省市区");return}
             _that.$axios.post(url,{
                 // 传给后台的参数
