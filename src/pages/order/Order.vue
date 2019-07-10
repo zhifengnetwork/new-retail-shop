@@ -548,7 +548,7 @@ export default {
                 })
                 .then( (res)=>{
                     if(res.data.status == 200){
-                        if(this.page == 1){
+                        if(this.page == 1){ 
                             this.allOrders = res.data.data
                             console.log(this.allOrders)
                         }else{

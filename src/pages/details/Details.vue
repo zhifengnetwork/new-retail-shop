@@ -166,10 +166,10 @@
                     <i class="iconfont icon-aixin" :class="{'c-active':isCollect}"></i>
                     <span>收藏</span>
                 </li>
-                <li class="-list-a">
+                <!-- <li class="-list-a">
                     <i class="iconfont icon-54"></i>
                     <span>客服</span>
-                </li>
+                </li> -->
             </ul>
             <div class="-bar-list">
                 <input class="bar-btn-1" type="button" @click="showSizeBox(0)" value="加入购物车"/>
