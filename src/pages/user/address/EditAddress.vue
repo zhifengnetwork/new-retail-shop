@@ -87,8 +87,6 @@ export default {
             _that.detailAddress =_that.$refs.detailAddress.innerText
             var url ='/address/addAddress'
             if(!_that._verifyUserInfo()){return}
-          
-            if(!_that.district){_that.$toast("请选择省市区");return}
             _that.$axios.post(url,{
                 // 传给后台的参数
                 'token':this.$store.getters.optuser.Authorization,
@@ -123,11 +121,16 @@ export default {
             if( _that.userMobile===""){
                 _that.$toast("请输入电话号码")
                 return false
-            }
+            }  
+            if(!(/^1[3456789]\d{9}$/.test(_that.mobile))){ 
+                _that.$toast("手机格式有误");  
+                return false; 
+            } 
             if(_that.location==="" || typeof(_that.location) == 'undefined'){
                 _that.$toast("请选择地址")
                 return false
             }
+              if(!_that.district){_that.$toast("请选择省市区");return}
             if(_that.detailAddress==""){
                 _that.$toast("请输入详情地址")
                 return false
