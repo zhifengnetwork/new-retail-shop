@@ -14,7 +14,7 @@
                     <div class="item-address">
                         <div class="isDefault" v-if="item.is_default===1">默认</div>
                         <div class="exact-address">
-                            <p>{{item.c_cn}}&nbsp;{{item.p_cn}}&nbsp;{{item.d_cn}}</p>
+                            <p>{{item.p_cn}}&nbsp;{{item.c_cn}}&nbsp;{{item.d_cn}}</p>
                             <p>{{item.address}}</p>
                         </div>
                     </div>
