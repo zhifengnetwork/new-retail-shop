@@ -46,7 +46,6 @@
             <div class="saveBtn" @click="onSave()">保存</div>
             
         </div>
-
     </div>
 </template>
 
@@ -122,11 +121,16 @@ export default {
             if( _that.userMobile===""){
                 _that.$toast("请输入电话号码")
                 return false
-            }
+            }  
+            if(!(/^1[3456789]\d{9}$/.test(_that.mobile))){ 
+                _that.$toast("手机格式有误");  
+                return false; 
+            } 
             if(_that.location==="" || typeof(_that.location) == 'undefined'){
                 _that.$toast("请选择地址")
                 return false
             }
+              if(!_that.district){_that.$toast("请选择省市区");return}
             if(_that.detailAddress==""){
                 _that.$toast("请输入详情地址")
                 return false
