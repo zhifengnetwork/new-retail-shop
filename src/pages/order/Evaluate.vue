@@ -85,7 +85,7 @@ export default {
             // }
             _that.$axios.post(url,{
                 token:this.$store.getters.optuser.Authorization,
-                comments:
+                comments:''
             })
             .then((res)=>{                  
                console.log(res)
