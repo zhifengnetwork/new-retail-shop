@@ -104,7 +104,7 @@
                         <!-- <span class="-freight">{if goodsList.shipping_price ==0} 免运费 {else} {{goodsList.shipping_price}} {/if}</span> -->
                     </div>
                 </div>
-                <div class="footer-b" @click="topay()">立即付款</div>
+                <div class="footer-b" @click="topay()">提交订单</div>
             </div>
         </div>
     </div>
@@ -176,7 +176,8 @@ export default {
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
-                    // this.order_id = list.data
+                    this.order_id = list.data
+                   
                     // if(_that.pay_type == 1){
                     //     this.showPwd = true;
                     //     this.showKeyboard = true;
@@ -184,15 +185,12 @@ export default {
                         
                     // }
 
-                    _that.$toast({message:"下单成功,正在跳转...",duration:1000})
-
-                    setTimeout(function(){
-                        this.$router.push({
-                            path: '/Pay/PayWay?order_id='+ist.data,
-                            name: 'PayWay',
-                            // params: {'cart_id': this.getSlectedGoodsCartID()}
-                        })
-                    },1100)
+                    // _that.$toast({message:"下单成功,正在跳转...",duration:1000})
+                    this.$router.push({
+                        path: '/Pay/PayWay?order_id=' +this.order_id,
+                        // name: 'PayWay',
+                        // params: {'cart_id': this.getSlectedGoodsCartID()}
+                    })
                    
                     
                 }else{

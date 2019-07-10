@@ -243,7 +243,7 @@ const router= new Router({
 			name: 'ConfirmOrder',
 			component: (resolve) => require(['@/pages/pay/ConfirmOrder'],resolve),
 		},
-				// 支付方式
+		// 支付方式
 		{
 			path: '/Pay/PayWay',
 			name: 'PayWay',
@@ -281,7 +281,7 @@ const router= new Router({
 			name: 'personalData',
 			// component:() => import('@/pages/user/personalData'),
 			component: (resolve) => require(['@/pages/user/personalData'],resolve),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 		// 预计收益
 		{

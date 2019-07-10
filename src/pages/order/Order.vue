@@ -70,12 +70,13 @@
                         <!-- 交易成功 -->
                         <div v-if="item.status == 4">
                             <span class="btn">查看物流</span>
-                            <span class="btn red"><router-link :to="'/Order/Evaluate?order_id='+item.order_id">{{item.comment == 0?'去评价':'追加评价'}}</router-link></span>
+                            <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id">去评价</router-link></span>
+                            <span class="btn red" v-else><router-link :to="'/Order/Evaluate?order_id='+item.order_id">追加评价</router-link></span>
                         </div>
                         <!-- 已取消 -->
                         <div v-if="item.status == 5">
                             <span class="btn" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
-                            <router-link :to="'/Details?goods_id='+item.goods_id"><span class="btn red">重新购买</span></router-link>
+                            <span class="btn red"><router-link :to="'/Details?goods_id='+item.goods_id">重新购买</router-link></span>
                         </div>
                         <!-- 待退款 -->
                         <div v-if="item.status == 6">
@@ -531,6 +532,9 @@ export default {
                     break;
                 case '4':
                     type = 'dpj'
+                    break;
+                case '5':
+                    type = 'fifty'
                     break;
             }
             if(this.ispage){

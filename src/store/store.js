@@ -14,7 +14,6 @@ const store =  new Vuex.Store({
         userInfo:{
             Authorization: storage.getItem('Authorization') ? storage.getItem('Authorization') : '' ,
             uid: storage.getItem('uid') ? storage.getItem('uid') : '' ,
-
         }
         
     },

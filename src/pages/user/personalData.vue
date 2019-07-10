@@ -114,9 +114,9 @@
                     url:url,
                     data:params
                 }).then((res)=>{
+                    this.$store.commit('del_token'); //token，清除它;
                     if (res.data.status === 200){
                         Toast(res.data.msg);
-                        this.$store.commit('del_token'); //token，清除它;
                         setTimeout(() => {
                             this.$router.push("/Login");
                         }, 1000);
