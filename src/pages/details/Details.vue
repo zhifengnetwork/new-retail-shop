@@ -166,10 +166,10 @@
                     <i class="iconfont icon-aixin" :class="{'c-active':isCollect}"></i>
                     <span>收藏</span>
                 </li>
-                <li class="-list-a">
+                <!-- <li class="-list-a">
                     <i class="iconfont icon-54"></i>
                     <span>客服</span>
-                </li>
+                </li> -->
             </ul>
             <div class="-bar-list">
                 <input class="bar-btn-1" type="button" @click="showSizeBox(0)" value="加入购物车"/>
@@ -637,9 +637,15 @@ a
         text-align center
     // 产品主图轮播
     .detailsSwiper
-        img 
-            width 100%
-            display block
+        width:100%
+        // height:750px
+        .van-swipe__track
+            height:100%
+            overflow:hidden
+            img 
+                width 100%
+                // height:750px
+                display block
     .content
         padding-bottom 128px
         box-sizing border-box

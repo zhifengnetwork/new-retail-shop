@@ -123,7 +123,7 @@ export default {
                 }, 1000);
             })
             .catch( (error) => {
-                Toast("请求错误:" + error)
+                // Toast("请求错误:" + error)
             })
         },
         // 判断输入
