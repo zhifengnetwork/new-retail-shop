@@ -637,9 +637,15 @@ a
         text-align center
     // 产品主图轮播
     .detailsSwiper
-        img 
-            width 100%
-            display block
+        width:100%
+        // height:750px
+        .van-swipe__track
+            height:100%
+            overflow:hidden
+            img 
+                width 100%
+                // height:750px
+                display block
     .content
         padding-bottom 128px
         box-sizing border-box

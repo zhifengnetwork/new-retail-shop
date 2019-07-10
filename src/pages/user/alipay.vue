@@ -11,19 +11,19 @@
 				<div class="name_wrap">
 					<div class="name">支付宝账号</div>
 					<div class="inp_wrap">
-						<input type="text" placeholder="请输入支付宝账号"/>
+						<input type="text" v-model="alipayName" placeholder="请输入支付宝账号"/>
 					</div>
 				</div>
 				<!-- 真实姓名 -->
 				<div class="name_wrap">
 					<div class="name">真实姓名</div>
 					<div class="inp_wrap">
-						<input type="text" placeholder="请输入真实姓名"/>
+						<input type="text" v-model="alipay" placeholder="请输入真实姓名"/>
 					</div>
 				</div>
 			</div>
 			<!-- 确认按钮 -->
-			<div class="submit_btn">确认</div>
+			<div class="submit_btn" @click="saveData()">确认</div>
 		</div>
 
 	</div>
@@ -35,7 +35,29 @@
 		name: "alipay",
 		data() {
 			return{
-                
+				alipayName:'',
+				alipay:''
+			}
+		},
+		methods:{
+			saveData(){
+				var _that =this
+				if(_that.alipayName=="" || _that.alipay==""){
+					return _that.$toast("请输入完整信息")
+				}
+				var url ='user/zfb_edit'
+				_that.$axios.post(url,{
+					// 传给后台的参数
+					'token':this.$store.getters.optuser.Authorization,
+					'alipay_name':_that.alipayName,
+					'alipay':_that.alipay,
+				})
+				.then((res)=>{
+					_that.$toast('地址添加成功')                
+					setTimeout(() => {
+						_that.$router.push("/user/Address");
+					}, 1000);
+				})
 			}
 		},
 		components: {

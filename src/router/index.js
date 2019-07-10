@@ -145,13 +145,13 @@ const router= new Router({
 			path: '/Sell',
 			name: 'Sell',
 			component:() => import('@/pages/sell/Sell'),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 		{
 			path: '/Sell/UploadDocuments',
 			name: 'uploadDocuments',
 			component:() => import('@/pages/sell/UploadDocuments'),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 		/**
 		 * 搜索
@@ -160,7 +160,7 @@ const router= new Router({
 			path: '/Search',
 			name: 'Search',
 			component:() => import('@/pages/search/Search'),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 
 		/**
@@ -170,7 +170,7 @@ const router= new Router({
 			path: '/Category',
 			name: 'Category',
 			component:() => import('@/pages/category/Category'),
-			// meta:{requireAuth:true} //是否需要登录
+			meta:{requireAuth:true} //是否需要登录
 		},
 
 		/**
@@ -188,6 +188,7 @@ const router= new Router({
 			path: '/Payment',
 			name: 'Payment',
 			component:() => import('@/pages/sell/Payment'),
+			meta:{requireAuth:true}
 		},
 
 		/**
@@ -197,6 +198,7 @@ const router= new Router({
 			path: '/Details',
 			name: 'Details',
 			component:() => import('@/pages/details/Details'),
+			meta:{requireAuth:true}
 		},
 
 		/**
@@ -208,30 +210,35 @@ const router= new Router({
 			path: '/Order',
 			name: 'Order',
 			component:() => import('@/pages/order/Order'),
+			meta:{requireAuth:true}
 		},
 		// 订单详情
 		{
 			path: '/Order/OrderDetails',
 			name: 'OrderDetails',
 			component:() => import('@/pages/order/OrderDetails'),
+			meta:{requireAuth:true}
 		},
 		// 提交评价
 		{
 			path: '/Order/Evaluate',
 			name: 'Evaluate',
 			component: (resolve) => require(['@/pages/order/Evaluate'],resolve),
+			meta:{requireAuth:true}
 		},
 		// 退货
 		{
 			path: '/Order/ReturnGoods',
 			name: 'ReturnGoods',
 			component: (resolve) => require(['@/pages/order/ReturnGoods'],resolve),
+			meta:{requireAuth:true}
 		},
 		// 退款申请
 		{
 			path: '/Order/ReturnRequest',
 			name: 'ReturnRequest',
 			component: (resolve) => require(['@/pages/order/ReturnRequest'],resolve),
+			meta:{requireAuth:true}
 		},
 
 		/**
@@ -248,21 +255,21 @@ const router= new Router({
 			path: '/Pay/PayWay',
 			name: 'PayWay',
 			component: (resolve) => require(['@/pages/pay/PayWay'],resolve),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 		// 支付成功
 		{
 			path: '/Pay/PaySucceed',
 			name: 'PaySucceed',
 			component: (resolve) => require(['@/pages/pay/PaySucceed'],resolve),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 		// 支付失败
 		{
 			path: '/Pay/PayFail',
 			name: 'PayFail',
 			component: (resolve) => require(['@/pages/pay/PayFail'],resolve),
-			// meta:{requireAuth:true}
+			meta:{requireAuth:true}
 		},
 
 		/**
@@ -287,31 +294,36 @@ const router= new Router({
 		{
 			path: '/user/shouyilist',
 			name: 'shouyilist',
-			component:() => import('@/pages/user/shouyilist'),
+			component: (resolve) => require(['@/pages/user/shouyilist'],resolve),
+			meta:{requireAuth:true}
 		},
 		// 账户余额
 		{
 			path: '/user/theAccountBalance',
 			name: 'theAccountBalance',
 			component:() => import('@/pages/user/theAccountBalance'),
+			meta:{requireAuth:true}
 		},
 		// 账户提现
 		{
 			path: '/user/withdrawal',
 			name: 'withdrawal',
 			component:() => import('@/pages/user/withdrawal'),
+			meta:{requireAuth:true}
 		},
 		// 提现明细
 		{
 			path: '/user/theWithdrawal',
 			name: 'theWithdrawal',
 			component:() => import('@/pages/user/theWithdrawal'),
+			meta:{requireAuth:true}
 		},
 		// 账单明细
 		{
 			path: '/user/billingDetails',
 			name: 'billingDetails',
 			component:() => import('@/pages/user/billingDetails'),
+			meta:{requireAuth:true}
 		},
 
 		// 我的团队
@@ -319,54 +331,63 @@ const router= new Router({
 			path: '/user/myTeam',
 			name: 'myTeam',
 			component:() => import('@/pages/user/myTeam'),
+			meta:{requireAuth:true}
 		},
 		// 团队列表
 		{
 			path: '/user/myTeam/commissionlist',  
 			name: 'commissionlist',
 			component: () => import('@/pages/user/commissionlist'),
+			meta:{requireAuth:true}
 		},
 		// 查看订单
 		{
 			path: '/user/myTeam/commissionlist/viewOrders',  
 			name: 'viewOrders',
 			component: () => import('@/pages/user/viewOrders'),
+			meta:{requireAuth:true}
 		},
 		// 收款信息
 		{
 			path: '/user/receiptInformation',
 			name: 'receiptInformation',
 			component:() => import('@/pages/user/receiptInformation'),
+			meta:{requireAuth:true}
 		},
 		// 佣金明细
 		{
 			path: '/user/detailed',
 			name: 'detailed',
 			component:() => import('@/pages/user/detailed'),
+			meta:{requireAuth:true}
 		},
 		// 我的分享
 		{
 			path: '/user/mySharing',
 			name: 'mySharing',
 			component:() => import('@/pages/user/mySharing'),
+			meta:{requireAuth:true}
 		},
 		// 支付宝账号编辑
 		{
 			path: '/user/alipay',
 			name: 'alipay',
 			component:() => import('@/pages/user/alipay'),
+			meta:{requireAuth:true}
 		},
 		// 修改用户名
 		{
 			path: '/user/modifyUserName',
 			name: 'alipay',
 			component:() => import('@/pages/user/modifyUserName'),
+			meta:{requireAuth:true}
 		},
 		// 收藏
 		{
 			path: '/user/Collect',
 			name: 'alipay',
 			component:() => import('@/pages/user/Collect'),
+			meta:{requireAuth:true}
 		},
 		/**
 		 * 地址管理
@@ -376,24 +397,28 @@ const router= new Router({
 			path: '/user/Address',
 			name: 'Address',
 			component:() => import('@/pages/user/address/Address'),
+			meta:{requireAuth:true}
 		},
 		// 添加收货地址
 		{
 			path: '/user/AddAddress',
 			name: 'AddAddress',
 			component:() => import('@/pages/user/address/AddAddress'),
+			meta:{requireAuth:true}
 		},
 		// 修改收货地址
 		{
 			path: '/user/EditAddress',
 			name: 'EditAddress',
 			component:() => import('@/pages/user/address/EditAddress'),
+			meta:{requireAuth:true}
 		},
 		// 地址选点
 		{
 			path: '/user/SelectPoint',
 			name: 'SelectPoint',
 			component: (resolve) => require(['@/pages/user/address/SelectPoint'],resolve),
+			meta:{requireAuth:true}
 		},
 
 	
@@ -409,7 +434,6 @@ const router= new Router({
 //注册全局钩子函数
 router.beforeEach((to,from,next) =>{
 	if(to.matched.some(r => r.meta.requireAuth)){	//当前页面是否需要登录
-		console.log('dsdfdfe')
 		if(to.path === '/Login' || to.path ==='/Register'){
 			next()
 		}else{
