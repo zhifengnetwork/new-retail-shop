@@ -9,19 +9,19 @@
             <div class="main">
                 <div class="item">
                     <div class="title">收款人：</div>
-                    <div class="name">张三三</div>
+                    <div class="name">{{bankInfo.title}}</div>
                 </div>
                 <div class="item">
                     <div class="title">电话：</div>
-                    <div class="name">13480197692</div>
+                    <div class="name">{{bankInfo.name}}</div>
                 </div>
                 <div class="item">
                     <div class="title">账号：</div>
-                    <div class="name">6522254215545225</div>
+                    <div class="name">{{bankInfo.value}}</div>
                 </div>
                 <div class="item">
                     <div class="title">银行：</div>
-                    <div class="name">工商银行</div>
+                    <div class="name">{{bankInfo.remark}}</div>
                 </div>
             </div>
         </div>
@@ -33,8 +33,32 @@
     export default {
 	name: "receiptInformation",
 	data() {
-		return {};
-	},
+		return {
+            bankInfo:'52555',
+        };
+    },
+    created(){
+            this.receiptInfo();//请求数据
+    },
+    amount(){
+      
+    },
+    methods:{
+        receiptInfo(){  
+            var _that=this
+            var url ='/user/bank_card' 
+            _that.$axios.post(url,{
+                // 传给后台的参数
+                'token':this.$store.getters.optuser.Authorization,
+            })
+            .then((res)=>{
+                    _that.bankInfo=res.data.data;
+            })
+            .catch( (error) => {
+                Toast("请求错误:" + error)
+            })
+        },
+    },
 	components: {
 		ReceHeader,
 	}
