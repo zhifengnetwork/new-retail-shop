@@ -36,7 +36,7 @@
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 规格</span>
-                        <div class="-text" v-for="(item,key) in this.goodsData.attr_name" :key="key"> {{item}} </div>
+                        <div class="-text"> {{esku}} </div>
                     </div>
                 </div>
 
@@ -48,37 +48,22 @@
                     <van-tab title="商品详情">
                         <div class="details-wrap">
                             <!-- <img src="/static/images/details/00details-img01.png" /> -->
-                            <p class="-desc">{{this.goodsData.desc}}</p>
+                            <p class="-desc" v-html="this.goodsData.content"></p>
                             <img v-for="(img,key) in this.goodsData.img" :key="key" :src="img.picture"/>
                         </div>
                     </van-tab>
                     <van-tab title="参数">
                         <div class="params-wrap">
-                            <ul class="param-list">
-                                <li>
+                            <ul class="param-list" v-html="this.goodsData.content_param">
+
+                                <!-- <li>
                                     <div class="param-name">商品编号 </div>
                                     <div class="param-value">55666666</div>
                                 </li>
                                 <li>
                                     <div class="param-name">面料</div>
                                     <div class="param-value">蕾丝</div>
-                                </li>
-                                <li>
-                                    <div class="param-name">使用尺寸</div>
-                                    <div class="param-value">S M L XL</div>
-                                </li>
-                                <li>
-                                    <div class="param-name">款式</div>
-                                    <div class="param-value">中长款</div>
-                                </li>
-                                <li>
-                                    <div class="param-name">风格</div>
-                                    <div class="param-value">其他</div>
-                                </li>
-                                <li>
-                                    <div class="param-name">图案</div>
-                                    <div class="param-value">碎花</div>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
 
@@ -200,7 +185,7 @@ export default {
             goodsData:[],
             commentList:[],
             is_sku: false,  //规格弹窗
-
+            esku:'',
             sku_stock_s: false,     //规格.库存状态
             sku_stock: 0,   //规格.库存
             selectArr: '',  //存放被选中的值
@@ -293,13 +278,30 @@ export default {
         },
         confirmSize(){           // 下单
             var _that=this;
+
+            _that.esku =_that.selectArr
             var sku_id =this.selectArarr.sku_id
             if(sku_id==""){ this.$toast("改规格已售完"); return}
-            _that.$axios.post('cart/addCart',{
-                'sku_id':sku_id,
-                'cart_number':this.goodsNumber,
-                'token':this.$store.getters.optuser.Authorization 
-            })
+           
+
+            if(this.optionFlag==1){
+                 var t ={
+                    'sku_id':sku_id,
+                    'cart_number':this.goodsNumber,
+                    'token':this.$store.getters.optuser.Authorization, 
+                    'session_id':1
+                }
+            }else{
+                 var t ={
+                    'sku_id':sku_id,
+                    'cart_number':this.goodsNumber,
+                    'token':this.$store.getters.optuser.Authorization, 
+                    // 'session_id':1
+                }
+            }
+            _that.$axios.post('cart/addCart',t
+            
+            )
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
@@ -413,7 +415,7 @@ export default {
          * 方法: 先生成[0,1...]形式的数组, 然后根据0,1从原数组取元素，得到组合数组
          */
         combInArray(aData) {
-        if (!aData || !aData.length) {return [];}
+            if (!aData || !aData.length) {return [];}
             var len = aData.length;
             var aResult = [];
             for (var n = 1; n < len; n++) {
@@ -471,6 +473,7 @@ export default {
             var self = this
             let orderInfo = this.good; /*所有规格**所有规格*/
             let orderInfoChild = this.good[n].res; /*当前点击的规格的所有子属性内容*/
+            console.log(orderInfoChild)
             if (orderInfoChild[index].isShow == true) {          //选中自己，兄弟节点取消选中
                 if (orderInfoChild[index].isSelect == true) {
                     orderInfoChild[index].isSelect = false;
@@ -497,6 +500,7 @@ export default {
                 this.selectArr=li.join('、')
             }
         
+            console.log(this.selectArr)
             // //已经选择的节点
             let haveChangedId = [];
             for (let i = 0; i < this.good.length; i++) {

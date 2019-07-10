@@ -18,7 +18,7 @@
                 <!-- 充值、提现按钮 -->
                 <div class="btn_wrap">
                     <!-- 提现 -->
-                    <router-link to="/user/withdrawal">
+                    <router-link :to="'/user/withdrawal?remainder_money='+the.remainder_money+'&rate='+the.rate">
                         <div class="draw">提现</div>
                     </router-link>    
                 </div>
@@ -72,10 +72,8 @@
                     data:params
                 })
                 .then((res)=>{
-                    console.log(res)
                     if(res.data.status ===200){
                         this.the = res.data.data;
-                        console.log(this.the)
                     }else{
                         Toast(res.data.msg)
                     }

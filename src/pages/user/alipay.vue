@@ -11,14 +11,14 @@
 				<div class="name_wrap">
 					<div class="name">支付宝账号</div>
 					<div class="inp_wrap">
-						<input type="text" v-model="alipayName" placeholder="请输入支付宝账号"/>
+						<input type="text" v-model="alipay" placeholder="请输入支付宝账号"/>
 					</div>
 				</div>
 				<!-- 真实姓名 -->
 				<div class="name_wrap">
 					<div class="name">真实姓名</div>
 					<div class="inp_wrap">
-						<input type="text" v-model="alipay" placeholder="请输入真实姓名"/>
+						<input type="text" v-model="alipayName" placeholder="请输入真实姓名"/>
 					</div>
 				</div>
 			</div>
@@ -46,17 +46,23 @@
 					return _that.$toast("请输入完整信息")
 				}
 				var url ='user/zfb_edit'
-				_that.$axios.post(url,{
-					// 传给后台的参数
+				_that.$axios.post(url,{			// 传给后台的参数
 					'token':this.$store.getters.optuser.Authorization,
 					'alipay_name':_that.alipayName,
 					'alipay':_that.alipay,
 				})
 				.then((res)=>{
-					_that.$toast('地址添加成功')                
-					setTimeout(() => {
-						_that.$router.push("/user/Address");
-					}, 1000);
+					if(res.data.status===200){
+						_that.$toast('修改成功')  
+						
+						setTimeout(() => {
+							this.$router.go(-1)
+						}, 2000);
+					}else if(res.data.status==999){
+                        this.$store.commit('del_token'); //token，清除它;
+                    }else{
+                        this.$toast(res.data.msg)
+                    }
 				})
 			}
 		},
