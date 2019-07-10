@@ -141,8 +141,11 @@
                 ],
             };
         },
-        mounted() {
+        created(){
+            this.$store.commit('showLoading')
             this.userData();
+        },
+        mounted() {
         },
         methods: {
             userData() {
@@ -153,10 +156,9 @@
                 .then((res)=>{                  
                     var that = this
                     var item = res.data.data;
-                    console.log(res)
                     if(res.data.status === 200){
                         that.userList = item;
-                        console.log(that.userList)
+                        this.$store.commit('hideLoading')
                     }else{
                         that.$toast(res.msg)
                     }

@@ -85,11 +85,15 @@
 </script>
 
 <style lang="stylus" scoped>
+
     .MySharing
         width 100%
         height 100vh
         background url(/static/images/user/bnner.png) no-repeat
         background-size 100% 100%
+        img 
+            max-width 180px
+            max-height 180px
         .head
             color #fff
             background none
@@ -146,6 +150,7 @@
                             margin 0 auto
                             width 318px
                             height 318px
+                            
             .touch
                 font-size 30px
                 text-align center
