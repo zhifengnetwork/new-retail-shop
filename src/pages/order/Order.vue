@@ -685,16 +685,7 @@ export default {
          */
         onInput(key) {
             this.payPassword = (this.payPassword + key).slice(0, 6);
-            if(this.payPassword.length === 6){
-                // let url = 'user/check_pwd';
-                // this.$axios.post(url,{
-                //     token:this.token,
-                //     pwd:this.payPassword
-                // }).then((res)=>{
-                //     console.log(66)
-                // })
-               
- 
+            if(this.payPassword.length === 6){ 
                 // 请求数据
                 let url = 'pay/payment';
                 this.$axios.post(url,{
@@ -704,13 +695,13 @@ export default {
                     pwd:this.payPassword
                 }).then((res)=>{
                     if(res.data.status === 200){   
-                        console.log(9999) 
+                       
                         // 余额支付成功                   
                         // this.$toast(res.data.msg)
                         this.requestData();
                         setTimeout(() => {
                             console.log("支付成功，2s跳转到支付成功页面")
-                            this.$router.push('/Pay/PaySucceed')
+                            this.$router.push('/Pay/PaySucceed?order_id=' + order_id)
                         },2000)
                     }else if(res.data.status === 888){
                         this.$router.push('/user/SetPassword')

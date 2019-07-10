@@ -47,6 +47,7 @@ export default {
     data() {
         return {
             payDefault:'微信支付',
+            order_id:'',
             pay_id:'',//支付方式id
             pay_type:[],//所有支付方式
             payPassword:'',//支付密码
@@ -105,25 +106,14 @@ export default {
          */
         onInput(key) {
             this.payPassword = (this.payPassword + key).slice(0, 6);
-            if(this.payPassword.length === 6){
-                // let url = 'user/check_pwd';
-                // this.$axios.post(url,{
-                //     token:this.token,
-                //     pwd:this.payPassword
-                // }).then((res)=>{
-                //     console.log(66)
-                // })
-                // 关闭密码输入
-                this.showKeyboard = false;
-                this.showPwd = false;
-                this.payPassword = '';
- 
+            if(this.payPassword.length === 6){ 
                 // 请求数据
                 let url = 'pay/payment';
                 this.$axios.post(url,{
                     token:this.$store.getters.optuser.Authorization,
                     order_id:this.$route.query.order_id,
-                    pay_type:this.pay_id 
+                    pay_type:this.pay_id, 
+                    pwd:this.payPassword
                 }).then((res) => {
                     console.log(res.data)
                     if(res.data.status === 200){   
@@ -131,18 +121,26 @@ export default {
                         // this.$toast(res.data.msg)
                         this.requestData();
                         setTimeout(() => {
-                            console.log("支付成功，2s跳转到支付成功页面")
-                            this.$router.push('/Pay/PaySucceed')
+                            // console.log("支付成功，2s跳转到支付成功页面")
+                            this.$router.push('/Pay/PaySucceed?order_id=' + this.order_id)
                         },2000)
-                        
-                    }else{
+                    }else if(res.data.status === 888){
+                        // 设置支付密码
+                        this.$toast(res.data.msg)
+                        this.$router.push('/user/SetPassword')
+                    }else if(res.data.status === 999){
+                        this.$toast(res.data.msg)
+                        this.$router.push('/user/SetPassword')
+                    }
+                    else{
                         // 支付失败
                         this.$toast(res.data.msg);
                     }
                 })
- 
-
-
+                 // 关闭密码输入
+                this.showKeyboard = false;
+                this.showPwd = false;
+                this.payPassword = '';
             }
         },
         /**

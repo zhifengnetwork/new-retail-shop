@@ -20,10 +20,10 @@
 <script>
     import TopHeader from "@/pages/common/header/TopHeader";
     export default {
-    name: "PaySucceed",
-    components: {
-        TopHeader
-    }
+        name: "PaySucceed",
+        components: {
+            TopHeader
+        }
     }
 </script>
 

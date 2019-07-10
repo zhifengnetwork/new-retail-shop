@@ -136,7 +136,7 @@ export default {
 		};
 	},
 	created(){
-		this.$store.commit('showLoading')       //加载login
+		this.$store.commit('showLoading')//加载loading
 		this.requestData();
 	},
 	methods:{
@@ -150,9 +150,12 @@ export default {
                 if(res.data.status === 200){
 					this.bannerData = res.data.data.banners;
 					this.noticeData = res.data.data.announce;
+					this.giftData = res.data.data.goods_gift;
 					this.hotGoods = res.data.data.hot_goods;
 					this.recommendData = res.data.data.recommend_goods;
 					this.$store.commit('hideLoading')
+					console.log(this.giftData)
+					
                 }else{
 					this.$toast(res.data.msg)
 				}
@@ -179,6 +182,7 @@ export default {
             })
             .then((res)=>{
 				var list = res.data;
+				console.log(list)
 				if(list.status == 200){
 					this.$router.push({
 						path: '/sell/Sell',

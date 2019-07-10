@@ -98,14 +98,45 @@ export default {
             //     content:_that.content,
             //     img:_that.postData
             // }
-            _that.$axios.post(url,{
-                token:this.$store.getters.optuser.Authorization,
-                comments:''
-            })
-            .then((res)=>{                  
-               console.log(res)
-                var item = res.data.data;
-                if(res.data.status === 200){
+            // console.log(json)
+            // comments.push(json)
+
+            var query =this.$route.query
+            var params = new URLSearchParams();
+            var returnObj = new Object();//创建一个对象
+             returnObj.order_id=query.order_id
+             returnObj.goods_id=query.goods_id
+             returnObj.sku_id=query.sku_id
+             returnObj.star_rating=_that.star_rating
+             returnObj.content=_that.content
+             returnObj.img=_that.postData
+             var news =JSON.stringify(comments)
+             params.append('comments', news);
+
+                params.append('token',this.$store.getters.optuser.Authorization)
+                // params.append('comments', s);
+                this.$axios({
+                            method:"post",
+                            url:url,
+                            data: params
+                }).then((res)=>{
+                    if(res.data.status === 1){
+                        this.$toast(res.data.msg)
+                        // this.$router.push('/order?type=0')
+                        this.$router.go(-1)
+                    }else{
+                        this.$toast(res.data.msg)
+                    }
+                })
+
+            // _that.$axios.post(url,{
+            // //     token:this.$store.getters.optuser.Authorization,
+            // //     comments: news
+            // })
+            // .then((res)=>{                  
+            //    console.log(res)
+            //     var item = res.data.data;
+            //     if(res.data.status === 200){
                     
             //         // this.$store.commit('hideLoading')
             //     }else{
