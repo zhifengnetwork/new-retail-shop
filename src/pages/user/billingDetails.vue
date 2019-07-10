@@ -34,13 +34,13 @@
 						</ul>
 					</div>
 					<div class="list" v-show="nowIndex === 1">
-						<ul v-for="(list,index) in detList" :key="index">
+						<ul v-for="(tes,index) in detList" :key="index">
 							<li>
-								<div>{{list.source_id}}</div>
-								<div v-if="list.log_type === 1">{{list.note}}</div>
+								<div>{{tes.source_id}}</div>
+								<div v-if="tes.log_type === 1">{{tes.note}}</div>
 							</li>
-							<li>{{list.create_time}}</li>
-							<li>{{list.balance}}</li>
+							<li>{{tes.create_time}}</li>
+							<li>{{tes.balance}}</li>
 						</ul>
 					</div>
 
@@ -67,6 +67,7 @@
 					}
 				],
 				nowIndex:0,
+				index:0,
 				detItem:[],
 				detList:[],
 				flag:false,
