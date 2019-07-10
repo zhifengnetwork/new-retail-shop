@@ -119,7 +119,7 @@
                 </div>                
                 <div class="arr_wrap">
                     <router-link class="my_look" to="/user/mySharing">
-                        <span>我的分享</span>
+                        <span>我的推广</span>
                         <span class="right_ico"></span>
                     </router-link>
                 </div>
