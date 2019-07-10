@@ -620,7 +620,6 @@ export default {
          */
         payment(order_id,type){
             if(type == 1){
-                console.log("余额支付")
                 this.showPwd = true;
                 this.showKeyboard = true;
                 this.order_id = order_id
@@ -692,19 +691,18 @@ export default {
                 // }).then((res)=>{
                 //     console.log(66)
                 // })
-                // 关闭密码输入
-                this.showKeyboard = false;
-                this.showPwd = false;
-                this.payPassword = '';
+               
  
                 // 请求数据
                 let url = 'pay/payment';
                 this.$axios.post(url,{
                     token:this.token,
                     order_id:this.order_id,
-                    pay_type:this.pay_type
+                    pay_type:this.pay_type,
+                    pwd:this.payPassword
                 }).then((res)=>{
-                    if(res.data.status === 200){    
+                    if(res.data.status === 200){   
+                        console.log(9999) 
                         // 余额支付成功                   
                         // this.$toast(res.data.msg)
                         this.requestData();
@@ -712,10 +710,11 @@ export default {
                             console.log("支付成功，2s跳转到支付成功页面")
                             this.$router.push('/Pay/PaySucceed')
                         },2000)
-                        
+                    }else if(res.data.status === 888){
+                        this.$router.push('/user/SetPassword')
                     }else{
                         // 余额支付失败
-                        // this.$toast(res.data.msg);
+                        this.$toast(res.data.msg);
                         // setTimeout(() => {
                         //     console.log("支付失败，2s跳转到支付失败页面")
                         //     this.$router.push('/Pay/PayFail')
@@ -723,6 +722,10 @@ export default {
                            
                     }
                 })
+                // 关闭密码输入
+                this.showKeyboard = false;
+                this.showPwd = false;
+                this.payPassword = '';
 
 
             }

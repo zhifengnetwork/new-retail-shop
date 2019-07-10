@@ -31,6 +31,30 @@
 			<span>不包邮</span>
 		</div>
 
+		<!-- 礼品专区 -->
+		<div class="gift-area">
+			<div class="heading">
+				<i class="icon iconfont icon-lipin"></i>
+				<h3>礼品专区</h3>
+			</div>
+			<div class="gift-list">
+				<div class="single-item" v-for="(item,index) in giftData" :key="index">
+					<router-link :to="'/Details?goods_id='+item.goods_id">
+						<div class="img-wrap">
+							<img :src="item.img" />
+						</div>
+						<div class="main">
+							<h3>{{item.goods_name}}</h3>
+							<div class="price">
+								<p class="discount-price">{{item.price | rmb}}</p>
+								<p class="original-price">原价:{{item.original_price | rmb}}</p>
+							</div>
+						</div>
+					</router-link>
+				</div>
+			</div>
+		</div>
+
 		<!-- 热销商品 -->
 		<div class="hot-wrap">
 			<div class="heading">
@@ -105,13 +129,13 @@ export default {
 			bannerData:[],
 			noticeData:[],
 			isShow:false,//弹窗是否显示
+			giftData:[],
 			hotGoods:[],
 			recommendData:[],
 			token: this.$store.getters.optuser.Authorization
 		};
 	},
 	created(){
-		
 		this.requestData();
 	},
 	methods:{
@@ -127,6 +151,7 @@ export default {
 					this.noticeData = res.data.data.announce;
 					this.hotGoods = res.data.data.hot_goods;
 					this.recommendData = res.data.data.recommend_goods;
+					this.giftData = res.data.data.goods_gift;
                 }else{
 					this.$toast(res.data.msg)
 				}
@@ -265,6 +290,53 @@ export default {
 			content ''
 		.van-notice-bar >>> .van-notice-bar__left-icon, .van-notice-bar__right-icon
 			min-width 33px
+	.gift-area
+		padding 0 .25rem
+		box-sizing border-box
+		.heading
+			.iconfont 
+				color #f41111
+				font-size 32px
+		.gift-list
+			display flex
+			flex-wrap wrap
+			.single-item
+				width 48%
+				height 494px
+				background-color #fff
+				border-radius 8px
+				overflow hidden
+				margin 0 20px 20px 0
+				padding 10px
+				box-sizing border-box
+				&:nth-child(2n)
+					margin-right 0
+				.img-wrap
+					width 320px
+					height 320px
+					overflow hidden
+					img 
+						max-width 100%
+						max-height 100%
+				.main
+					flex 1
+					h3
+						font-size 22px
+						color #151515
+						height 64px
+						-webkit-box-orient vertical
+						-webkit-line-clamp 2
+						display -webkit-box
+						overflow hidden
+						text-overflow ellipsis
+					.price
+						.discount-price
+							font-size 30px
+							color #ed0d0d
+							line-height 50px
+						.original-price
+							font-size 24px
+							color #a1a1a1
 	.advance-sale
 		width 700px
 		height 150px

@@ -362,6 +362,12 @@ const router= new Router({
 			name: 'alipay',
 			component:() => import('@/pages/user/modifyUserName'),
 		},
+		// 修改支付密码
+		{
+			path: '/user/SetPassword',
+			name: 'SetPassword',
+			component:() => import('@/pages/user/SetPassword'),
+		},
 		// 收藏
 		{
 			path: '/user/Collect',
@@ -409,7 +415,6 @@ const router= new Router({
 //注册全局钩子函数
 router.beforeEach((to,from,next) =>{
 	if(to.matched.some(r => r.meta.requireAuth)){	//当前页面是否需要登录
-		console.log('dsdfdfe')
 		if(to.path === '/Login' || to.path ==='/Register'){
 			next()
 		}else{

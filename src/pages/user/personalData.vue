@@ -33,6 +33,14 @@
                         </div>
                     </div>
                 </router-link>    
+                 <router-link class="my_look" to="/user/SetPassword">
+                    <div class="item_wrap">
+                        <div class="text">支付密码</div>
+                        <div class="name_wrap">
+                            <i class="iconfont icon-xiangyoujiantou"></i>
+                        </div>
+                    </div>
+                </router-link>    
             </div>
             <!-- 按钮 -->
             <div class="btn" @click="quitOut()">退出登录</div>
