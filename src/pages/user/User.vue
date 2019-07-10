@@ -108,8 +108,10 @@
                     </router-link>
                 </div>
                 <div class="arr_wrap">
+                    <router-link class="my_look" :to="'/register?uid='+personalList.id">
                     <span>邀请链接</span>
                     <span class="right_ico"></span>
+                    </router-link>
                 </div>
                 <div class="arr_wrap">
                     <router-link class="my_look" to="/user/release">
