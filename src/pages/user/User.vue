@@ -108,8 +108,10 @@
                     </router-link>
                 </div>
                 <div class="arr_wrap">
+                    <router-link class="my_look" :to="'/register?uid='+personalList.id">
                     <span>邀请链接</span>
                     <span class="right_ico"></span>
+                    </router-link>
                 </div>
                 <div class="arr_wrap">
                     <router-link class="my_look" to="/user/release">
@@ -119,7 +121,7 @@
                 </div>                
                 <div class="arr_wrap">
                     <router-link class="my_look" to="/user/mySharing">
-                        <span>我的分享</span>
+                        <span>我的推广</span>
                         <span class="right_ico"></span>
                     </router-link>
                 </div>
@@ -137,6 +139,7 @@
         data() {
             return {
                 userList:[],
+                personalList:[],
                 nowIndex:0,
                 orderIcon:[
                     {id:1,name:'待付款',imgUrl:'/static/images/user/payment.png',ar:'/order?type=1'},
@@ -172,6 +175,22 @@
                     }
                     else{
                         that.$toast(res.data.msg)
+                    }
+                })
+            },
+            personalData() {
+                let url = 'user/personal'
+                this.$axios.post(url,{
+                    token:this.$store.getters.optuser.Authorization
+                })
+                .then((res)=>{                  
+                    var that = this
+                    var item = res.data.data;
+                    if(res.data.status === 200){
+                        that.personalList = item;
+                        console.log(that.personalList)
+                    }else{
+                        that.$toast(res.msg)
                     }
                 })
             },

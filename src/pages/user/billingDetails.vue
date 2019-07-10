@@ -9,10 +9,8 @@
 			<div class="ft_wrap">
 				<div class="tit_wrap">
 					<ul>
-						<li v-for="(item,index) in tabList" 
-						:key="index" 
-						:class="{on:index === nowIndex}" 
-						@click="handleClick(index)">{{item.tabTitle}}</li>
+						<li @click="getType(0)" :class="[isOn?'on':'']">消费</li>
+						<li @click="getType(1)" :class="[isOn?'':'on']">赚取</li>
 					</ul>
 				</div>
 				<div class="item_wrap">
@@ -24,26 +22,15 @@
 						</ul>
 					</div>
 					<div class="list" v-show="nowIndex === 0">
-						<ul v-for="(tes,index) in detItem" :key="index">
+						<ul v-for="(item,index) in detItem" :key="index">
 							<li>
-								<div>{{tes.source_id}}</div>
-								<div v-if="tes.log_type === 0">{{tes.note}}</div>
+								<div>{{item.source_id}}</div>
+								<div>{{item.note}}</div>
 							</li>
-							<li>{{tes.create_time}}</li>
-							<li>-{{tes.balance}}</li>
+							<li>{{item.create_time}}</li>
+							<li>-{{item.balance}}</li>
 						</ul>
 					</div>
-					<div class="list" v-show="nowIndex === 1">
-						<ul v-for="(list,index) in detList" :key="index">
-							<li>
-								<div>{{list.source_id}}</div>
-								<div v-if="list.log_type === 1">{{list.note}}</div>
-							</li>
-							<li>{{list.create_time}}</li>
-							<li>{{list.balance}}</li>
-						</ul>
-					</div>
-
 				</div>
 				<div class="foot" v-if="flag">我是有底线的哦~~</div>
 			</div>
@@ -58,26 +45,19 @@
         name: 'billingDetails',
 		data() {
 			return{
-                tabList:[
-					{
-						tabTitle:"消费"
-					},
-					{
-						tabTitle:"赚取"
-					}
-				],
 				nowIndex:0,
+				index:0,
 				detItem:[],
-				detList:[],
 				flag:false,
 				type:'',
+				isOn:true,
 			}
 		},
 		components: {
 			BillHeader,
 		},
 		mounted() {
-			this.det();
+			this.getType(0);
 		},
 		methods: {
             handleClick(index){
@@ -85,13 +65,17 @@
 				this.flag = false;
 				this.det();
 			},
-			// 账单列表
-			det() {
+			getType(typeId){
 				var that = this
-                var url = "user/remainder_list"
+				var url = "user/remainder_list"
+				if(typeId==0){
+					that.isOn=true;
+				}else{
+					that.isOn=false;
+				}
                 var params = new URLSearchParams();
 				params.append('token', that.$store.getters.optuser.Authorization);// 要传给后台的参数值token
-				params.append('log_type', that.type)
+				params.append('log_type', typeId)
                 that.$axios({
                     method:"post",
                     url:url,
@@ -101,17 +85,13 @@
                     console.log(res)
                     if(res.data.status ===200){
 						this.detItem= res.data.data.list;
-						if(that.nowIndex === 0) {
-							that.detItem= res.data.data.list;
-						} else {
-							that.detList= res.data.data.list;
-						}
+						
                         
                     }else{
                         Toast(res.data.msg)
                     }
                 })
-            },
+			},
 		}
 	}
 </script>

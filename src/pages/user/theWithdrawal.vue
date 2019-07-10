@@ -49,6 +49,9 @@
 		mounted() {
 			this.detailList();
 		},
+		created() {
+			this.$store.commit('hideLoading')
+		},
 		methods: {
 			// 提现明细列表
 			detailList() {
@@ -63,7 +66,8 @@
                 .then((res)=>{
                     console.log(res)
                     if(res.data.status ===200){
-                        this.detList = res.data.data.list;
+						this.detList = res.data.data.list;
+						this.$store.commit('hideLoading')
                         console.log(this.detList)
                     }else{
                         Toast(res.data.msg)

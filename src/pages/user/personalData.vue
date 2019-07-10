@@ -124,7 +124,7 @@
                 }).then((res)=>{
                     this.$store.commit('del_token'); //token，清除它;
                     if (res.data.status === 200){
-                        Toast(res.data.msg);
+                        Toast('退出成功');
                         setTimeout(() => {
                             this.$router.push("/Login");
                         }, 1000);
