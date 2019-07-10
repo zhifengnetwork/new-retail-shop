@@ -153,7 +153,15 @@ export default {
                     _that.goodsList =list.data
                     _that.addrRes =_that.goodsList.addr_res
                     _that.count =_that.goodsList.goods_res.length
-                }else{
+                }
+                else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+                else{
                     _that.$toast(list.msg)
                 }
             })
@@ -191,9 +199,16 @@ export default {
                         // name: 'PayWay',
                         // params: {'cart_id': this.getSlectedGoodsCartID()}
                     })
-                   
                     
-                }else{
+                }
+                else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+                }
+                else{
                     _that.$toast(list.msg)
                 }
             })

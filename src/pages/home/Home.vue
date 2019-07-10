@@ -46,8 +46,8 @@
 						<div class="main">
 							<h3>{{item.goods_name}}</h3>
 							<div class="price">
-								<p class="discount-price">{{item.price | rmb}}</p>
-								<p class="original-price">原价:{{item.original_price | rmb}}</p>
+								<p class="discount-price">{{item.price | formatMoney}}</p>
+								<p class="original-price">原价:{{item.original_price | formatMoney}}</p>
 							</div>
 						</div>
 					</router-link>
@@ -70,8 +70,8 @@
 						<div class="main">
 							<h3>{{item.goods_name}}</h3>
 							<div class="price">
-								<p class="discount-price">{{item.price | rmb}}</p>
-								<p class="original-price">原价:{{item.original_price | rmb}}</p>
+								<p class="discount-price">{{item.price | formatMoney}}</p>
+								<p class="original-price">原价:{{item.original_price | formatMoney}}</p>
 							</div>
 						</div>
 					</router-link>
@@ -94,8 +94,8 @@
 						<div class="main">
 							<h3>{{item.goods_name}}</h3>
 							<div class="price">
-								<p class="discount-price">{{item.price}}</p>
-								<p class="original-price">原价:{{item.original_price}}</p>
+								<p class="discount-price">{{item.price | formatMoney}}</p>
+								<p class="original-price">原价:{{item.original_price | formatMoney}}</p>
 							</div>
 						</div>
 					</router-link>
@@ -154,9 +154,15 @@ export default {
 					this.hotGoods = res.data.data.hot_goods;
 					this.recommendData = res.data.data.recommend_goods;
 					this.$store.commit('hideLoading')
-					console.log(this.giftData)
-					
-                }else{
+				}
+				else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+				else{
 					this.$toast(res.data.msg)
 				}
             })
@@ -182,7 +188,6 @@ export default {
             })
             .then((res)=>{
 				var list = res.data;
-				console.log(list)
 				if(list.status == 200){
 					this.$router.push({
 						path: '/sell/Sell',
@@ -196,7 +201,15 @@ export default {
 						path: '/sell/Payment',
 						name: 'Payment',
 					})
-				}else{
+				}
+				else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+				else{
 					_that.$toast(list.msg)
 				}
             })
@@ -234,9 +247,10 @@ export default {
 		}
 	},
 	filters:{
-		rmb(val){
-			return "¥" + val
-		}
+		//格式化金钱
+        formatMoney:function(val){
+            return "¥" + Number(val).toFixed(2)
+        }
 	}
 
 };

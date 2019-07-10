@@ -655,12 +655,13 @@ a
             height 60px
             line-height 60px
             .discount-price
-                font-size 30px
+                font-size 32px
                 color #f30c0c
                 margin-right 40px
             .original-price
-                font-size 26px
+                font-size 24px
                 color #838383
+                text-decoration line-through
         .goodsInfo
             padding 0 25px 25px
             box-sizing border-box

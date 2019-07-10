@@ -81,9 +81,12 @@
             .main_wrap
                 margin 24px
                 padding 0 24px 
-                background #fff
                 .main
-                    margin  0 0 10px
+                    margin 0 0 10px
+                    background #fff
+                    border-radius 10px
+                    padding 0 20px
+                    box-sizing border-box 
                     .time 
                         line-height 65px
                         color #151515  

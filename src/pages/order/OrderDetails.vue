@@ -74,7 +74,7 @@
                 <h2 class="heading">价格信息</h2>
                 <div class="group-line">
                     <div class="fl">商品总价</div>
-                    <div class="fr">{{orderDetails.goods_price | formatMoney}}元</div>
+                    <div class="fr">{{orderDetails.total_amount | formatMoney}}元</div>
                 </div>
                 <div class="group-line">
                     <div class="fl">余额</div>
@@ -126,8 +126,15 @@ export default {
                 if(res.data.status === 200){
                     this.orderDetails = res.data.data;
                     this.pay_name = res.data.data.pay_type.pay_name;
-                    console.log(this.orderDetails)
-                }else{
+                }
+                else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+                else{
                     this.$toast(res.data.msg)
                 }
             })
@@ -158,7 +165,7 @@ export default {
         },
         //格式化金钱
         formatMoney:function(val){
-            return "¥" + parseInt(val).toFixed(2)
+            return "¥" + Number(val).toFixed(2)
         }
     }
 }

@@ -24,7 +24,7 @@
 				<div class="menu-item">连衣裙</div> -->
 			</div>
 			<div class="scroll-list">
-				<Scroller>
+				<!-- <Scroller> -->
 					<div class="list-item" v-for="(items,index) in this.categoryData" :key="index" v-show ="activeIndex === index">
 						<div class="single-item" v-for="(item,index) in items.goods" :key="index">
 							<div class="img-wrap">
@@ -38,11 +38,11 @@
 								:to="'/Details?goods_id='+item.goods_id">
 									<h3>{{item.goods_name}}</h3>
 								</router-link>
-								<p class="price">{{item.price | moneyFormat | rmb}}</p>
+								<p class="price">{{item.price | formatMoney}}</p>
 							</div>
 						</div>
 					</div>
-				</Scroller>
+				<!-- </Scroller> -->
 			</div>
 		</div>
 		<!-- 底部导航 -->
@@ -68,9 +68,8 @@ export default {
 			pullDownTip:''
 		};
 	},
-  	mounted(){
-		// 调用loading 
-		this.$store.commit('showLoading')
+  	created(){
+		this.$store.commit('showLoading');// 调用loading 
         this.requestData();//请求数据
     },
 	methods:{
@@ -83,21 +82,25 @@ export default {
             let url = 'goods/categoryList';
             this.$axios.get(url)
             .then( (res) => {
-				
 				let status = res.data.status
                 if(status === 200){
-					// console.log(res.data.data)	
 					// 数据加载成功，关闭loading 
-					this.$store.commit('hideLoading')
-					
+					this.$store.commit('hideLoading');
 					this.categoryData = res.data.data;
-
 					this.categoryData.forEach((item) => {
 						// 左侧导航赋值
 						this.menuBar.push(item.cat_name)
-					})	
-							
-                }
+					})		
+                }else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+				else{
+					this.$toast(res.data.msg)
+				}
             })
             .catch((error) => {
                 alert('请求错误:'+ error)
@@ -106,12 +109,10 @@ export default {
 		
 	},
 	filters:{
-		moneyFormat(val){
-			return parseInt(val).toFixed(2)
-		},
-		rmb(val){
-			return "¥" + val
-		}
+		//格式化金钱
+        formatMoney:function(val){
+            return "¥" + Number(val).toFixed(2)
+        }
 	}
 	
 };

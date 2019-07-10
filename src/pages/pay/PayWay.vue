@@ -71,7 +71,15 @@ export default {
                 if(res.data.status === 200){
                     this.pay_type = res.data.data;
                     this.pay_id = res.data.data[0].pay_type;//当前选中支付方式id
-                }else{
+                }
+                else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+                else{
                     this.$toast(res.data.msg)
                 }
             })
@@ -115,26 +123,29 @@ export default {
                     pay_type:this.pay_id, 
                     pwd:this.payPassword
                 }).then((res) => {
-                    console.log(res.data)
-                    if(res.data.status === 200){   
-                        // 余额支付成功                   
-                        // this.$toast(res.data.msg)
+                    if(res.data.status === 200){  
+                        // 余额支付成功               
+                        this.$toast.success({message:res.data.msg,duration: 2000});
                         this.requestData();
                         setTimeout(() => {
-                            // console.log("支付成功，2s跳转到支付成功页面")
-                            this.$router.push('/Pay/PaySucceed?order_id=' + this.order_id)
+                            // console.log("支付成功，2s跳转到订单详情页")
+                            this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
                         },2000)
                     }else if(res.data.status === 888){
                         // 设置支付密码
-                        this.$toast(res.data.msg)
+                        this.$toast.fail(res.data.msg);
                         this.$router.push('/user/SetPassword')
-                    }else if(res.data.status === 999){
+                    }else if(res.data.status == 999){
+                        // token过期
                         this.$toast(res.data.msg)
-                        this.$router.push('/user/SetPassword')
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
                     }
                     else{
                         // 支付失败
-                        this.$toast(res.data.msg);
+                        this.$toast.fail(res.data.msg);
                     }
                 })
                  // 关闭密码输入

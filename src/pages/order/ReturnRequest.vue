@@ -68,7 +68,15 @@ export default {
                 this.refundData = res.data.data.goods
                 this.totalNumber() //总件
                 this.totalPrice() //总金额
-            }else{
+            }
+            else if(res.data.status == 999){
+                this.$toast(res.data.msg)
+                this.$store.commit('del_token'); //清除token
+                setTimeout(()=>{
+                    this.$router.push('/Login')
+                },1000)
+            }
+            else{
                 this.$toast(res.data.msg)
             }
         })
@@ -113,7 +121,15 @@ export default {
                         setTimeout( () => {
                             this.$router.push('/Order?type=0')
                         },3000)
-                    }else{
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
                         this.$toast(res.data.msg)
                     }  
                 }) 
@@ -126,7 +142,7 @@ export default {
     filters: {
         //格式化金钱
         formatMoney:function(val){
-            return "¥" + parseInt(val).toFixed(2)
+            return "¥" + Number(val).toFixed(2)
         }
     }
  

@@ -559,12 +559,15 @@ export default {
                                 this.ispage = false
                             }
                         }                        
-                    }else if(res.data.status == 301){
+                    }else if(res.data.status == 999){
                         this.$toast(res.data.msg)
                         this.$store.commit('del_token'); //清除token
                         setTimeout(()=>{
                             this.$router.push('/Login')
                         },1000)
+                    }
+                    else{
+                       this.$toast(res.data.msg) 
                     }
                 })
                 .catch((error) => {
@@ -591,7 +594,15 @@ export default {
                     if(res.data.status === 200){
                         items.splice(index,1)
                         this.$toast(res.data.msg)
-                    }else{
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
                         this.$toast(res.data.msg)
                     }
                 })
@@ -653,7 +664,15 @@ export default {
                     if(res.data.status === 200){
                         this.allOrders.splice(index,1);  
                         this.$toast("取消申请退款成功！");
-                    }else{
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
                         this.$toast(res.data.msg);
                     }
                 })
@@ -695,32 +714,35 @@ export default {
                     pwd:this.payPassword
                 }).then((res)=>{
                     if(res.data.status === 200){   
-                       
-                        // 余额支付成功                   
-                        // this.$toast(res.data.msg)
+                        // 余额支付成功    
+                        this.$toast.success({message:res.data.msg,duration: 2000});
                         this.requestData();
                         setTimeout(() => {
-                            console.log("支付成功，2s跳转到支付成功页面")
-                            this.$router.push('/Pay/PaySucceed?order_id=' + order_id)
+                            // console.log("支付成功，2s跳转到支付成功页面")
+                            this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
                         },2000)
-                    }else if(res.data.status === 888){
+                    }
+                    else if(res.data.status === 888){
+                        // 设置支付密码
+                        this.$toast.fail(res.data.msg);
                         this.$router.push('/user/SetPassword')
-                    }else{
-                        // 余额支付失败
-                        this.$toast(res.data.msg);
-                        // setTimeout(() => {
-                        //     console.log("支付失败，2s跳转到支付失败页面")
-                        //     this.$router.push('/Pay/PayFail')
-                        // },2000)
-                           
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
+                        // 支付失败
+                        this.$toast.fail(res.data.msg);
                     }
                 })
                 // 关闭密码输入
                 this.showKeyboard = false;
                 this.showPwd = false;
                 this.payPassword = '';
-
-
             }
         },
         /**
@@ -782,7 +804,7 @@ export default {
         },
         //格式化金钱
         formatMoney:function(val){
-            return "¥" + parseInt(val).toFixed(2)
+            return "¥" + Number(val).toFixed(2)
         }
     }
    
