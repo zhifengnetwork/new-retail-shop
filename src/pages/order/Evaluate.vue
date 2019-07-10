@@ -92,11 +92,7 @@ export default {
              news.push(returnObj)
                 params.append('token',this.$store.getters.optuser.Authorization)
                 params.append('comments', JSON.stringify(news));
-                this.$axios({
-                    method:"post",
-                    url:url,
-                    params: params
-                }).then((res)=>{
+                this.$axios.post(url,params).then((res)=>{
                     if(res.data.status === 2000){
                         this.$toast("评论成功")
                         this.$router.go(-1)
