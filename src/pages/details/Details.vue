@@ -19,7 +19,7 @@
             <div class="goodsInfo">
                 <div class="price">
                     <span class="discount-price">￥{{this.goodsData.price}}</span>
-                    <span class="original-price"><strike>原价￥{{this.goodsData.original_price}}</strike></span>
+                    <span class="original-price">原价￥{{this.goodsData.original_price}}</span>
                 </div>
                 <!-- 商品名称 -->
                 <div class="goodsName">
@@ -28,11 +28,11 @@
                 <div class="group-warp">
                     <div class="g-option">
                         <span class="-subtitle"> 配送</span>
-                        <div class="-text"> 广州白云区</div>
+                        <div class="-text"> {{proCityDistrict}}</div>
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 运费</span>
-                        <div class="-text"> {{this.goodsData.shipping_price!='0.00'?this.goodsData.shipping_price:'免运费'}}</div>
+                        <div class="-text"> {{this.goodsData.shipping_price}}</div>
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 规格</span>
@@ -198,15 +198,25 @@ export default {
 
             good:[],
             sizeBox:false,       //规格选择框
+            proCityDistrict:'广东广州'
         }
     },
     created(){
         // var that = this;
-        this.$store.commit('showLoading')       //加载loading
         this._getGoodsData()        //商品信息
         this._getCommentList()      //评论
+        this.get_default_address()
     },
     methods:{
+         get_default_address(){
+            var _that=this;
+               _that.$axios.post('address/get_default_city',{
+                'token':_that.token         
+            })
+            .then((res)=>{
+                _that.proCityDistrict=res.data.data.provincename+res.data.data.cityname+res.data.data.districtname;
+            })
+        },
 
          /*****************************收藏、评论*********************8***** */
         _timeStampForwardAate(timestamp){            //时间戳转日期
@@ -345,9 +355,12 @@ export default {
                     'sku_id':sku_id,
                     'cart_number':this.goodsNumber,
                     'token':this.$store.getters.optuser.Authorization, 
+                    // 'session_id':1
                 }
             }
-            _that.$axios.post('cart/addCart',t)
+            _that.$axios.post('cart/addCart',t
+            
+            )
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
@@ -384,14 +397,16 @@ export default {
                     that.goods = res.data.data;    //商品详情
                     that.good =  res.data.data.spec.spec_attr; //商品规格
                     that.isCollect=that.goods.collection;
+<<<<<<< HEAD
                     // that.esku=res.data.data.productAttr;
                     this.$store.commit('hideLoading')
+=======
+>>>>>>> 7d22ec2dbbad1c719484dcce992a80883d7caf5e
                     res.data.data.productAttr.forEach(
                         function(item){
                             that.esku+=item.attr_name+'、';
                         }
                     );
-
                 }
                 for (var i in that.goods.spec.goods_sku){  
                     that.shopItemInfo[that.goods.spec.goods_sku[i].sku_attr1] = that.goods.spec.goods_sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
@@ -416,12 +431,12 @@ export default {
         },
           //获得对象的key
         getObjKeys(obj) {
-            if (obj !== Object(obj)) throw new TypeError("Invalid object");
-            var keys = [];
-            for (var key in obj)
-                if (Object.prototype.hasOwnProperty.call(obj, key))
-                keys[keys.length] = key;
-                    return keys;
+        if (obj !== Object(obj)) throw new TypeError("Invalid object");
+        var keys = [];
+        for (var key in obj)
+            if (Object.prototype.hasOwnProperty.call(obj, key))
+            keys[keys.length] = key;
+                return keys;
         },
         add2SKUResult(combArrItem, sku) {       //把组合的key放入结果集SKUResult
             var key = combArrItem.join(";");
@@ -527,6 +542,7 @@ export default {
             var self = this
             let orderInfo = this.good; /*所有规格**所有规格*/
             let orderInfoChild = this.good[n].res; /*当前点击的规格的所有子属性内容*/
+            console.log(orderInfoChild)
             if (orderInfoChild[index].isShow == true) {          //选中自己，兄弟节点取消选中
                 if (orderInfoChild[index].isSelect == true) {
                     orderInfoChild[index].isSelect = false;
@@ -554,18 +570,25 @@ export default {
                 this.selectArr=li.join('、')
                 this.selectArrId=ids
             }
+        
+            console.log(this.selectArr)
             // //已经选择的节点
             let haveChangedId = [];
             for (let i = 0; i < this.good.length; i++) {
                 for (let j = 0; j < this.good[i].res.length; j++) {
-                    if (this.good[i].res[j].isSelect == true) {
-                        haveChangedId.push(this.good[i].res[j].attr_id); 
-                    }
+                if (this.good[i].res[j].isSelect == true) {
+                    haveChangedId.push(this.good[i].res[j].attr_id);
+                    
+                }
                 }
             }
-            if (haveChangedId.length) {                              
-                this.sku_stock_s = true;         //点击显示库存        
-                haveChangedId.sort(function(value1, value2) {    //获得组合key价格
+            if (haveChangedId.length) {
+                //点击显示库存
+                
+                this.sku_stock_s = true;
+                //获得组合key价格
+        
+                haveChangedId.sort(function(value1, value2) {
                 return parseInt(value1) - parseInt(value2);
                 });
                 var len = haveChangedId.length;
@@ -574,24 +597,24 @@ export default {
                 let daiceshi = []; //待测试节点
                 let daiceshiId = [];
                 for (let i = 0; i < this.good.length; i++) {
-                    for (let j = 0; j < this.good[i].res.length; j++) {
-                        if (this.good[n].res[index].attr_id != this.good[i].res[j].attr_id ) {
-                        daiceshi.push({
-                            index: i,
-                            cindex: j,
-                            id: this.good[i].res[j].attr_id
-                        }) ;
-                        daiceshiId.push(this.good[i].res[j].attr_id);
-                        }
-                        if(this.good[n].res[index].attr_id.length === this.good[i].res[j].attr_id.length){   //如果规格相等的
-                        daiceshi.push({
-                            index: i,
-                            cindex: j,
-                            id: this.good[i].res[j].attr_id
-                        }) ;
-                        daiceshiId.push(this.good[i].res[j].attr_id);
-                        }
+                for (let j = 0; j < this.good[i].res.length; j++) {
+                    if (this.good[n].res[index].attr_id != this.good[i].res[j].attr_id ) {
+                    daiceshi.push({
+                        index: i,
+                        cindex: j,
+                        id: this.good[i].res[j].attr_id
+                    }) ;
+                    daiceshiId.push(this.good[i].res[j].attr_id);
                     }
+                    if(this.good[n].res[index].attr_id.length === this.good[i].res[j].attr_id.length){   //如果规格相等的
+                    daiceshi.push({
+                        index: i,
+                        cindex: j,
+                        id: this.good[i].res[j].attr_id
+                    }) ;
+                    daiceshiId.push(this.good[i].res[j].attr_id);
+                    }
+                }
                 }
                 if(haveChangedId.length===1){
                 
@@ -650,7 +673,8 @@ export default {
             else {
                 this.sku_stock = 0 ;             //设置默认库存 
                 this.sku_stock_s = false;        //设置默认隐藏库存
-                for (let i = 0; i < this.good.length; i++) {     //设置属性状态
+                //设置属性状态
+                for (let i = 0; i < this.good.length; i++) {
                     for (let j = 0; j < this.good[i].res.length; j++) {
                         if (this.shopItemInfo[this.good[i].res[j].attr_id]) {
                         this.good[i].res[j].isShow = true;
