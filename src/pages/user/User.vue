@@ -14,7 +14,10 @@
                 </div>
             </div>
 
-            <div class="members">普通会员</div>
+            <div class="members" v-if="personalList.level === 0">普通会员</div>
+            <div class="members" v-if="personalList.level === 1">县级代理</div>
+            <div class="members" v-if="personalList.level === 2">市级代理</div>
+            <div class="members" v-if="personalList.level === 3">省级代理</div>
 
             <div class="article">
                 <div class="user_item">
@@ -108,9 +111,10 @@
                     </router-link>
                 </div>
                 <div class="arr_wrap">
-                    <router-link class="my_look" :to="'/register?uid='+personalList.id">
-                    <span>邀请链接</span>
-                    <span class="right_ico"></span>
+                    <!-- <router-link class="my_look" :to="'/register?uid='+personalList.id"> -->
+                    <router-link class="my_look" to="/user/InviteLink">
+                        <span>邀请链接</span>
+                        <span class="right_ico"></span>
                     </router-link>
                 </div>
                 <div class="arr_wrap">
@@ -159,6 +163,7 @@
         created(){
             this.$store.commit('showLoading')
             this.userData();
+            this.personalData();
         },
         methods: {
             userData() {

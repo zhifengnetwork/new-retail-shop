@@ -98,14 +98,15 @@
                 .then((res)=>{
                     var list = res.data;
                     if(list.status == 200){
-                        _that.list =list.data
+                        // _that.list =list.data
+                        this.$router.push({name:'Payment'})
                     }
                     else if(res.data.status == 999){
                         _that.$toast(res.data.msg)
-                        // _that.$store.commit('del_token'); //清除token
-                        // setTimeout(()=>{
-                        //     _that.$router.push('/Login')
-                        // },1000)
+                        _that.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            _that.$router.push('/Login')
+                        },1000)
                     }
                     else{
                         _that.$toast(list.msg)

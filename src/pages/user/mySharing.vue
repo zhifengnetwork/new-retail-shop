@@ -91,9 +91,6 @@
         height 100vh
         background url(/static/images/user/bnner.png) no-repeat
         background-size 100% 100%
-        img 
-            max-width 180px
-            max-height 180px
         .head
             color #fff
             background none
@@ -126,29 +123,21 @@
                     margin 0 20px 0 0 
                     color #ff4d4d
             .mark_wrap
-                margin 50px auto 0
+                margin 30px auto
                 padding 51px
                 width 480px
-                height 480px
                 background #fff
                 border-radius 10px
                 box-sizing border-box
                 .mark
-                    padding 28px 0
                     margin 0 auto
-                    width 378px
-                    height 378px
+                    padding 35px
                     background url(/static/images/user/ber.png) no-repeat
                     background-size 100% 100%
                     box-sizing border-box
                     .mark_img
                         margin 0 auto
-                        width 318px
-                        height 318px
-                        #qrcode
-                            margin 0 auto
-                            width 318px
-                            height 318px
+                        padding 0 0 0 10px
                             
             .touch
                 font-size 30px

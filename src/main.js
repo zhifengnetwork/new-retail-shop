@@ -27,6 +27,9 @@ Vue.component('Loading',Loading)
 import Scroller from '@/pages/common/scroller/Scroller'
 Vue.component('Scroller',Scroller)
 
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+
 
 // 拼接图片路径
 Vue.prototype.url = 'http://api.zhifengwangluo.c3w.cc/'

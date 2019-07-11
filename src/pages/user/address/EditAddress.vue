@@ -185,7 +185,7 @@ export default {
                 _that.consignee=res.data.data.consignee,
                 _that.mobile=res.data.data.mobile,
                 _that.is_default=res.data.data.is_default,
-                _that.district=res.data.data.district,
+                // _that.district=res.data.data.district,
                 // _that.city=res.data.data.city,
                 _that.address=res.data.data.address,
                 (res.data.data.is_default==1)?_that.checked=true:_that.checked=false
