@@ -56,6 +56,7 @@ export default {
             })
             .then((res)=>{
                 var list = res.data;
+                _that.$store.commit('hideLoading')
                 if(list.status == 200){
                     var newarrys =[];
                     for(var i in list.data){
@@ -63,7 +64,6 @@ export default {
                     }
                     _that.aValue =newarrys[0].value
                     _that.option1 =newarrys
-                    _that.$store.commit('hideLoading')
                 }else if(list.status == 999){
                     _that.$store.commit('del_token'); //清除token
                     setTimeout(()=>{
