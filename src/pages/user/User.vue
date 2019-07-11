@@ -14,7 +14,10 @@
                 </div>
             </div>
 
-            <div class="members">普通会员</div>
+            <div class="members" v-if="personalList.level === 0">普通会员</div>
+            <div class="members" v-if="personalList.level === 1">县级代理</div>
+            <div class="members" v-if="personalList.level === 2">市级代理</div>
+            <div class="members" v-if="personalList.level === 3">省级代理</div>
 
             <div class="article">
                 <div class="user_item">
@@ -108,9 +111,10 @@
                     </router-link>
                 </div>
                 <div class="arr_wrap">
-                    <router-link class="my_look" :to="'/register?uid='+personalList.id">
-                    <span>邀请链接</span>
-                    <span class="right_ico"></span>
+                    <!-- <router-link class="my_look" :to="'/register?uid='+personalList.id"> -->
+                    <router-link class="my_look" to="/user/InviteLink">
+                        <span>邀请链接</span>
+                        <span class="right_ico"></span>
                     </router-link>
                 </div>
                 <div class="arr_wrap">
@@ -153,8 +157,6 @@
         created(){
             this.$store.commit('showLoading')
             this.userData();
-        },
-        mounted() {
             this.personalData();
         },
         methods: {
@@ -163,14 +165,21 @@
                 this.$axios.post(url,{
                     token:this.$store.getters.optuser.Authorization
                 })
-                .then((res)=>{                  
+                .then((res)=>{            
                     var that = this
                     var item = res.data.data;
                     if(res.data.status === 200){
                         that.userList = item;
                         this.$store.commit('hideLoading')
-                    }else{
-                        that.$toast(res.msg)
+                    }else if(res.data.status === 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token;
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
+                        that.$toast(res.data.msg)
                     }
                 })
             },

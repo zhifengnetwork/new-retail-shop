@@ -45,7 +45,6 @@
         },
         mounted(){
             this._getSellList()
-            console.log(this.token)
         },
         methods:{
             _getSellList(){
@@ -55,10 +54,17 @@
                 })
                 .then((res)=>{
                     var list = res.data;
-                    console.log(list)
                     if(list.status == 200){
                         _that.list =list.data
-                    }else{
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
                         _that.$toast(list.msg)
                     }
                 })

@@ -592,7 +592,15 @@ export default {
                     if(res.data.status === 200){
                         items.splice(index,1)
                         this.$toast(res.data.msg)
-                    }else{
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
                         this.$toast(res.data.msg)
                     }
                 })
@@ -623,7 +631,6 @@ export default {
          */
         payment(order_id,type){
             if(type == 1){
-                console.log("余额支付")
                 this.showPwd = true;
                 this.showKeyboard = true;
                 this.order_id = order_id
@@ -655,7 +662,15 @@ export default {
                     if(res.data.status === 200){
                         this.allOrders.splice(index,1);  
                         this.$toast("取消申请退款成功！");
-                    }else{
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
                         this.$toast(res.data.msg);
                     }
                 })
@@ -687,47 +702,45 @@ export default {
          */
         onInput(key) {
             this.payPassword = (this.payPassword + key).slice(0, 6);
-            if(this.payPassword.length === 6){
-                // let url = 'user/check_pwd';
-                // this.$axios.post(url,{
-                //     token:this.token,
-                //     pwd:this.payPassword
-                // }).then((res)=>{
-                //     console.log(66)
-                // })
-                // 关闭密码输入
-                this.showKeyboard = false;
-                this.showPwd = false;
-                this.payPassword = '';
- 
+            if(this.payPassword.length === 6){ 
                 // 请求数据
                 let url = 'pay/payment';
                 this.$axios.post(url,{
                     token:this.token,
                     order_id:this.order_id,
-                    pay_type:this.pay_type
+                    pay_type:this.pay_type,
+                    pwd:this.payPassword
                 }).then((res)=>{
-                    if(res.data.status === 200){    
-                        // 余额支付成功                   
-                        // this.$toast(res.data.msg)
+                    if(res.data.status === 200){   
+                        // 余额支付成功    
+                        this.$toast.success({message:res.data.msg,duration: 2000});
                         this.requestData();
                         setTimeout(() => {
-                            console.log("支付成功，2s跳转到支付成功页面")
-                            this.$router.push('/Pay/PaySucceed')
+                            // console.log("支付成功，2s跳转到支付成功页面")
+                            this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
                         },2000)
-                        
-                    }else{
-                        // 余额支付失败
-                        // this.$toast(res.data.msg);
-                        // setTimeout(() => {
-                        //     console.log("支付失败，2s跳转到支付失败页面")
-                        //     this.$router.push('/Pay/PayFail')
-                        // },2000)
-                           
+                    }
+                    else if(res.data.status === 888){
+                        // 设置支付密码
+                        this.$toast.fail(res.data.msg);
+                        this.$router.push('/user/SetPassword')
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
+                        // 支付失败
+                        this.$toast.fail(res.data.msg);
                     }
                 })
-
-
+                // 关闭密码输入
+                this.showKeyboard = false;
+                this.showPwd = false;
+                this.payPassword = '';
             }
         },
         /**
@@ -789,7 +802,7 @@ export default {
         },
         //格式化金钱
         formatMoney:function(val){
-            return "¥" + parseInt(val).toFixed(2)
+            return "¥" + Number(val).toFixed(2)
         }
     }
    

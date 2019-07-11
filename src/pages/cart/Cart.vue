@@ -97,7 +97,7 @@ export default {
         }
     },
     created(){
-        this.$store.commit('showLoading')       //加载login
+        this.$store.commit('showLoading')       //加载loading
         this.token =this.$store.getters.optuser.Authorization
         this._getGoodsList()
     },
@@ -111,12 +111,18 @@ export default {
                 'token':this.token
             })
             .then((res)=>{
-               
-                console.log(info)
                 if(info.status == 200){
                     var data =_that.list[key];
                      _that.$set( data,'goods_num',val)
-                }else{
+                }
+                else if(res.data.status == 999){
+                    this.$toast(res.data.msg)
+                    this.$store.commit('del_token'); //清除token
+                    setTimeout(()=>{
+                        this.$router.push('/Login')
+                    },1000)
+                }
+                else{
                     _that.$toast(info.msg)
                 }
             })
@@ -132,7 +138,15 @@ export default {
                 // console.log(res)
                 if(info.status == 200){
                    
-                }else{
+                }
+                else if(res.data.status == 999){
+                    this.$toast(res.data.msg)
+                    this.$store.commit('del_token'); //清除token
+                    setTimeout(()=>{
+                        this.$router.push('/Login')
+                    },1000)
+                }
+                else{
                     _that.$toast(info.msg)
                 }
             })
@@ -154,7 +168,15 @@ export default {
                         _that.isShow=true
                     }
                     this.$store.commit('hideLoading')
-                }else{
+                }
+                else if(res.data.status == 999){
+                    this.$toast(res.data.msg)
+                    this.$store.commit('del_token'); //清除token
+                    setTimeout(()=>{
+                        this.$router.push('/Login')
+                    },1000)
+                }
+                else{
                     _that.$toast(info.msg)
                 }
             })
@@ -266,7 +288,15 @@ export default {
                             _that.isShow=true
                         }
                         _that.$toast('删除成功');
-                    }else{
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
                         _that.$toast(list.msg)
                     }
                 })
