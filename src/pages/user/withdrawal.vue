@@ -123,7 +123,10 @@
 				.then((res)=>{
                     var list =res.data
                     if(list.status==200){
-                         this.$toast(res.data.msg)
+                        this.$toast(res.data.msg)
+                        setTimeout(()=>{
+                            this.$router.push('/User')
+                        },1000)
                     }
                     else if(res.data.status == 999){
                         this.$store.commit('del_token'); //清除token

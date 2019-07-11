@@ -3,34 +3,34 @@
       	<!-- 头部组件 -->
 		<TopHeader custom-title="我的付款码" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
-            <span slot="rightBtn"><router-link class="fontRe" to="/user/EditPaymentCode">添加</router-link></span>
+            <span slot="rightBtn"><router-link class="fontRe" to="/user/EditPaymentCode"><i class="iconfont icon-bianji"></i></router-link></span>
 		</TopHeader>
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
             <ul>
-                <li class="cade-list-cont">
+                <li class="cade-list-cont" v-if="imgList.wx_pic">
                     <div class="cade-list bg-1">
-                        <div class="code-msg"><img src="/static/images/sell/payCode.png" /></div>
+                        <div class="code-msg"><img :src="imgList.wx_pic" /></div>
                     </div>
                     <p>微信收款</p>
                 </li>
-                <li class="cade-list-cont">
+                <li class="cade-list-cont" v-if="imgList.zfb_pic!=''">
                     <div class="cade-list bg-2">
-                        <div class="code-msg"><img src="/static/images/sell/payCode.png" /></div>
+                        <div class="code-msg"><img :src="imgList.zfb_pic" /></div>
                     </div>
                     <p>支付宝收款</p>
                 </li>
-                <li class="cade-list-cont">
+                <li class="cade-list-cont" v-if="imgList.my_pic!=''">
                     <div class="cade-list bg-3">
-                        <div class="code-msg"><img src="/static/images/sell/payCode.png" /></div>
+                        <div class="code-msg"><img :src="imgList.my_pic" /></div>
                     </div>
                     <p>码云闪付</p>
-                </li>
+                </li> 
             </ul>
         </div>
         <p class="foot-height"></p>
-        <input class="submit" type="button" value="提交" @click="setAgents()" />
+        <!-- <input class="submit" type="button" value="提交" @click="setAgents()" /> -->
     </div>
 </template>
 <script>
@@ -55,9 +55,10 @@ export default {
             })
             .then((res)=>{
                 var list = res.data;
+                console.log(list)
+                _that.$store.commit('hideLoading')
                 if(list.status == 200){
-                    _that.imgList =
-                    _that.$store.commit('hideLoading')
+                    _that.imgList =list.data
                 }
                 // else if(list.status === 999){
                 //     _that.$store.commit('del_token'); //清除token
@@ -72,26 +73,6 @@ export default {
         }, 
 
         // setAgents(){
-        //     var _that =this;
-        //     _that.$axios.post('user/agent_res',{
-        //         'proof':post,
-        //         'fz_order_id':this.$route.query.fz_order_id,
-        //         'token':this.$store.getters.optuser.Authorization            
-        //     })
-        //     .then((res)=>{
-        //         var list = res.data;
-        //         if(list.status == 200){
-        //             _that.option1 =list.data
-        //             this.$store.commit('hideLoading')
-        //         }else if(list.status == 999){
-        //             this.$store.commit('del_token'); //清除token
-        //             setTimeout(()=>{
-        //                 this.$router.push('/Login')
-        //             },1000)
-        //         }else{
-        //             _that.$toast(list.msg)
-        //         }
-        //     })
         // }
     },
     components:{
