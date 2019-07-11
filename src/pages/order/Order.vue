@@ -543,7 +543,9 @@ export default {
             this.$router.replace('/Order?type='+index);
             this.type = this.$route.query.type;
             this.requestData();
-            
+            if(index == 5){
+                
+            }
         },
         // 页面数据渲染
         requestData(){

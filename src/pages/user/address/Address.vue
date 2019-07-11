@@ -156,14 +156,14 @@ export default {
             display flex
             padding 28px 120px 28px 28px
             box-sizing border-box
+            box-shadow 1px 1px 8px #ccc
+            margin-bottom 20px
             .address-item
                 width 100%
                 // height 205px
                 font-size 30px
-                box-shadow 1px 1px 8px #ccc
-                
                 box-sizing border-box
-                margin-bottom 10px
+                
                 position relative
                 .item-name
                     display flex
