@@ -89,7 +89,7 @@
                             <span class="btn red"></span>
                         </div>
                         <!-- 拒绝退款 -->
-                         <div v-if="item.status == 8">
+                        <div v-if="item.status == 8">
                             <span class="btn red"></span>
                         </div>
                     </div>
@@ -514,7 +514,9 @@ export default {
             this.$router.replace('/Order?type='+index);
             this.type = this.$route.query.type;
             this.requestData();
-            
+            if(index == 5){
+                
+            }
         },
         // 页面数据渲染
         requestData(){

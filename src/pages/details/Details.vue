@@ -359,6 +359,7 @@ export default {
                 data: params
             }).then((res)=>{
                 if(res.data.status ===200){
+                     this.$store.commit('hideLoading')   
                     that.goodsData =res.data.data; 
                     that.goods = res.data.data;    //商品详情
                     that.good =  res.data.data.spec.spec_attr; //商品规格
