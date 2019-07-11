@@ -202,6 +202,7 @@ export default {
     },
     created(){
         // var that = this;
+        this.$store.commit('showLoading')       //加载loading
         this._getGoodsData()        //商品信息
         this._getCommentList()      //评论
     },

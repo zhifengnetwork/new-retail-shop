@@ -43,14 +43,57 @@
                 token:this.$store.getters.optuser.Authorization
             }
         },
-        mounted(){
+        created(){
+            this.$store.commit('showLoading')       //加载loading
             this._getSellList()
         },
         methods:{
             _getSellList(){
-                var _that =this;
+                var _that =this
                 _that.$axios.post('fifty_zone/shop_list',{
-                    'token':this.token         
+                    'token':this.token,   
+                })
+                .then((res)=>{
+                    var list = res.data;
+                    if(list.status == 200){
+                        _that.list =list.data
+                        _that.$store.commit('hideLoading')
+                    }else if(list.status == 304){
+                        _that.$toast(list.msg)
+                        setTimeout(()=>{
+                            this.$router.push('/Payment')
+                        },1000)
+                    }else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
+                        _that.$toast(list.msg)
+                    }
+                })
+            },
+
+            toPayment(){
+                var _that =this,fzids='';
+                if(_that.totalCount != 10){
+                    return _that.$toast.fail('限制只能购买10个');
+                }
+                for(var i in _that.list){
+                    if(_that.list[i].isCheck){
+                        if(fzids==""){
+                            fzids =_that.list[i].fz_id
+                        }else{
+                            fzids = fzids+','+_that.list[i].fz_id
+                        }
+                       
+                    }
+                }
+                _that.$axios.post('fifty_zone/fiftySubmitOrder',{
+                    'token':_that.token,
+                    'fz_id':fzids    
                 })
                 .then((res)=>{
                     var list = res.data;
@@ -58,11 +101,11 @@
                         _that.list =list.data
                     }
                     else if(res.data.status == 999){
-                        this.$toast(res.data.msg)
-                        this.$store.commit('del_token'); //清除token
-                        setTimeout(()=>{
-                            this.$router.push('/Login')
-                        },1000)
+                        _that.$toast(res.data.msg)
+                        // _that.$store.commit('del_token'); //清除token
+                        // setTimeout(()=>{
+                        //     _that.$router.push('/Login')
+                        // },1000)
                     }
                     else{
                         _that.$toast(list.msg)
@@ -76,12 +119,12 @@
                 this.show = true;
                 this.shopsCode =paycode
             },
-            toPayment(){
-                if(this.totalCount != 10){
-                    return this.$toast.fail('只能购买10个');
-                }
-                this.$router.push({name:'Payment'})
-            }
+            // confirmOrder(){
+            //     if(this.totalCount != 10){
+            //         return this.$toast.fail('只能购买10个');
+            //     }
+            //     this.$router.push({name:'Payment'})
+            // }
         },
         computed:{
             totalCount(){

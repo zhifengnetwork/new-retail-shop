@@ -18,12 +18,7 @@ import Popup from '@/pages/home/Popup'
 import Sell from '@/pages/sell/Sell'
 //上传评证
 import UploadDocuments from '@/pages/sell/UploadDocuments'
-//编辑付款码
-import EditPaymentCode from '@/pages/sell/EditPaymentCode'
-//申请代理
-import Agents from '@/pages/sell/Agents'
-//付款码
-import PaycodeList from '@/pages/sell/PaycodeList'
+
 // 搜索
 import Search from '@/pages/search/Search'
 
@@ -99,6 +94,12 @@ import Collect from '@/pages/user/Collect'
 
 // 我的发布
 import release from '@/pages/user/release'
+//编辑付款码
+import EditPaymentCode from '@/pages/user/EditPaymentCode'
+//申请代理
+import Agents from '@/pages/user/Agents'
+//付款码
+import PaycodeList from '@/pages/user/PaycodeList'
 // 收货地址
 import Address from '@/pages/user/address/Address'
 // 添加收货地址
@@ -161,24 +162,6 @@ const router= new Router({
 			path: '/Sell/UploadDocuments',
 			name: 'uploadDocuments',
 			component:() => import('@/pages/sell/UploadDocuments'),
-			meta:{requireAuth:true}
-		},
-		{		//编辑付款码
-			path: '/Sell/EditPaymentCode',
-			name: 'EditPaymentCode',
-			component:() => import('@/pages/sell/EditPaymentCode'),
-			meta:{requireAuth:true}
-		},	
-		{		// 代理 Agents
-			path: '/Sell/Agents',
-			name: 'Agents',
-			component:() => import('@/pages/sell/Agents'),
-			meta:{requireAuth:true}
-		},
-		{		// 付款码列表
-			path: '/Sell/PaycodeList',
-			name: 'PaycodeList',
-			component:() => import('@/pages/sell/PaycodeList'),
 			meta:{requireAuth:true}
 		},
 		/**
@@ -394,6 +377,24 @@ const router= new Router({
 			path: '/user/release',
 			name: 'release',
 			component:() => import('@/pages/user/release'),
+		},
+		{		//编辑付款码
+			path: '/user/EditPaymentCode',
+			name: 'EditPaymentCode',
+			component:() => import('@/pages/user/EditPaymentCode'),
+			meta:{requireAuth:true}
+		},	
+		{		// 代理 Agents
+			path: '/user/Agents',
+			name: 'Agents',
+			component:() => import('@/pages/user/Agents'),
+			meta:{requireAuth:true}
+		},
+		{		// 付款码列表
+			path: '/user/PaycodeList',
+			name: 'PaycodeList',
+			component:() => import('@/pages/user/PaycodeList'),
+			meta:{requireAuth:true}
 		},
 		// 邀请链接
 		{

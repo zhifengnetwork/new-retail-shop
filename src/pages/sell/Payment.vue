@@ -8,9 +8,9 @@
         <!-- CONTENT START --> 
         <div class="content">
         <div class="shiftShop">
-            <div  class="shopMid iconfont icon-fanhui" v-on:click="shiftOrder(-1)"></div >
+            <!-- <div  class="shopMid iconfont icon-fanhui" v-on:click="shiftOrder(-1)"></div > -->
             <div class="shopMid">{{currentOrder.fz_order_id}}</div>
-            <div  class="shopMid goright iconfont icon-fanhui" v-on:click="shiftOrder(1)"></div >
+            <!-- <div  class="shopMid goright iconfont icon-fanhui" v-on:click="shiftOrder(1)"></div > -->
         </div>
             <img class="-imgs" :src="currentOrder.img" />
             <div class="inner" v-for="(item,key) in list" :key="key" v-show="key==ewmId" >
@@ -31,9 +31,9 @@
             </div>
         </div>
         <p class="height90"></p>
-        <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" >
+        <!-- <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" > -->
         <input class="submit" type="button" value="上传凭证" />
-        </router-link>
+        <!-- </router-link> -->
     </div>
 </template>
 <script>
@@ -56,10 +56,10 @@ export default {
 
         }
     },
-     mounted(){
-            this._getPayList()
-        },
-
+    created(){
+        this.$store.commit('showLoading')       //加载loading
+        this._getPayList()
+    },
     methods:{
         shiftOrder(num) {
            var current= this.saveId+num;
@@ -90,11 +90,15 @@ export default {
                     var list = res.data;
                     // console.log(list)
                     if(list.status == 200){
+                        if(list.data.length<1){
+                            this.$router.push('/user/PaycodeList')
+                        }
                         _that.orderList =list.data
                         _that.currentOrder=list.data[0]
-                             _that.list[0].pic=list.data[0].zfb_pic;
-                            _that.list[1].pic=list.data[0].wx_pic;
-                            _that.list[2].pic=list.data[0].my_pic;
+                        _that.list[0].pic=list.data[0].zfb_pic;
+                        _that.list[1].pic=list.data[0].wx_pic;
+                        _that.list[2].pic=list.data[0].my_pic;
+                        _that.$store.commit('hideLoading')
                     }
                     else if(res.data.status == 999){
                         this.$toast(res.data.msg)

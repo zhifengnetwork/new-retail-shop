@@ -3,7 +3,7 @@
       	<!-- 头部组件 -->
 		<TopHeader custom-title="我的付款码" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
-            <span slot="rightBtn" class="fontRe">添加</span>
+            <span slot="rightBtn"><router-link class="fontRe" to="/user/EditPaymentCode">添加</router-link></span>
 		</TopHeader>
         <div class="height-88"></div>
         <!-- CONTENT START --> 

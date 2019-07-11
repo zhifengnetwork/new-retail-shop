@@ -1,32 +1,25 @@
 <template>
-    <div class="agents-wrap">
+    <div class="payment-code">
       	<!-- 头部组件 -->
-		<TopHeader custom-title="申请代理" custom-fixed>
+		<TopHeader custom-title="编辑收款码" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</TopHeader>
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
             <div class="-code-list">
-                <p class="attention">注：达到相应条件即可申请县市省代理！</p>
                 <van-dropdown-menu>
-                    <van-dropdown-item v-model="id" :options="option1" />
+                    <van-dropdown-item v-model="aValue" :options="option1" />
                 </van-dropdown-menu>
-                <div>
-                    <input type="text" class="a-inp" v-model="userName" placeholder="请输入用户名" />
-                </div>
-                <div>
-                    <input type="text" class="a-inp" v-model="mobile" placeholder="请输入手机号码" />
-                </div>
             </div>
             <van-uploader
                 v-model="fileList"
                 multiple
-                upload-text="上传凭证"
+                upload-text="上传收款码"
                 :max-count="1"
                 />
         </div>
-        <input class="submit" type="button" value="提交" @click="setAgents()" />
+        <input class="submit" type="button" value="确定" @click="setPaymentCode()" />
     </div>
 </template>
 <script>
@@ -35,40 +28,44 @@ export default {
     data() {
         return {
             fileList: [],
-            id: 0,
-            userName:'',
-            mobile:'',
-            // value2: 'a',
+            aValue:'',
             option1: [
-                // { text: '县级代理', value: 0 },
-                // { text: '市级代理', value: 1 },
-                // { text: '省级代理', value: 2 }
+            //     { text: '微信二维码', value: 0 },
             ],
         }
     },
+    created(){
+        this.$store.commit('showLoading')       //加载loading
+        this.getPayCodeInfo()
+    },
     methods:{
-        getUserAgentResinfo(){
+
+        getPayCodeInfo(){
+            var _that =this
             _that.$axios.post('user/agent_res',{
-                'token':this.$store.getters.optuser.Authorization            
+                'token':_that.token         
             })
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
-                    console.log(list.data)
-                    _that.option1 =list.data
-                    this.$store.commit('hideLoading')
+                    var newarrys =[];
+                    for(var i in list.data){
+                        newarrys.push({text:list.data[i].levelname,value:list.data[i].id})
+                    }
+                    _that.aValue =newarrys[0].value
+                    _that.option1 =newarrys
+                    _that.$store.commit('hideLoading')
                 }else if(list.status == 999){
-                    this.$store.commit('del_token'); //清除token
+                    _that.$store.commit('del_token'); //清除token
                     setTimeout(()=>{
-                        this.$router.push('/Login')
+                        _that.$router.push('/Login')
                     },1000)
                 }else{
                     _that.$toast(list.msg)
                 }
             })
-        },
-
-        setAgents(){
+        }, 
+        setPaymentCode(){
             var _that =this;
             var post =_that.fileList[0];
             if(post=="" || 'undefined'==typeof(post)){
@@ -100,7 +97,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-    .agents-wrap
+    .payment-code
         .content
             padding 24px 24px 30px
             width 702px
@@ -118,12 +115,7 @@ export default {
                 position absolute
                 top 24px
                 left 24px
-                text-align: left
                 font-size 26px
-                .attention
-                    color: #f40808
-                    font-size 26px
-                    // margin-bottom 20px
                 .van-dropdown-menu__item
                     width: 702px
                     position: relative
@@ -133,11 +125,6 @@ export default {
                     width: 94%
                     text-align: left
                     font-size 28px
-                .a-inp
-                    width:100%
-                    height: 60px
-                    font-size: 26px
-                    margin-bottom 12px
                 .van-cell
                     text-align left 
             .van-uploader__upload

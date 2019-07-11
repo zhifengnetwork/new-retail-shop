@@ -4,7 +4,7 @@
 		<Rel-Header custom-title="我的发布" custom-fixed class="head">
 			<!-- 返回按钮 -->
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
-            <span slot="rightBtn" class="rigBtn">修改信息</span>
+            <span slot="rightBtn"><router-link class="rigBtn" to="/user/PaycodeList">修改信息</router-link></span>
 		</Rel-Header>
         <div class="content">
             <div class="main_wrap">

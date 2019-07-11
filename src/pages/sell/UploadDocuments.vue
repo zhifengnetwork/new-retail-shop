@@ -27,7 +27,6 @@ export default {
     },
     methods:{
         setDocuments(){
-            console.log()
             var _that =this;
             var post =_that.fileList[0];
             if(post=="" || 'undefined'==typeof(post)){
@@ -44,9 +43,9 @@ export default {
                 var list = res.data;
                 if(list.status == 200){
                     _that.$toast('上传成功...')
-                    // setTimeout(() => {
-                    //     _that.$router.push('/Payment')
-                    // },2000)
+                    setTimeout(() => {
+                        _that.$router.push('/Payment')
+                    },2000)
                 }
                 else if(res.data.status == 999){
 					this.$toast(res.data.msg)
