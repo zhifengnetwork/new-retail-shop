@@ -19,7 +19,7 @@
             <div class="goodsInfo">
                 <div class="price">
                     <span class="discount-price">￥{{this.goodsData.price}}</span>
-                    <span class="original-price">原价￥{{this.goodsData.original_price}}</span>
+                    <span class="original-price"><strike>原价￥{{this.goodsData.original_price}}</strike></span>
                 </div>
                 <!-- 商品名称 -->
                 <div class="goodsName">
@@ -32,7 +32,7 @@
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 运费</span>
-                        <div class="-text"> {{this.goodsData.shipping_price}}</div>
+                        <div class="-text"> {{this.goodsData.shipping_price!='0.00'?this.goodsData.shipping_price:'免运费'}}</div>
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 规格</span>
@@ -361,7 +361,14 @@ export default {
                     that.goodsData =res.data.data; 
                     that.goods = res.data.data;    //商品详情
                     that.good =  res.data.data.spec.spec_attr; //商品规格
-                    that.isCollect=that.goods.collection
+                    that.isCollect=that.goods.collection;
+                    // that.esku=res.data.data.productAttr;
+                    res.data.data.productAttr.forEach(
+                        function(item){
+                            that.esku+=item.attr_name+'、';
+                        }
+                    );
+
                 }
                 for (var i in that.goods.spec.goods_sku){  
                     that.shopItemInfo[that.goods.spec.goods_sku[i].sku_attr1] = that.goods.spec.goods_sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
