@@ -32,7 +32,7 @@
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 运费</span>
-                        <div class="-text"> {{this.goodsData.shipping_price}}</div>
+                        <div class="-text"> {{this.goodsData.shipping_price!='0.00'?this.goodsData.shipping_price:'免运费'}}</div>
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 规格</span>
