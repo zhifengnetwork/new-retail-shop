@@ -6,7 +6,7 @@
 
         <div class="content">
             <div class="address-list" v-for="(item,index) in siteList" :key="index">
-                <div class="address-item">
+                <div class="address-item" @click="slectAddress(index)">
                     <div class="item-name">
                         <span class="name">{{item.consignee}}</span>
                         <span class="tel">{{item.mobile}}</span>
@@ -18,12 +18,12 @@
                             <p>{{item.address}}</p>
                         </div>
                     </div>
-                    <div class="operation-bar">
-                        <router-link :to="'/user/EditAddress?address_id='+item.address_id">
-                            <span class="iconfont icon-bianji1 edit"></span>
-                        </router-link>
-                        <span class="iconfont icon-guanbi del-icon" @click="delSite(item,index)"></span>
-                    </div>
+                </div>
+                <div class="operation-bar">
+                    <router-link :to="'/user/EditAddress?address_id='+item.address_id">
+                        <span class="iconfont icon-bianji1 edit"></span>
+                    </router-link>
+                    <span class="iconfont icon-guanbi del-icon" @click="delSite(item,index)"></span>
                 </div>
             </div>
             <router-link to="/user/AddAddress">
@@ -51,10 +51,37 @@ export default {
            siteList:[]
         }
     },
-    mounted(){
-        this.requestData();// 请求用户地址列表数据
+    created(){
+        this.$store.commit('showLoading')       //加载loading
+        this.requestData();     // 请求用户地址列表数据
     },
     methods:{
+        slectAddress(key){     //选择默认地址
+        
+            var _that =this,
+                list =_that.siteList[key]
+            var url ='/address/set_default_address'
+            _that.$axios.post(url,{     // 传给后台的参数
+                'token':this.$store.getters.optuser.Authorization,
+                'address_id':list.address_id
+            })
+            .then((res)=>{
+                console.log(res)
+                if(res.data.status==200){
+                    this.$router.go(-1)
+                }
+                // _that.$toast('修改成功')                
+                // setTimeout(() => {
+                //     _that.$router.push("/user/Address");
+                // }, 1000);
+                
+            })
+            .catch( (error) => {
+                alert("请求错误:" + error)
+            })
+
+            console.log(_that.siteList[key])
+        },
         // 请求用户地址列表数据
         requestData() {
             var url = '/address/addressList'
@@ -68,7 +95,14 @@ export default {
                 if(res.data.status === 200){
                     this.siteList = res.data.data
                     console.log(this.siteList)
-                } else {
+                    this.$store.commit('hideLoading')
+                }else if(res.data.status===999){
+                    this.$store.commit('del_token'); //清除token
+                    setTimeout(()=>{
+                        this.$router.push('/Login')
+                    },1000)
+                }
+                else {
                     Dialog.alert({
                         message:res.data.msg
                     })
@@ -116,13 +150,18 @@ export default {
         padding 108px 24px 128px
         box-sizing border-box
         background-color #ffffff
+        
         .address-list   
+            position relative
+            display flex
+            padding 28px 120px 28px 28px
+            box-sizing border-box
             .address-item
                 width 100%
                 // height 205px
                 font-size 30px
                 box-shadow 1px 1px 8px #ccc
-                padding 30px 80px 28px 30px
+                
                 box-sizing border-box
                 margin-bottom 10px
                 position relative
@@ -157,15 +196,15 @@ export default {
                             // display -webkit-box
                             // -webkit-line-clamp 2
                             // -webkit-box-orient vertical
-                .operation-bar
-                    position absolute
-                    right 10px
-                    top 16px
-                    span 
-                        color #7f7f7f
-                        font-size 36px
-                    .del-icon
-                        margin-left 30px
+            .operation-bar
+                position absolute
+                right 10px
+                top 16px
+                span 
+                    color #7f7f7f
+                    font-size 36px
+                .del-icon
+                    margin-left 22px
         .add-address
             width 92%
             height 88px

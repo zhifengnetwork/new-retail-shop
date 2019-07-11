@@ -28,43 +28,16 @@ export default {
     data() {
         return {
             fileList: [],
-            aValue:'',
+            aValue:2,
             option1: [
-            //     { text: '微信二维码', value: 0 },
+                { text: '码云闪付码', value: 1 },
+                { text: '微信二维码', value:2 },
+                { text: '支付宝二维码', value: 3 },
             ],
+            token:this.$store.getters.optuser.Authorization   
         }
     },
-    created(){
-        this.$store.commit('showLoading')       //加载loading
-        this.getPayCodeInfo()
-    },
     methods:{
-
-        getPayCodeInfo(){
-            var _that =this
-            _that.$axios.post('user/agent_res',{
-                'token':_that.token         
-            })
-            .then((res)=>{
-                var list = res.data;
-                if(list.status == 200){
-                    var newarrys =[];
-                    for(var i in list.data){
-                        newarrys.push({text:list.data[i].levelname,value:list.data[i].id})
-                    }
-                    _that.aValue =newarrys[0].value
-                    _that.option1 =newarrys
-                    _that.$store.commit('hideLoading')
-                }else if(list.status == 999){
-                    _that.$store.commit('del_token'); //清除token
-                    setTimeout(()=>{
-                        _that.$router.push('/Login')
-                    },1000)
-                }else{
-                    _that.$toast(list.msg)
-                }
-            })
-        }, 
         setPaymentCode(){
             var _that =this;
             var post =_that.fileList[0];
@@ -73,22 +46,22 @@ export default {
             }else{
                 post =_that.fileList[0].content;
             }
-            // _that.$axios.post('fifty_zone/upload_proof',{
-            //     'proof':post,
-            //     'fz_order_id':this.$route.query.fz_order_id,
-            //     'token':this.$store.getters.optuser.Authorization            
-            // })
-            // .then((res)=>{
-            //     var list = res.data;
-            //     if(list.status == 200){
-            //         _that.$toast('上传成功...')
-            //         // setTimeout(() => {
-            //         //     _that.$router.push('/Payment')
-            //         // },2000)
-            //     }else{
-            //         _that.$toast(list.msg)
-            //     }
-            // })
+            _that.$axios.post('pay/set_payment',{
+                'image':post,
+                'type':_that.aValue,
+                'token':this.$store.getters.optuser.Authorization            
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    _that.$toast('上传成功...')
+                    // setTimeout(() => {
+                    //     _that.$router.push('/Payment')
+                    // },2000)
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
         }
     },
     components:{
@@ -100,7 +73,6 @@ export default {
     .payment-code
         .content
             padding 24px 24px 30px
-            width 702px
             height 1000px
             background #fff
             border-radius 10px
