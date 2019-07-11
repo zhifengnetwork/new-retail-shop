@@ -67,7 +67,7 @@ export default {
     },
     data(){
         return {
-            rateVal:5,   
+            rateVal:0,   
             content:'',
             postData:[],
             fileList:[],
@@ -86,20 +86,27 @@ export default {
              returnObj.order_id=query.order_id
              returnObj.goods_id=query.goods_id
              returnObj.sku_id=query.sku_id
-             returnObj.star_rating=_that.star_rating
+             returnObj.star_rating=_that.rateVal
              returnObj.content=_that.content
              returnObj.img=_that.postData
+
+             if(_that.content==""){
+                return _that.$toast("您还没有输入评论内容哦！")
+             }
+             if(_that.rateVal==0){
+                 return _that.$toast("您还没有打分哦！")
+             }
              news.push(returnObj)
-                params.append('token',this.$store.getters.optuser.Authorization)
+                params.append('token',_that.$store.getters.optuser.Authorization)
                 params.append('comments', JSON.stringify(news));
-                this.$axios.post(url,params).then((res)=>{
-                    if(res.data.status === 2000){
-                        this.$toast("评论成功")
-                        this.$router.go(-1)
+                _that.$axios.post(url,params).then((res)=>{
+                    if(res.data.status === 200){
+                        _that.$toast("评论成功")
+                        _that.$router.push('/User')
                     }else if(res.data.status==999){
-                        this.$store.commit('del_token'); //token，清除它;
+                        _that.$store.commit('del_token'); //token，清除它;
                     }else{
-                        this.$toast(res.data.msg)
+                        _that.$toast(res.data.msg)
                     }
                 })
         }

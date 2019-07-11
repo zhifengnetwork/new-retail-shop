@@ -47,11 +47,12 @@
                         <div class="-list-1">
                             <span class="-b-subtitle">配送方式</span>
                             <span class="-b-msg">普通配送</span>
-                            <span class="">快递 {{goodsList.shipping_price}} 元</span>
+                            <span class="-freight" v-if="goodsList.shipping_price ==0">免运费</span>
+                            <span class="" v-else="">快递 {{goodsList.shipping_price}} 元</span>
                         </div>
                         <div class="-list-1">
                             <span class="-b-subtitle">订单备注</span>
-                            <input type="text"  placeholder-class="placehor" v-model="userNote" placeholder="选填 请先和商家协商一致" />  
+                            <input type="text" class="-b-inp" placeholder-class="placehor" v-model="userNote" placeholder="选填 请先和商家协商一致" />  
                         </div>
                         <div class="goods-price">
                             <span>共 {{count}} 件</span>
@@ -61,38 +62,7 @@
                     </div>
                 </div>
                 <!--  -->
-                <!-- <div class="goods-list goods-list2">
-                    <div class="goods-list-a" v-for="(pay,key) in goodsList.pay_type" :key="key">
-                        <div class="-list-a-">
-                            <span>{{pay.pay_name}}</span>
-                            <div v-show="pay_type==1 && key==1">
-                                <p  class="-list2-msg">余额：{{goodsList.remainder_money}}</p>
-                            </div>
-                        </div>
-                        <van-radio-group v-model="pay_type">
-                            <van-radio  @change="this.pay_type ==pay.pay_type" :name="pay.pay_type"></van-radio>
-                        </van-radio-group>
-                    </div>
-                </div> -->
             </div>
-
-            <!-- 密码输入框 -->
-            <!-- <van-popup v-model="showPwd" class="popup"  @click-overlay="hidePwd()">
-            <van-password-input
-            :value="payPassword"
-            info="密码为 6 位数字"
-            @focus="showKeyboard = true"
-            />
-            </van-popup> -->
-
-            <!-- 数字键盘 -->
-            <!-- <van-number-keyboard
-            :show="showKeyboard"
-            @input="onInput"
-            @delete="onDelete"
-            @blur="showKeyboard = false"
-            /> -->
-
             <!-- FOOTER START -->
             <div class="footer-height"></div>
             <div class="footer">
@@ -121,10 +91,6 @@ export default {
             addrRes:{},          //地址列表
             pay_type:1,         //支付方式
             carId:"",           //购物车id
-            // order_id:'',         //订单id
-            // payPassword:'',      //支付密码
-            // showPwd:false,
-            // showKeyboard: false,
             token:this.$store.getters.optuser.Authorization,
         };
     },
@@ -185,21 +151,9 @@ export default {
                 var list = res.data;
                 if(list.status == 200){
                     this.order_id = list.data
-                   
-                    // if(_that.pay_type == 1){
-                    //     this.showPwd = true;
-                    //     this.showKeyboard = true;
-                    // }else{
-                        
-                    // }
-
-                    // _that.$toast({message:"下单成功,正在跳转...",duration:1000})
                     this.$router.push({
                         path: '/Pay/PayWay?order_id=' +this.order_id,
-                        // name: 'PayWay',
-                        // params: {'cart_id': this.getSlectedGoodsCartID()}
                     })
-                    
                 }
                 else if(res.data.status == 999){
 					this.$toast(res.data.msg)
@@ -213,45 +167,6 @@ export default {
                 }
             })
         },
-
-        /**
-         * 余额支付:输入密码
-         */
-        // onInput(key) {
-        //     var _that =this
-        //     _that.payPassword = (_that.payPassword + key).slice(0, 6);
-        //     if(_that.payPassword.length === 6){
-        //         // 关闭密码输入
-        //         _that.showKeyboard = false;
-        //         _that.showPwd = false;
-        //         _that.payPassword = '';
- 
-        //         // 请求数据
-        //         let url = 'pay/payment';
-        //         _that.$axios.post(url,{
-        //             token:_that.token,
-        //             order_id:_that.order_id,
-        //             pay_type:_that.pay_type
-        //         }).then((res)=>{
-        //             if(res.data.status === 200){    
-        //                 setTimeout(() => {
-        //                     _that.$router.push('/Pay/PaySucceed')
-        //                 },2000)
-                        
-        //             }else{
-        //                 // 余额支付失败
-        //                 // this.$toast(res.data.msg);
-        //                 // setTimeout(() => {
-        //                 //     console.log("支付失败，2s跳转到支付失败页面")
-        //                 //     this.$router.push('/Pay/PayFail')
-        //                 // },2000)
-                           
-        //             }
-        //         })
-
-
-        //     }
-        // },
         /**
          * 删除密码
          */
@@ -347,7 +262,7 @@ export default {
                     margin-bottom: 15px
                     .-list-img
                         width: 220px
-                        height: 221px
+                        height: 220px
                     .-detial-
                         margin-left:25px
                         .-d-msg
@@ -363,9 +278,12 @@ export default {
                     .-list-1
                         display :flex
                         align-items :center
-                        margin-bottom:50px
+                        margin-bottom:20px
+                        .-b-inp
+                            width 70%
+                            height 60px 
                         .-b-subtitle
-                            margin:0 25px 0 138px
+                            margin:0 25px 0 10px
                             font-size:26px
                         .-option-
                             border: 2px solid #e6e6e6;
@@ -386,7 +304,6 @@ export default {
                                 border-left:1px solid #e6e6e6;
                             .subling
                                 border-right:1px solid #e6e6e6;
-                                
                             .inp
                                 width:121px;
                                 text-align: center;

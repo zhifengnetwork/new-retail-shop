@@ -98,7 +98,6 @@
                 .then((res)=>{
                     var list = res.data;
                     if(list.status == 200){
-                        // _that.list =list.data
                         this.$router.push({name:'Payment'})
                     }
                     else if(res.data.status == 999){

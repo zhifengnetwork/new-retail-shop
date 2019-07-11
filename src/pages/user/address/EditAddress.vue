@@ -112,7 +112,6 @@ export default {
              _verifyUserInfo(){
             var _that =this
             var detailAddress =_that.$refs.detailAddress.innerText
-            console.log(detailAddress)
             if( _that.userName===""){
                 _that.$toast("请输入收货人姓名")
                 return false
@@ -125,9 +124,9 @@ export default {
                 _that.$toast("手机格式有误");  
                 return false; 
             } 
-            if(!_that.district){
+            if(_that.district==""){
                 _that.$toast("请选择省市区");
-                return
+                return false
             }
             if(_that.detailAddress==""){
                 _that.$toast("请输入详情地址")

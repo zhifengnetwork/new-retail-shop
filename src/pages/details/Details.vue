@@ -1,5 +1,5 @@
 <template>
-    <div class="Details">
+    <div class="Details" id="Details">
         <!-- 头部组件 -->
 		<TopHeader custom-title="商品详情" custom-fixed>
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
@@ -78,8 +78,8 @@
                                                 <img src="/static/images/details/00avatar01.png" />
                                             </div>
                                             <div class="text">
-                                                <span class="name">用户：{{list.comment_id}}</span>
-                                                <span class="date">2019-05-06</span>
+                                                <span class="name">ID：{{list.comment_id}}</span>
+                                                <span class="date">{{list.times}}</span>
                                             </div>
                                         </div>
                                         <div class="score">
@@ -189,7 +189,7 @@ export default {
             sku_stock_s: false,     //规格.库存状态
             sku_stock: 0,   //规格.库存
             selectArr: '',  //存放被选中的值
-            
+            selectArrId:'',
             shopItemInfo:{}, //存放要和选中的值进行匹配的数据
 
             selectArarr:[],  //发给后台
@@ -219,12 +219,14 @@ export default {
         },
 
          /*****************************收藏、评论*********************8***** */
-        _timeStampForwardAate(time){            //时间戳转日期
-            var date = new Date(time);
-            var Y = date.getFullYear() + '-';
-            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-            var D = date.getDate() ;
-            return Y+M+D
+        _timeStampForwardAate(timestamp){            //时间戳转日期
+            var date;
+            if (timestamp=="" || "undefined" == typeof(timestamp)){
+                date =  new Date().toLocaleDateString();
+            }else{
+                date = new Date(parseInt(timestamp) * 1000).toJSON().slice(0,10);
+            }
+            return date;
         },
         _getCommentList(){              //收藏
             var _that =this;
@@ -287,14 +289,60 @@ export default {
             var val =parseInt(this.goodsNumber) + 1
             this.goodsNumber=val
         },
+         _selecetSku(){
+            
+            var _that =this,
+                newSku =_that.selectArrId,
+                goods_ku =_that.goods.spec.goods_sku
+                //  console.log(_that.selectArrId)
+                if(newSku==""){return ''}
+                for(var i in goods_ku){
+                    var sku_attr = goods_ku[i].sku_attr1.split(",");
+                    if(sku_attr==newSku.sort().toString()){
+                        // info =data
+                        return goods_ku[i]
+                    }
+                }
+            // _that.goodsSkuData.forEach((data)=>{
+            //     var sku_attr =data.sku_attr1.split(",");
+            //     if(sku_attr==newSku.sort().toString()){
+            //         // info =data
+            //         return info
+            //     }
+            // })
+            // return {'info':info}
+        },
         confirmSize(){           // 下单
             var _that=this;
-
+            let le = [];
+            let sele = []
+            if(_that.selectArr == ''){
+                for (let i = 0; i < _that.good.length; i++) {
+                    le.push(_that.good[i].spec_name) 
+                }
+                return  _that.$toast('请先选择商品'+le.join('-')+'噢~')
+            }else{
+                if(_that.sku_stock == 0){
+                    return _that.$toast('您选中的商品已售罄噢~')
+                }else{
+                    for (let i = 0; i < _that.good.length; i++) {
+                        for (let j = 0; j < _that.good[i].res.length; j++) {
+                            if(_that.good[i].res[j].isShow){
+                                if(_that.good[i].res[j].isSelect){
+                                    sele.push(_that.good[i].spec_name)
+                                }
+                            }
+                        }    
+                    }
+                    for (let i = 0; i < _that.good.length; i++) {
+                        if(sele[i]!=_that.good[i].spec_name){
+                            return _that.$toast('请选择商品'+_that.good[i].spec_name+'噢~')
+                        }     
+                    }
+                }  
+            }
             _that.esku =_that.selectArr
-            var sku_id =this.selectArarr.sku_id
-            if(sku_id==""){ this.$toast("改规格已售完"); return}
-           
-
+            var sku_id =this. _selecetSku().sku_id
             if(this.optionFlag==1){
                  var t ={
                     'sku_id':sku_id,
@@ -350,6 +398,8 @@ export default {
                     that.goods = res.data.data;    //商品详情
                     that.good =  res.data.data.spec.spec_attr; //商品规格
                     that.isCollect=that.goods.collection;
+                    // that.esku=res.data.data.productAttr;
+                    this.$store.commit('hideLoading')
                     res.data.data.productAttr.forEach(
                         function(item){
                             that.esku+=item.attr_name+'、';
@@ -506,15 +556,17 @@ export default {
                 }
             }
             self.$forceUpdate(); //重绘
-            let li = []
+            let li = [],ids =[]
             for(let i = 0; i < this.good.length; i++){          //已选择的显示已选择的规格
                 for(let j = 0; j < this.good[i].res.length; j++){
                     if(this.good[i].res[j].isSelect==true){
                         this.pitch=false;
+                        ids.push(this.good[i].res[j].attr_id)
                         li.push(this.good[i].res[j].attr_name)
                     }
                 }
                 this.selectArr=li.join('、')
+                this.selectArrId=ids
             }
         
             console.log(this.selectArr)
@@ -610,8 +662,9 @@ export default {
                         this.good[daiceshi[i].index].res[
                         daiceshi[i].cindex
                         ].isShow = false;
-                        }
-                        this.selectArarr =  this.shopItemInfo[testAttrIds.join(";")]    
+                        }else{
+                            this.selectArarr =  this.shopItemInfo[testAttrIds.join(";")]    
+                        } 
                     }
                 }
             } 
@@ -672,6 +725,9 @@ a
         box-sizing border-box
         .-desc
             padding 20px
+            p 
+                img
+                    width 100%
         .price
             height 60px
             line-height 60px
