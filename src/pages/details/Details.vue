@@ -1,5 +1,5 @@
 <template>
-    <div class="Details">
+    <div class="Details" id="Details">
         <!-- 头部组件 -->
 		<TopHeader custom-title="商品详情" custom-fixed>
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
@@ -397,11 +397,8 @@ export default {
                     that.goods = res.data.data;    //商品详情
                     that.good =  res.data.data.spec.spec_attr; //商品规格
                     that.isCollect=that.goods.collection;
-<<<<<<< HEAD
                     // that.esku=res.data.data.productAttr;
                     this.$store.commit('hideLoading')
-=======
->>>>>>> 7d22ec2dbbad1c719484dcce992a80883d7caf5e
                     res.data.data.productAttr.forEach(
                         function(item){
                             that.esku+=item.attr_name+'、';
@@ -727,6 +724,9 @@ a
         box-sizing border-box
         .-desc
             padding 20px
+            p 
+                img
+                    width 100%
         .price
             height 60px
             line-height 60px

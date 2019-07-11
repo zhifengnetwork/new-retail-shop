@@ -94,6 +94,14 @@ input, select {
     width: 100%;
     height: 88px;
 }
+#Details .-desc p img{
+	max-width:100%
+}
+
+#Details .-desc .edui-upload-video{
+	width:100%
+}
+               
 
 
 
