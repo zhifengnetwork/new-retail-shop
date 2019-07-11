@@ -38,6 +38,8 @@ import Payment from '@/pages/sell/Payment'
 import Order from '@/pages/order/Order'
 // 订单详情
 import OrderDetails from '@/pages/order/OrderDetails'
+// 50元专区订单详情
+import fiftyDetails from '@/pages/order/fiftyDetails'
 // 提交评价
 import Evaluate from '@/pages/order/Evaluate'
 // 退货
@@ -199,6 +201,13 @@ const router= new Router({
 			path: '/Payment',
 			name: 'Payment',
 			component:() => import('@/pages/sell/Payment'),
+			meta:{requireAuth:true}
+		},
+		//50元专区订单详情
+		{
+			path: '/order/fiftyDetails',
+			name: 'fiftyDetails',
+			component:() => import('@/pages/order/fiftyDetails'),
 			meta:{requireAuth:true}
 		},
 

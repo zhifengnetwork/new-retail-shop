@@ -7,7 +7,7 @@
         <div class="content">
             <!-- 商品信息 -->
             <div class="goods-list">
-                <div class="single-item" v-for="(item,index) in orderDetails.goods_res">
+                <div class="single-item" v-for="(item,index) in orderDetails.goods_res" :key="index">
                     <router-link :to="'/Details?goods_id='+ item.goods_id">
                         <div class="img-wrap">
                             <img :src="item.img" />
