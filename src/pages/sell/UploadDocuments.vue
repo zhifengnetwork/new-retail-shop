@@ -47,7 +47,15 @@ export default {
                     // setTimeout(() => {
                     //     _that.$router.push('/Payment')
                     // },2000)
-                }else{
+                }
+                else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+                else{
                     _that.$toast(list.msg)
                 }
             })

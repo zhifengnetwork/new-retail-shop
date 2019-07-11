@@ -423,6 +423,12 @@ const router= new Router({
 			component:() => import('@/pages/user/modifyUserName'),
 			meta:{requireAuth:true}
 		},
+		// 修改支付密码
+		{
+			path: '/user/SetPassword',
+			name: 'SetPassword',
+			component:() => import('@/pages/user/SetPassword'),
+		},
 		// 收藏
 		{
 			path: '/user/Collect',

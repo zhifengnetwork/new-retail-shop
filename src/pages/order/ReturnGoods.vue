@@ -100,7 +100,15 @@ export default {
             }).then((res) => {
                 if(res.data.status === 200){
                     this.returnGoods = res.data.data;
-                }else{
+                }
+                else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+                }
+                else{
                     this.$toast(res.data.msg)
                 }
             })
@@ -111,7 +119,7 @@ export default {
     filters: {
         //格式化金钱
         formatMoney:function(val){
-            return "¥" + parseInt(val).toFixed(2)
+            return "¥" + Number(val).toFixed(2)
         }
     }
 }

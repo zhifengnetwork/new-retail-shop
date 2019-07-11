@@ -24,7 +24,7 @@
 				<div class="menu-item">连衣裙</div> -->
 			</div>
 			<div class="scroll-list">
-				<Scroller>
+				<!-- <Scroller> -->
 					<div class="list-item" v-for="(items,index) in this.categoryData" :key="index" v-show ="activeIndex === index">
 						<div class="single-item" v-for="(item,index) in items.goods" :key="index">
 							<div class="img-wrap">
@@ -38,38 +38,11 @@
 								:to="'/Details?goods_id='+item.goods_id">
 									<h3>{{item.goods_name}}</h3>
 								</router-link>
-								<p class="price">{{item.price | moneyFormat | rmb}}</p>
+								<p class="price">{{item.price | formatMoney}}</p>
 							</div>
 						</div>
 					</div>
-				</Scroller>
-				<!-- <div class="single-item">
-					<div class="img-wrap">
-						<a href="#"><img src="/static/images/category/category-goods-img01.png" /></a>
-					</div>
-					<div class="main">
-						<a href="#"><h3>洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面</h3></a>
-						<p class="price">￥545.00</p>
-					</div>
-				</div>
-				<div class="single-item">
-					<div class="img-wrap">
-						<a href="#"><img src="/static/images/category/category-goods-img01.png" /></a>
-					</div>
-					<div class="main">
-						<a href="#"><h3>洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面</h3></a>
-						<p class="price">￥545.00</p>
-					</div>
-				</div>
-				<div class="single-item">
-					<div class="img-wrap">
-						<a href="#"><img src="/static/images/category/category-goods-img01.png" /></a>
-					</div>
-					<div class="main">
-						<a href="#"><h3>洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面</h3></a>
-						<p class="price">￥545.00</p>
-					</div>
-				</div> -->
+				<!-- </Scroller> -->
 			</div>
 		</div>
 		<!-- 底部导航 -->
@@ -90,147 +63,13 @@ export default {
 		return {
 			activeIndex:0,
 			menuBar:[],
-			categoryData:[
-				[
-					{
-						"id":"001",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁",
-						"price":535
-					},
-					{
-						"id":"002",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面",
-						"price":545
-					},
-					{
-						"id":"003",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面",
-						"price":555
-					},	
-					{
-						"id":"001",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁",
-						"price":535
-					},
-					{
-						"id":"002",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面",
-						"price":545
-					},
-					{
-						"id":"003",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面",
-						"price":555
-					},
-						{
-						"id":"001",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁",
-						"price":535
-					},
-					{
-						"id":"002",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面",
-						"price":545
-					},
-					{
-						"id":"003",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面洁面",
-						"price":555
-					},
-				],
-				[
-					{
-						"id":"004",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"爽肤水爽肤水爽肤水爽肤水",
-						"price":635
-					},
-					{
-						"id":"005",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"爽肤水爽肤水爽肤水爽肤水爽肤水爽肤水爽肤水爽肤水爽肤水爽肤水爽肤水",
-						"price":645
-					},
-					{
-						"id":"006",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"爽肤水爽肤水爽肤水",
-						"price":655
-					},
-				],
-				[
-					{
-						"id":"007",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"清透乳清透乳清透乳",
-						"price":735
-					},
-					{
-						"id":"008",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"清透乳",
-						"price":745
-					},
-					{
-						"id":"009",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"清透乳清透乳清透乳清透乳",
-						"price":755
-					},
-				],
-				[
-					{
-						"id":"010",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"面霜",
-						"price":835
-					},
-					{
-						"id":"011",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"面霜面霜面霜",
-						"price":845
-					},
-					{
-						"id":"012",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"面霜面霜面霜面霜",
-						"price":855
-					},
-				],
-				[
-					{
-						"id":"013",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"面膜",
-						"price":835
-					}
-				],
-				[
-					{
-						"id":"014",
-						"imgUrl":"static/images/category/category-goods-img01.png",
-						"goodsName":"连衣裙",
-						"price":935
-					}
-				]
-			],
+			categoryData:[],
 			isLoading:true,
 			pullDownTip:''
 		};
 	},
-  	mounted(){
-		// 调用loading 
-		this.$store.commit('showLoading')
+  	created(){
+		this.$store.commit('showLoading');// 调用loading 
         this.requestData();//请求数据
     },
 	methods:{
@@ -243,21 +82,25 @@ export default {
             let url = 'goods/categoryList';
             this.$axios.get(url)
             .then( (res) => {
-				
 				let status = res.data.status
                 if(status === 200){
-					// console.log(res.data.data)	
 					// 数据加载成功，关闭loading 
-					this.$store.commit('hideLoading')
-					
+					this.$store.commit('hideLoading');
 					this.categoryData = res.data.data;
-
 					this.categoryData.forEach((item) => {
 						// 左侧导航赋值
 						this.menuBar.push(item.cat_name)
-					})	
-							
-                }
+					})		
+                }else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+				else{
+					this.$toast(res.data.msg)
+				}
             })
             .catch((error) => {
                 alert('请求错误:'+ error)
@@ -266,12 +109,10 @@ export default {
 		
 	},
 	filters:{
-		moneyFormat(val){
-			return parseInt(val).toFixed(2)
-		},
-		rmb(val){
-			return "¥" + val
-		}
+		//格式化金钱
+        formatMoney:function(val){
+            return "¥" + Number(val).toFixed(2)
+        }
 	}
 	
 };

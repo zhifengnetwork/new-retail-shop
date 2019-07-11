@@ -154,23 +154,27 @@
             this.$store.commit('showLoading')
             this.userData();
         },
-        mounted() {
-            this.personalData();
-        },
         methods: {
             userData() {
                 let url = '/user/user_info'
                 this.$axios.post(url,{
                     token:this.$store.getters.optuser.Authorization
                 })
-                .then((res)=>{                  
+                .then((res)=>{            
                     var that = this
                     var item = res.data.data;
                     if(res.data.status === 200){
                         that.userList = item;
                         this.$store.commit('hideLoading')
-                    }else{
-                        that.$toast(res.msg)
+                    }else if(res.data.status === 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token;
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
+                        that.$toast(res.data.msg)
                     }
                 })
             },

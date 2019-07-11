@@ -95,7 +95,15 @@ export default {
                              _that.list[0].pic=list.data[0].zfb_pic;
                             _that.list[1].pic=list.data[0].wx_pic;
                             _that.list[2].pic=list.data[0].my_pic;
-                    }else{
+                    }
+                    else if(res.data.status == 999){
+                        this.$toast(res.data.msg)
+                        this.$store.commit('del_token'); //清除token
+                        setTimeout(()=>{
+                            this.$router.push('/Login')
+                        },1000)
+                    }
+                    else{
                         _that.$toast(list.msg)
                     }
                 })

@@ -43,7 +43,15 @@ export default {
 					// 	path: '/sell/Sell',
 					// 	name: 'Sell',
 					// })
-                }else{
+                }
+                else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+                else{
                     _that.$toast(list.msg)
                 }
             })

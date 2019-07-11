@@ -1,6 +1,10 @@
 <template>
-    <div class="EditPassword">
-        <h1>修改密码</h1>
+    <div class="SetPassword">
+        <TopHeader custom-title="设置支付密码" custom-fixed>
+			<i slot="backBtn" class="iconfont icon-fanhui"></i>
+		</TopHeader>
+        <div class="height-88"></div>
+        <!-- <h1>设置支付密码</h1> -->
         <div class="edit-container">
             <div class="form-group">
                 <i class="icon tel-icon"></i>
@@ -22,10 +26,10 @@
 
             <div class="btn" :class="{'hiLine':phone!='','hiLine':verifyCode!='','hiLine':password!='' ,'hiLine':password2!=''}" @click="confirmClick()">确定</div>
 
-            <div class="jump-link">
+            <!-- <div class="jump-link">
                 <router-link to="/Login">登录</router-link>
                 <router-link to="/Register">注册账号</router-link>
-            </div>
+            </div> -->
             
         </div>
        
@@ -33,11 +37,13 @@
 </template>
 
 <script>
-/* md5 */
+import TopHeader from "@/pages/common/header/TopHeader";
 import md5 from 'js-md5';
-import { Dialog } from 'vant';
 export default {
-    name:'EditPassword',
+    name:'SetPassword',
+ 	components: {
+		TopHeader
+	},
     data(){
         return{
             phone:'',//手机号
@@ -70,15 +76,7 @@ export default {
                         // 开启倒计时
                         this.countDown();
                         this.$toast(res.data.data)
-                    }
-                    else if(res.data.status == 999){
-                        this.$toast(res.data.msg)
-                        this.$store.commit('del_token'); //清除token
-                        setTimeout(()=>{
-                            this.$router.push('/Login')
-                        },1000)
-                    }
-                    else{
+                    }else{
                         this.$toast(res.data.msg)
                     }
                 })
@@ -155,27 +153,21 @@ export default {
             }else{
                 // 请求修改密码接口
                 var url = "/user/resetPassword"
-                var params = new URLSearchParams();
-                    params.append('phone', this.phone);       // 要传给后台的参数值
-                    params.append('user_password', this.password);
-                    params.append('confirm_password', this.password2);
-                    params.append('verify_code', this.verifyCode);  
-                this.$axios({
-                    method: 'post',
-                    url:url,
-                    data: params
+                this.$axios.post(url,{
+                    phone:this.phone,
+                    type:2,
+                    verify_code:this.verifyCode,
+                    user_password:this.password,
+                    confirm_password:this.password2,
                 })
                 .then((res)=>{
-                    console.log(res.data.status)
                     if(res.data.status === 200){
                         that.$toast('修改成功')                
-                        setTimeout(() => {
-                            that.$router.push("/Login");
-                        }, 1000);
+                        // setTimeout(() => {
+                        //     that.$router.push("/Login");
+                        // }, 1000);
                     }else{
-                        Dialog.alert({
-                            message: res.data.msg
-                        })
+                        that.$toast(res.data.msg)
                     }
 				})  
             }
@@ -187,7 +179,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.EditPassword
+.SetPassword
     width 100%
     min-height 100vh
     background-color #ffffff
@@ -200,6 +192,7 @@ export default {
     .edit-container
         padding 0 24px
         box-sizing border-box
+        margin-top 30px
         .form-group
             width 100%
             height 90px

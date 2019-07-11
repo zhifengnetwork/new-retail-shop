@@ -137,7 +137,15 @@ export default {
 					else{
 						_that.isShow=false
 					}
-				}else{
+				}
+				else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+				else{
 					_that.$toast(list.msg)
 						
 				}
@@ -153,7 +161,17 @@ export default {
                 if(list.status === 200){
 					_that.history =list.data.history
 					_that.hot=list.data.hot
-                }
+				}
+				else if(res.data.status == 999){
+					this.$toast(res.data.msg)
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+				else{
+					this.$toast(res.data.msg)
+				}
             })
             .catch((error) => {
                 alert('请求错误:'+ error)
