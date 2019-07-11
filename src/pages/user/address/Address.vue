@@ -92,10 +92,10 @@ export default {
                 url:url,
                 data:params
             }).then((res)=>{
+                this.$store.commit('hideLoading')
                 if(res.data.status === 200){
                     this.siteList = res.data.data
                     console.log(this.siteList)
-                    this.$store.commit('hideLoading')
                 }else if(res.data.status===999){
                     this.$store.commit('del_token'); //清除token
                     setTimeout(()=>{
