@@ -337,7 +337,14 @@ export default {
                     that.goodsData =res.data.data; 
                     that.goods = res.data.data;    //商品详情
                     that.good =  res.data.data.spec.spec_attr; //商品规格
-                    that.isCollect=that.goods.collection
+                    that.isCollect=that.goods.collection;
+                    // that.esku=res.data.data.productAttr;
+                    res.data.data.productAttr.forEach(
+                        function(item){
+                            that.esku+=item.attr_name+'、';
+                        }
+                    );
+
                 }
                 for (var i in that.goods.spec.goods_sku){  
                     that.shopItemInfo[that.goods.spec.goods_sku[i].sku_attr1] = that.goods.spec.goods_sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
