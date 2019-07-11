@@ -10,7 +10,7 @@
             <div class="-code-list">
                 <p class="attention">注：达到相应条件即可申请县市省代理！</p>
                 <van-dropdown-menu>
-                    <van-dropdown-item v-model="value1" :options="option1" />
+                    <van-dropdown-item v-model="id" :options="option1" />
                 </van-dropdown-menu>
                 <div>
                     <input type="text" class="a-inp" v-model="userName" placeholder="请输入用户名" />
@@ -35,18 +35,39 @@ export default {
     data() {
         return {
             fileList: [],
-            value1: 0,
+            id: 0,
             userName:'',
             mobile:'',
             // value2: 'a',
             option1: [
-                { text: '县级代理', value: 0 },
-                { text: '市级代理', value: 1 },
-                { text: '省级代理', value: 2 }
+                // { text: '县级代理', value: 0 },
+                // { text: '市级代理', value: 1 },
+                // { text: '省级代理', value: 2 }
             ],
         }
     },
     methods:{
+        getUserAgentResinfo(){
+            _that.$axios.post('user/agent_res',{
+                'token':this.$store.getters.optuser.Authorization            
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    console.log(list.data)
+                    _that.option1 =list.data
+                    this.$store.commit('hideLoading')
+                }else if(list.status == 999){
+                    this.$store.commit('del_token'); //清除token
+                    setTimeout(()=>{
+                        this.$router.push('/Login')
+                    },1000)
+                }else{
+                    _that.$toast(list.msg)
+                }
+            })
+        },
+
         setAgents(){
             var _that =this;
             var post =_that.fileList[0];
