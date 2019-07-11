@@ -14,7 +14,7 @@
                         <router-link :to="'/Details?goods_id='+item.goods_id"><img :src="item.img" /></router-link>
                     </div>
                     <div class="goods-info">
-                        <router-link to="/Details"><p class="-info-msg">{{item.goods_name}}</p></router-link>
+                        <router-link :to="'/Details?goods_id='+item.goods_id"><p class="-info-msg">{{item.goods_name}}</p></router-link>
                         <div class="-info-option"> 
                             <span class="price">
                                 ￥<strong>{{item.goods_price}}</strong>
@@ -111,6 +111,7 @@ export default {
                 'token':this.token
             })
             .then((res)=>{
+                var info =res.data
                 if(info.status == 200){
                     var data =_that.list[key];
                      _that.$set( data,'goods_num',val)

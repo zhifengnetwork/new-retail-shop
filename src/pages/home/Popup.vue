@@ -33,16 +33,17 @@ export default {
         //给平台支付30服务费
         topPayServiceCharge(){
             var _that =this;
-            _that.$axios.post('fifty_zone/get_release',{
+            _that.$axios.post('pay/release_wx_pay',{
                 token:this.$store.getters.optuser.Authorization            
             })
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
-                    // _that.$router.push({
-					// 	path: '/sell/Sell',
-					// 	name: 'Sell',
-					// })
+                    _that.$router.push({
+						path: '/sell/Sell',
+						name: 'Sell',
+                    })
+                    
                 }
                 else if(res.data.status == 999){
 					this.$toast(res.data.msg)

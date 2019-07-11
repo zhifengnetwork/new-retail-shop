@@ -122,7 +122,13 @@
                         <span>我的发布</span>
                         <span class="right_ico"></span>
                     </router-link>
-                </div>                
+                </div>  
+                <div class="arr_wrap">
+                    <router-link class="my_look" to="/user/Agents">
+                        <span>我的代理</span>
+                        <span class="right_ico"></span>
+                    </router-link>
+                </div>                 
                 <div class="arr_wrap">
                     <router-link class="my_look" to="/user/mySharing">
                         <span>我的推广</span>
@@ -193,7 +199,6 @@
                     var item = res.data.data;
                     if(res.data.status === 200){
                         that.personalList = item;
-                        console.log(that.personalList)
                     }else{
                         that.$toast(res.msg)
                     }
