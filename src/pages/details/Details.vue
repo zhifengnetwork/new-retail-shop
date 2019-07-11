@@ -19,7 +19,7 @@
             <div class="goodsInfo">
                 <div class="price">
                     <span class="discount-price">￥{{this.goodsData.price}}</span>
-                    <span class="original-price">原价￥{{this.goodsData.original_price}}</span>
+                    <span class="original-price"><strike>原价￥{{this.goodsData.original_price}}</strike></span>
                 </div>
                 <!-- 商品名称 -->
                 <div class="goodsName">
