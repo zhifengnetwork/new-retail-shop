@@ -53,7 +53,7 @@
                 </div>
                 <div class="group-line">
                     <div class="fl">收货人</div>
-                    <div class="fr">{{orderDetails.consignee}}</div>
+                    <div class="fr">{{orderDetails.consignee}} {{orderDetails.mobile}}</div>
                 </div>
                 <div class="group-line">
                     <div class="fl">支付方式</div>

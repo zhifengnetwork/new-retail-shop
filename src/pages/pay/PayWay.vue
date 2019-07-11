@@ -1,9 +1,18 @@
 <template>
     <div class="PayWay">
       	<!-- 头部组件 -->
-        <TopHeader custom-title="支付方式" custom-fixed>
-			<i slot="backBtn" class="iconfont icon-fanhui"></i>
-		</TopHeader>
+        <!-- <TopHeader custom-title="支付方式" custom-fixed>
+			<span class="infl"><i class="iconfont icon-fanhui" @click="linkCategory()"></i></span>
+		</TopHeader> -->
+        <div class="TopHeader">
+            <div class="backBtn" @click="linkCategory()">
+                <i class="iconfont icon-fanhui"></i>
+            </div>
+            <div class="title">支付方式</div>
+        </div>
+
+
+
         <div class="height-88"></div>
         <div class="content">
             <div class="pay-way">
@@ -38,12 +47,12 @@
     </div>
 </template>
 <script>
-import TopHeader from "@/pages/common/header/TopHeader"
+// import TopHeader from "@/pages/common/header/TopHeader"
 export default {
     name:'PayWay',
-     components:{
-        TopHeader
-    },
+    //  components:{
+    //     // TopHeader
+    // },
     data() {
         return {
             payDefault:'微信支付',
@@ -55,11 +64,15 @@ export default {
             showKeyboard: false
         }
     },
-    mounted(){
+    created(){
         this.order_id = this.$route.query.order_id;
         this.requestData();
     },
     methods:{
+
+        linkCategory(){
+            this.$router.push('/Category')
+        },
         /**
          * 获取支付方式
          */
@@ -174,6 +187,35 @@ export default {
 
 <style lang="stylus" scoped>
 .PayWay
+    .TopHeader
+        width 100%
+        height 88px
+        line-height 88px
+        color #151515
+        font-size 30px
+        background-color #ffffff
+        display flex
+        justify-content space-between
+        align-items center
+        position fixed
+        top 0
+        left 0
+        z-index 9
+        .backBtn
+            width 10%
+            text-align center
+            position absolute
+            left 0
+            top 0
+            .iconfont 
+                font-size 36px
+        .title
+            text-align center
+            width 70%
+            margin 0 auto
+            white-space nowrap
+            overflow hidden
+            text-overflow ellipsis
     .content
         margin-top 20px
         padding 0 24px

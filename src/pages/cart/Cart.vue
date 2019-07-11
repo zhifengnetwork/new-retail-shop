@@ -14,7 +14,12 @@
                         <router-link :to="'/Details?goods_id='+item.goods_id"><img :src="item.img" /></router-link>
                     </div>
                     <div class="goods-info">
-                        <router-link :to="'/Details?goods_id='+item.goods_id"><p class="-info-msg">{{item.goods_name}}</p></router-link>
+                        <router-link :to="'/Details?goods_id='+item.goods_id">
+                            <div class="-info-msg publicEllipsis">
+                                <p>{{item.goods_name}}</p>
+                                <p class="spec-names publicEllipsis">{{item.spec_key_name}}</p>
+                            </div>
+                        </router-link>
                         <div class="-info-option"> 
                             <span class="price">
                                 ￥<strong>{{item.goods_price}}</strong>
@@ -390,6 +395,9 @@ export default {
                         white-space nowrap
                         margin-bottom 10px
                         word-break break-all
+                        .spec-names
+                            color:#888
+                            margin-top 7px
                     .-info-option
                         display flex
                         justify-content space-between

@@ -30,10 +30,10 @@
                <p class="-userinfo"><strong>联系方式: {{currentOrder.mobile}}</strong></p>
             </div>
         </div>
-        <p class="height90"></p>
-        <!-- <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" > -->
-        <input class="submit" type="button" value="上传凭证" />
-        <!-- </router-link> -->
+        <p class="height122"></p>
+        <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" >
+            <input class="submit" type="button" value="上传凭证" />
+        </router-link>
     </div>
 </template>
 <script>
@@ -151,9 +151,9 @@ export default {
                             width: 100%
                             height: 500px
                             padding: 10px
-        .height90
+        .height122
             width 100%
-            height 100px
+            height 122px
         .submit
             width 702px
             height 88px

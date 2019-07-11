@@ -38,44 +38,61 @@ import TopHeader from "@/pages/common/header/TopHeader";
 export default {
     data() {
         return {
-            fileList: [],
-            value1: 0,
-            userName:'',
-            mobile:'',
-            // value2: 'a',
-            option1: [
-                { text: '县级代理', value: 0 },
-                { text: '市级代理', value: 1 },
-                { text: '省级代理', value: 2 }
-            ],
+            imgList: [],
+            token:this.$store.getters.optuser.Authorization
         }
     },
     created(){
         this.$store.commit('showLoading')       //加载login
+        this.getPayCodeInfo()
     },
     methods:{
-        setAgents(){
-            var _that =this;
-            _that.$axios.post('user/agent_res',{
-                'proof':post,
-                'fz_order_id':this.$route.query.fz_order_id,
-                'token':this.$store.getters.optuser.Authorization            
+
+        getPayCodeInfo(){
+            var _that =this
+            _that.$axios.post('pay/get_user_payment',{
+                'token':_that.token         
             })
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
-                    _that.option1 =list.data
-                    this.$store.commit('hideLoading')
-                }else if(list.status == 999){
-                    this.$store.commit('del_token'); //清除token
-                    setTimeout(()=>{
-                        this.$router.push('/Login')
-                    },1000)
-                }else{
+                    _that.imgList =
+                    _that.$store.commit('hideLoading')
+                }
+                // else if(list.status === 999){
+                //     _that.$store.commit('del_token'); //清除token
+                //     setTimeout(()=>{
+                //         _that.$router.push('/Login')
+                //     },1000)
+                // }
+                else{
                     _that.$toast(list.msg)
                 }
             })
-        }
+        }, 
+
+        // setAgents(){
+        //     var _that =this;
+        //     _that.$axios.post('user/agent_res',{
+        //         'proof':post,
+        //         'fz_order_id':this.$route.query.fz_order_id,
+        //         'token':this.$store.getters.optuser.Authorization            
+        //     })
+        //     .then((res)=>{
+        //         var list = res.data;
+        //         if(list.status == 200){
+        //             _that.option1 =list.data
+        //             this.$store.commit('hideLoading')
+        //         }else if(list.status == 999){
+        //             this.$store.commit('del_token'); //清除token
+        //             setTimeout(()=>{
+        //                 this.$router.push('/Login')
+        //             },1000)
+        //         }else{
+        //             _that.$toast(list.msg)
+        //         }
+        //     })
+        // }
     },
     components:{
         TopHeader
