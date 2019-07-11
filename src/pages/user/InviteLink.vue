@@ -33,7 +33,7 @@
     import { Toast } from 'vant'
     import VueClipboard from 'vue-clipboard2'
     export default {
-	name: "mySharing",
+	name: "InviteLink",
 	data() {
 		return {
             siteList:[],

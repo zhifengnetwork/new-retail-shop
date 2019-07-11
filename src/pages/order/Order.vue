@@ -19,82 +19,111 @@
             </div>
 
             <div class="tab-con">
-                <div class="item-card" v-for="(item,index) in allOrders" :key="index">
-                    <div class="card-head">
-                        <span class="order-date">{{item.add_time | formatDate}}</span>
-                        <span class="order-state" v-if="item.status===1">待付款</span>
-                        <span class="order-state" v-if="item.status===2">待发货</span>
-                        <span class="order-state" v-if="item.status===3">待收货</span>
-                        <span class="order-state" v-if="item.status===4 && item.comment == 0">交易成功</span>
-                        <span class="order-state" v-if="item.status===5">已取消</span>
-                        <span class="order-state" v-if="item.status===6">待退款</span>
-                        <span class="order-state" v-if="item.status===7">已退款</span>
-                        <span class="order-state" v-if="item.status===8">拒绝退款</span>
-                        <span class="order-state" v-if="item.status===4 && item.comment == 1">已评价</span>
-                    </div>
-                    <router-link :to="'/Order/OrderDetails?order_id=' + item.order_id">
-                        <div class="goods-item">
-                            <div class="img-wrap">
-                                <img :src="item.img" />
-                            </div>
-                            <div class="text">
-                                <h3>{{item.goods_name}}</h3>
-                                <div class="good-sku">
-                                    <span class="sku-coll">{{item.spec_key_name}}</span>
-                                    <span class="price">{{item.goods_price | formatMoney}}</span>
+                <div v-if="nowIndex < 5">
+                    <div class="item-card" v-for="(item,index) in allOrders" :key="index">
+                        <div class="card-head">
+                            <span class="order-date">{{item.add_time | formatDate}}</span>
+                            <span class="order-state" v-if="item.status===1">待付款</span>
+                            <span class="order-state" v-if="item.status===2">待发货</span>
+                            <span class="order-state" v-if="item.status===3">待收货</span>
+                            <span class="order-state" v-if="item.status===4 && item.comment == 0">交易成功</span>
+                            <span class="order-state" v-if="item.status===5">已取消</span>
+                            <span class="order-state" v-if="item.status===6">待退款</span>
+                            <span class="order-state" v-if="item.status===7">已退款</span>
+                            <span class="order-state" v-if="item.status===8">拒绝退款</span>
+                            <span class="order-state" v-if="item.status===4 && item.comment == 1">已评价</span>
+                        </div>
+                        <router-link :to="'/Order/OrderDetails?order_id=' + item.order_id">
+                            <div class="goods-item">
+                                <div class="img-wrap">
+                                    <img :src="item.img" />
+                                </div>
+                                <div class="text">
+                                    <h3>{{item.goods_name}}</h3>
+                                    <div class="good-sku">
+                                        <span class="sku-coll">{{item.spec_key_name}}</span>
+                                        <span class="price">{{item.goods_price | formatMoney}}</span>
+                                    </div>
                                 </div>
                             </div>
+                        
+                        </router-link>
+        
+                        <div class="total-bar">
+                            <div class="total-count">共{{item.goods_num}}件商品 </div>
+                            <div class="payment">
+                                <span class="label">合计 : </span>
+                                <span class="price">{{item.goods_price * item.goods_num | formatMoney}}</span>
+                            </div>
                         </div>
-                    </router-link>
-                    <div class="total-bar">
-                        <div class="total-count">共{{item.goods_num}}件商品 </div>
-                        <div class="payment">
-                            <span class="label">合计 : </span>
-                            <span class="price">{{item.goods_price * item.goods_num | formatMoney}}</span>
-                        </div>
-                    </div>
-                    <div class="order-btn">
-                        <!-- 待付款 -->
-                        <div v-if="item.status == 1">
-                            <span class="btn" @click="cancelOrder(index,item.order_id,item.status)">取消订单</span>
-                            <span class="btn red" @click="payment(item.order_id,item.pay_type)">去付款</span>
-                        </div>
-                        <!-- 待发货 -->
-                        <div v-if="item.status == 2">
-                            <router-link :to="'/Order/ReturnRequest?order_id='+item.order_id"><span class="btn red">退款</span></router-link>
-                        </div>
-                        <!-- 待收货 -->
-                        <div v-if="item.status == 3">
-                            <span class="btn">查看物流</span>
-                            <span class="btn red" @click="confirmReceipt(index,item.order_id,item.status)">确定收货</span>
-                        </div>
-                        <!-- 交易成功 -->
-                        <div v-if="item.status == 4">
-                            <span class="btn">查看物流</span>
-                            <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id+'&sku_id='+item.sku_id+'&goods_id='+item.goods_id">去评价</router-link></span>
-                            <!-- <span class="btn red" v-else><router-link :to="'/Order/Evaluate?order_id='+item.order_id">订单已完成</router-link></span> -->
-                            <span class="btn red" v-else @click="delOrder(index,item.order_id,item.status)">删除订单</span>
-                        </div>
-                        <!-- 已取消 -->
-                        <div v-if="item.status == 5">
-                            <span class="btn" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
-                            <span class="btn red"><router-link :to="'/Details?goods_id='+item.goods_id">重新购买</router-link></span>
-                        </div>
-                        <!-- 待退款 -->
-                        <div v-if="item.status == 6">
-                            <span class="btn red" @click="cancelRefund(index,item.order_id,item.status)">取消退款</span>
-                        </div>
-                        <!-- 已退款 -->
-                        <div v-if="item.status == 7">
-                            <span class="btn red"></span>
-                        </div>
-                        <!-- 拒绝退款 -->
-                        <div v-if="item.status == 8">
-                            <span class="btn red"></span>
+                        <div class="order-btn">
+                            <!-- 待付款 -->
+                            <div v-if="item.status == 1">
+                                <span class="btn" @click="cancelOrder(index,item.order_id,item.status)">取消订单</span>
+                                <span class="btn red" @click="payment(item.order_id,item.pay_type)">去付款</span>
+                            </div>
+                            <!-- 待发货 -->
+                            <div v-if="item.status == 2">
+                                <router-link :to="'/Order/ReturnRequest?order_id='+item.order_id"><span class="btn red">退款</span></router-link>
+                            </div>
+                            <!-- 待收货 -->
+                            <div v-if="item.status == 3">
+                                <span class="btn">查看物流</span>
+                                <span class="btn red" @click="confirmReceipt(index,item.order_id,item.status)">确定收货</span>
+                            </div>
+                            <!-- 交易成功 -->
+                            <div v-if="item.status == 4">
+                                <span class="btn">查看物流</span>
+                                <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id+'&sku_id='+item.sku_id+'&goods_id='+item.goods_id">去评价</router-link></span>
+                                <!-- <span class="btn red" v-else><router-link :to="'/Order/Evaluate?order_id='+item.order_id">订单已完成</router-link></span> -->
+                                <span class="btn red" v-else @click="delOrder(index,item.order_id,item.status)">删除订单</span>
+                            </div>
+                            <!-- 已取消 -->
+                            <div v-if="item.status == 5">
+                                <span class="btn" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
+                                <span class="btn red"><router-link :to="'/Details?goods_id='+item.goods_id">重新购买</router-link></span>
+                            </div>
+                            <!-- 待退款 -->
+                            <div v-if="item.status == 6">
+                                <span class="btn red" @click="cancelRefund(index,item.order_id,item.status)">取消退款</span>
+                            </div>
+                            <!-- 已退款 -->
+                            <div v-if="item.status == 7">
+                                <span class="btn red"></span>
+                            </div>
+                            <!-- 拒绝退款 -->
+                            <div v-if="item.status == 8">
+                                <span class="btn red"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <div v-else class="fifty_wrap">
+                    <div class="time">
+                        <span class="date">2019-07-11 14:31:26</span>
+                    </div>
+                    <div class="nick_wrap">
+                        <div class="img_wrap">
+                            <img src="/static/images/home/banner01.png"/>
+                        </div>
+                        <div class="nickname">
+                            <p>昵称</p>
+                            <p>ID:5955666</p>
+                        </div>
+                    </div>
+                    <div class="num-bar">
+                        <div class="count">商家2</div>
+                        <div class="total_wrap">
+                            <div class="total-count">共{{10}}个商家</div>
+                            <div class="payment">
+                                <span class="label">合计 : </span>
+                                <span class="price">{{500}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="viewBtn">查看详情</div>
+                </div>
                 <!-- <ul>
                     <li v-show="nowIndex === 0">
                         <div class="item-card">
@@ -551,7 +580,7 @@ export default {
                 .then( (res)=>{
                     if(res.data.status == 200){
                         if(this.page == 1){ 
-                            this.allOrders = res.data.data
+                           this.allOrders = res.data.data                           
                         }else{
                             if(res.data.data.length != ''){
                                //如果有数据,拼接数组
@@ -940,6 +969,60 @@ export default {
                             background-color #faf8f5
                             a
                                 color #f20c0c
+            .fifty_wrap
+                padding 25px 20px 0
+                background #fff
+                margin-bottom 14px
+                .time
+                    margin-bottom 15px
+                    font-size 22px
+                    color #151515
+                    line-height 55px
+                    border-bottom 2px solid #e6e6e6
+                .nick_wrap  
+                    position relative 
+                    .img_wrap     
+                        img    
+                            margin 0 auto
+                            display block
+                            width 660px
+                            height 280px
+                            border-radius 10px
+                    .nickname
+                        padding 10px 15px
+                        position absolute
+                        top 0
+                        left 0
+                        background rgba(0,0,0,0.5)
+                        font-size 26px 
+                        color #151515
+                        border-radius 10px
+                        p 
+                            text-align center
+                            line-height 35px
+                .viewBtn
+                    width 130px
+                    height 40px
+                    line-height 40px
+                    color #888888
+                    text-align center
+                    display inline-block
+                    font-size 26px
+                    border-radius 15px
+                    border 2px solid #888888
+
+                .num-bar
+                    color #6f6f6f
+                    line-height 75px
+                .num-bar .total_wrap,.count
+                    display inline-block  
+                .total_wrap  
+                    float right 
+                .total_wrap .total-count,.payment
+                    display inline-block 
+                .payment
+                    padding 0 0 0 15px          
+
             .end-wrap
                 font-size 18px
                 color #888888
