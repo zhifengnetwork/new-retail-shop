@@ -119,8 +119,7 @@ export default {
     .agents-wrap
         .content
             padding 24px 24px 30px
-            width 702px
-            height 1000px
+            height 100vh
             background #fff
             border-radius 10px
             border solid 2px #e5e5e5
@@ -130,6 +129,7 @@ export default {
             display flex
             justify-content center
             position relative
+            overflow hidden
             .-code-list
                 position absolute
                 top 24px
@@ -139,7 +139,7 @@ export default {
                 .attention
                     color: #f40808
                     font-size 26px
-                    // margin-bottom 20px
+                    line-height 65px
                 .van-dropdown-menu__item
                     width: 702px
                     position: relative
@@ -160,8 +160,11 @@ export default {
                 width 370px
                 height 370px
             .van-uploader__preview-image 
+                width 370px
+                height 370px
+            .van-uploader__preview-image  img 
                 display block
-                width 100%
+                max-width 100%
                 height 100%
             .van-uploader__upload-icon 
                 color #969799
@@ -174,11 +177,13 @@ export default {
             height 88px
             background-color #ff4d4d
             border-radius 44px
+            font-size 30px
             color #fff
+            letter-spacing 5px
             position fixed
             bottom 24px
             left 24px
-
+    
 
 </style>
 

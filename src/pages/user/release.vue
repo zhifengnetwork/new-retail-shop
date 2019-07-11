@@ -18,17 +18,6 @@
                     </div>
                     <div class="num">剩余商品数量{{item.stock}}</div>
                 </div>
-
-                <!-- <div class="main">
-                    <div class="time">
-                        <span>2019-06-07</span>
-                        <span>14:55:02</span>
-                    </div>
-                    <div class="img_wrap">
-                        <img src="/static/images/home/banner01.png"/>
-                    </div>
-                    <div class="num">剩余商品数量11</div>
-                </div> -->
             </div>
         </div>
     </div>
@@ -37,7 +26,7 @@
 <script>
     import RelHeader from "@/pages/common/header/TopHeader"
     export default {
-	name: "mySharing",
+	name: "release",
 	data() {
 		return {
             releaseList:'',
@@ -99,6 +88,7 @@
                             height 280px
                             border-radius 10px
                     .num 
+                        font-size 26px
                         line-height 75px
                         color #151515        
 
