@@ -43,7 +43,10 @@
                                         <h3>{{item.goods_name}}</h3>
                                         <div class="good-sku">
                                             <span class="sku-coll">{{item.spec_key_name}}</span>
-                                            <span class="price">{{item.goods_price | formatMoney}}</span>
+                                            <span class="price">
+                                                <p class="tr">{{item.goods_price | formatMoney}}</p>
+                                                <p class="tr color-8"> x {{item.goods_num}}</p>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -77,7 +80,7 @@
                             <!-- 交易成功 -->
                             <div v-if="item.status == 4">
                                 <span class="btn">查看物流</span>
-                                <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id+'&sku_id='+item.sku_id+'&goods_id='+item.goods_id">去评价</router-link></span>
+                                <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id+'&sku_id='+item.goods[0].sku_id+'&goods_id='+item.goods[0].goods_id">去评价</router-link></span>
                                 <!-- <span class="btn red" v-else><router-link :to="'/Order/Evaluate?order_id='+item.order_id">订单已完成</router-link></span> -->
                                 <span class="btn red" v-else @click="delOrder(index,item.order_id,item.status)">删除订单</span>
                             </div>
@@ -92,11 +95,11 @@
                             </div>
                             <!-- 已退款 -->
                             <div v-if="item.status == 7">
-                                <span class="btn red"></span>
+                                <span class="btn red" @click="delOrder(index,item.order_id,item.status)">删除订单</span>
                             </div>
                             <!-- 拒绝退款 -->
                             <div v-if="item.status == 8">
-                                <span class="btn red"></span>
+                                <span class="btn red" @click="delOrder(index,item.order_id,item.status)">确定收货</span>
                             </div>
                         </div>
                     </div>
@@ -111,21 +114,21 @@
                             <img :src="item.img"/>
                         </div>
                         <div class="nickname">
-                            <p>昵称</p>
-                            <p>ID:5955666</p>
+                            <p>{{item.goods_name}}</p>
+                            <!-- <p>ID:5955666</p> -->
                         </div>
                     </div>
                     <div class="num-bar">
-                        <div class="count">商家2</div>
+                        <div class="count">{{item.shop_name}}</div>
                         <div class="total_wrap">
-                            <div class="total-count">共{{10}}个商家</div>
+                            <div class="total-count">共{{item.shop_num}}个商家</div>
                             <div class="payment">
                                 <span class="label">合计 : </span>
-                                <span class="price">{{500}}</span>
+                                <span class="price">{{item.goods_price}}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="viewBtn">查看详情</div>
+                    <div class="viewBtn"> <router-link :to="'/order/fiftyDetails?order_id='+item.order_id">查看详情</router-link></div>
                 </div>
                 <!-- <ul>
                     <li v-show="nowIndex === 0">
@@ -466,23 +469,6 @@
                     <img src="/static/images/public/none.png"/>
                     <p>您还没相关的订单</p>
                 </div>
-
-                <!-- 密码输入框 -->
-                <van-popup v-model="showPwd" class="popup"  @click-overlay="hidePwd()">
-                <van-password-input
-                :value="payPassword"
-                info="密码为 6 位数字"
-                @focus="showKeyboard = true"
-                />
-                </van-popup>
-
-                <!-- 数字键盘 -->
-                <van-number-keyboard
-                :show="showKeyboard"
-                @input="onInput"
-                @delete="onDelete"
-                @blur="showKeyboard = false"
-                />
             </div>
 
         </div>
@@ -528,9 +514,6 @@ export default {
             ispage:true,//是否请求数据
             order_id:'',
             pay_type:'',//支付方式
-            payPassword:'',//支付密码
-            showPwd:false,
-            showKeyboard: false,
             token:this.$store.getters.optuser.Authorization,
         }
     },
@@ -593,7 +576,6 @@ export default {
                             }
                         }                        
                     }else if(res.data.status == 999){
-                        this.$toast(res.data.msg)
                         this.$store.commit('del_token'); //清除token
                         setTimeout(()=>{
                             this.$router.push('/Login')
@@ -664,21 +646,7 @@ export default {
          * 立即付款
          */
         payment(order_id,type){
-            if(type == 1){
-                this.showPwd = true;
-                this.showKeyboard = true;
-                this.order_id = order_id
-                this.pay_type = type
-            }
-            else if(type == 2){
-               this.$toast("调用微信支付接口");
-            }
-            else if(type == 3){
-                this.$toast("调用支付宝支付接口");
-            }
-            // else if(type == 4){
-            //     this.$toast("货到付款");
-            // }
+            this.$router.push('/pay/PayWay?order_id='+order_id+'&pay_type='+type);
         },
         /**
          * 取消申请退款
@@ -730,65 +698,6 @@ export default {
             }else{
                 this.$router.push('/Order/Evaluate?order_id='+ item.order_id);
             }
-        },
-        /**
-         * 余额支付:输入密码
-         */
-        onInput(key) {
-            this.payPassword = (this.payPassword + key).slice(0, 6);
-            if(this.payPassword.length === 6){ 
-                // 请求数据
-                let url = 'pay/payment';
-                this.$axios.post(url,{
-                    token:this.token,
-                    order_id:this.order_id,
-                    pay_type:this.pay_type,
-                    pwd:this.payPassword
-                }).then((res)=>{
-                    if(res.data.status === 200){   
-                        // 余额支付成功    
-                        this.$toast.success({message:res.data.msg,duration: 2000});
-                        this.requestData();
-                        setTimeout(() => {
-                            // console.log("支付成功，2s跳转到支付成功页面")
-                            this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
-                        },2000)
-                    }
-                    else if(res.data.status === 888){
-                        // 设置支付密码
-                        this.$toast.fail(res.data.msg);
-                        this.$router.push('/user/SetPassword')
-                    }
-                    else if(res.data.status == 999){
-                        this.$toast(res.data.msg)
-                        this.$store.commit('del_token'); //清除token
-                        setTimeout(()=>{
-                            this.$router.push('/Login')
-                        },1000)
-                    }
-                    else{
-                        // 支付失败
-                        this.$toast.fail(res.data.msg);
-                    }
-                })
-                // 关闭密码输入
-                this.showKeyboard = false;
-                this.showPwd = false;
-                this.payPassword = '';
-            }
-        },
-        /**
-         * 删除密码
-         */
-        onDelete() {
-            this.payPassword = this.payPassword.slice(0, this.payPassword.length - 1);
-        },
-        /**
-         * 关闭密码蒙层，清空密码
-         */
-        hidePwd(){
-            this.showPwd=false;
-            this.payPassword = '';
         },
 
         /**
@@ -847,6 +756,10 @@ export default {
 <style lang="stylus" scoped>
 .Order
     .tab-wrap
+        .tr
+            text-align: right
+        .color-8
+            color:#888
         .tab-tit
             border-top 2px solid #e6e6e6
             ul

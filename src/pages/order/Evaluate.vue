@@ -89,7 +89,6 @@ export default {
              returnObj.star_rating=_that.rateVal
              returnObj.content=_that.content
              returnObj.img=_that.postData
-
              if(_that.content==""){
                 return _that.$toast("您还没有输入评论内容哦！")
              }

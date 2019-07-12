@@ -289,30 +289,22 @@ export default {
             var val =parseInt(this.goodsNumber) + 1
             this.goodsNumber=val
         },
-         _selecetSku(){
-            
-            var _that =this,
-                newSku =_that.selectArrId,
-                goods_ku =_that.goods.spec.goods_sku
-                //  console.log(_that.selectArrId)
-                if(newSku==""){return ''}
-                for(var i in goods_ku){
-                    var sku_attr = goods_ku[i].sku_attr1.split(",");
-                    if(sku_attr==newSku.sort().toString()){
-                        // info =data
-                        return goods_ku[i]
-                    }
+
+
+        _selecetSku(){
+            var _that =this,info="",
+            newSku  =_that.selectArrId,
+            goods_ku =_that.goods.spec.goods_sku
+            if(newSku==""){return ''}
+            for(var i in goods_ku){
+                var sku_attr = goods_ku[i].sku_attr1.split(",");
+                if(sku_attr==newSku.sort().toString()){
+                    return goods_ku[i]
                 }
-            // _that.goodsSkuData.forEach((data)=>{
-            //     var sku_attr =data.sku_attr1.split(",");
-            //     if(sku_attr==newSku.sort().toString()){
-            //         // info =data
-            //         return info
-            //     }
-            // })
-            // return {'info':info}
+            }
         },
-        confirmSize(){           // 下单
+        confirmSize(){     
+            // 下单
             var _that=this;
             let le = [];
             let sele = []
@@ -342,20 +334,24 @@ export default {
                 }  
             }
             _that.esku =_that.selectArr
-            var sku_id =this. _selecetSku().sku_id
+            var sku_id ="";
+            if(typeof(this._selecetSku()) == "undefined"){
+                sku_id = this.selectArarr.sku_id
+            }else{
+                sku_id = this._selecetSku().sku_id
+            }
             if(this.optionFlag==1){
                  var t ={
                     'sku_id':sku_id,
                     'cart_number':this.goodsNumber,
                     'token':this.$store.getters.optuser.Authorization, 
-                    'session_id':1
+                    'session_id':1          //直接购买
                 }
             }else{
                  var t ={
                     'sku_id':sku_id,
                     'cart_number':this.goodsNumber,
                     'token':this.$store.getters.optuser.Authorization, 
-                    // 'session_id':1
                 }
             }
             _that.$axios.post('cart/addCart',t
@@ -540,7 +536,6 @@ export default {
             var self = this
             let orderInfo = this.good; /*所有规格**所有规格*/
             let orderInfoChild = this.good[n].res; /*当前点击的规格的所有子属性内容*/
-            console.log(orderInfoChild)
             if (orderInfoChild[index].isShow == true) {          //选中自己，兄弟节点取消选中
                 if (orderInfoChild[index].isSelect == true) {
                     orderInfoChild[index].isSelect = false;
@@ -556,7 +551,7 @@ export default {
                 }
             }
             self.$forceUpdate(); //重绘
-            let li = [],ids =[]
+            let li = [],ids=[]
             for(let i = 0; i < this.good.length; i++){          //已选择的显示已选择的规格
                 for(let j = 0; j < this.good[i].res.length; j++){
                     if(this.good[i].res[j].isSelect==true){
@@ -565,11 +560,9 @@ export default {
                         li.push(this.good[i].res[j].attr_name)
                     }
                 }
-                this.selectArr=li.join('、')
+                this.selectArr=li.join('')
                 this.selectArrId=ids
             }
-        
-            console.log(this.selectArr)
             // //已经选择的节点
             let haveChangedId = [];
             for (let i = 0; i < this.good.length; i++) {
