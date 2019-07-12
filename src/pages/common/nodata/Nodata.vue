@@ -2,7 +2,7 @@
     <div class="nodata-wrap">
         <img class="-info-img" :src="nodatas.imgSrc"/>
         <p class="-info-txt">{{nodatas.text}}~</p>
-        <router-link :to="nodatas.link"><input class="-info-btn" type="button" value="去逛逛" /> </router-link>
+        <router-link v-if="nodatas.showBtn" :to="nodatas.link"><input class="-info-btn" type="button" value="去逛逛" /> </router-link>
     </div>
 </template>
 <script>

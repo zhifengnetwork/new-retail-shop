@@ -3,50 +3,40 @@
       	<!-- 头部组件 -->
 		<TopHeader custom-title="物流详情" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
-            <!-- <span slot="rightBtn"><router-link class="fontRe" to="/user/EditPaymentCode"><i class="iconfont icon-bianji"></i></router-link></span> -->
 		</TopHeader>
         <div class="height-88"></div>
         <!-- CONTENT START --> 
 
-        <div class="content">
+        <!-- No INFO START -->
+        <div v-show="isShow" class="no-info" >
+            <Nodata :nodatas="nodatas"></Nodata>
+        </div>
+
+        <div v-show="logistics!=''" class="content">
             <div class="box pt">
-                <div class="order-info">
+                <div class="order-info" v-for="(item,key) in logistics.goods_res" :key="key">
                     <div class="left-pro-pic">
-                        <img src="__PUBLIC__/images/nomore.png">
-                        <p class="shadow">一件商品</p>
+                        <img :src="logistics.goods_res[0].img"/>
+                        <p class="shadow">{{logistics.goods_res.length}}件商品</p>
                     </div>
                     <div class="right-detail">
-                        <p><b>物流状态：</b><span class="txt-success">已签收</span></p>
-                        <p>快递公司：顺丰快递</p>
-                        <p>快递单号：1234567892512</p>
-                        <p>官方电话：1234567892512</p>
+                        <p><b>物流状态：</b>
+                            <span v-if="wuliu.status==0" class="txt-success">已签收</span>
+                            <span v-else="" class="txt-success">已发货</span>
+                        </p>
+                        <p>快递公司：{{wuliu.result.expName}}</p>
+                        <p>快递单号：{{wuliu.result.courierPhone}}</p>
                     </div>
                     <div class="clearfix"></div>
                 </div>
             </div>
             <div class="box mt">
                 <div class="logistics-info">
-                    <ul>
-                        <!-- 当前状态 li addClass active-->
-                        <li class="active">
-                            <i></i>
-                            <p class="txt">商家已发货</p>
-                            <p class="time">2017-10-10 10:10:10</p>
-                        </li>
-                        <li>
-                            <i></i>
-                            <p class="txt">商家已发货</p>
-                            <p class="time">2017-10-10 10:10:10</p>
-                        </li>
-                        <li>
-                            <i></i>
-                            <p class="txt">商家已发货</p>
-                            <p class="time">2017-10-10 10:10:10</p>
-                        </li>
-                        <li>
-                            <i></i>
-                            <p class="txt">商家已发货</p>
-                            <p class="time">2017-10-10 10:10:10</p>
+                    <ul class="-info-">
+                        <li class="active" v-for="(item,index) in list" :key="index">
+                            <i class="-icon" :class="{'-icon-active':index==0}"></i>
+                            <p class="txt">{{item.status}}</p>
+                            <p class="time">{{item.time}}</p>
                         </li>
                     </ul>
                 </div>
@@ -57,40 +47,59 @@
     </div>
 </template>
 <script>
-import TopHeader from "@/pages/common/header/TopHeader";
+import TopHeader from "@/pages/common/header/TopHeader"
+import Nodata from "@/pages/common/nodata/Nodata"
 export default {
     data() {
         return {
-            imgList: [],
+            logistics:[],
+            list:[],
+            nodatas:{
+                'imgSrc':'/static/images/public/none.png',
+                'text':'暂无物流信息~',
+                'link':'',
+                'showBtn':false
+            },
+            goods_res:'',
+            wuliu:'',
+            gLeng:0,
+            isShow:false,
             token:this.$store.getters.optuser.Authorization
         }
     },
     created(){
-        this.$store.commit('showLoading')       //加载login
-        this.getPayCodeInfo()
+        // this.$store.commit('showLoading')       //加载login
+        this.logisticsList()
     },
     methods:{
-
-        getPayCodeInfo(){
+        logisticsList(){
             var _that =this
-            _that.$axios.post('pay/get_user_payment',{
-                'token':_that.token         
+            _that.$axios.post('Order/express',{
+                'token':_that.token,
+                'order_id':_that.$route.query.order_id     
             })
             .then((res)=>{
                 var list = res.data;
                 console.log(list)
-                _that.$store.commit('hideLoading')
+                // _that.$store.commit('hideLoading')
                 if(list.status == 200){
-                    _that.imgList =list.data
+                    _that.logistics =list.data
+                    _that.wuliu=list.data.wuliu
+                    _that.list =_that.wuliu.result.list
+                    if(list.data.length<1){         //显示没有数据提示
+                        _that.isShow=true
+                    }
                 }
-                // else if(list.status === 999){
-                //     _that.$store.commit('del_token'); //清除token
-                //     setTimeout(()=>{
-                //         _that.$router.push('/Login')
-                //     },1000)
-                // }
+                else if(list.status === 999){
+                    _that.$store.commit('del_token'); //清除token
+                    // _that.$store.commit('hideLoading')
+                    // setTimeout(()=>{
+                    //     _that.$router.push('/Login')
+                    // },1000)
+                }
                 else{
                     _that.$toast(list.msg)
+                    _that.isShow=true
                 }
             })
         }, 
@@ -99,7 +108,8 @@ export default {
         // }
     },
     components:{
-        TopHeader
+        TopHeader,
+        Nodata
     }
 }
 </script>
@@ -116,78 +126,71 @@ export default {
                 margin:0 auto
                 padding:15px 0
                 .left-pro-pic
-                    width:30%;
-                    float:left;
-                    position: relative;
-                    padding: 5px;
-                    border:1px solid #ddd;
+                    width:28%
+                    float:left
+                    position: relative
+                    padding: 5px
+                    border:1px solid #ddd
+                    box-sizing border-box
+                    margin-right 2%
                     img
-                        height:60px;
-                        max-width: 80px;
-                        display: block;
-                        margin:0 auto;
+                        height:100px
+                        max-width: 100px
+                        display: block
+                        margin:0 auto
                     p
-                        position: absolute;
-                        left: 0;
-                        bottom: 0;
-                        width:100%;
-                        background:#000;
-                        opacity: .8;
-                        color:#fff;
-                        padding:2px 0;
-                        text-align: center;
-                        font-size:26px;
-                    
+                        position: absolute
+                        left: 0
+                        bottom: 0
+                        width:100%
+                        background:rgba(0,0,0,0.4)
+                        opacity: .8
+                        color:#fff
+                        padding:2px 0
+                        text-align: center
+                        font-size:26px
+                .right-detail
+                    p
+                        margin-bottom 6px    
            .logistics-info
-                width:90%;
-                margin-left:5%;
-                padding:25px 0;
-                min-height: 500px;
-                ul
+                width:90%
+                margin-left:5%
+                padding:25px 0
+                min-height: 500px
+                .-info-
+                    border-left 1px solid #ccc
+                    padding: 20px 20px 20px 40px
                     li
-                        position: relative;
-                        i
-                            display: inline-block;
-                            height: 70px;
-                            width:3px;
-                            background:#afafaf;
-                            :after
-                                content:'';
-                                position: absolute;
-                                left:-3px;
-                                top:-3px;
-                                width:8px;
-                                height: 8px;
-                                background:#868686;
-                                box-shadow: 0 0 8px 2px #828282;
-                                border-radius: 50%
-                            .active
-                                width:11px;
-                                height:11px;
-                                background:#41a8fd;
-                                box-shadow: 0 0 8px 2px #41a8fd;
-                                i
-                                    :after
-                                        width:11px;
-                                        height:11px;
-                                        background:#41a8fd;
-                                        box-shadow: 0 0 8px 2px #41a8fd;
+                        position: relative
+                        margin-bottom 30px
+                        border-bottom:1px solid #ccc
+                        .-icon
+                            display inline-block
+                            width:18px
+                            height 18px
+                            border-radius :50%
+                            background:#ccc
+                            position: absolute
+                            left: -48px
+                            top: 50%
+                            margin-top -11px
+                            box-shadow 0 0 30px #f8f8f8
+                        .-icon-active
+                            background:#e06f14
+                            width:18px
+                            height 18px
                         .txt
-                            top:-8px;
+                            top:-8px
+                            margin-bottom 8px
                         .time
-                            top:10px;
-                            border-bottom:1px solid #ccc;
-                            padding-bottom: 10px;
-    	    .clearfix
-                clear:both;
-    	.box .order-info p{}
-    	.box .order-info .right-detail{width:69%;float:right;}
-    	.box .order-info .right-detail p{margin-bottom: 3px}
+                            top:10px
+                            // border-bottom:1px solid #ccc
+                            padding-bottom: 10px
     .txt-success
-        color:#5cb85c;
+        color:#f20c0c
     .mt
-        margin-top:15px;
+        margin-top:15px
     .pt
-        padding-top:40px;
+        padding-top:40px
 </style>
 
