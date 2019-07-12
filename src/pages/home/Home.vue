@@ -47,7 +47,7 @@
 							<h3>{{item.goods_name}}</h3>
 							<div class="price">
 								<p class="discount-price">{{item.price | formatMoney}}</p>
-								<p class="original-price">原价:{{item.original_price | formatMoney}}</p>
+								<p class="original-price"><del>原价:{{item.original_price | formatMoney}}</del></p>
 							</div>
 						</div>
 					</router-link>
@@ -71,7 +71,7 @@
 							<h3>{{item.goods_name}}</h3>
 							<div class="price">
 								<p class="discount-price">{{item.price | formatMoney}}</p>
-								<p class="original-price">原价:{{item.original_price | formatMoney}}</p>
+								<p class="original-price"><del>原价:{{item.original_price | formatMoney}}</del></p>
 							</div>
 						</div>
 					</router-link>

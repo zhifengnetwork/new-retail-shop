@@ -74,7 +74,8 @@
                 <h2 class="heading">价格信息</h2>
                 <div class="group-line">
                     <div class="fl">商品总价</div>
-                    <div class="fr">{{orderDetails.total_amount | formatMoney}}元</div>
+                    <div class="fr">{{orderDetails.total_amount - orderDetails.shipping_price | formatMoney}}元</div>
+                    <!-- <div class="fr">{{orderDetails.total_amount - orderDetails.shipping_price | formatMoney}}元</div> -->
                 </div>
                 <div class="group-line">
                     <div class="fl">余额</div>
