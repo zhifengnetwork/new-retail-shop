@@ -19,7 +19,7 @@
                 <div class="mark_wrap">
                     <div class="mark">
                         <div class="mark_img">
-                            <!-- <img src="/static/images/user/mark.png"/> -->
+                            <img :src="ewmList.url"/>
                             <!-- 必须是id 和实例化的第一参数对应 -->
                             <div id="qrcode"></div>
                         </div>
@@ -38,21 +38,38 @@
 	name: "mySharing",
 	data() {
 		return {
-            link: 'http://new_retail_web.zhifengwangluo.com/Register+url',// 要跳转的路径或者显示的文字
-            siteList:[]
+            //link: 'http://new_retail_web.zhifengwangluo.com/Register+url',// 要跳转的路径或者显示的文字
+            siteList:[],
+            ewmList:[],
+            url:'http://new_retail_web.zhifengwangluo.com/Register'
         };
     },
     methods: {
-        qrcode () {
-            // 和div的id相同 必须是id  class类名会报错
-            // 第二参数是他的配置项
-            let that = this
-            let qrCode = new QRCode('qrcode', {
-                width: 160,
-                height: 160,
-                text: that.link,//可以写路径或者文字，扫描后想要跳转的路径或者显示的文字
-            })
-        },
+        // qrcode () {
+        //     // 和div的id相同 必须是id  class类名会报错
+        //     // 第二参数是他的配置项
+        //     let that = this 
+        //     let qrCode = new QRCode('qrcode', {
+        //         width: 160,
+        //         height: 160,
+        //         render: "table",
+        //         text: that.link,//可以写路径或者文字，扫描后想要跳转的路径或者显示的文字
+        //     })
+        //     //从 canvas 提取图片 image  
+        //     function convertCanvasToImage(canvas) {  
+        //         // var canvas = document.getElementById('qrcode').getElementsByTagName('img')[0];
+        //         var canvas=document.getElementsByTagName('canvas')[0];
+        //         var img = convertCanvasToImage(canvas);
+        //         console.log(canvas) 
+        //         $('#qrcode').append(img);// 添加DOM
+        //         //新建Image对象
+        //         var image = new Image();
+        //         // canvas.toDataURL 返回的是一串Base64编码的URL
+        //         image.src = canvas.toDataURL("image/png");
+        //         console.log(image.src)  
+        //         return image;
+        //     }
+        // },
         // 接口
         sharing() {
             var url = '/user/personal'
@@ -72,10 +89,32 @@
                     })
                 }
             })
-        }
+        },
+         // 接口
+        qrcode() {
+            var http = '/user/ewm'
+            var params = new URLSearchParams();
+            params.append('token', this.$store.getters.optuser.Authorization);
+            params.append('url',this.url)  
+            this.$axios({
+                method:"post",
+                url:http,
+                data:params
+            }).then((res)=>{
+                console.log(res)
+                if(res.data.status === 200){
+                    this.ewmList = res.data.data
+                    console.log(this.ewmList)
+                } else {
+                    Dialog.alert({
+                        message:res.data.msg
+                    })
+                }
+            })
+        },
     },
     mounted () {
-        this.qrcode(); //调用二维码生成的方法
+        this.qrcode(); 
         this.sharing();
     },
 	components: {
@@ -138,6 +177,11 @@
                     .mark_img
                         margin 0 auto
                         padding 0 0 0 10px
+                        #qrcode
+                            canvas
+                                display block
+                                img 
+                                    display none
                             
             .touch
                 font-size 30px

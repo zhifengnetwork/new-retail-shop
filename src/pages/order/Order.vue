@@ -102,13 +102,13 @@
                     </div>
                 </div>
 
-                <div v-else class="fifty_wrap">
+                <div v-else class="fifty_wrap"  v-for="(item,index) in allOrders" :key="index">
                     <div class="time">
-                        <span class="date">2019-07-11 14:31:26</span>
+                        <span class="date">{{item.add_time | formatDate}}</span>
                     </div>
                     <div class="nick_wrap">
                         <div class="img_wrap">
-                            <img src="/static/images/home/banner01.png"/>
+                            <img :src="item.img"/>
                         </div>
                         <div class="nickname">
                             <p>昵称</p>
