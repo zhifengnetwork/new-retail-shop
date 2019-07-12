@@ -178,7 +178,6 @@
                     if(res.data.status === 200){
                         that.userList = item;
                     }else if(res.data.status === 999){
-                        this.$toast(res.data.msg)
                         this.$store.commit('del_token'); //清除token;
                         setTimeout(()=>{
                             this.$router.push('/Login')

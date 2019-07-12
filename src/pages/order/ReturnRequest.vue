@@ -118,12 +118,8 @@ export default {
                 }).then((res) => {
                     if(res.data.status === 200){
                         this.$toast(res.data.msg)
-                        setTimeout( () => {
-                            this.$router.push('/Order?type=0')
-                        },3000)
                     }
                     else if(res.data.status == 999){
-                        this.$toast(res.data.msg)
                         this.$store.commit('del_token'); //清除token
                         setTimeout(()=>{
                             this.$router.push('/Login')
@@ -132,6 +128,9 @@ export default {
                     else{
                         this.$toast(res.data.msg)
                     }  
+                    setTimeout( () => {
+                        this.$router.push('/Order?type=0')
+                    },2000)
                 }) 
             }).catch(() => {
                 // on cancel

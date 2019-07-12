@@ -50,7 +50,7 @@
 							<div class="fee_wrap">
 								<div class="fee">
 									<span>手续费 ：</span>
-									<span>{{rate}}</span>
+									<span>{{fee}}</span>
 								</div>
 								<div class="unit">元</div>
 							</div>
@@ -95,6 +95,7 @@
                 alipayInfo:[],
                 remainderMoney:this.$route.query.remainder_money,
                 rate:this.$route.query.rate,
+                fee:0,
                 //默认选中第一个
                 cur: 0
 			}
@@ -106,6 +107,7 @@
         computed:{
             computeMoney() {
                 var fee = this.money * this.rate
+                this.fee =fee.toFixed(2)
                 var tMoney= new Number(this.money - fee)
                 return tMoney.toFixed(2)
             }

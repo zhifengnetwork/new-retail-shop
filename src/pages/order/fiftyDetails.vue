@@ -6,40 +6,17 @@
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</Fifty-Header>
         <div class="content">
-            <div class="main_wrap">
-                <!-- <div class="main" v-for="(item,index) in releaseList" :key="index">
-                    <div class="time">
-                        <span>{{item.ymdTime}}</span>
-                        <span>{{item.hisTime}}</span>
-                    </div>
+            <div class="main_wrap" v-for="(item,key) in fiftyList" :key="key">
+                <div class="main">
                     <div class="img_wrap">
                         <img :src="item.img"/>
                     </div>
-                    <div class="num">剩余商品数量{{item.stock}}</div>
-                </div> -->
-
-                <div class="main">
-                    <div class="img_wrap">
-                        <img src="/static/images/home/banner01.png"/>
-                    </div>
                     <div class="nickname">
-                        <p>昵称</p>
-                        <p>ID:5955665</p>
+                        <p>{{item.shop_name}}</p>
+                        <p>ID:{{item.shop_user_id}}</p>
                     </div>
-                    <div class="num">商家1</div>
+                    <div class="num">{{item.shop_name}}</div>
                 </div>
-
-                <div class="main">
-                    <div class="img_wrap">
-                        <img src="/static/images/home/banner01.png"/>
-                    </div>
-                    <div class="nickname">
-                        <p>昵称</p>
-                        <p>ID:5955666</p>
-                    </div>
-                    <div class="num">商家2</div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -51,33 +28,40 @@
 	name: "fiftyDetails",
 	data() {
 		return {
-            // releaseList:'',
+            fiftyList:'',
+            // addTime:this.$route.query.add_time
         };
     },
     mounted(){
         // this.shop_list()
+        // this.$store.commit('showLoading')
+        this.requestData()
     },
     methods: {
-        // 接口
-        // shop_list() {
-        //     var url = '/user/shop_list'
-        //     var params = new URLSearchParams();
-        //     params.append('token', this.$store.getters.optuser.Authorization);  
-        //     this.$axios({
-        //         method:"post",
-        //         url:url,
-        //         data:params
-        //     }).then((res)=>{
-        //         if(res.data.status === 200){
-        //             this.releaseList = res.data.data
-        //             // console.log(this.siteList)
-        //         } else {
-        //             Dialog.alert({
-        //                 message:res.data.msg
-        //             })
-        //         }
-        //     })
-        // }
+        // 页面数据渲染
+        requestData(){
+            var url = 'Order/fifty_detail';
+            this.$axios.post(url,{
+                token:this.$store.getters.optuser.Authorization,
+                add_time:this.$route.query.add_time
+            })
+            .then( (res)=>{
+                if(res.data.status == 200){
+                    this.fiftyList =res.data.data
+                    this.$store.commit('hideLoading')                      
+                }else if(res.data.status == 999){
+                    this.$store.commit('del_token'); //清除token
+                    setTimeout(()=>{
+                        this.$router.push('/Login')
+                    },1000)
+                }else{
+                    this.$toast(res.data.msg)
+                }
+            })
+            .catch((error) => {
+                alert('请求错误:'+ error)
+            })
+        }
     },
 	components: {
         FiftyHeader,
@@ -114,7 +98,7 @@
                         left 20px
                         background rgba(0,0,0,0.5)
                         font-size 26px 
-                        color #151515
+                        color #ffffff
                         border-radius 10px
                         p 
                             text-align center
