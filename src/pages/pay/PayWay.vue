@@ -11,8 +11,6 @@
             <div class="title">支付方式</div>
         </div>
 
-
-
         <div class="height-88"></div>
         <div class="content">
             <div class="pay-way">
@@ -28,20 +26,29 @@
        <div class="payment-btn" @click="payment(order_id,pay_id)">立即付款</div>
 
         <!-- 密码输入框 -->
-        <van-popup v-model="showPwd" class="popup"  @click-overlay="hidePwd()">
+        <!-- <van-popup v-model="showPwd" class="popup"  @click-overlay="hidePwd()">
         <van-password-input
         :value="payPassword"
         info="密码为 6 位数字"
         @focus="showKeyboard = true"
         />
-        </van-popup>
+        </van-popup> -->
         <!-- 数字键盘 -->
-        <van-number-keyboard
-        :show="showKeyboard"
-        @input="onInput"
-        @delete="onDelete"
-        @blur="showKeyboard = false"
-        />
+        <div v-show="paswPopup" class="pasw-popup">
+            <div class="-popup-cont">
+                <van-password-input
+                :value="payPassword"
+                @focus="showKeyboard = true"
+                />
+                <div class="fg-password"><router-link to="/user/SetPassword">忘记密码</router-link></div>
+                <van-number-keyboard
+                :show="showKeyboard"
+                @input="onInput"
+                @delete="onDelete"
+                @blur="showKeyboard = true"
+                />
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -56,7 +63,8 @@ export default {
             pay_type:[],//所有支付方式
             payPassword:'',//支付密码
             showPwd:false,
-            showKeyboard: false
+            showKeyboard: true,
+            paswPopup:false
         }
     },
     created(){
@@ -106,6 +114,7 @@ export default {
             if(pay_id == 1){
                 this.showPwd = true;
                 this.showKeyboard = true;
+                this.paswPopup =true
             }
             else if(pay_id == 2){
                this.$toast("调用微信支付接口");
@@ -156,10 +165,13 @@ export default {
                         this.$toast.fail(res.data.msg);
                     }
                 })
+
+
                  // 关闭密码输入
-                this.showKeyboard = false;
-                this.showPwd = false;
-                this.payPassword = '';
+                this.showKeyboard = false
+                this.showPwd = false
+                this.paswPopup =false
+                this.payPassword = ''
             }
         },
         /**
@@ -231,17 +243,48 @@ export default {
         bottom 50px
         margin-left -35%
         z-index 9
-    .popup
+    .pasw-popup
+        position fixed
         width 100%
-        .van-password-input__security li:first-child
-            border-left 1px solid #999
-        .van-password-input__security li
-            border 1px solid #999
-            border-left 0
-        .van-password-input
-            padding 30px 0 20px
-    .van-number-keyboard
-        z-index 3000!important
+        height 100%
+        bottom 0
+        left 0
+        z-index 9999
+        background rgba(0,0,0,0.5)
+        .-popup-cont
+            position absolute
+            bottom 0
+            z-index 1
+            left 0
+            width 100%
+            background #fff
+            padding-top 40px
+            .fg-password
+                text-align right
+                margin: 30px
+                a
+                    color: #1a89fa
+            .van-password-input__security 
+                height: 100px
+            .van-password-input__security li
+                border 1px solid #bdbdbd
+                border-left 0
+            .van-password-input__security li:first-child
+                    border-left 1px solid #bdbdbd
+            .van-password-input__security li:first-child
+                // border-left 1px solid #999
+            .van-number-keyboard
+                position relative
+    // .popup
+    //     width 100%
+        
+    //     .van-password-input__security li
+    //         border 1px solid #999
+    //         border-left 0
+    //     .van-password-input
+    //         padding 30px 0 20px
+    // .van-number-keyboard
+    //     z-index 3000!important
 </style>
 
 
