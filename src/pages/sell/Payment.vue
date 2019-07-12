@@ -7,15 +7,18 @@
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
-        <div class="shiftShop">
-            <!-- <div  class="shopMid iconfont icon-fanhui" v-on:click="shiftOrder(-1)"></div > -->
-            <div class="shopMid">{{currentOrder.fz_order_id}}</div>
-            <!-- <div  class="shopMid goright iconfont icon-fanhui" v-on:click="shiftOrder(1)"></div > -->
-        </div>
-            <img class="-imgs" :src="currentOrder.img" />
-            <div class="inner" v-for="(item,key) in list" :key="key" v-show="key==ewmId" >
-                
-                <img class="-img2" :src="item.pic" />
+            <div class="shiftShop">
+                <!-- <div  class="shopMid iconfont icon-fanhui" v-on:click="shiftOrder(-1)"></div > -->
+                <div class="shopMid">{{currentOrder.fz_order_id}}</div>
+                <!-- <div  class="shopMid goright iconfont icon-fanhui" v-on:click="shiftOrder(1)"></div > -->
+            </div>
+            <div class="img">
+                <img class="-imgs" :src="currentOrder.img" />
+            </div>
+            <div class="inner" v-for="(item,key) in list" :key="key" v-show="key==ewmId" >   
+                <div class="-img2">
+                    <img :src="item.pic" />
+                </div>
                 <div class="-payment-">
                     <span class="-payment-1" v-show="key==ewmId">{{item.msg}}</span>
                     <span class="-payment-2"  @click="changPayment()">切换</span>
@@ -26,9 +29,8 @@
                         <li>微信</li>
                     </ul>
                 </van-popup> -->
-               
-               <p class="-userinfo"><strong>联系方式: {{currentOrder.mobile}}</strong></p>
             </div>
+            <p class="-userinfo"><strong>联系方式: {{currentOrder.mobile}}</strong></p>
         </div>
         <p class="height122"></p>
         <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" >
@@ -122,35 +124,51 @@ export default {
 </script>
 <style lang="stylus">
     .payment
+        width 100%
+        height 100%
         .content
-            padding:24px 24px 30px
-            .-imgs
-                margin-bottom 100px
-                width 100%
+            padding 24px 24px 30px
+            .img
+                width 701px
                 height 280px
+                border-radius 10px
+                img 
+                    border-radius 10px                   
             .inner
-                padding:0 180px
+                margin 30px 60px
+                padding 90px 0 0
+                background #fff
+                border-radius 10px
                 .-img2 
-                    width:332px
-                    height 331px
+                    margin 0 auto
+                    width 280px
+                    height 280px
                 .-payment-
-                    display :flex
-                    justify-content space-between
-                    margin :100px 0 95px
+                    margin 60px 0 0
+                    width 100%
+                    text-align right
+                    font-size 0
+                    line-height 75px
                     .-payment-1
-                        font-weight:30px
-                        color:#151515 
+                        display inline-block
+                        width 35%
+                        color #151515 
+                        font-size 30px
                     .-payment-2
-                        color:#ff6521
-                        font-size:28px
-                        padding:2px 6px
-                    .-userinfo
-                        font-size :28px
-                        letter-spacing: 1px
-                        .box-list
-                            width: 100%
-                            height: 500px
-                            padding: 10px
+                        display inline-block
+                        margin 0 160px 0 50px
+                        width 10%
+                        color #ff6521
+                        font-size 28px
+                        box-sizing border-box
+            .-userinfo
+                font-size 28px
+                text-align center
+                line-height 55px
+                .box-list
+                    width: 100%
+                    height: 500px
+                    padding: 10px
         .height122
             width 100%
             height 122px
@@ -166,19 +184,24 @@ export default {
             bottom 24px
             left 24px
        .shiftShop
-            height:100px;
-            width:50%;
-            margin:0 auto;
-            display:flex;
+            -height 100px
+            width 50%
+            margin 0 auto
+            display flex
             .shopMid
-                text-align:center;
-                line-height:100px;
-                flex:1;
-                height:100px;
-                widht:20px;
-                font-size:16px;
+                text-align center
+                line-height 55px
+                flex 1
+                -height 100px
+                widht 20px
+                font-size 28px
             .goright
-               transform:rotate(180deg);
+               transform rotate(180deg)
+img 
+    display block
+    margin 0 auto
+    width 100%
+    height 100%               
               
 </style>
 
