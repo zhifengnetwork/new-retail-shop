@@ -74,12 +74,13 @@
                             </div>
                             <!-- 待收货 -->
                             <div v-if="item.status == 3">
-                                <span class="btn">查看物流</span>
+                                <span class="btn"><router-link class="color-8" :to="'/order/LogisticsDetail?order_id='+item.order_id">查看物流</router-link></span>
                                 <span class="btn red" @click="confirmReceipt(index,item.order_id,item.status)">确定收货</span>
                             </div>
                             <!-- 交易成功 -->
                             <div v-if="item.status == 4">
-                                <span class="btn">查看物流</span>
+                                <!-- <span class="btn">查看物流</span> -->
+                                <span class="btn"><router-link class="color-8" :to="'/order/LogisticsDetail?order_id='+item.order_id">查看物流</router-link></span>
                                 <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id+'&sku_id='+item.goods[0].sku_id+'&goods_id='+item.goods[0].goods_id">去评价</router-link></span>
                                 <!-- <span class="btn red" v-else><router-link :to="'/Order/Evaluate?order_id='+item.order_id">订单已完成</router-link></span> -->
                                 <span class="btn red" v-else @click="delOrder(index,item.order_id,item.status)">删除订单</span>

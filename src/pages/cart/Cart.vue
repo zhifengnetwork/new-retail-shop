@@ -73,7 +73,8 @@ export default {
             nodatas:{
                 'imgSrc':'/static/images/cart/cart_icon.png',
                 'text':'购物车空空如也~',
-                'link':'/Hone'
+                'link':'/Hone',
+                'showBtn':true
             },
             list:[],
             isShow:false,
