@@ -999,6 +999,7 @@ export default {
                             text-align center
                             line-height 35px
                 .viewBtn
+                    margin 10px 0 15px 505px
                     width 130px
                     height 40px
                     line-height 40px

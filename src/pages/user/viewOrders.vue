@@ -17,15 +17,10 @@
                 </div>
 
                 <div class="list_wrap">
-                    <ul class="bound">
-                        <li>2019-09-06</li>
-                        <li>915588229900</li>
-                        <li>￥229900.00</li>
-                    </ul>
-                    <ul class="not_bound">
-                        <li>2019-09-06</li>
-                        <li>915588229900</li>
-                        <li>￥229900.00</li>
+                    <ul class="bound" v-for="(item,index) in viewList" :key="index">
+                        <li>{{item.pay_time | formatDate}}</li>
+                        <li>{{item.order_sn}}</li>
+                        <li>{{item.order_amount}}</li>
                     </ul>
                 </div>
 
@@ -40,14 +35,56 @@
 		name: 'viewOrders',
 		data(){
             return{
-                
+                viewList:[],
             }
 			
 		},
         components:{
             ViewHeader,
         },
-        
+        mounted() {
+            this.viewData();
+        },
+        methods: {
+            viewData(){
+                var _that =this;
+                _that.$axios.post('user/user_order',{
+                    token:this.$store.getters.optuser.Authorization            
+                })
+                .then((res)=>{
+                    var list = res.data;
+                    if(list.status == 200){
+                        _that.viewList =list.data
+                    }else{
+                        _that.$toast(list.msg)
+                    }
+                })
+            }
+        },
+        filters: {
+            // 日期格式化
+            formatDate: function (time) {
+                let date = new Date(time*1000);
+                let y = date.getFullYear();
+
+                let MM = date.getMonth() + 1;
+                MM = MM < 10 ? ('0' + MM) : MM;
+
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+
+                let h = date.getHours();
+                h = h < 10 ? ('0' + h) : h;
+
+                let m = date.getMinutes();
+                m = m < 10 ? ('0' + m) : m;
+
+                let s = date.getSeconds();
+                s = s < 10 ? ('0' + s) : s;
+
+                return y + '-' + MM + '-' + d ;
+            }
+        }
     }
 </script>
 
@@ -73,7 +110,7 @@
                     line-height 50px 
                 .list_wrap .bound
                     background #f3f9ff
-                .list_wrap .not_bound
+                .list_wrap ul:nth-child(even)
                     background #ecf4fc                         
 
 </style>
