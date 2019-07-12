@@ -32,7 +32,7 @@
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 运费</span>
-                        <div class="-text"> {{this.goodsData.shipping_price}}</div>
+                        <div class="-text"> {{this.goodsData.shipping_price!='0.00'?this.goodsData.shipping_price:'免运费'}}</div>
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 规格</span>
@@ -393,6 +393,7 @@ export default {
                 data: params
             }).then((res)=>{
                 if(res.data.status ===200){
+                     this.$store.commit('hideLoading')   
                     that.goodsData =res.data.data; 
                     that.goods = res.data.data;    //商品详情
                     that.good =  res.data.data.spec.spec_attr; //商品规格

@@ -54,10 +54,10 @@ export default {
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
-                    _that.$toast('上传成功...')
-                    // setTimeout(() => {
-                    //     _that.$router.push('/Payment')
-                    // },2000)
+                    // _that.$toast('上传成功...')
+                    setTimeout(() => {
+                        _that.$router.go(-1)
+                    },2000)
                 }else{
                     _that.$toast(list.msg)
                 }

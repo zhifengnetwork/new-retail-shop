@@ -92,10 +92,10 @@ export default {
                 url:url,
                 data:params
             }).then((res)=>{
+                this.$store.commit('hideLoading')
                 if(res.data.status === 200){
                     this.siteList = res.data.data
                     console.log(this.siteList)
-                    this.$store.commit('hideLoading')
                 }else if(res.data.status===999){
                     this.$store.commit('del_token'); //清除token
                     setTimeout(()=>{
@@ -156,14 +156,14 @@ export default {
             display flex
             padding 28px 120px 28px 28px
             box-sizing border-box
+            box-shadow 1px 1px 8px #ccc
+            margin-bottom 20px
             .address-item
                 width 100%
                 // height 205px
                 font-size 30px
-                box-shadow 1px 1px 8px #ccc
-                
                 box-sizing border-box
-                margin-bottom 10px
+                
                 position relative
                 .item-name
                     display flex

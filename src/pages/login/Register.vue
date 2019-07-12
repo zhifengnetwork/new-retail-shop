@@ -17,7 +17,7 @@
             </div>
             <div class="form-group">
                 <i class="icon password-icon"></i>
-                <input type="password" placeholder="再次输入密码" v-model="password2">
+                <input type="password" placeholder="确认密码" v-model="password2">
             </div>
 
             <div class="btn" :class="{'hiLine':phone!='','hiLine':verifyCode!='','hiLine':password!='' ,'hiLine':password2!=''}" @click="registerClick()">注册</div>
@@ -139,6 +139,9 @@ export default {
                 return false
             }else if(!/^[a-z0-9_-]{6,18}$/.test(this.password)){
                 this.$toast('密码长度为6-18位')
+                return false
+            }else if(this.password2==""){
+                this.$toast('确认密码不能为空')
                 return false
             }else if(this.password != this.password2){
                 this.$toast('两次密码不一致')

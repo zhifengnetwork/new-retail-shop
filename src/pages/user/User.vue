@@ -174,9 +174,9 @@
                 .then((res)=>{            
                     var that = this
                     var item = res.data.data;
+                    this.$store.commit('hideLoading')
                     if(res.data.status === 200){
                         that.userList = item;
-                        this.$store.commit('hideLoading')
                     }else if(res.data.status === 999){
                         this.$toast(res.data.msg)
                         this.$store.commit('del_token'); //清除token;

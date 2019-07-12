@@ -35,14 +35,16 @@
                         </div>
                         <router-link :to="'/Order/OrderDetails?order_id=' + item.order_id">
                             <div class="goods-item">
-                                <div class="img-wrap">
-                                    <img :src="item.img" />
-                                </div>
-                                <div class="text">
-                                    <h3>{{item.goods_name}}</h3>
-                                    <div class="good-sku">
-                                        <span class="sku-coll">{{item.spec_key_name}}</span>
-                                        <span class="price">{{item.goods_price | formatMoney}}</span>
+                                <div class="-item-list" v-for="(item,key) in item.goods" :key="key">
+                                    <div class="img-wrap">
+                                        <img :src="item.img" />
+                                    </div>
+                                    <div class="text">
+                                        <h3>{{item.goods_name}}</h3>
+                                        <div class="good-sku">
+                                            <span class="sku-coll">{{item.spec_key_name}}</span>
+                                            <span class="price">{{item.goods_price | formatMoney}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +55,8 @@
                             <div class="total-count">共{{item.goods_num}}件商品 </div>
                             <div class="payment">
                                 <span class="label">合计 : </span>
-                                <span class="price">{{item.goods_price * item.goods_num | formatMoney}}</span>
+                                <span class="price">{{item.order_amount | formatMoney}}</span>
+                                <span class="-price" v-if="item.shipping_price > 0">(含运费{{item.shipping_price}})</span>
                             </div>
                         </div>
                         <div class="order-btn">
@@ -543,7 +546,9 @@ export default {
             this.$router.replace('/Order?type='+index);
             this.type = this.$route.query.type;
             this.requestData();
-            
+            if(index == 5){
+                
+            }
         },
         // 页面数据渲染
         requestData(){
@@ -888,7 +893,11 @@ export default {
                 .goods-item
                     display flex
                     padding 17px 38px 10px
+                    flex-wrap: wrap;
                     box-sizing border-box
+                    .-item-list
+                        width: 100%;
+                        display: flex;
                     .img-wrap
                         width 160px
                         height 160px
@@ -945,6 +954,9 @@ export default {
                         .price
                             color #151515
                             font-size 30px
+                        .-price
+                            color #888
+                            font-size 20px
                 .order-btn
                     display flex
                     justify-content flex-end
