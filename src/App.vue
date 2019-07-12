@@ -24,7 +24,7 @@ export default {
 
 <style lang="stylus">
 body
-	background-color #f7f7f7
+	background-color #f2f2f2
 	color #151515
 	.height-88
 		width 100%

@@ -1005,7 +1005,7 @@ export default {
                         left 0
                         background rgba(0,0,0,0.5)
                         font-size 26px 
-                        color #151515
+                        color #fff
                         border-radius 10px
                         p 
                             text-align center
