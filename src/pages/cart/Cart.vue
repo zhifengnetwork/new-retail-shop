@@ -122,7 +122,6 @@ export default {
                      _that.$set( data,'goods_num',val)
                 }
                 else if(res.data.status == 999){
-                    this.$toast(res.data.msg)
                     this.$store.commit('del_token'); //清除token
                     setTimeout(()=>{
                         this.$router.push('/Login')
@@ -146,7 +145,6 @@ export default {
                    
                 }
                 else if(res.data.status == 999){
-                    this.$toast(res.data.msg)
                     this.$store.commit('del_token'); //清除token
                     setTimeout(()=>{
                         this.$router.push('/Login')
@@ -176,7 +174,6 @@ export default {
                     this.$store.commit('hideLoading')
                 }
                 else if(res.data.status == 999){
-                    // this.$toast(res.data.msg)
                     this.$store.commit('hideLoading')
                     this.$store.commit('del_token'); //清除token
                     setTimeout(()=>{

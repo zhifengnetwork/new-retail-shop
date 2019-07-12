@@ -97,7 +97,7 @@
                                         <p class="-e-c">{{list.spec}}</p>
                                     </div>
                                     <div class="imgView">
-                                        <span v-for="(imgs,key) in list.img" :key="key"><img :src="imgs"></span>
+                                        <span v-for="(imgs,key) in list.img" :key="key"><a :href="imgs"><img :src="imgs"></a></span>
                                         <!-- <span><img src="static/images/details/evaluation-img01.png"></span> -->
                                     </div>
                                 </li>
