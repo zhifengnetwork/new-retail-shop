@@ -331,10 +331,11 @@ export default {
 				&:nth-child(2n)
 					margin-right 0
 				.img-wrap
-					width 320px
 					height 320px
 					overflow hidden
 					img 
+						display block
+						margin 0 auto
 						max-width 100%
 						max-height 100%
 				.main
@@ -410,10 +411,11 @@ export default {
 				&:nth-child(2n)
 					margin-right 0
 				.img-wrap
-					width 320px
 					height 320px
 					overflow hidden
 					img 
+						display block
+						margin 0 auto
 						max-width 100%
 						max-height 100%
 				.main
@@ -457,6 +459,8 @@ export default {
 						overflow hidden
 						margin-right 28px
 						img 
+							display block
+							margin 0 auto
 							max-width 100%
 							max-height 100%
 					.main	
