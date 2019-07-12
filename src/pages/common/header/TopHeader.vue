@@ -60,7 +60,6 @@ export default {
     top 0
     left 0
     z-index 9
-    border-top 1px solid #ccc
     .backBtn
         width 10%
         text-align center

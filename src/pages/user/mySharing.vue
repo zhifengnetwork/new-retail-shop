@@ -21,7 +21,7 @@
                         <div class="mark_img">
                             <img :src="ewmList.url"/>
                             <!-- 必须是id 和实例化的第一参数对应 -->
-                            <div id="qrcode"></div>
+                            <!-- <div id="qrcode"></div> -->
                         </div>
                     </div>
                 </div>
@@ -40,8 +40,7 @@
 		return {
             //link: 'http://new_retail_web.zhifengwangluo.com/Register+url',// 要跳转的路径或者显示的文字
             siteList:[],
-            ewmList:[],
-            url:'http://new_retail_web.zhifengwangluo.com/Register'
+            ewmList:[]
         };
     },
     methods: {
@@ -90,7 +89,7 @@
                 }
             })
         },
-         // 接口
+         // 二维码接口
         qrcode() {
             var http = '/user/ewm'
             var params = new URLSearchParams();
@@ -170,18 +169,10 @@
                 box-sizing border-box
                 .mark
                     margin 0 auto
-                    padding 35px
+                    padding 10px
                     background url(/static/images/user/ber.png) no-repeat
                     background-size 100% 100%
                     box-sizing border-box
-                    .mark_img
-                        margin 0 auto
-                        padding 0 0 0 10px
-                        #qrcode
-                            canvas
-                                display block
-                                img 
-                                    display none
                             
             .touch
                 font-size 30px
@@ -193,5 +184,5 @@ img
     display block
     margin 0 auto
     max-width 100%
-    height 100%                        
+    height auto                        
 </style>

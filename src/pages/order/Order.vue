@@ -114,8 +114,8 @@
                             <img :src="item.img"/>
                         </div>
                         <div class="nickname">
-                            <p>{{item.goods_name}}</p>
-                            <!-- <p>ID:5955666</p> -->
+                            <p>{{item.shop_name}}</p>
+                            <p>{{item.shop_user_id}}</p>
                         </div>
                     </div>
                     <div class="num-bar">
@@ -124,7 +124,7 @@
                             <div class="total-count">共{{item.shop_num}}个商家</div>
                             <div class="payment">
                                 <span class="label">合计 : </span>
-                                <span class="price">{{item.goods_price}}</span>
+                                <span class="price" style="color:#151515;font-size:.4rem;">¥{{item.goods_price}}</span>
                             </div>
                         </div>
                     </div>
@@ -656,7 +656,7 @@ export default {
                         border-radius 10px
                         p 
                             text-align center
-                            line-height 35px
+                            line-height 35px        
                 .viewBtn
                     margin 10px 0 15px 505px
                     width 130px
@@ -668,6 +668,8 @@ export default {
                     font-size 26px
                     border-radius 15px
                     border 2px solid #888888
+                    a
+                        color #888
 
                 .num-bar
                     color #6f6f6f
