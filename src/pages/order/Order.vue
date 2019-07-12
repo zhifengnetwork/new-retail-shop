@@ -105,7 +105,7 @@
                     </div>
                 </div>
 
-                <div v-else class="fifty_wrap" v-for="(item,index) in allOrders" :key="index">
+                <div v-else class="fifty_wrap"  v-for="(item,index) in allOrders" :key="index">
                     <div class="time">
                         <span class="date">{{item.add_time | formatDate}}</span>
                     </div>
@@ -924,6 +924,7 @@ export default {
                             text-align center
                             line-height 35px
                 .viewBtn
+                    margin 10px 0 15px 505px
                     width 130px
                     height 40px
                     line-height 40px
