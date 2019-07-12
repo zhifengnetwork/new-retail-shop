@@ -35,7 +35,6 @@
         @focus="showKeyboard = true"
         />
         </van-popup>
-
         <!-- 数字键盘 -->
         <van-number-keyboard
         :show="showKeyboard"
@@ -43,16 +42,12 @@
         @delete="onDelete"
         @blur="showKeyboard = false"
         />
-
     </div>
 </template>
 <script>
 // import TopHeader from "@/pages/common/header/TopHeader"
 export default {
     name:'PayWay',
-    //  components:{
-    //     // TopHeader
-    // },
     data() {
         return {
             payDefault:'微信支付',

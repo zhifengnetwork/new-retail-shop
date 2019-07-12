@@ -1,7 +1,7 @@
 <template>
     <div class="addAddress">
         <TopHeader custom-title="收货地址" custom-fixed>
-			<i @click="go()" slot="backBtn" class="iconfont icon-fanhui"></i>
+			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</TopHeader>
 
         <div class="content">
@@ -193,9 +193,6 @@ export default {
                 alert("请求错误:" + error)
             })
         },
-        go() {
-            this.$router.push(this.backUrl)
-        }
     }
 
 }

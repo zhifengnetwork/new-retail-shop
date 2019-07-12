@@ -160,6 +160,8 @@ export default {
             background-color #ff4d4d
             border-radius 44px
             color #fff
+            font-size 30px
+            letter-spacing 5px
             position fixed
             bottom 24px
             left 24px

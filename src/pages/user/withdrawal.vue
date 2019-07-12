@@ -42,7 +42,8 @@
 							<div class="put">
                                 <span class="dollars">￥</span>
 								<div class="inp">
-									<input type="number" placeholder="请输入提现金额" v-model="money"/>
+									<!-- <input type="number" placeholder="请输入提现金额" v-model="money" @keyup="vertyMoney()" /> -->
+                                    <input type="number" oninput="if(value.length > 12)value = value.slice(0, 12)" placeholder="请输入提现金额" ref="money" v-model.number="money">
 								</div>
 								<div class="all_btn">全部提现</div>
 							</div>
@@ -115,6 +116,11 @@
         mounted() {
         },
         methods:{
+            vertyNumber(){
+                if(this.vertyNumber){
+
+                }
+            },
             saveWithdrawal(){
                 var url ='user/withdrawal'
 				this.$axios.post(url,{         // 传给后台的参数

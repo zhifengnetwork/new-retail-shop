@@ -73,7 +73,8 @@ export default {
             nodatas:{
                 'imgSrc':'/static/images/cart/cart_icon.png',
                 'text':'购物车空空如也~',
-                'link':'/Hone'
+                'link':'/Hone',
+                'showBtn':true
             },
             list:[],
             isShow:false,
@@ -341,9 +342,9 @@ export default {
             font-size 35px
         .size-30
             font-size 30px
-        .van-checkbox__icon--checked .van-icon
+        .checkbox .van-checkbox__icon .van-icon
             background-color #f30c0c
-            border-color #fff
+            border-color #f30c0c
         .no-info
             text-align center
             .-info-img

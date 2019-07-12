@@ -9,7 +9,7 @@
         <div class="height-88"></div>
        
         <!-- NO INFO START -->
-        <div v-show="collectList.length<1">
+        <div v-show="isShow">
             <Nodata :nodatas="nodatas"></Nodata>
         </div>
         <!-- GOODS INFO START -->
@@ -50,9 +50,11 @@ export default {
             nodatas:{
                 'imgSrc':'/static/images/public/none.png',
                 'text':'收藏夹空空如也~',
-                'link':'/Hone'
+                'link':'/Hone',
+                'showBtn':true
             },
             collectList:[],
+            isShow:false,
             allChecked: false,
             showTrash: false,
             token:this.$store.getters.optuser.Authorization
@@ -82,6 +84,12 @@ export default {
                 var list =res.data
                 if(list.status === 200){
                     _that.collectList =list.data
+                    if(list.data==""){
+                        _that.isShow=true
+                    }
+                    // if(lis.data.length<1){         //显示没有数据提示
+                    //     _that.isShow=true
+                    // }
                 }
             })
             .catch((error) => {
@@ -127,7 +135,6 @@ export default {
             title: '信息提醒',
             message: '亲，再考虑考虑吧?'
             }).then(() => {
-                console.log(_that.collectList)
                 let newArry=[],goods_Ids ='';
                 _that.collectList.forEach((data,index)=>{
                     if(!data.isCheck){
@@ -148,6 +155,9 @@ export default {
                     var list = res.data;
                     if(list.status == 200){
                         _that.collectList =newArry;
+                        if(newArry.length<1){
+                            _that.isShow=true
+                        }
                         if(_that.collectList.length<1){
                             _that.showTrash=false
                         }

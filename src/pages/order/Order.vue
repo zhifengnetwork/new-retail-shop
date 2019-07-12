@@ -74,12 +74,13 @@
                             </div>
                             <!-- 待收货 -->
                             <div v-if="item.status == 3">
-                                <span class="btn">查看物流</span>
+                                <span class="btn"><router-link class="color-8" :to="'/order/LogisticsDetail?order_id='+item.order_id">查看物流</router-link></span>
                                 <span class="btn red" @click="confirmReceipt(index,item.order_id,item.status)">确定收货</span>
                             </div>
                             <!-- 交易成功 -->
                             <div v-if="item.status == 4">
-                                <span class="btn">查看物流</span>
+                                <!-- <span class="btn">查看物流</span> -->
+                                <span class="btn"><router-link class="color-8" :to="'/order/LogisticsDetail?order_id='+item.order_id">查看物流</router-link></span>
                                 <span class="btn red" v-if="item.comment == 0"><router-link :to="'/Order/Evaluate?order_id='+item.order_id+'&sku_id='+item.goods[0].sku_id+'&goods_id='+item.goods[0].goods_id">去评价</router-link></span>
                                 <!-- <span class="btn red" v-else><router-link :to="'/Order/Evaluate?order_id='+item.order_id">订单已完成</router-link></span> -->
                                 <span class="btn red" v-else @click="delOrder(index,item.order_id,item.status)">删除订单</span>
@@ -114,8 +115,8 @@
                             <img :src="item.img"/>
                         </div>
                         <div class="nickname">
-                            <p>{{item.goods_name}}</p>
-                            <!-- <p>ID:5955666</p> -->
+                            <p>{{item.shop_name}}</p>
+                            <p>{{item.shop_user_id}}</p>
                         </div>
                     </div>
                     <div class="num-bar">
@@ -124,7 +125,7 @@
                             <div class="total-count">共{{item.shop_num}}个商家</div>
                             <div class="payment">
                                 <span class="label">合计 : </span>
-                                <span class="price">{{item.goods_price}}</span>
+                                <span class="price" style="color:#151515;font-size:.4rem;">¥{{item.goods_price}}</span>
                             </div>
                         </div>
                     </div>
@@ -656,7 +657,7 @@ export default {
                         border-radius 10px
                         p 
                             text-align center
-                            line-height 35px
+                            line-height 35px        
                 .viewBtn
                     margin 10px 0 15px 505px
                     width 130px
@@ -668,6 +669,8 @@ export default {
                     font-size 26px
                     border-radius 15px
                     border 2px solid #888888
+                    a
+                        color #888
 
                 .num-bar
                     color #6f6f6f

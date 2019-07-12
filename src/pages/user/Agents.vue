@@ -4,7 +4,6 @@
 		<TopHeader custom-title="申请代理" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</TopHeader>
-        <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
             <div class="-code-list">
@@ -25,8 +24,8 @@
                 upload-text="上传凭证"
                 :max-count="1"
                 />
+            <input class="submit" type="button" value="提交申请" @click="setAgents()" />    
         </div>
-        <input class="submit" type="button" value="提交" @click="setAgents()" />
     </div>
 </template>
 <script>
@@ -117,23 +116,18 @@ export default {
 </script>
 <style lang="stylus">
     .agents-wrap
+        width 100%
+        height 100%
         .content
-            padding 24px 24px 30px
-            height 100vh
+            padding 88px 24px 30px
             background #fff
             border-radius 10px
             border solid 2px #e5e5e5
             text-align center
             margin-bottom 20px
-            align-items center
-            display flex
-            justify-content center
-            position relative
             overflow hidden
             .-code-list
-                position absolute
-                top 24px
-                left 24px
+                padding 25px 0 0
                 text-align: left
                 font-size 26px
                 .attention
@@ -155,8 +149,13 @@ export default {
                     font-size: 26px
                     margin-bottom 12px
                 .van-cell
-                    text-align left 
+                    text-align left
+            .van-uploader
+                margin 70px auto 
+                width 370px
+                height 370px        
             .van-uploader__upload
+                margin 70px auto
                 width 370px
                 height 370px
             .van-uploader__preview-image 
@@ -172,7 +171,10 @@ export default {
                 font-weight bold
             .van-uploader__upload-text
                 font-size 30px
+            .van-uploader__preview
+                margin 0    
         .submit
+            margin 90px auto 0
             width 702px
             height 88px
             background-color #ff4d4d
@@ -180,9 +182,6 @@ export default {
             font-size 30px
             color #fff
             letter-spacing 5px
-            position fixed
-            bottom 24px
-            left 24px
     
 
 </style>
