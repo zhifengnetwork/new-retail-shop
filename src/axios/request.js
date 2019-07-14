@@ -11,7 +11,7 @@ axios.interceptors.request.use(
 		//请求之前重新拼装url
 		config.url = root + config.url;
 		config.withCredentials = true // 允许携带token ,这个是解决跨域产生的相关问题
-		config.timeout = 1000 // 超时时间
+		config.timeout = 5000 // 超时时间
 		// var token = window.sessionStorage.getItem("token");
 		// if(token) {
 		// 	config.headers = {
@@ -61,7 +61,7 @@ axios.interceptors.response.use(
 			console.log(error.message)
 		}
 		// console.log(Promise.reject(error.response.data))
-		return Promise.reject(error.response.data)
+		return Promise.reject(error.response&&error.response.data)
 	});
 
 
