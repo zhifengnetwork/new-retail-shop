@@ -21,6 +21,7 @@
 </template>
 <script>
 import TopHeader from "@/pages/common/header/TopHeader";
+import { Uploader } from 'vant'
 export default {
     data() {
         return {
@@ -97,25 +98,18 @@ export default {
 </script>
 <style lang="stylus" scoped>
     .documents
+        width 100%
         .content
-            padding 24px 24px 30px
-            width 702px
+            margin 24px 24px 30px
             height 1000px
             background #fff
             border-radius 10px
             border solid 2px #e5e5e5
-            text-align center
-            margin-bottom 20px
-            align-items center
-            display flex
-            justify-content center
-            .van-uploader__upload
-                width 370px
-                height 370px
-            .van-uploader__preview-image 
-                display block
+            box-sizing border-box
+            .vat_wrap
+                margin 90px auto 0
                 width 100%
-                height 100%
+                height 800px
             .van-uploader__upload-icon 
                 color #969799
                 font-size 80px
@@ -132,8 +126,25 @@ export default {
             bottom 24px
             left 24px
             font-size 30px
-            letter-spacing 5px
+            letter-spacing 5px   
+
+</style>
+<style lang="stylus">
+    .documents
+        .vat_wrap
+            .van-uploader
+                width 100%
+                height 100%
+                .van-uploader__upload
+                    margin 50% auto 0
+                    .van-uploader__wrapper
+                        .van-uploader__wrapper >>> .van-uploader__preview
+                            margin 0 !important
+                            .van-uploader__preview-image
+                                width 390px
+                                height 390px
 
 
 </style>
+
 

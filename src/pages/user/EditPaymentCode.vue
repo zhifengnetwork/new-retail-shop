@@ -1,5 +1,5 @@
 <template>
-    <div class="payment-code">
+    <div class="-payment-code">
       	<!-- 头部组件 -->
 		<TopHeader custom-title="编辑收款码" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
@@ -70,7 +70,7 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-    .payment-code
+    .-payment-code
         .content
             width 100%
             padding 24px 24px 30px
@@ -79,39 +79,11 @@ export default {
             border-radius 10px
             border solid 2px #e5e5e5
             margin-bottom 20px
-            align-items center
-            display flex
-            justify-content center
+            -align-items center
+            -display flex
+            -justify-content center
             position relative
-            .-code-list
-                position absolute
-                top 24px
-                left 24px
-                font-size 26px
-                .van-dropdown-menu__item
-                    width: 702px
-                    position: relative
-                    justify-content: flex-start
-                .van-dropdown-menu__title
-                    display: block
-                    width: 94%
-                    text-align: left
-                    font-size 28px
-                .van-cell
-                    text-align left 
-            .van-uploader >>> .van-uploader__wrapper >>> .van-uploader__upload
-                width 370px
-                height 370px
-            .van-uploader__preview-image 
-                display block
-                width 100%
-                height 100%
-            .van-uploader__upload-icon 
-                color #969799
-                font-size 80px
-                font-weight bold
-            .van-uploader__upload-text
-                font-size 30px
+            box-sizing border-box
         .submit
             width 702px
             height 88px
@@ -122,6 +94,44 @@ export default {
             bottom 24px
             left 24px
 
-
 </style>
+<style lang="stylus">
+.-payment-code
+    .-code-list
+        position absolute
+        top 24px
+        left 24px
+        font-size 26px
+        .van-dropdown-menu__item
+            width: 702px
+            position: relative
+            justify-content: flex-start
+        .van-dropdown-menu__title
+            display: block
+            width: 94%
+            text-align: left
+            font-size 28px
+        .van-cell
+            text-align left 
+    .van-uploader >>> .van-uploader__wrapper >>> .van-uploader__upload
+        width 370px
+        height 370px
+    .van-uploader__preview-image 
+        display block
+        width 100%
+        height 100%
+    .van-uploader__upload-icon 
+        color #969799
+        font-size 80px
+        font-weight bold
+    .van-uploader__upload-text
+        font-size 30px
+    .van-uploader
+        width 100%
+    .van-uploader
+        margin 50% auto 0
+    .van-uploader__upload
+        margin 0 auto
+</style>
+
 
