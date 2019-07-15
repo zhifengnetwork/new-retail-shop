@@ -72,7 +72,7 @@ export default {
         width 100%
         .content
             margin 24px 24px 30px
-            height 100vh
+            height 1000px
             background #fff
             border-radius 10px
             border solid 2px #e5e5e5
@@ -97,14 +97,25 @@ export default {
             bottom 24px
             left 24px
             font-size 30px
-            letter-spacing 5px
-.documents .vat_wrap >>> .van-uploader__wrapper >>> .van-uploader__upload
-    position absolute
-    top 0
-    left 0           
-.van-uploader__preview-image img
-    width 100% 
-    height 100%    
+            letter-spacing 5px   
 
 </style>
+<style lang="stylus">
+    .documents
+        .vat_wrap
+            .van-uploader
+                width 100%
+                height 100%
+                .van-uploader__upload
+                    margin 50% auto 0
+                    .van-uploader__wrapper
+                        .van-uploader__wrapper >>> .van-uploader__preview
+                            margin 0 !important
+                            .van-uploader__preview-image
+                                width 390px
+                                height 390px
+
+
+</style>
+
 
