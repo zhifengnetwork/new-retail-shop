@@ -194,9 +194,7 @@ export default {
             this.payPassword = (this.payPassword + key).slice(0, 6);
             if(this.payPassword.length === 6){ 
                 // 请求数据
-
                 this.requestInfo()
-
                  // 关闭密码输入
                 this.showKeyboard = false
                 this.showPwd = false
