@@ -16,7 +16,7 @@
                         <div class="realname"><span>ID：</span>{{siteList.id}}</div>
                     </div>
                 </div>
-                <div class="url">http://new_retail_web.zhifengwangluo.com/Register{{siteList.url}}</div>
+                <div class="url">{{link}}</div>
 
                 <div class="copyBtn" 
                 v-clipboard:copy="link"
@@ -55,8 +55,8 @@
             }).then((res)=>{
                 if(res.data.status === 200){
                     this.siteList = res.data.data
-                    this.link ='http://new_retail_web.zhifengwangluo.com/Register'+this.siteList.url
-                    console.log(this.siteList)
+                    this.link =this.globalUrl+'/Register'+this.siteList.url
+                    console.log(this.link)
                 } else {
                     Dialog.alert({
                         message:res.data.msg
