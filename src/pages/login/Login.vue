@@ -82,7 +82,7 @@ export default {
          * 校验登录
          */
         _verifyUserInfo(){
-            let mobile_reg=/^1[345678]\d{9}$/
+            let mobile_reg=/^1[3456789]\d{9}$/
             let pswd_reg =/^[a-z0-9_-]{6,18}$/
             if(this.phone == '' || !mobile_reg.test(this.phone)){
                 // return this.$toast('手机号码不能为空')
