@@ -7,18 +7,21 @@
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
-            <van-uploader
-                v-model="fileList"
-                multiple
-                upload-text="上传凭证"
-                :max-count="1"
-                />
+            <div class="vat_wrap">
+                <van-uploader
+                    v-model="fileList"
+                    multiple
+                    upload-text="上传凭证"
+                    :max-count="1"
+                    />
+            </div>
         </div>
         <input class="submit" type="button" value="提交" @click="setDocuments()" />
     </div>
 </template>
 <script>
 import TopHeader from "@/pages/common/header/TopHeader";
+import { Uploader } from 'vant'
 export default {
     data() {
         return {
@@ -67,25 +70,18 @@ export default {
 </script>
 <style lang="stylus" scoped>
     .documents
+        width 100%
         .content
-            padding 24px 24px 30px
-            width 702px
-            height 1000px
+            margin 24px 24px 30px
+            height 100vh
             background #fff
             border-radius 10px
             border solid 2px #e5e5e5
-            text-align center
-            margin-bottom 20px
-            align-items center
-            display flex
-            justify-content center
-            .van-uploader__upload
-                width 370px
-                height 370px
-            .van-uploader__preview-image 
-                display block
+            box-sizing border-box
+            .vat_wrap
+                margin 90px auto 0
                 width 100%
-                height 100%
+                height 800px
             .van-uploader__upload-icon 
                 color #969799
                 font-size 80px
@@ -103,7 +99,13 @@ export default {
             left 24px
             font-size 30px
             letter-spacing 5px
-
+.documents .vat_wrap >>> .van-uploader__wrapper >>> .van-uploader__upload
+    position absolute
+    top 0
+    left 0           
+.van-uploader__preview-image img
+    width 100% 
+    height 100%    
 
 </style>
 
