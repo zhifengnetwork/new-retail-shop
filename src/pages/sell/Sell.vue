@@ -142,7 +142,7 @@
         }
     }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
     .sell
         .van-checkbox__icon
             height 60px

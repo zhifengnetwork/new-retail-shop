@@ -1,7 +1,7 @@
 <template>
     <div class="paycode-wrap">
       	<!-- 头部组件 -->
-		<TopHeader custom-title="我的付款码" custom-fixed>
+		<TopHeader custom-title="我的收款码" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
             <span slot="rightBtn"><router-link class="fontRe" to="/user/EditPaymentCode"><i class="iconfont icon-bianji"></i></router-link></span>
 		</TopHeader>
@@ -80,7 +80,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
     .paycode-wrap
         padding :24px
         .fontRe
