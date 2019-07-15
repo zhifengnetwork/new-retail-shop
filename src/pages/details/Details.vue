@@ -75,10 +75,10 @@
                                     <div class="eval-user">
                                         <div class="user">
                                             <div class="avatar">
-                                                <img src="/static/images/details/00avatar01.png" />
+                                                <img :src="list.avatar" />
                                             </div>
                                             <div class="text">
-                                                <span class="name">ID：{{list.comment_id}}</span>
+                                                <span class="name">用户：{{list.mobile}}</span>
                                                 <span class="date">{{list.times}}</span>
                                             </div>
                                         </div>

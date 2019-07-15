@@ -9,8 +9,8 @@
         <div class="content">
             <a href="javascript:void(0)" class="sell-list" v-for="(item,key) in list" :key="key">
                 <div class="-list-msg">
-                    <p>{{item.goods_name}}</p>
-                    <p></p>
+                    <p>ID: {{item.user_id}}</p>
+                    <p>{{item.mobile}}</p>
                 </div>
                 <img class="-list-img" :src="item.img" @click="showPopup(item.pay_code)"/>
                 <div class="-list-radus-num">{{item.stock}}</div>
