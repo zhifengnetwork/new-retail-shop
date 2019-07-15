@@ -135,7 +135,7 @@ export default {
 			token: this.$store.getters.optuser.Authorization
 		};
 	},
-	created(){
+	created(){		
 		this.$store.commit('showLoading')//加载loading
 		this.requestData();
 	},
