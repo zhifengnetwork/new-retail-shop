@@ -198,7 +198,7 @@ export default {
 
             good:[],
             sizeBox:false,       //规格选择框
-            proCityDistrict:'广东广州'
+            proCityDistrict:'无'
         }
     },
     created(){

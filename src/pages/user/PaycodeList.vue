@@ -1,10 +1,19 @@
 <template>
     <div class="paycode-wrap">
       	<!-- 头部组件 -->
-		<TopHeader custom-title="我的收款码" custom-fixed>
+		<!-- <TopHeader custom-title="我的收款码" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
             <span slot="rightBtn"><router-link class="fontRe" to="/user/EditPaymentCode"><i class="iconfont icon-bianji"></i></router-link></span>
-		</TopHeader>
+		</TopHeader> -->
+
+        <div class="TopHeader">
+            <router-link to="/Home" class="backBtn">
+                <i class="iconfont icon-fanhui"></i>
+            </router-link>
+            <div class="title">我的收款码</div>
+            <span class="rightBtn"><router-link class="fontRe" to="/user/EditPaymentCode"><i class="iconfont icon-bianji"></i></router-link></span>
+        </div>
+
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
@@ -34,7 +43,7 @@
     </div>
 </template>
 <script>
-import TopHeader from "@/pages/common/header/TopHeader";
+// import TopHeader from "@/pages/common/header/TopHeader2";
 export default {
     data() {
         return {
@@ -76,13 +85,49 @@ export default {
         // }
     },
     components:{
-        TopHeader
+        // TopHeader
     }
 }
 </script>
 <style lang="stylus" scoped>
     .paycode-wrap
         padding :24px
+        .TopHeader
+            width 100%
+            height 88px
+            line-height 88px
+            color #151515
+            font-size 30px
+            background-color #ffffff
+            display flex
+            justify-content space-between
+            align-items center
+            position fixed
+            top 0
+            left 0
+            z-index 9
+            .backBtn
+                width 10%
+                text-align center
+                position absolute
+                left 0
+                top 0
+                .iconfont 
+                    font-size 36px
+            .title
+                text-align center
+                width 70%
+                margin 0 auto
+                white-space nowrap
+                overflow hidden
+                text-overflow ellipsis
+            .rightBtn
+                padding-right 30px
+                position absolute
+                right 0
+                top 0
+                .iconfont
+                    font-size 46px
         .fontRe
             font-size 28px
             color #f30c0c

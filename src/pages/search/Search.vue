@@ -114,10 +114,12 @@ export default {
 		emptyVal(){
 			this.searchVal = ''
 			this.$refs.keyword.focus()
+			// this.onSearch()
 		},
 
 		checkedKeywords(keywords){		//关键字搜索
 			this.searchVal =keywords
+			this.onSearch()
 		},
 
 
@@ -139,7 +141,6 @@ export default {
 					}
 				}
 				else if(res.data.status == 999){
-					this.$toast(res.data.msg)
 					this.$store.commit('del_token'); //清除token
 					setTimeout(()=>{
 						this.$router.push('/Login')
