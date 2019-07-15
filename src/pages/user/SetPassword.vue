@@ -163,9 +163,10 @@ export default {
                 .then((res)=>{
                     if(res.data.status === 200){
                         that.$toast('修改成功')                
-                        // setTimeout(() => {
-                        //     that.$router.push("/Login");
-                        // }, 1000);
+                        setTimeout(() => {
+                            // that.$router.push("/home");
+                            this.$router.go(-1)
+                        }, 1000);
                     }else{
                         that.$toast(res.data.msg)
                     }
