@@ -110,62 +110,92 @@ export default {
         /**
          * 立即付款
          */
+        // payment(order_id,pay_id){
+        //     if(pay_id == 1){
+        //         this.showPwd = true;
+        //         this.showKeyboard = true;
+        //         this.paswPopup =true
+        //     }
+        //     else if(pay_id == 2){
+        //        this.$toast("调用微信支付接口");
+        //     }
+        //     else if(pay_id == 3){
+        //         this.$toast("调用支付宝支付接口");
+        //     }
+        //     // else if(pay_id == 4){
+        //     //     this.$toast("货到付款");
+        //     // }
+        // },
+
         payment(order_id,pay_id){
             if(pay_id == 1){
                 this.showPwd = true;
                 this.showKeyboard = true;
                 this.paswPopup =true
             }
+
+
+
+
+
             else if(pay_id == 2){
                this.$toast("调用微信支付接口");
             }
             else if(pay_id == 3){
-                this.$toast("调用支付宝支付接口");
+                // this.$toast("调用支付宝支付接口");
+                this.requestInfo()
             }
             // else if(pay_id == 4){
             //     this.$toast("货到付款");
             // }
         },
+
         /**
          * 余额支付:输入密码
          */
+        requestInfo(){
+            let url = 'pay/payment';
+            this.$axios.post(url,{
+                token:this.$store.getters.optuser.Authorization,
+                order_id:this.$route.query.order_id,
+                pay_type:this.pay_id, 
+                pwd:this.payPassword
+            }).then((res) => {
+                if(res.data.status === 200){  
+                    if(this.pay_id==1){
+                         // 余额支付成功               
+                        this.$toast.success({message:res.data.msg,duration: 2000});
+                        this.requestData();
+                        setTimeout(() => {          //支付成功，2s跳转到订单详情页
+                            this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
+                        },2000)
+                    }
+                    else if(this.pay_id==3){
+                        window.location.href =res.data.data.url
+                    }
+                    
+                }else if(res.data.status === 888){
+                    // 设置支付密码
+                    this.$toast.fail(res.data.msg);
+                    this.$router.push('/user/SetPassword')
+                }else if(res.data.status == 999){       // token过期
+                    this.$store.commit('del_token'); //清除token
+                    setTimeout(()=>{
+                        this.$router.push('/Login')
+                    },1000)
+                }
+                else{
+                    // 支付失败
+                    this.$toast.fail(res.data.msg);
+                }
+            })
+        },
         onInput(key) {
             this.payPassword = (this.payPassword + key).slice(0, 6);
             if(this.payPassword.length === 6){ 
                 // 请求数据
-                let url = 'pay/payment';
-                this.$axios.post(url,{
-                    token:this.$store.getters.optuser.Authorization,
-                    order_id:this.$route.query.order_id,
-                    pay_type:this.pay_id, 
-                    pwd:this.payPassword
-                }).then((res) => {
-                    if(res.data.status === 200){  
-                        // 余额支付成功               
-                        this.$toast.success({message:res.data.msg,duration: 2000});
-                        this.requestData();
-                        setTimeout(() => {
-                            // console.log("支付成功，2s跳转到订单详情页")
-                            this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
-                        },2000)
-                    }else if(res.data.status === 888){
-                        // 设置支付密码
-                        this.$toast.fail(res.data.msg);
-                        this.$router.push('/user/SetPassword')
-                    }else if(res.data.status == 999){
-                        // token过期
-                        this.$toast(res.data.msg)
-                        this.$store.commit('del_token'); //清除token
-                        setTimeout(()=>{
-                            this.$router.push('/Login')
-                        },1000)
-                    }
-                    else{
-                        // 支付失败
-                        this.$toast.fail(res.data.msg);
-                    }
-                })
 
+                this.requestInfo()
 
                  // 关闭密码输入
                 this.showKeyboard = false
@@ -174,6 +204,52 @@ export default {
                 this.payPassword = ''
             }
         },
+
+        // onInput(key) {
+        //     this.payPassword = (this.payPassword + key).slice(0, 6);
+        //     if(this.payPassword.length === 6){ 
+        //         // 请求数据
+        //         let url = 'pay/payment';
+        //         this.$axios.post(url,{
+        //             token:this.$store.getters.optuser.Authorization,
+        //             order_id:this.$route.query.order_id,
+        //             pay_type:this.pay_id, 
+        //             pwd:this.payPassword
+        //         }).then((res) => {
+        //             if(res.data.status === 200){  
+        //                 // 余额支付成功               
+        //                 this.$toast.success({message:res.data.msg,duration: 2000});
+        //                 this.requestData();
+        //                 setTimeout(() => {
+        //                     // console.log("支付成功，2s跳转到订单详情页")
+        //                     this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
+        //                 },2000)
+        //             }else if(res.data.status === 888){
+        //                 // 设置支付密码
+        //                 this.$toast.fail(res.data.msg);
+        //                 this.$router.push('/user/SetPassword')
+        //             }else if(res.data.status == 999){
+        //                 // token过期
+        //                 this.$toast(res.data.msg)
+        //                 this.$store.commit('del_token'); //清除token
+        //                 setTimeout(()=>{
+        //                     this.$router.push('/Login')
+        //                 },1000)
+        //             }
+        //             else{
+        //                 // 支付失败
+        //                 this.$toast.fail(res.data.msg);
+        //             }
+        //         })
+
+
+        //          // 关闭密码输入
+        //         this.showKeyboard = false
+        //         this.showPwd = false
+        //         this.paswPopup =false
+        //         this.payPassword = ''
+        //     }
+        // },
         /**
          * 删除密码
          */
