@@ -20,7 +20,7 @@
                     <ul class="bound" v-for="(item,key) in teamList" :key="key">
                         <li>{{item.id}}</li>
                         <li>{{item.realname}}</li>
-                        <li>1{{item.mobile}}</li>
+                        <li>{{item.mobile}}</li>
                         <li>
                             <router-link class="my_look" to="/user/myTeam/commissionlist/viewOrders">查看</router-link>
                         </li>
@@ -52,6 +52,7 @@
                 })
                 .then((res)=>{
                     var list = res.data;
+
                     if(list.status == 200){
                         _that.teamList =list.data
                     }else{

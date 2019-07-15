@@ -40,7 +40,8 @@
 		return {
             //link: 'http://new_retail_web.zhifengwangluo.com/Register+url',// 要跳转的路径或者显示的文字
             siteList:[],
-            ewmList:[]
+            ewmList:[],
+            link:''
         };
     },
     methods: {
@@ -82,6 +83,7 @@
                 if(res.data.status === 200){
                     this.siteList = res.data.data
                     console.log(this.siteList)
+                    this.qrcode(); 
                 } else {
                     Dialog.alert({
                         message:res.data.msg
@@ -92,9 +94,11 @@
          // 二维码接口
         qrcode() {
             var http = '/user/ewm'
+            var url =this.globalUrl+'//Register?uid='+this.siteList.id
+            console.log(url)
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);
-            params.append('url',this.url)  
+            params.append('url',url)  
             this.$axios({
                 method:"post",
                 url:http,
@@ -103,6 +107,7 @@
                 console.log(res)
                 if(res.data.status === 200){
                     this.ewmList = res.data.data
+                    this.link =res.data.data+this.siteList.id
                     console.log(this.ewmList)
                 } else {
                     Dialog.alert({
@@ -113,8 +118,8 @@
         },
     },
     mounted () {
-        this.qrcode(); 
         this.sharing();
+        console.log(this.globalUrl)
     },
 	components: {
         MyHeader,
@@ -143,16 +148,17 @@
             .img_head
                 padding 82px 0 0
                 .img 
+                    width 160px
+                    height 160px 
                     margin 0 auto
                     position absolute
                     top -85px
                     left 271px
-                    width 160px
-                    height 160px
                     border 2px solid #fff
                     border-radius 50%
+                    overflow hidden
                     img 
-                        border-radius 50%
+                        width 100%
                 .name 
                     font-size 30px
                     line-height 75px
@@ -168,11 +174,15 @@
                 border-radius 10px
                 box-sizing border-box
                 .mark
+                    width 400px
+                    height 400px
                     margin 0 auto
                     padding 10px
                     background url(/static/images/user/ber.png) no-repeat
                     background-size 100% 100%
                     box-sizing border-box
+                    img 
+                        width 100%
                             
             .touch
                 font-size 30px
@@ -180,9 +190,9 @@
                 line-height 105px            
 
 
-img
-    display block
-    margin 0 auto
-    max-width 100%
-    height 100%                       
+// img
+//     display block
+//     margin 0 auto
+//     max-width 100%
+//     height 100%                       
 </style>

@@ -17,8 +17,8 @@
 					<div class="title">
 						<ul>
 							<li>订单</li>
-							<li>日期</li>
 							<li>金额</li>
+							<li>日期</li>
 						</ul>
 					</div>
 					<div class="list" v-show="nowIndex === 0">
@@ -27,8 +27,9 @@
 								<div>{{item.source_id}}</div>
 								<div>{{item.note}}</div>
 							</li>
-							<li>{{item.create_time}}</li>
+							
 							<li>{{item.balance}}</li>
+							<li>{{item.create_time}}</li>
 						</ul>
 					</div>
 				</div>

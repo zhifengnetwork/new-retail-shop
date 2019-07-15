@@ -16,7 +16,7 @@
                     />
             </div>
         </div>
-        <input class="submit" type="button" value="提交" @click="setDocuments()" />
+        <input class="aniu" type="button" value="提交" @click="setDocuments()" />
     </div>
 </template>
 <script>
@@ -51,7 +51,6 @@ export default {
                     },2000)
                 }
                 else if(res.data.status == 999){
-					this.$toast(res.data.msg)
 					this.$store.commit('del_token'); //清除token
 					setTimeout(()=>{
 						this.$router.push('/Login')
@@ -88,7 +87,7 @@ export default {
                 font-weight bold
             .van-uploader__upload-text
                 font-size 30px
-        .submit
+        .aniu
             width 702px
             height 88px
             background-color #ff4d4d
