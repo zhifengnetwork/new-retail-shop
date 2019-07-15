@@ -8,7 +8,7 @@
         <div v-if="carId!=''" class="com-list">
             <div class="content">
                 <div class="user-info-wrap mb-10">
-                    <div @click="toEditAddress(addrRes.address_id)"  class="user-info">
+                    <router-link to="/user/Address?edit_address=1"  class="user-info">
                         <i class="iconfont icon-ditu"></i>
                         <div class="-info-list">
                             <p class="-list-a">
@@ -20,7 +20,7 @@
                             </p>
                         </div>
                         <div class="-list-edit"><i class="iconfont icon-bianji"></i></div>
-                    </div>
+                    </router-link>
                     <img class="-info-img" src="/static/images/order/color_line.png" />
                 </div>
                 <!-- GOODS START -->
@@ -132,12 +132,12 @@ export default {
                 }
             })
         },
-        toEditAddress(address_id){
-            this.$router.push({
-                path: '/user/Address',
-                params: {'address_id': address_id}
-            })
-        },
+        // toEditAddress(address_id){
+        //     this.$router.push({
+        //         path: '/user/Address',
+        //         params: {'address_id': address_id}
+        //     })
+        // },
         topay(){
             var _that =this
             _that.$axios.post('Order/submitOrder',{
@@ -194,7 +194,7 @@ export default {
                  console.log(price)
             }
             totalPrice = price + new Number(_that.goodsList.shipping_price)
-            return totalPrice.toFixed(2)
+            return (totalPrice||0).toFixed(2)
         }
     },
     components:{

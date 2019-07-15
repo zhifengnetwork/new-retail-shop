@@ -100,7 +100,8 @@ export default {
             .then((res)=>{
                 _that.$toast('修改成功')                
                 setTimeout(() => {
-                    _that.$router.push("/user/Address");
+                    // _that.$router.push("/user/Address");
+                    _that.$router.go(-1)
                 }, 1000);
             })
             .catch( (error) => {

@@ -101,6 +101,8 @@ export default {
             position fixed
             bottom 24px
             left 24px
+            font-size 30px
+            letter-spacing 5px
 
 
 </style>

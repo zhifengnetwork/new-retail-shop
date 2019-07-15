@@ -37,13 +37,14 @@
 	data() {
 		return {
             siteList:[],
-            link:'http://new_retail_web.zhifengwangluo.com/Register+url'
+            link:''
         };
     },
     methods: {
         
         // 接口
         sharing() {
+            
             var url = '/user/shareUrl'
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);  
@@ -54,6 +55,7 @@
             }).then((res)=>{
                 if(res.data.status === 200){
                     this.siteList = res.data.data
+                    this.link ='http://new_retail_web.zhifengwangluo.com/Register'+this.siteList.url
                     console.log(this.siteList)
                 } else {
                     Dialog.alert({
@@ -66,6 +68,7 @@
         onCopy:function(e){
             Toast('复制成功');
             console.log(e)
+           
         },
         // 复制失败回调
         onError:function(){}

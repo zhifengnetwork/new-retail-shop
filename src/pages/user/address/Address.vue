@@ -53,37 +53,29 @@ export default {
     },
     created(){
         this.$store.commit('showLoading')       //加载loading
-        this.requestData();     // 请求用户地址列表数据
+        this.requestData();                     // 请求用户地址列表数据
     },
     methods:{
-        slectAddress(key){     //选择默认地址
-        
+        slectAddress(key){                      //选择默认地址
+            var edit_ =this.$route.query.edit_address
+            if(edit_ !=1){return}
             var _that =this,
                 list =_that.siteList[key]
             var url ='/address/set_default_address'
-            _that.$axios.post(url,{     // 传给后台的参数
+            _that.$axios.post(url,{              // 传给后台的参数
                 'token':this.$store.getters.optuser.Authorization,
                 'address_id':list.address_id
             })
             .then((res)=>{
-                console.log(res)
                 if(res.data.status==200){
                     this.$router.go(-1)
-                }
-                // _that.$toast('修改成功')                
-                // setTimeout(() => {
-                //     _that.$router.push("/user/Address");
-                // }, 1000);
-                
+                } 
             })
             .catch( (error) => {
                 alert("请求错误:" + error)
             })
-
-            console.log(_that.siteList[key])
         },
-        // 请求用户地址列表数据
-        requestData() {
+        requestData() {     // 请求用户地址列表数据
             var url = '/address/addressList'
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);  
