@@ -34,15 +34,18 @@ export default {
         topPayServiceCharge(){
             var _that =this;
             _that.$axios.post('pay/release_wx_pay',{
-                token:this.$store.getters.optuser.Authorization            
+                token:this.$store.getters.optuser.Authorization,
+                pay_type:3          
             })
             .then((res)=>{
                 var list = res.data;
+                // console.log(list)
                 if(list.status == 200){
-                    _that.$router.push({
-						path: '/sell/Sell',
-						name: 'Sell',
-                    }) 
+                    // _that.$router.push({
+					// 	path: '/sell/Sell',
+					// 	name: 'Sell',
+                    // }) 
+                    window.location.href =res.data.data.url
                 }
                 else if(res.data.status == 999){
 					this.$store.commit('del_token'); //清除token

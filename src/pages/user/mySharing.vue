@@ -101,7 +101,7 @@
             params.append('url',url)  
             this.$axios({
                 method:"post",
-                // url:http,
+                url:http,
                 data:params
             }).then((res)=>{
                 console.log(res)
@@ -159,6 +159,7 @@
                     overflow hidden
                     img 
                         width 100%
+                        height :100%
                 .name 
                     font-size 30px
                     line-height 75px
@@ -182,8 +183,7 @@
                     background-size 100% 100%
                     box-sizing border-box
                     img 
-                        width 100%
-                            
+                        width 100%           
             .touch
                 font-size 30px
                 text-align center
