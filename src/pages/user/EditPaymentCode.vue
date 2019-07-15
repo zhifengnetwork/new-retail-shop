@@ -79,10 +79,11 @@ export default {
             border-radius 10px
             border solid 2px #e5e5e5
             margin-bottom 20px
-            align-items center
-            display flex
-            justify-content center
+            -align-items center
+            -display flex
+            -justify-content center
             position relative
+            box-sizing border-box
             .-code-list
                 position absolute
                 top 24px
@@ -121,7 +122,9 @@ export default {
             position fixed
             bottom 24px
             left 24px
-
+.-code-list .van-uploader >>> .van-uploader__wrapper >>> .van-uploader__upload
+    width 370px
+    height 370px
 
 </style>
 
