@@ -95,9 +95,7 @@ export default {
                     },1000)
                 }
                 else {
-                    Dialog.alert({
-                        message:res.data.msg
-                    })
+                    this.$toast({message:"暂无地址信息,请添加地址",duration:2000})
                 }
             })
         },
@@ -118,8 +116,10 @@ export default {
                 }).then((res)=>{
                     if (res.data.status === 200){
                         this.siteList.splice(index,1)
-                        Toast('删除成功');
+                        this.$toast({message:"删除成功",duration:1000})
+                        // Toast('删除成功');
                     } else {
+                        // this.$toast({message:"暂无地址信息,请添加地址",duration:1000})
                         Dialog.alert({
                             message:res.data.msg
                         })

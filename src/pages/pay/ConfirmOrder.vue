@@ -194,7 +194,7 @@ export default {
                  console.log(price)
             }
             totalPrice = price + new Number(_that.goodsList.shipping_price)
-            return totalPrice.toFixed(2)
+            return (totalPrice||0).toFixed(2)
         }
     },
     components:{

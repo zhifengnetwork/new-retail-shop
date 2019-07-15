@@ -113,7 +113,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
     html,body
         background:#e0e0e0
     .logisstics-wrap

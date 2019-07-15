@@ -69,15 +69,15 @@ export default {
     }
 }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
     .payment-code
         .content
+            width 100%
             padding 24px 24px 30px
             height 1000px
             background #fff
             border-radius 10px
             border solid 2px #e5e5e5
-            text-align center
             margin-bottom 20px
             align-items center
             display flex
@@ -99,7 +99,7 @@ export default {
                     font-size 28px
                 .van-cell
                     text-align left 
-            .van-uploader__upload
+            .van-uploader >>> .van-uploader__wrapper >>> .van-uploader__upload
                 width 370px
                 height 370px
             .van-uploader__preview-image 
