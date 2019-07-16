@@ -22,7 +22,7 @@
                 <div v-if="nowIndex < 5">
                     <div class="item-card" v-for="(item,index) in allOrders" :key="index">
                         <div class="card-head">
-                            <span class="order-date">{{item.add_time | formatDate}}</span>
+                            <span class="order-date">{{item.order_sn}}</span>
                             <span class="order-state" v-if="item.status===1">待付款</span>
                             <span class="order-state" v-if="item.status===2">待发货</span>
                             <span class="order-state" v-if="item.status===3">待收货</span>
@@ -100,7 +100,8 @@
                             </div>
                             <!-- 拒绝退款 -->
                             <div v-if="item.status == 8">
-                                <span class="btn red" @click="delOrder(index,item.order_id,item.status)">确定收货</span>
+                                <!-- <span class="btn red" @click="delOrder(index,item.order_id,item.status)">确定收货</span> -->
+                                <router-link :to="'/Order/ReturnRequest?order_id='+item.order_id"><span class="btn red">重新申请</span></router-link>
                             </div>
                         </div>
                     </div>
@@ -108,7 +109,7 @@
 
                 <div v-else class="fifty_wrap"  v-for="(item,index) in allOrders" :key="index">
                     <div class="time">
-                        <span class="date">{{item.add_time | formatDate}}</span>
+                        <span class="date">{{item.order_sn}}</span>
                     </div>
                     <div class="nick_wrap">
                         <div class="img_wrap">
@@ -116,7 +117,7 @@
                         </div>
                         <div class="nickname">
                             <p>{{item.shop_name}}</p>
-                            <p>{{item.shop_user_id}}</p>
+                            <p>ID:{{item.shop_user_id}}</p>
                         </div>
                     </div>
                     <div class="num-bar">
@@ -252,6 +253,9 @@ export default {
             token:this.$store.getters.optuser.Authorization,
         }
     },
+    created(){
+        this.$store.commit('showLoading')               //加载loading
+    },
     // 模板渲染完成后执行
     mounted(){
         this.nowIndex = this.$route.query.type;
@@ -330,6 +334,7 @@ export default {
                     }else{
                         this.$toast(res.data.msg)
                     }
+                    this.$store.commit('hideLoading')
                 })
                 .catch((error) => {
                     alert('请求错误:'+ error)

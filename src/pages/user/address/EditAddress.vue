@@ -85,7 +85,7 @@ export default {
             onSave(){
             var _that=this
             _that.detailAddress =_that.$refs.detailAddress.innerText
-            var url ='/address/addAddress'
+            var url ='address/addAddress'
             if(!_that._verifyUserInfo()){return}
             _that.$axios.post(url,{
                 // 传给后台的参数
@@ -136,7 +136,7 @@ export default {
             return true
         },
            codes() {
-            var url = '/user/get_address'
+            var url = 'user/get_address'
             var params = new URLSearchParams();
                 params.append('token', this.$store.getters.optuser.Authorization);//要传给后台的参数值 key/value //token
             this.$axios({
@@ -144,7 +144,6 @@ export default {
                 url:url,
                 data:params
             }).then((res)=>{
-                console.log(res)
                 if(res.data.status === 200){
                     this.areaList = res.data.data
                 }
@@ -156,7 +155,6 @@ export default {
         },
           // 地区确定选择
         onAddrConfirm(val){  
-            console.log(val)
             this.show = false;
             this.addressSelected = val[0].name+ val[1].name +val[2].name
             this.district =val[2].code
