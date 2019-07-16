@@ -29,7 +29,8 @@
             <!-- 退款金额 -->
             <div class="refund-amount">
                 <span class="label">退款金额</span>
-                <span class="amount">{{(total) | formatMoney}}</span>
+                <span class="amount">{{total}} <span v-if="shippingPrice>0" class="shipp-sty">(含运费{{shippingPrice}})</span></span>
+                
             </div>
 
             <!-- 按钮 -->
@@ -53,11 +54,14 @@ export default {
             order_id:this.$route.query.order_id,//退款订单id
             refundData:'',
             totalNum:0,//总件数
-            total:0,//总价
+            total:0,//总价，
+            shippingPrice:0,
             refund_reason:''
         }
     },
-
+    created(){
+        this.$store.commit('showLoading')               //加载loading
+    },
     mounted(){
         let url = 'Order/get_refund';
         this.$axios.post(url,{
@@ -66,11 +70,12 @@ export default {
         }).then( (res) => {
             if(res.data.status === 200){
                 this.refundData = res.data.data.goods
+                this.total =res.data.data.order_amount
+                this.shippingPrice =res.data.data.shipping_price
                 this.totalNumber() //总件
-                this.totalPrice() //总金额
+                // this.totalPrice() //总金额
             }
             else if(res.data.status == 999){
-                this.$toast(res.data.msg)
                 this.$store.commit('del_token'); //清除token
                 setTimeout(()=>{
                     this.$router.push('/Login')
@@ -79,6 +84,7 @@ export default {
             else{
                 this.$toast(res.data.msg)
             }
+            this.$store.commit('hideLoading')
         })
     },
 
@@ -86,11 +92,11 @@ export default {
         /**
          * 总价
          */
-        totalPrice(index){
-            for(var i = 0;i<this.refundData.length;i++){
-                this.total += parseInt(this.refundData[i].goods_price * this.refundData[i].goods_num)
-            }
-        },
+        // totalPrice(index){
+        //     for(var i = 0;i<this.refundData.length;i++){
+        //         this.total += parseInt(this.refundData[i].goods_price * this.refundData[i].goods_num)
+        //     }
+        // },
         /**
          * 总件数
          */
@@ -218,6 +224,9 @@ export default {
         box-sizing border-box
         .amount
             color #f20c0c
+            .shipp-sty
+                font-size 24px
+                color #888
     .refundBtn
         width 92%
         height 88px

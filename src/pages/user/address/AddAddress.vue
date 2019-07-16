@@ -104,7 +104,7 @@ export default {
         onSave(addressData){
             var _that=this
             _that.detailAddress =_that.$refs.detailAddress.innerText
-            var url ='/address/addAddress'
+            var url ='address/addAddress'
             if(!_that._verifyUserInfo()){return}
             _that.$axios.post(url,{
                 // 传给后台的参数
@@ -132,7 +132,6 @@ export default {
             var _that =this
             let mobile_reg=/^1[345678]\d{9}$/
             var detailAddress =_that.$refs.detailAddress.innerText
-            console.log(detailAddress)
             if( _that.userName === ""){
                 _that.$toast("请输入收货人姓名")
                 return false
@@ -157,7 +156,7 @@ export default {
         },
         // 获取省、市、区接口
         codes() {
-            var url = '/user/get_address'
+            var url = 'user/get_address'
             var params = new URLSearchParams();
                 params.append('token', this.$store.getters.optuser.Authorization);//要传给后台的参数值 key/value //token
             this.$axios({

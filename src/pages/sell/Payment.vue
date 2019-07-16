@@ -13,6 +13,10 @@
                 <!-- <div  class="shopMid goright iconfont icon-fanhui" v-on:click="shiftOrder(1)"></div > -->
             </div>
             <div class="img">
+                <div class="-list-msg">
+                    <p>ID: {{currentOrder.shop_user_id}}</p>
+                    <p>{{currentOrder.mobile}}</p>
+                </div>
                 <img class="-imgs" :src="currentOrder.img" />
             </div>
             <div class="inner" v-for="(item,key) in list" :key="key" v-show="key==ewmId" >   
@@ -90,7 +94,6 @@ export default {
                 })
                 .then((res)=>{
                     var list = res.data;
-                    // console.log(list)
                     if(list.status == 200){
                         if(list.data.length<1){
                             this.$router.push('/user/PaycodeList')
@@ -135,6 +138,21 @@ export default {
                 width 701px
                 height 280px
                 border-radius 10px
+                position relative
+                .-list-msg
+                    position absolute
+                    top 20px
+                    left 25px 
+                    font-size 26px
+                    color #fff
+                    width 200px
+                    text-align center
+                    background rgba(0,0,0,0.3)
+                    padding 6px
+                    box-sizing border-box
+                    border-radius 8px
+                    p:nth-child(1)
+                        margin-bottom 4px
                 img 
                     border-radius 10px                   
             .inner
