@@ -128,12 +128,10 @@ export default {
     text-align: center;
     margin-bottom: 20px;
     overflow: hidden;
-
     .-code-list {
       padding: 25px 0 0;
       text-align: left;
       font-size: 26px;
-
       .attention {
         color: #f40808;
         font-size: 26px;
