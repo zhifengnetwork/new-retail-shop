@@ -12,12 +12,14 @@
                     <van-dropdown-item v-model="aValue" :options="option1" />
                 </van-dropdown-menu>
             </div>
-            <van-uploader
-                v-model="fileList"
-                multiple
-                upload-text="上传收款码"
-                :max-count="1"
-                />
+            <div class="v-wrap">
+                <van-uploader
+                    v-model="fileList"
+                    multiple
+                    upload-text="上传收款码"
+                    :max-count="1"
+                    />
+            </div>
         </div>
         <input class="submit" type="button" value="确定" @click="setPaymentCode()" />
     </div>
@@ -90,6 +92,8 @@ export default {
             background-color #ff4d4d
             border-radius 44px
             color #fff
+            font-size 30px
+            letter-spacing 5px
             position fixed
             bottom 24px
             left 24px
@@ -113,25 +117,28 @@ export default {
             font-size 28px
         .van-cell
             text-align left 
+    .v-wrap 
+        margin 155px auto 0
+        width 370px
+        height 600px 
+        .van-uploader
+            display block
+            margin 0 auto
+            .van-uploader__upload
+                margin 260px auto       
     .van-uploader >>> .van-uploader__wrapper >>> .van-uploader__upload
         width 370px
         height 370px
     .van-uploader__preview-image 
         display block
-        width 100%
-        height 100%
+        width 370px
+        height 600px
     .van-uploader__upload-icon 
         color #969799
         font-size 80px
         font-weight bold
     .van-uploader__upload-text
         font-size 30px
-    .van-uploader
-        width 100%
-    .van-uploader
-        margin 50% auto 0
-    .van-uploader__upload
-        margin 0 auto
 </style>
 
 
