@@ -198,7 +198,7 @@ export default {
 
             good:[],
             sizeBox:false,       //规格选择框
-            proCityDistrict:'无'
+            proCityDistrict:'无',
         }
     },
     created(){
@@ -214,7 +214,12 @@ export default {
                 'token':_that.token         
             })
             .then((res)=>{
-                _that.proCityDistrict=res.data.data.provincename+res.data.data.cityname+res.data.data.districtname;
+                if(res.data.status===200){
+                    _that.proCityDistrict=res.data.data.provincename+res.data.data.cityname+res.data.data.districtname;
+                }else{
+                    _that.proCityDistrict='暂无地址'
+                }
+                // _that.proCityDistrict=res.data.data.provincename+res.data.data.cityname+res.data.data.districtname;
             })
         },
 

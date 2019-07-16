@@ -9,7 +9,7 @@
             <div class="main_wrap">
                 <div class="main" v-for="(item,index) in auditList" :key="index">
                     <div class="time">
-                        <span>{{item.add_time | formatDate}}</span>
+                        <!-- <span>{{item.add_time | formatDate}}</span> -->
                         <!-- <span>{{item.hisTime}}</span> -->
                     </div>
                     <div class="img_wrap">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="num">
                         <span>{{item.mobile}} </span>
-                        <button class="audit-btn" @click="submitAudit(item.fz_order_id)">审核</button>
+                        <button class="audit-btn" @click="submitAudit(item.fz_order_id,index)" :ref="'tpi_'+index">审核</button>
                     </div>
                 </div>
             </div>
@@ -37,11 +37,12 @@
         };
     },
     created(){
+        window.scrollTo(0,0) 
         this.$store.commit('showLoading')  
     },
     mounted(){ 
         this.requestShopAudit()
-        window.addEventListener('scroll', this.scrollBottom);
+        // window.addEventListener('scroll', this.scrollBottom);
     },
     methods: {
         scrollBottom(){
@@ -54,7 +55,7 @@
                 _this.requestShopAudit();
             }
         },
-        submitAudit(fz_order_id){
+        submitAudit(fz_order_id,key){
             var url = 'fifty_zone/shop_que'
             var params = new URLSearchParams();
             params.append('token',this.token);  
@@ -66,6 +67,10 @@
             }).then((res)=>{
                 if(res.data.status === 200){
                     this.$toast(res.data.msg)
+                    setTimeout(()=>{
+						location.reload() 
+					},2000)
+                    
                 } else {
                     this.$toast(res.data.msg)
                 }
