@@ -93,8 +93,12 @@
         },
          // 二维码接口
         qrcode() {
+            // tempPath = "旧字符串\\\\".replace(/\\/g, "/")
+            var t = this.globalUrl.replace("\/\/", "\\\\");
+            console.log(t)
             var http = '/user/ewm'
-            var url =this.globalUrl+'Register?uid='+this.siteList.id
+            var tt =this.globalUrl+'Register?'
+            var url =this.globalUrl+'Register?'+'uid='+this.siteList.id
             console.log(url)
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);

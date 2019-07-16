@@ -34,7 +34,7 @@ Vue.use(VueClipboard)
 // 拼接图片路径
 // Vue.prototype.url = 'http://api.zhifengwangluo.c3w.cc/'
 // Vue.prototype.globalUrl = 'http://new_retail_web.zhifengwangluo.com/'
-Vue.prototype.globalUrl ='http://newretailweb.zhifengwangluo.com/'
+Vue.prototype.globalUrl ='http://newretailweb.zhifengwangluo.com'
 
 /**
  * 注册全局自定义指令,获取焦点
