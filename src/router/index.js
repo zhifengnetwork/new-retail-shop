@@ -98,6 +98,8 @@ import Collect from '@/pages/user/Collect'
 
 // 我的发布
 import release from '@/pages/user/release'
+// 商家审核
+import ShopAudit from '@/pages/user/ShopAudit'
 //编辑付款码
 import EditPaymentCode from '@/pages/user/EditPaymentCode'
 //申请代理
@@ -395,6 +397,12 @@ const router= new Router({
 			path: '/user/release',
 			name: 'release',
 			component:() => import('@/pages/user/release'),
+		},
+		// 商家审核
+		{
+			path: '/user/ShopAudit',
+			name: 'ShopAudit',
+			component:() => import('@/pages/user/ShopAudit'),
 		},
 		{		//编辑付款码
 			path: '/user/EditPaymentCode',
