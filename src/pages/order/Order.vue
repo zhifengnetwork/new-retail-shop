@@ -256,6 +256,7 @@ export default {
     mounted(){
         this.nowIndex = this.$route.query.type;
         this.requestData();
+        window.addEventListener('scroll', this.scrollBottom);
     },
     methods:{
         // tab切换标题
@@ -263,9 +264,20 @@ export default {
             this.nowIndex = index;
             this.$router.replace('/Order?type='+index);
             this.type = this.$route.query.type;
+            this.page = 1;
             this.requestData();
             if(index == 5){
                 
+            }
+        },
+        scrollBottom(){
+            let _this = this;
+            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            let windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+            if(scrollTop + windowHeight == scrollHeight){
+                _this.page++;
+                _this.requestData();
             }
         },
         // 页面数据渲染
@@ -482,7 +494,10 @@ export default {
         formatMoney:function(val){
             return "¥" + Number(val).toFixed(2)
         }
-    }
+    },
+    destroyed: function () {
+        window.removeEventListener('scroll', this.scrollBottom);
+    },
    
 
 }
