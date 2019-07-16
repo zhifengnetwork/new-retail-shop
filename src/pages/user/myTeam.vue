@@ -65,7 +65,7 @@
 
         getTeamInfo(){
             let _that=this,
-                url = '/user/team';
+                url = 'user/team';
             _that.$axios.post(url,{
                 token:this.$store.getters.optuser.Authorization
             }).then((res)=>{

@@ -38,7 +38,7 @@
     methods: {
         // 接口
         shop_list() {
-            var url = '/user/shop_list'
+            var url = 'user/shop_list'
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);  
             this.$axios({

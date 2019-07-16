@@ -10,7 +10,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    // proxyTable: {},
+    // proxyTable: {},\
 
     // 代理跨域
     proxyTable: {

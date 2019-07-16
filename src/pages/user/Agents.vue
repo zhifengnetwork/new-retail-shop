@@ -93,7 +93,7 @@ export default {
         .post("user/agent_handle", {
           level_id: _that.aValue,
           image: pimg,
-          realname: _that.userNam,
+          realname: _that.userName,
           mobile: _that.mobile,
           token: _that.token
         })

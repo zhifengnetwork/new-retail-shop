@@ -167,7 +167,7 @@
         },
         methods: {
             userData() {
-                let url = '/user/user_info'
+                let url = 'user/user_info'
                 this.$axios.post(url,{
                     token:this.$store.getters.optuser.Authorization
                 })

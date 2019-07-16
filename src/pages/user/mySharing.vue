@@ -72,7 +72,7 @@
         // },
         // 接口
         sharing() {
-            var url = '/user/personal'
+            var url = 'user/personal'
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);  
             this.$axios({
@@ -93,8 +93,9 @@
         },
          // 二维码接口
         qrcode() {
-            var http = '/user/ewm'
-            var url =this.globalUrl+'Register?uid='+this.siteList.id
+            var http = 'user/ewm'
+            var tt =this.globalUrl+'Register?'
+            var url =this.globalUrl+'Register?'+'uid='+this.siteList.id
             console.log(url)
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);
