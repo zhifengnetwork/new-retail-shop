@@ -28,7 +28,7 @@
                 <div class="group-warp">
                     <div class="g-option">
                         <span class="-subtitle"> 配送</span>
-                        <div class="-text"> {{proCityDistrict || 0}}</div>
+                        <div class="-text"> {{proCityDistrict}}</div>
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 运费</span>

@@ -274,4 +274,6 @@ export default {
         .van-checkbox__icon--checked .van-icon
             background-color #f30c0c
             border-color #f30c0c
+        .van-checkbox__icon
+            margin 0 5px 0 0    
 </style>
