@@ -103,9 +103,9 @@ export default {
           var list = res.data;
           if (list.status == 200) {
             _that.$toast(list.msg);
-            // setTimeout(() => {
-            //     _that.$router.push('/Payment')
-            // },2000)
+            setTimeout(() => {
+              _that.$router.push('/User')
+            },1000)
           } else {
             _that.$toast(list.msg);
           }

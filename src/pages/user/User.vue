@@ -122,7 +122,13 @@
                         <span>我的发布</span>
                         <span class="right_ico"></span>
                     </router-link>
-                </div>  
+                </div> 
+                <div class="arr_wrap">
+                    <router-link class="my_look" to="/user/shopAudit">
+                        <span>商家审核</span>
+                        <span class="right_ico"></span>
+                    </router-link>
+                </div> 
                 <div class="arr_wrap">
                     <router-link class="my_look" to="/user/Agents">
                         <span>我的代理</span>
@@ -155,7 +161,7 @@
                     {id:1,name:'待付款',imgUrl:'/static/images/user/payment.png',ar:'/order?type=1'},
                     {id:2,name:'待发货',imgUrl:'/static/images/user/dropShipping.png',ar:'/order?type=2'},
                     {id:3,name:'待收货',imgUrl:'/static/images/user/goods.png',ar:'/order?type=3'},
-                    {id:4,name:'代评价',imgUrl:'/static/images/user/evaluation.png',ar:'/order?type=4'},
+                    {id:4,name:'待评价',imgUrl:'/static/images/user/evaluation.png',ar:'/order?type=4'},
                     {id:5,name:'退货',imgUrl:'/static/images/user/return.png',ar:'/Order/ReturnGoods'}
                 ],
             };
