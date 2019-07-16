@@ -7,14 +7,16 @@
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
-            <van-uploader
-                v-model="fileList"
-                multiple
-                upload-text="上传凭证"
-                :after-read="uploadImg"
-                :max-count="1"
+            <div class="vat_wrap">
+                <van-uploader
+                    v-model="fileList"
+                    multiple
+                    upload-text="上传凭证"
+                    :after-read="uploadImg"
+                    :max-count="1"
 
-                />
+                    />
+            </div>
         </div>
         <input class="aniu" type="button" value="提交" @click="setDocuments()" />
     </div>
@@ -106,10 +108,6 @@ export default {
             border-radius 10px
             border solid 2px #e5e5e5
             box-sizing border-box
-            .vat_wrap
-                margin 90px auto 0
-                width 100%
-                height 800px
             .van-uploader__upload-icon 
                 color #969799
                 font-size 80px
@@ -132,19 +130,25 @@ export default {
 <style lang="stylus">
     .documents
         .vat_wrap
+            margin 0 auto
+            width 370px
+            box-sizing border-box
             .van-uploader
-                width 100%
-                height 100%
+                display block
+                margin 170px auto 0
+                width 370px
+                height 600px
+                .van-uploader__preview
+                    margin 0
+                    width 370px
+                    height 600px
                 .van-uploader__upload
-                    margin 50% auto 0
-                    .van-uploader__wrapper
-                        .van-uploader__wrapper >>> .van-uploader__preview
-                            margin 0 !important
-                            .van-uploader__preview-image
-                                width 390px
-                                height 390px
-
-
+                    margin 280px auto 0
+                .van-uploader__preview-image
+                    margin 0 auto
+                    width 370px
+                    height 600px
+                                
 </style>
 
 

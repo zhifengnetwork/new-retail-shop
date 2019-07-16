@@ -18,7 +18,9 @@
           <input type="number" class="a-inp" v-model="mobile" placeholder="请输入手机号码" />
         </div>
       </div>
-      <van-uploader v-model="fileList" multiple upload-text="上传凭证" :max-count="1" />
+      <div class="vmod-vat">
+        <van-uploader v-model="fileList" multiple upload-text="上传凭证" :max-count="1" />
+      </div>
       <input class="submit" type="button" value="提交申请" @click="setAgents()" />
     </div>
   </div>
@@ -121,7 +123,7 @@ export default {
   height: 100%;
 
   .content {
-    padding: 88px 24px 30px;
+    padding: 88px 24px 100px;
     background: #fff;
     border-radius: 10px;
     border: solid 2px #e5e5e5;
@@ -165,12 +167,6 @@ export default {
       }
     }
 
-    .van-uploader {
-      margin: 70px auto;
-      width: 370px;
-      height: 370px;
-    }
-
     .van-uploader__upload {
       margin: 70px auto;
       width: 370px;
@@ -204,7 +200,9 @@ export default {
   }
 
   .submit {
-    margin: 90px auto 0;
+    position fixed
+    bottom 35px
+    left 24px
     width: 702px;
     height: 88px;
     background-color: #ff4d4d;
@@ -231,6 +229,20 @@ export default {
           right: 12px !important;
         }
       }
+    }
+  }
+  .vmod-vat {
+    padding 160px 0 0
+    margin 0 auto
+    width 370px
+    box-sizing border-box
+    .van-uploader {
+      
+      .van-uploader__preview-image {
+        margin 0 auto
+        width 370px
+        height 540px
+      } 
     }
   }
 }
