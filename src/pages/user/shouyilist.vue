@@ -45,17 +45,15 @@
         },
         methods: {
             shouData(){
-                var url = "/user/estimate_list"
+                var url = "user/estimate_list"
                 this.$axios.post(url,{
                     token:this.$store.getters.optuser.Authorization
                 })
                 .then((res)=>{                  
                     var that = this
                     var item = res.data.data;
-                    console.log(res)
                     if(res.data.status === 200){
                         that.list = item.data;
-                        console.log(that.list)
                     }else{
                         that.$toast(res.msg)
                     }

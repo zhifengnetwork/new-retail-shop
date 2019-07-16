@@ -45,7 +45,7 @@
         // 接口
         sharing() {
             
-            var url = '/user/shareUrl'
+            var url = 'user/shareUrl'
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);  
             this.$axios({
@@ -56,7 +56,6 @@
                 if(res.data.status === 200){
                     this.siteList = res.data.data
                     this.link =this.globalUrl+'/Register'+this.siteList.url
-                    console.log(this.link)
                 } else {
                     Dialog.alert({
                         message:res.data.msg

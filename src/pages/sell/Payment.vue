@@ -101,9 +101,9 @@ export default {
                         _that.list[1].pic=list.data[0].wx_pic;
                         _that.list[2].pic=list.data[0].my_pic;
                         _that.$store.commit('hideLoading')
-                        // if(list.data[0].zfb_pic==null || list.data[0].wx_pic==null ||list.data[0].my_pic==null){
-                        //     this.$router.push('/user/SetPassword')
-                        // }
+                        if(list.data[0].zfb_pic==null && list.data[0].wx_pic==null && list.data[0].my_pic==null){
+                            this.$router.push('/user/PaycodeList')
+                        }
                     }
                     else if(res.data.status == 999){
                         this.$toast(res.data.msg)

@@ -72,7 +72,7 @@
         // },
         // 接口
         sharing() {
-            var url = '/user/personal'
+            var url = 'user/personal'
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);  
             this.$axios({
@@ -93,10 +93,7 @@
         },
          // 二维码接口
         qrcode() {
-            // tempPath = "旧字符串\\\\".replace(/\\/g, "/")
-            var t = this.globalUrl.replace("\/\/", "\\\\");
-            console.log(t)
-            var http = '/user/ewm'
+            var http = 'user/ewm'
             var tt =this.globalUrl+'Register?'
             var url =this.globalUrl+'Register?'+'uid='+this.siteList.id
             console.log(url)

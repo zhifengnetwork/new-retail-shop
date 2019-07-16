@@ -17,20 +17,20 @@
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
-            <ul>
-                <li class="cade-list-cont" v-if="imgList.wx_pic">
+            <ul v-if="imgList !=null">
+                <li class="cade-list-cont" v-if="imgList.wx_pic !=null">
                     <div class="cade-list bg-1">
                         <div class="code-msg"><img :src="imgList.wx_pic" /></div>
                     </div>
                     <p>微信收款</p>
                 </li>
-                <li class="cade-list-cont" v-if="imgList.zfb_pic!=''">
+                <li class="cade-list-cont" v-if="imgList.zfb_pic !=null">
                     <div class="cade-list bg-2">
                         <div class="code-msg"><img :src="imgList.zfb_pic" /></div>
                     </div>
                     <p>支付宝收款</p>
                 </li>
-                <li class="cade-list-cont" v-if="imgList.my_pic!=''">
+                <li class="cade-list-cont" v-if="imgList.my_pic !=null">
                     <div class="cade-list bg-3">
                         <div class="code-msg"><img :src="imgList.my_pic" /></div>
                     </div>
@@ -64,7 +64,6 @@ export default {
             })
             .then((res)=>{
                 var list = res.data;
-                console.log(list)
                 _that.$store.commit('hideLoading')
                 if(list.status == 200){
                     _that.imgList =list.data

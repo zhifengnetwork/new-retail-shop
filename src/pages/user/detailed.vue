@@ -42,7 +42,7 @@
         },
         methods:{
             seveData(){
-                let url = '/user/distribut_list'
+                let url = 'user/distribut_list'
                 this.$axios.post(url,{
                     token:this.$store.getters.optuser.Authorization
                 })

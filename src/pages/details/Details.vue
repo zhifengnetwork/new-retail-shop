@@ -382,7 +382,7 @@ export default {
             params.append('goods_id', this.goodsId);       //你要传给后台的参数值 key/value
             params.append('token', this.token);       //你要传给后台的参数值 key/value
             var that = this;
-            var url = "/goods/goodsDetail"
+            var url = "goods/goodsDetail"
             that.$axios({
                 method:"post",
                 url:url,
