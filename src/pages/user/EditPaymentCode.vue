@@ -125,7 +125,7 @@ export default {
             display block
             margin 0 auto
             .van-uploader__upload
-                margin 260px auto       
+                margin 260px auto     
     .van-uploader >>> .van-uploader__wrapper >>> .van-uploader__upload
         width 370px
         height 370px

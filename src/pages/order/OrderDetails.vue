@@ -129,7 +129,6 @@ export default {
                     this.pay_name = res.data.data.pay_type.pay_name;
                 }
                 else if(res.data.status == 999){
-					this.$toast(res.data.msg)
 					this.$store.commit('del_token'); //清除token
 					setTimeout(()=>{
 						this.$router.push('/Login')
