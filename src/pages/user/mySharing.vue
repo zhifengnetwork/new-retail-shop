@@ -94,8 +94,7 @@
          // 二维码接口
         qrcode() {
             var http = 'user/ewm'
-            var tt =this.globalUrl+'Register?'
-            var url =this.globalUrl+'Register?'+'uid='+this.siteList.id
+            var url ='Register?'+'uid='+this.siteList.id
             console.log(url)
             var params = new URLSearchParams();
             params.append('token', this.$store.getters.optuser.Authorization);
