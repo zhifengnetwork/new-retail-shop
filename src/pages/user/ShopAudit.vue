@@ -9,13 +9,16 @@
             <div class="main_wrap">
                 <div class="main" v-for="(item,index) in auditList" :key="index">
                     <div class="time">
-                        <span>{{item.ymdTime}}</span>
-                        <span>{{item.hisTime}}</span>
+                        <span>{{item.add_time | formatDate}}</span>
+                        <!-- <span>{{item.hisTime}}</span> -->
                     </div>
                     <div class="img_wrap">
                         <img :src="item.img"/>
                     </div>
-                    <div class="num">剩余商品数量{{item.stock}}</div>
+                    <div class="num">
+                        <span>{{item.mobile}} </span>
+                        <button class="audit-btn" @click="submitAudit(item.fz_order_id)">审核</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,31 +32,106 @@
 	data() {
 		return {
             auditList:'',
+            page:1,
+            token:this.$store.getters.optuser.Authorization
         };
     },
-    mounted(){
+    created(){
+        this.$store.commit('showLoading')  
+    },
+    mounted(){ 
         this.requestShopAudit()
+        window.addEventListener('scroll', this.scrollBottom);
     },
     methods: {
-        // 接口
-        requestShopAudit() {
-            var url = 'fifty_zone/shop_que_list'
+        scrollBottom(){
+            let _this = this;
+            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            let windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+            if(scrollTop + windowHeight == scrollHeight){
+                _this.page++;
+                _this.requestShopAudit();
+            }
+        },
+        submitAudit(fz_order_id){
+            var url = 'fifty_zone/shop_que'
             var params = new URLSearchParams();
-            params.append('token', this.$store.getters.optuser.Authorization);  
+            params.append('token',this.token);  
+            params.append('fz_order_id', fz_order_id);  
             this.$axios({
                 method:"post",
                 url:url,
                 data:params
             }).then((res)=>{
                 if(res.data.status === 200){
-                    this.auditList = res.data.data
-                    // console.log(this.siteList)
+                    this.$toast(res.data.msg)
                 } else {
-                    Dialog.alert({
-                        message:res.data.msg
-                    })
+                    this.$toast(res.data.msg)
                 }
             })
+        },
+        requestShopAudit() {     // 接口
+            var url = 'fifty_zone/shop_que_list'
+            var params = new URLSearchParams();
+            params.append('token',this.token);  
+            params.append('page',this.page); 
+            this.$axios({
+                method:"post",
+                url:url,
+                data:params
+            }).then((res)=>{
+                if(res.data.status === 200){
+                    if(this.page == 1){ 
+                        this.auditList = res.data.data                           
+                    }else{
+                        if(res.data.data.length != ''){
+                            //如果有数据,拼接数组
+                            this.auditList = this.auditList.concat(res.data.data); 
+                        }else{
+                            this.ispage = false
+                        }
+                    }
+                }
+                else if(res.data.status == 999){
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+                else {
+                    this.$toast(res.data.msg)
+                }
+                this.$store.commit('hideLoading')
+            })
+        }
+    },
+    filters: {
+        // 日期格式化
+        formatDate: function (time) {
+            let date = new Date(time*1000);
+            let y = date.getFullYear();
+
+            let MM = date.getMonth() + 1;
+            MM = MM < 10 ? ('0' + MM) : MM;
+
+            let d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+
+            let h = date.getHours();
+            h = h < 10 ? ('0' + h) : h;
+
+            let m = date.getMinutes();
+            m = m < 10 ? ('0' + m) : m;
+
+            let s = date.getSeconds();
+            s = s < 10 ? ('0' + s) : s;
+
+            return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+        },
+        //格式化金钱
+        formatMoney:function(val){
+            return "¥" + Number(val).toFixed(2)
         }
     },
 	components: {
@@ -89,8 +167,18 @@
                     .num 
                         font-size 26px
                         line-height 75px
-                        color #151515        
-
+                        color #151515 
+                        display flex
+                        justify-content space-between 
+                        padding-top 10px    
+                        .audit-btn
+                            width 150px
+                            height 52px
+                            line-height 52px
+                            border:1px solid #cccccc
+                            background #f66716
+                            color:#fff
+                            border-radius 10px
 
 img 
     display block
