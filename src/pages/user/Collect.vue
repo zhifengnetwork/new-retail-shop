@@ -190,9 +190,6 @@ export default {
             width:100%
             min-height:100%
             color:#151515
-            .van-checkbox__icon--checked .van-icon
-                background-color: #f30c0c
-                border-color: #fff
             .conter
                 margin : 10px 24px
                 .c-list-
@@ -210,8 +207,10 @@ export default {
                     .-list-img
                         width:201px
                         height:176px
-                        margin:0 10px 0 4px
+                        margin:0 10px 0 7px
                         img
+                            display block
+                            margin 0 auto
                             max-width:100%
                             max-height 100%
                     .goods-info
@@ -270,4 +269,9 @@ export default {
                     font-size:30px;
                     font-weight:bold;
 </style>    
-
+<style lang="stylus">
+    .collect-wrap
+        .van-checkbox__icon--checked .van-icon
+            background-color #f30c0c
+            border-color #f30c0c
+</style>

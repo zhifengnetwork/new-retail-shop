@@ -28,7 +28,7 @@
                 <div class="group-warp">
                     <div class="g-option">
                         <span class="-subtitle"> 配送</span>
-                        <div class="-text"> {{proCityDistrict}}</div>
+                        <div class="-text"> {{proCityDistrict || 0}}</div>
                     </div>
                     <div class="g-option">
                         <span class="-subtitle"> 运费</span>
@@ -262,6 +262,7 @@ export default {
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
+                    _that.$toast(list.msg)
                 }else{
                     _that.$toast(list.msg)
                 }

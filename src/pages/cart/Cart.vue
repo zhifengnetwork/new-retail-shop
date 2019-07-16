@@ -342,9 +342,6 @@ export default {
             font-size 35px
         .size-30
             font-size 30px
-        .checkbox >>> .van-checkbox__icon >>> .van-icon
-            background-color #f30c0c !important
-            border-color #f30c0c !important
         .no-info
             text-align center
             .-info-img
@@ -461,10 +458,13 @@ export default {
                 line-height 120px
                 text-align center
                 font-size 30px
-                font-weight bold
-.van-checkbox >>> .van-checkbox__icon--checked >>> .van-icon-success
-    background-color #f30c0c !important
-    border-color #f30c0c !important              
+                font-weight bold            
 
 </style>    
+<style lang="stylus">
+    .cart
+        .van-checkbox__icon--checked .van-icon
+            background-color #f30c0c
+            border-color #f30c0c
+</style>
 
