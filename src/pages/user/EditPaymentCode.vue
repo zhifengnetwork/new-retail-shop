@@ -81,9 +81,6 @@ export default {
             border-radius 10px
             border solid 2px #e5e5e5
             margin-bottom 20px
-            -align-items center
-            -display flex
-            -justify-content center
             position relative
             box-sizing border-box
         .submit
@@ -125,10 +122,10 @@ export default {
             display block
             margin 0 auto
             .van-uploader__upload
-                margin 260px auto     
-    .van-uploader >>> .van-uploader__wrapper >>> .van-uploader__upload
-        width 370px
-        height 370px
+                margin 260px auto       
+    .van-uploader__upload
+        width 200px
+        height 200px
     .van-uploader__preview-image 
         display block
         width 370px
