@@ -234,10 +234,10 @@ export default {
             if(val<=1 || isNaN(val)){
                 return _that.$toast('请输入正确的数量');
             }
-            if(val>data.single_number){
-                 _that.$set(data,'goods_num',data.single_number)
-                return _that.$toast('该商品最大购买量为:'+data.single_number+'件');
-            }
+            // if(val>data.single_number){
+            //      _that.$set(data,'goods_num',data.single_number)
+            //     return _that.$toast('该商品最大购买量为:'+data.single_number+'件');
+            // }
             if(val>data.inventory){
                  _that.$set(data,'goods_num',data.inventory)
                 return _that.$toast('该商品库存为:'+data.inventory+'件');
@@ -249,9 +249,9 @@ export default {
             var data =_that.list[key];
             var val =parseInt(data.goods_num) 
             val =new Number(val+ 1)
-            if(val>data.single_number){
-                return _that.$toast('该商品购买两为:'+data.single_number+'件');
-            }
+            // if(val>data.single_number){
+            //     return _that.$toast('该商品购买量为:'+data.single_number+'件');
+            // }
             if(val>data.inventory){
                 return _that.$toast('该商品库存为:'+data.inventory+'件');
             }
@@ -342,9 +342,6 @@ export default {
             font-size 35px
         .size-30
             font-size 30px
-        .checkbox >>> .van-checkbox__icon >>> .van-icon
-            background-color #f30c0c !important
-            border-color #f30c0c !important
         .no-info
             text-align center
             .-info-img
@@ -461,10 +458,15 @@ export default {
                 line-height 120px
                 text-align center
                 font-size 30px
-                font-weight bold
-.van-checkbox >>> .van-checkbox__icon--checked >>> .van-icon-success
-    background-color #f30c0c !important
-    border-color #f30c0c !important              
+                font-weight bold            
 
 </style>    
+<style lang="stylus">
+    .cart
+        .van-checkbox__icon--checked .van-icon
+            background-color #f30c0c
+            border-color #f30c0c
+    .van-checkbox__icon
+        margin 0 5px 0 0         
+</style>
 

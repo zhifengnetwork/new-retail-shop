@@ -262,6 +262,7 @@ export default {
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 200){
+                    _that.$toast(list.msg)
                 }else{
                     _that.$toast(list.msg)
                 }
