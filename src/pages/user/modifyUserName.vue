@@ -47,7 +47,7 @@
                             this.userName = name
                             Toast('修改成功')
                             setTimeout(() => {
-                                this.$router.push("/user/personalData");
+                                this.$router.go(-1);
                             }, 1000);
                         } else {
                             Toast(res.data.msg)
