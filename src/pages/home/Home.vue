@@ -187,22 +187,23 @@ export default {
             })
             .then((res)=>{
 				var list = res.data;
-				if(list.status == 200){
+				if(list.status == 200 || list.status ==302 || list.status ==304){
 					this.$router.push({
 						path: '/sell/Sell',
 						name: 'Sell',
 					})
-				}else if(list.status ==302){
-					return _that.isShow = true
-				}else if(list.status ==304){
-					_that.$toast(list.msg)
-					return this.$router.push({
-						path: '/sell/Payment',
-						name: 'Payment',
-					})
 				}
+				// else if(){
+				// 	return _that.isShow = true
+				// }
+				// else if(list.status ==304){
+				// 	_that.$toast(list.msg)
+				// 	return this.$router.push({
+				// 		path: '/sell/Payment',
+				// 		name: 'Payment',
+				// 	})
+				// }
 				else if(res.data.status == 999){
-					this.$toast(res.data.msg)
 					this.$store.commit('del_token'); //清除token
 					setTimeout(()=>{
 						this.$router.push('/Login')

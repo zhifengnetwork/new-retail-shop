@@ -30,9 +30,12 @@
         </div>
         <!-- 弹出层 -->
         <van-popup v-model="show"><img :src="shopsCode" /></van-popup>
+        <!-- 弹窗 -->
+		<Popup :popShow = "isShow" v-on:handleCancel="hidePopup"></Popup>
     </div>
 </template>
 <script>
+    import Popup from "@/pages/home/Popup"
     import TopHeader from "@/pages/common/header/TopHeader";
     export default {
         data(){
@@ -40,6 +43,7 @@
                 list:[],
                 shopsCode:'/static/images/sell/payCode.png',
                 show: false,
+                isShow:false,//弹窗是否显示
                 token:this.$store.getters.optuser.Authorization
             }
         },
@@ -75,7 +79,9 @@
                     }
                 })
             },
-
+            hidePopup(){
+                this.isShow = false
+            },
             toPayment(){
                 var _that =this,fzids='';
                 if(_that.totalCount != 10){
@@ -100,8 +106,16 @@
                     if(list.status == 200){
                         this.$router.push({name:'Payment'})
                     }
+                    else if(list.status==302){
+                        return _that.isShow = true
+                    } 
+                    else if(list.status==304){
+                        _that.$toast(list.msg)
+                        setTimeout(()=>{
+                            this.$router.push('/Payment')
+                        },1000)
+                    } 
                     else if(res.data.status == 999){
-                        _that.$toast(res.data.msg)
                         _that.$store.commit('del_token'); //清除token
                         setTimeout(()=>{
                             _that.$router.push('/Login')
@@ -138,7 +152,8 @@
             }
         },
         components:{
-            TopHeader
+            TopHeader,
+            Popup
         }
     }
 </script>
