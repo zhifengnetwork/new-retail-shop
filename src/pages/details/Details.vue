@@ -91,13 +91,15 @@
                                                 readonly
                                             />
                                         </div>
+
                                     </div> 
                                     <div class="eval-content">
                                         <p>{{list.content}}</p>
                                         <p class="-e-c">{{list.spec}}</p>
                                     </div>
                                     <div class="imgView">
-                                        <span v-for="(imgs,key) in list.img" :key="key"><a :href="imgs"><img :src="imgs"></a></span>
+                                        <!-- <span v-for="(imgs,key) in list.img" :key="key"><a :href="imgs"><img :src="imgs"></a></span> -->
+                                        <span v-for="(imgs,key) in list.img" :key="key" @click="showBigImg(imgs)"><img :src="imgs"></span>
                                         <!-- <span><img src="static/images/details/evaluation-img01.png"></span> -->
                                     </div>
                                 </li>
@@ -167,6 +169,7 @@
 import Vue from 'vue'
 // import AreaList from './area'
 import TopHeader from "@/pages/common/header/TopHeader"
+import { ImagePreview } from 'vant'
 export default {
     name:'Details',
     components:{
@@ -208,7 +211,11 @@ export default {
         this.get_default_address()
     },
     methods:{
-         get_default_address(){
+        showBigImg(img){
+            ImagePreview([''+img+''])
+
+        },
+        get_default_address(){
             var _that=this;
                _that.$axios.post('address/get_default_city',{
                 'token':_that.token         
