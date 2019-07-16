@@ -21,6 +21,13 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 无数据 -->
+            <div class="none" v-show="isShow">
+                <img src="/static/images/public/none.png"/>
+                <p>当前还没有审核信息</p>
+            </div>
+
         </div>
     </div>
 </template>
@@ -33,6 +40,7 @@
 		return {
             auditList:'',
             page:1,
+            isShow:false,
             token:this.$store.getters.optuser.Authorization
         };
     },
@@ -87,6 +95,11 @@
                 data:params
             }).then((res)=>{
                 if(res.data.status === 200){
+                    if(res.data.data==""){
+                        this.isShow=true
+                    }else{
+                        this.isShow=false
+                    }
                     if(this.page == 1){ 
                         this.auditList = res.data.data                           
                     }else{
@@ -184,7 +197,14 @@
                             background #f66716
                             color:#fff
                             border-radius 10px
-
+            .none
+                text-align center
+                margin-top 50%
+                font-size 28px
+                img
+                    width 80px
+                p
+                    margin 20px auto
 img 
     display block
     margin 0 auto 

@@ -37,6 +37,13 @@
                     <p>码云闪付</p>
                 </li> 
             </ul>
+
+            <!-- 无数据 -->
+            <div class="none" v-show="isShow">
+                <img src="/static/images/public/none.png"/>
+                <p>当前还没有付款码,可点击右上角图标去添加</p>
+            </div>
+
         </div>
         <p class="foot-height"></p>
         <!-- <input class="submit" type="button" value="提交" @click="setAgents()" /> -->
@@ -48,6 +55,7 @@ export default {
     data() {
         return {
             imgList: [],
+            isShow:false,
             token:this.$store.getters.optuser.Authorization
         }
     },
@@ -67,6 +75,11 @@ export default {
                 _that.$store.commit('hideLoading')
                 if(list.status == 200){
                     _that.imgList =list.data
+                    if(res.data.data==""){
+                        this.isShow=true
+                    }else{
+                        this.isShow=false
+                    }
                 }
                 // else if(list.status === 999){
                 //     _that.$store.commit('del_token'); //清除token
@@ -163,6 +176,15 @@ export default {
             .bg-3
                 background:url('../../../static/images/sell/ysf_bg.png')
                 background-size 100% 100%  
+        .none
+            text-align center
+            margin-top 50%
+            font-size 28px
+            img
+                width 80px
+            p
+                margin 20px auto
+
         .foot-height
             width 100%
             height 100px

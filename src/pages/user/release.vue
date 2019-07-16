@@ -19,6 +19,12 @@
                     <div class="num">剩余商品数量{{item.stock}}</div>
                 </div>
             </div>
+            <!-- 无数据 -->
+            <div class="none" v-show="isShow">
+                <img src="/static/images/public/none.png"/>
+                <p>当前还没有发布信息</p>
+            </div>
+
         </div>
     </div>
 </template>
@@ -30,6 +36,7 @@
 	data() {
 		return {
             releaseList:'',
+            isShow:false,
         };
     },
     mounted(){
@@ -47,6 +54,11 @@
                 data:params
             }).then((res)=>{
                 if(res.data.status === 200){
+                    if(res.data.data==""){
+                        this.isShow=true
+                    }else{
+                        this.isShow=false
+                    }
                     this.releaseList = res.data.data
                     // console.log(this.siteList)
                 } else {
@@ -91,7 +103,14 @@
                         font-size 26px
                         line-height 75px
                         color #151515        
-
+            .none
+                text-align center
+                margin-top 50%
+                font-size 28px
+                img
+                    width 80px
+                p
+                    margin 20px auto
 
 img 
     display block
