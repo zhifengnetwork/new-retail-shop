@@ -45,22 +45,21 @@
         };
     },
     created(){
-        window.scrollTo(0,0) 
+        this.requestShopAudit()
         this.$store.commit('showLoading')  
+        window.addEventListener('scroll', this.scrollBottom);
     },
     mounted(){ 
-        this.requestShopAudit()
-        // window.addEventListener('scroll', this.scrollBottom);
+        
+        // 
     },
     methods: {
         scrollBottom(){
-            let _this = this;
-            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            let windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-            let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-            if(scrollTop + windowHeight == scrollHeight){
-                _this.page++;
-                _this.requestShopAudit();
+            let innerHeight = document.querySelector('#app').clientHeight
+            let outerHeight = document.documentElement.clientHeight
+            let scrollTop = document.documentElement.scrollTop
+            if (outerHeight + scrollTop === innerHeight + 57) {
+                this.requestShopAudit()
             }
         },
         submitAudit(fz_order_id,key){
@@ -94,20 +93,21 @@
                 url:url,
                 data:params
             }).then((res)=>{
+                // this.isShow=false
                 if(res.data.status === 200){
                     if(res.data.data==""){
                         this.isShow=true
                     }else{
-                        this.isShow=false
+                        this.page =this.page+1
                     }
                     if(this.page == 1){ 
-                        this.auditList = res.data.data                           
+                        this.auditList = res.data.data                       
                     }else{
-                        if(res.data.data.length != ''){
-                            //如果有数据,拼接数组
+                        if(res.data.data.length > 0){        //如果有数据,拼接数组
                             this.auditList = this.auditList.concat(res.data.data); 
+                            //  this.auditList = [...this.auditList, ...res.data.data]
                         }else{
-                            this.ispage = false
+                            
                         }
                     }
                 }

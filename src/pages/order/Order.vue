@@ -70,7 +70,8 @@
                             </div>
                             <!-- 待发货 -->
                             <div v-if="item.status == 2">
-                                <router-link :to="'/Order/ReturnRequest?order_id='+item.order_id"><span class="btn red">退款</span></router-link>
+                                <router-link v-if="item.is_refund==1" :to="'/Order/ReturnRequest?order_id='+item.order_id"><span class="btn red">退款</span></router-link>
+                                <span v-else="" class="btn red">查看物流</span>
                             </div>
                             <!-- 待收货 -->
                             <div v-if="item.status == 3">
@@ -196,7 +197,7 @@
                 </ul> -->
 
                  <!-- 数据加载完提示 -->
-                <div class="end-wrap" style="display:none">
+                <div class="end-wrap" v-show="isBotom">
                     <p>我是有底线哦~~</p>
                 </div>
 
@@ -248,6 +249,7 @@ export default {
             allOrders:[],//全部订单
             page:1,//页数
             ispage:true,//是否请求数据
+            isBotom:false,
             order_id:'',
             pay_type:'',//支付方式
             token:this.$store.getters.optuser.Authorization,
@@ -269,10 +271,8 @@ export default {
             this.$router.replace('/Order?type='+index);
             this.type = this.$route.query.type;
             this.page = 1;
+            this.ispage=true
             this.requestData();
-            if(index == 5){
-                
-            }
         },
         scrollBottom(){
             let _this = this;
@@ -280,12 +280,13 @@ export default {
             let windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
             let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
             if(scrollTop + windowHeight == scrollHeight){
-                _this.page++;
+                this.page ++;
                 _this.requestData();
             }
         },
         // 页面数据渲染
         requestData(){
+            // this.isBotom =false
             let type = null;
             switch(this.$route.query.type){
                 case '0':
@@ -317,13 +318,16 @@ export default {
                 .then( (res)=>{
                     if(res.data.status == 200){
                         if(this.page == 1){ 
-                           this.allOrders = res.data.data                           
+                           this.allOrders = res.data.data  
+                           this.isBotom =false                         
                         }else{
-                            if(res.data.data.length != ''){
+                            if(res.data.data.length > 0){
                                //如果有数据,拼接数组
                                 this.allOrders = this.allOrders.concat(res.data.data); 
                             }else{
                                 this.ispage = false
+                                this.isBotom =true
+                                this.page =1
                             }
                         }                        
                     }else if(res.data.status == 999){
