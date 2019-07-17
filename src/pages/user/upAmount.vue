@@ -8,15 +8,15 @@
         <div class="content">
             <div class="item_wrap">
                 <div class="inp"> 
-                    <input type="text" placeholder="请输入充值金额"/>
+                    <input type="number" placeholder="请输入充值金额" v-model="money"/>
                 </div>
                 <van-radio-group v-model="radio">
-                    <van-radio name="1" checked-color="#f30c0c">微信</van-radio>
-                    <van-radio name="2" checked-color="#f30c0c">支付宝</van-radio>
+                    <van-radio name="2" checked-color="#f30c0c">微信</van-radio>
+                    <van-radio name="3" checked-color="#f30c0c">支付宝</van-radio>
                 </van-radio-group>
             </div>
             <!-- 充值按钮 -->
-            <div class="btn">立即充值</div>
+            <div class="btn" @click="PopData()">立即充值</div>
         </div>    
     </div>
 </template>
@@ -28,29 +28,38 @@
 		name: 'upAmount',
 		data(){
             return{
-                radio: '1',
+                radio: '2',
+                money:''
             }
 			
         },
-        mounted() {
-            //this.PopData();
-        },
         methods: {
-            // PopData(){
-            //     var url = "user/estimate_list"
-            //     this.$axios.post(url,{
-            //         token:this.$store.getters.optuser.Authorization
-            //     })
-            //     .then((res)=>{                  
-            //         var that = this
-            //         var item = res.data.data;
-            //         if(res.data.status === 200){
-            //             that.list = item.data;
-            //         }else{
-            //             that.$toast(res.msg)
-            //         }
-            //     })
-            // }
+            PopData(){
+                var that = this 
+                if(that.money === '') {
+                    that.$toast('金额不能为空')
+                    return false
+                } else if(that.money <= 0.01) {
+                    that.$toast('金额不能低于0.01元')
+                    return false
+                } else {
+                    var url = "pay/recharge_pay"
+                    that.$axios.post(url,{
+                        token:that.$store.getters.optuser.Authorization,
+                        'money':that.money,
+                        'pay_type':that.radio
+                    })
+                    .then((res)=>{    
+                        console.log(res)    
+                        if(res.data.status === 200){
+                            window.location.href =res.data.data.url 
+                        }else{
+                            that.$toast('调用微信支付接口')
+                        }
+                    })
+                }
+                
+            }
         },
         components:{
             UpHeader,
@@ -73,6 +82,7 @@
                         width 500px
                         color #151515
                         font-size 24px
+                        line-height 65px
                 .van-radio-group
                     padding 26px 0
                     display flex
