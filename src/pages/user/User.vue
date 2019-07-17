@@ -294,10 +294,10 @@
                 font-size 0
                 .user_item
                     padding 30px 0 35px 0
+                    display flex
+                    justify-content space-around
                 .user_item .earnings,.balance,.collection
-                    display inline-block
-                    vertical-align top
-                    width 33.18%
+                    flex 1
                     font-size 28px
                     color #151515
                     text-align center
@@ -316,12 +316,16 @@
                     font-size 36px
                     color #e06f14
         .content
+            padding 0 24px
+            box-sizing border-box
+            margin-top 80px
             .order_wrap
-                margin 87px 24px 14px 24px
+                padding 0 20px
+                box-sizing border-box
                 background #fff
-                border-radius 10px           
+                border-radius 10px    
+                margin-bottom 14px       
                 .title_wrap
-                    margin 0 18px
                     border-bottom 1.5px solid #e6e6e6
                     h2
                         display inline-block
@@ -342,35 +346,36 @@
                             background url(/static/images/user/leftArrow.png) no-repeat
                             background-size 100% 100%
             .item_wrap
-                margin 16px 0 0
-                padding 0 0 22px
                 font-size 0
-                .item li 
-                    display inline-block
-                    width 19.8%
-                    color #2f2f2f
-                    font-size 26px
-                    text-align center
-                    line-height 55px
-                    border-right 1.5px solid #e6e6e6
-                .item li:last-child
-                    border none   
-                .img 
-                    position relative
-                    margin 0 auto
-                    width 48px
-                    height 38px 
-                    .info-icon
-                        position absolute
-                        border 2px solid #fc822e
-                        right 15%
-                        top -35%
-                        font-size 20px
-                        color #fea15a
-                        background #ffffff
+                padding 30px 0 10px
+                box-sizing border-box
+                .item
+                    display flex
+                    justify-content space-around
+                    li 
+                        flex 1
+                        color #2f2f2f
+                        font-size 26px
                         text-align center
+                        line-height 55px
+                        border-right 1.5px solid #e6e6e6
+                        &:last-child
+                            border none
+                        .img 
+                            position relative
+                            margin 0 auto
+                            width 48px
+                            height 38px 
+                            .info-icon
+                                position absolute
+                                border 2px solid #fc822e
+                                right 15%
+                                top -35%
+                                font-size 20px
+                                color #fea15a
+                                background #ffffff
+                                text-align center
         .list_wrap
-            margin 0 24px 116px 24px
             padding 16px 22px
             background #fff                               
             border-radius 10px
