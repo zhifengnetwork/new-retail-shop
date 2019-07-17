@@ -7,7 +7,8 @@
             <div class="tbody"></div>
             <div class="tfoot">
                 <span class="btn" @click="handleCancel">取消</span>
-                <span class="confirm-btn btn"><input type="button" value="去付款" @click="topPayServiceCharge()"/></span>
+                <!-- <span class="confirm-btn btn"><input type="button" value="去付款" @click="topPayServiceCharge()"/></span> -->
+                <router-link to="/Pay/PayWay" class="confirm-btn btn"><input type="button" value="去付款" @click="topPayServiceCharge()"/></router-link>
             </div>
         </div>
     </div>
@@ -31,7 +32,7 @@ export default {
     },
     methods:{
         //给平台支付30服务费
-        topPayServiceCharge(){
+        /*topPayServiceCharge(){
             var _that =this;
             _that.$axios.post('pay/release_wx_pay',{
                 token:this.$store.getters.optuser.Authorization,
@@ -41,11 +42,10 @@ export default {
                 var list = res.data;
                 // console.log(list)
                 if(list.status == 200){
-                    // _that.$router.push({
-					// 	path: '/sell/Sell',
-					// 	name: 'Sell',
-                    // }) 
-                    window.location.href =res.data.data.url
+                    this.$router.push({
+                        path: '/Pay/PayWay'
+                    })
+                    // window.location.href =res.data.data.url    //拉起支付宝链接，暂时注解
                 }
                 else if(res.data.status == 999){
 					this.$store.commit('del_token'); //清除token
@@ -58,7 +58,7 @@ export default {
                     _that.$toast(list.msg)
                 }
             })
-        },
+        },*/
 
         //点击取消
         handleCancel(){

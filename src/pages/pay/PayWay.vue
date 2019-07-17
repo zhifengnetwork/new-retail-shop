@@ -58,7 +58,7 @@ export default {
     data() {
         return {
             payDefault:'微信支付',
-            order_id:'',
+            order_id:this.$route.query.order_id,
             pay_id:'',//支付方式id
             pay_type:[],//所有支付方式
             payPassword:'',//支付密码
@@ -68,7 +68,7 @@ export default {
         }
     },
     created(){
-        this.order_id = this.$route.query.order_id;
+        // this.order_id = this.$route.query.order_id;
         this.requestData();
     },
     methods:{
@@ -133,22 +133,46 @@ export default {
                 this.showKeyboard = true;
                 this.paswPopup =true
             }
-
-
-
-
-
             else if(pay_id == 2){
                this.$toast("调用微信支付接口");
             }
             else if(pay_id == 3){
-                // this.$toast("调用支付宝支付接口");
-                this.requestInfo()
+                this.$toast("调用支付宝支付接口");
+                // this.requestInfo()               //拉起支付宝链接，暂时注解
             }
             // else if(pay_id == 4){
             //     this.$toast("货到付款");
             // }
         },
+
+        topPayServiceCharge(){
+            var _that =this;
+            _that.$axios.post('pay/release_wx_pay',{
+                token:this.$store.getters.optuser.Authorization,
+                pay_type:1,
+                pwd:this.payPassword         
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status == 200){
+                    _that.$toast(list.msg)
+                    setTimeout(()=>{
+                        this.$router.push('/sell/Sell')
+                    },1500)
+                }else if(list.status == 308){
+                    this.$router.push('/user/upAmount')
+                }else if(res.data.status == 999){
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+                else{
+                    _that.$toast(list.msg)
+                }
+            })
+        },
+
 
         /**
          * 余额支付:输入密码
@@ -158,7 +182,8 @@ export default {
             this.$axios.post(url,{
                 token:this.$store.getters.optuser.Authorization,
                 order_id:this.$route.query.order_id,
-                pay_type:this.pay_id, 
+                // pay_type:this.pay_id, 
+                pay_type:1,                         //默认余额支付
                 pwd:this.payPassword
             }).then((res) => {
                 if(res.data.status === 200){  
@@ -166,20 +191,20 @@ export default {
                          // 余额支付成功               
                         this.$toast.success({message:res.data.msg,duration: 2000});
                         this.requestData();
-                        setTimeout(() => {          //支付成功，2s跳转到订单详情页
+                        setTimeout(() => {                   //支付成功，2s跳转到订单详情页
                             this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
                         },2000)
                     }
-                    else if(this.pay_id==3){
-                        window.location.href =res.data.data.url
-                    }
+                    // else if(this.pay_id==3){             //拉起支付宝链接，暂时注解
+                    //     window.location.href =res.data.data.url
+                    // }
                     
                 }else if(res.data.status === 888){
                     // 设置支付密码
                     this.$toast.fail(res.data.msg);
                     this.$router.push('/user/SetPassword')
-                }else if(res.data.status == 999){       // token过期
-                    this.$store.commit('del_token'); //清除token
+                }else if(res.data.status == 999){               // token过期
+                    this.$store.commit('del_token');              //清除token
                     setTimeout(()=>{
                         this.$router.push('/Login')
                     },1000)
@@ -193,9 +218,14 @@ export default {
         onInput(key) {
             this.payPassword = (this.payPassword + key).slice(0, 6);
             if(this.payPassword.length === 6){ 
-                // 请求数据
-                this.requestInfo()
-                 // 关闭密码输入
+                if(typeof(this.order_id)=='undefined'){
+                    this.topPayServiceCharge()
+                }else{
+                     
+                    this.requestInfo()                  // 请求数据
+                }
+
+                // 关闭密码输入
                 this.showKeyboard = false
                 this.showPwd = false
                 this.paswPopup =false

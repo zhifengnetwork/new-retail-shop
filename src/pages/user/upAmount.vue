@@ -37,27 +37,25 @@
             PopData(){
                 var that = this 
                 if(that.money === '') {
-                    that.$toast('金额不能为空')
-                    return false
-                } else if(that.money <= 0.01) {
-                    that.$toast('金额不能低于0.01元')
-                    return false
-                } else {
-                    var url = "pay/recharge_pay"
-                    that.$axios.post(url,{
-                        token:that.$store.getters.optuser.Authorization,
-                        'money':that.money,
-                        'pay_type':that.radio
-                    })
-                    .then((res)=>{    
-                        console.log(res)    
-                        if(res.data.status === 200){
-                            window.location.href =res.data.data.url 
-                        }else{
-                            that.$toast('调用微信支付接口')
-                        }
-                    })
+                    return that.$toast('金额不能为空')
+                } 
+                if(that.money <= 0.01) {
+                    return that.$toast('金额不能低于0.01元')
                 }
+                if(that.radio==2){return that.$toast('调用微信接口')} 
+                var url = "pay/recharge_pay"
+                that.$axios.post(url,{
+                    token:that.$store.getters.optuser.Authorization,
+                    'money':that.money,
+                    'pay_type':that.radio
+                })
+                .then((res)=>{      
+                    if(res.data.status === 200){
+                        window.location.href =res.data.data.url 
+                    }else{
+                        that.$toast(res.data.msg)
+                    }
+                })
                 
             }
         },
