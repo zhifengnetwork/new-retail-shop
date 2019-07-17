@@ -209,6 +209,7 @@ export default {
         this._getGoodsData()        //商品信息
         this._getCommentList()      //评论
         this.get_default_address()
+        window.addEventListener('scroll', this.scrollBottom);
     },
     methods:{
         showBigImg(img){
@@ -231,6 +232,16 @@ export default {
         },
 
          /*****************************收藏、评论*********************8***** */
+
+        scrollBottom(){
+            let innerHeight = document.querySelector('#app').clientHeight
+            let outerHeight = document.documentElement.clientHeight
+            let scrollTop = document.documentElement.scrollTop
+            if (outerHeight + scrollTop === innerHeight + 57) {
+                this. _getCommentList()
+            }
+        },
+
         _timeStampForwardAate(timestamp){            //时间戳转日期
             var date;
             if (timestamp=="" || "undefined" == typeof(timestamp)){
@@ -250,7 +261,19 @@ export default {
             .then((res)=>{
                 var list = res.data;
                 if(list.status == 1){
-                    _that.commentList =list.data
+                    if(res.data.data.length > 0){  
+                        this.page ++;
+                    }
+                    if(this.page == 1){ 
+                        _that.commentList = res.data.data                       
+                    }else{
+                        if(res.data.data.length > 0){        //如果有数据,拼接数组
+                            _that.commentList = _that.commentList.concat(res.data.data); 
+                            //  this.auditList = [...this.auditList, ...res.data.data]
+                        }else{
+                            
+                        }
+                    }
                     for(var i in _that.commentList){
                         _that.commentList[i].times =_that._timeStampForwardAate(_that.commentList[i].add_time)
                     }
