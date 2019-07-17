@@ -35,7 +35,7 @@
 		<div class="gift-area">
 			<div class="heading">
 				<i class="icon iconfont icon-lipin"></i>
-				<h3>礼品专区</h3>
+				<h3>活动专区</h3>
 			</div>
 			<div class="gift-list">
 				<div class="single-item" v-for="(item,index) in giftData" :key="index">
