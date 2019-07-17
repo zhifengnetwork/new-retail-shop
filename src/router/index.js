@@ -14,9 +14,9 @@ import EditPassword from '@/pages/login/EditPassword'
 import Home from '@/pages/home/Home'
 // 首页弹窗
 import Popup from '@/pages/home/Popup'
-//挂卖区
+// 挂卖区
 import Sell from '@/pages/sell/Sell'
-//上传评证
+// 上传评证
 import UploadDocuments from '@/pages/sell/UploadDocuments'
 
 // 搜索
@@ -25,13 +25,13 @@ import Search from '@/pages/search/Search'
 // 分类
 import Category from '@/pages/category/Category'
 
-//商品详情
+// 商品详情
 import Details from '@/pages/details/Details'
 
 // 购物车
 import Cart from '@/pages/cart/Cart'
 
-//付款
+// 付款
 import Payment from '@/pages/sell/Payment'
 
 // 订单列表
@@ -68,10 +68,14 @@ import personalData from '@/pages/user/personalData'
 import shouyilist from '@/pages/user/shouyilist'
 // 账户余额
 import theAccountBalance from '@/pages/user/theAccountBalance'
+// 充值记录
+import topupRecord from '@/pages/user/topupRecord'
 // 提现明细
 import theWithdrawal from '@/pages/user/theWithdrawal'
 // 账单明细
 import billingDetails from '@/pages/user/billingDetails'
+// 充值金额
+import upAmount from '@/pages/user/upAmount'
 // 账户提现
 import withdrawal from '@/pages/user/withdrawal'
 // 我的团队
@@ -100,11 +104,11 @@ import Collect from '@/pages/user/Collect'
 import release from '@/pages/user/release'
 // 商家审核
 import ShopAudit from '@/pages/user/ShopAudit'
-//编辑付款码
+// 编辑付款码
 import EditPaymentCode from '@/pages/user/EditPaymentCode'
-//申请代理
+// 申请代理
 import Agents from '@/pages/user/Agents'
-//付款码
+// 付款码
 import PaycodeList from '@/pages/user/PaycodeList'
 // 收货地址
 import Address from '@/pages/user/address/Address'
@@ -335,11 +339,25 @@ const router= new Router({
 			component:() => import('@/pages/user/theAccountBalance'),
 			meta:{requireAuth:true}
 		},
+		// 充值金额
+		{
+			path: '/user/upAmount',
+			name: 'upAmount',
+			component:() => import('@/pages/user/upAmount'),
+			meta:{requireAuth:true}
+		},
 		// 账户提现
 		{
 			path: '/user/withdrawal',
 			name: 'withdrawal',
 			component:() => import('@/pages/user/withdrawal'),
+			meta:{requireAuth:true}
+		},
+		// 充值记录
+		{
+			path: '/user/topupRecord',
+			name: 'topupRecord',
+			component:() => import('@/pages/user/topupRecord'),
 			meta:{requireAuth:true}
 		},
 		// 提现明细
