@@ -75,7 +75,7 @@ export default {
             })
             .then((res)=>{
                 var list = res.data;
-                if(list.status == 200){
+                if(list.status === 200){
                     _that.$toast('上传成功...')
                     setTimeout(() => {
                         _that.$router.push('/Payment')

@@ -205,7 +205,7 @@ export default {
         }
     },
     created(){
-        // var that = this;
+        this.$store.commit('showLoading');// 调用loading 
         this._getGoodsData()        //商品信息
         this._getCommentList()      //评论
         this.get_default_address()
@@ -401,14 +401,11 @@ export default {
                 url:url,
                 data: params
             }).then((res)=>{
-                if(res.data.status ===200){
-                     this.$store.commit('hideLoading')   
+                if(res.data.status ===200){ 
                     that.goodsData =res.data.data; 
                     that.goods = res.data.data;    //商品详情
                     that.good =  res.data.data.spec.spec_attr; //商品规格
                     that.isCollect=that.goods.collection;
-                    // that.esku=res.data.data.productAttr;
-                    this.$store.commit('hideLoading')
                     res.data.data.productAttr.forEach(
                         function(item){
                             that.esku+=item.attr_name+'、';
@@ -418,8 +415,16 @@ export default {
                 for (var i in that.goods.spec.goods_sku){  
                     that.shopItemInfo[that.goods.spec.goods_sku[i].sku_attr1] = that.goods.spec.goods_sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
                 }
+
+                if(res.data.status == 999){
+                    this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+                }
                 //初始化规格
                 this.initializeSpecification();
+                this.$store.commit('hideLoading')
             })
         },
         initializeSpecification(){
