@@ -64,11 +64,9 @@
                     data:params
                 })
                 .then((res)=>{
-                    console.log(res)
                     if(res.data.status ===200){
 						this.detList = res.data.data.list;
 						this.$store.commit('hideLoading')
-                        console.log(this.detList)
                     }else{
                         Toast(res.data.msg)
                     }
