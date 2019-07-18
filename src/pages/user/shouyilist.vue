@@ -10,17 +10,17 @@
 
                 <div class="title_wrap">
                     <ul class="title">
-                        <li>名称/下单ID</li>
                         <li>订单号</li>
                         <li>佣金</li>
+                        <li>描述</li>
                     </ul>
                 </div>
 
                 <div class="list_wrap">
                     <ul class="bound" v-for="(item,index) in list" :key="index">
-                        <li>{{item.user_id}}</li>
                         <li>{{item.order_sn}}</li>
                         <li>{{item.money}}</li>
+                        <li>{{item.desc}}</li>
                     </ul>
                 </div>
 

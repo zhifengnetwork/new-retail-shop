@@ -7,6 +7,13 @@
 		</Comm-Header>
         <div class="content">
             <div class="item_wrap">
+                <div class="tit_wrap">
+					<ul>
+						<li @click="seveData(1)" :class="[isOn?'on':'']">一级直推</li>
+						<li @click="seveData(2)" :class="[isOn?'':'on']">其他成员</li>
+					</ul>
+				</div>
+
                 <div class="title_wrap">
                     <ul class="title">
                         <li>用户ID</li>
@@ -16,7 +23,7 @@
                     </ul>
                 </div>
 
-                <div class="list_wrap">
+                <div class="list_wrap" v-show="nowIndex === 0">
                     <ul class="bound" v-for="(item,key) in teamList" :key="key">
                         <li>{{item.id}}</li>
                         <li>{{item.realname}}</li>
@@ -37,26 +44,37 @@
 		name: 'commissionlist',
 		data(){
             return{
-                teamList:[]
+                teamList:[],
+                nowIndex:0,
+				isOn:true,
             }
 			
         },
         mounted(){
-            this.seveData()
+            this.seveData(1);
         },
         methods:{
-            seveData(){
-                var _that =this;
-                _that.$axios.post('user/team_list',{
-                    token:this.$store.getters.optuser.Authorization            
+            seveData(typeId){
+                var that =this;
+                var url = 'user/team_list'
+                if(typeId==1){
+					that.isOn=true;
+				}else{
+					that.isOn=false;
+                }
+                var params = new URLSearchParams();
+				params.append('token', that.$store.getters.optuser.Authorization);// 要传给后台的参数值token
+				params.append('type', typeId)
+                that.$axios({
+                    method:"post",
+                    url:url,
+                    data:params
                 })
                 .then((res)=>{
-                    var list = res.data;
-
-                    if(list.status == 200){
-                        _that.teamList =list.data
+                    if(res.data.status ===200){
+						this.teamList = res.data.data;                       
                     }else{
-                        _that.$toast(list.msg)
+                        Toast(res.data.msg)
                     }
                 })
             }
@@ -75,6 +93,18 @@
             padding-top 88px
             .item_wrap
                 margin 28px 24px 0
+                .tit_wrap
+                    font-size 0
+                    background #fff
+                .tit_wrap ul li
+                    display inline-block
+                    width 50%
+                    font-size 30px
+                    text-align center
+                    line-height 65px
+                    font-weight 550
+                .tit_wrap ul li.on
+                    color #ef1010
                 .title_wrap
                     background #c6e1ff
                     .title

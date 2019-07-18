@@ -13,6 +13,7 @@
                         <li>下单时间</li>
                         <li>订单号</li>
                         <li>金额</li>
+                        <li>描述</li>
                     </ul>
                 </div>
 
@@ -21,6 +22,7 @@
                         <li>{{item.pay_time | formatDate}}</li>
                         <li>{{item.order_sn}}</li>
                         <li>{{item.order_amount}}</li>
+                        <li></li>
                     </ul>
                 </div>
 
@@ -101,7 +103,7 @@
                         li 
                             flex 1
                             text-align center
-                            line-height 55px
+                            line-height 55px  
                 .list_wrap ul
                     display flex
                 .list_wrap ul li 
@@ -111,6 +113,6 @@
                 .list_wrap .bound
                     background #f3f9ff
                 .list_wrap ul:nth-child(even)
-                    background #ecf4fc                         
+                    background #ecf4fc                          
 
 </style>
