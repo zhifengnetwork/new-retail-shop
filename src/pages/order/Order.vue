@@ -71,7 +71,6 @@
                             <!-- 待发货 -->
                             <div v-if="item.status == 2">
                                 <router-link v-if="item.is_refund==1" :to="'/Order/ReturnRequest?order_id='+item.order_id"><span class="btn red">退款</span></router-link>
-                                <span v-else="" class="btn red">查看物流</span>
                             </div>
                             <!-- 待收货 -->
                             <div v-if="item.status == 3">
