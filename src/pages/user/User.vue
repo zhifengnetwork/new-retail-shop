@@ -316,9 +316,9 @@
                     font-size 36px
                     color #e06f14
         .content
+            margin-top 100px
             padding 0 24px 108px
             box-sizing border-box
-            margin-top 80px
             .order_wrap
                 padding 0 20px
                 box-sizing border-box
