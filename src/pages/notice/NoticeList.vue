@@ -9,17 +9,9 @@
         <div class="content">
             <div class="notice-list">
                 <ul>
-                    <router-link to="/notice/NoticeDetails" tag="li">
-                        <h3>关于销售国家开发银行2019七期金融债券发的销售通告</h3>
-                        <span class="date">2019-05-15</span>
-                    </router-link>
-                    <router-link to="/notice/NoticeDetails" tag="li">
-                        <h3>关于销售国家开发银行2019七期金融债券发的销售通告</h3>
-                        <span class="date">2019-05-15</span>
-                    </router-link>
-                    <router-link to="/notice/NoticeDetails" tag="li">
-                        <h3>关于销售国家开发银行2019七期金融债券发的销售通告</h3>
-                        <span class="date">2019-05-15</span>
+                    <router-link :to="'/notice/NoticeDetails?item_id='+item.id" tag="li" v-for="(item,index) in NotList" :key="index">
+                        <h3>{{item.desc}}</h3>
+                        <span class="date">{{item.create_time | formatDate}}</span>
                     </router-link>
                 </ul>
             </div>
@@ -35,11 +27,51 @@ export default {
     name:'NoticeList',
     data(){
         return{
-           
+           NotList:[],
         }
     },
+    mounted() {
+        this.NotData()
+    },
     methods:{
-       
+        NotData() {
+            var url = "user/announce_list"
+            this.$axios.post(url,{
+                token:this.$store.getters.optuser.Authorization
+            })
+            .then((res)=>{                
+                var that = this
+                if(res.data.status === 200){
+                    that.NotList = res.data.data.list;
+                }else{
+                    that.$toast(res.msg)
+                }
+            })
+        },
+    },
+    filters: {
+        // 日期格式化
+        formatDate: function (time) {
+            let date = new Date(time*1000);
+            let y = date.getFullYear();
+
+            let MM = date.getMonth() + 1;
+            MM = MM < 10 ? ('0' + MM) : MM;
+
+            let d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+
+            let h = date.getHours();
+            h = h < 10 ? ('0' + h) : h;
+
+            let m = date.getMinutes();
+            m = m < 10 ? ('0' + m) : m;
+
+            let s = date.getSeconds();
+            s = s < 10 ? ('0' + s) : s;
+
+            return y + '-' + MM + '-' + d ;
+        }
     },
     components:{
         TopHeader

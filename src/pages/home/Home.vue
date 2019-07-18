@@ -17,7 +17,7 @@
 		</div>
 		<!-- 公告 -->
 		<div class="notice" v-for="(item,index) in filterNotice" :key="index">
-			<router-link to="/notice/NoticeDetails" tag="div">
+			<router-link :to="'/notice/NoticeDetails?item_id='+item.id" tag="div">
 				<van-notice-bar
 					:text = "item.title"
 					left-icon="volume-o"

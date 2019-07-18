@@ -17,10 +17,10 @@
 
             <div class="jump-link">
                 <router-link to="/Register">注册账号</router-link>
-                <router-link to="" class="appDown">app下载</router-link>
+                <div class="appDown" @click="download()">APP下载</div>
+                <!-- <router-link to="" class="appDown">APP下载</router-link> -->
                 <router-link to="/EditPassword">忘记密码</router-link>
             </div>
-
         </div>
        
     </div>
@@ -102,7 +102,23 @@ export default {
                 return false
             }
             return true
-        }
+        },
+        // 判断ios终端/android终端
+        download() {
+            let ua = navigator.userAgent.toLowerCase();
+            let isAndroid = ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1; //android终端
+            let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);//ios终端
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                window.location = 'https://aifabu.com/MzMV'
+
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                window.location = 'https://aifabu.com/B3Eb'
+            }
+
+            function isWeixinBrowser() {
+                return (/micromessenger/.test(ua)) ? true : false;
+            }
+        },
     }
 }
 </script>
@@ -183,6 +199,7 @@ export default {
             .appDown
                font-size 34px
                text-decoration underline
+               color #fa9f71
 
 
 </style>

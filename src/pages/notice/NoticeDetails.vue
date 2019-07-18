@@ -6,8 +6,8 @@
 		</TopHeader>
         <div class="height-88"></div>
         <div class="content">
-            <h1>砍价免费下线通知</h1>
-            <p>砍价免费下线通知:尊敬的用户，因活动调整，火车砍价免单活动暂时下线，砍价成功未提现用户可以联系客服进行人工提现，带来不便，敬请谅解！</p>
+            <h1>{{NotiList.title}}</h1>
+            <p>{{NotiList.desc}}</p>
         </div>
 
     </div>
@@ -20,11 +20,29 @@ export default {
     name:'NoticeDetails',
     data(){
        return{
-           
+           announceId:this.$route.query.item_id,
+           NotiList:[],
         }
     },
+    mounted() {
+        this.NotiData()
+    },
     methods:{
-        
+        NotiData() {
+            var url = "user/announce_edit"
+            this.$axios.post(url,{
+                token:this.$store.getters.optuser.Authorization,
+                'announce_id':this.announceId
+            })
+            .then((res)=>{                 
+                var that = this
+                if(res.data.status === 200){
+                    that.NotiList = res.data.data;
+                }else{
+                    that.$toast(res.msg)
+                }
+            })
+        },
     },
     components:{
         TopHeader
