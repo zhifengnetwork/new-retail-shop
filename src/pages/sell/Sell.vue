@@ -115,6 +115,12 @@
                             this.$router.push('/Payment')
                         },1000)
                     } 
+                    else if(list.status==309){
+                        _that.$toast(list.msg)
+                        setTimeout(()=>{
+                            this.$router.push('/user/PaycodeList')
+                        },1000)
+                    } 
                     else if(res.data.status == 999){
                         _that.$store.commit('del_token'); //清除token
                         setTimeout(()=>{
