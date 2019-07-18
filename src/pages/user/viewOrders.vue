@@ -22,7 +22,7 @@
                         <li>{{item.pay_time | formatDate}}</li>
                         <li>{{item.order_sn}}</li>
                         <li>{{item.order_amount}}</li>
-                        <li></li>
+                        <li>{{item.note}}</li>
                     </ul>
                 </div>
 
