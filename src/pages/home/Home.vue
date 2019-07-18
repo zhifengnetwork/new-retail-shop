@@ -17,12 +17,15 @@
 		</div>
 		<!-- 公告 -->
 		<div class="notice" v-for="(item,index) in filterNotice" :key="index">
-			<van-notice-bar
-				:text = "item.title"
-				left-icon="volume-o"
-				color="#ffffff"
-  				background="#f92a0f"
-			/>
+			<router-link to="/notice/NoticeDetails" tag="div">
+				<van-notice-bar
+					:text = "item.title"
+					left-icon="volume-o"
+					color="#ffffff"
+					background="#f92a0f"
+				/>
+			</router-link>
+			<router-link  class="more" to="/notice/NoticeList" tag="div">更多</router-link>
 		</div>
 
 		<!-- 预售 -->
@@ -296,6 +299,7 @@ export default {
 			height 380px
 			display block
 	.notice
+		position relative
 		margin-bottom 20px
 		.van-notice-bar
 			height 40px
@@ -309,6 +313,14 @@ export default {
 			content ''
 		.van-notice-bar >>> .van-notice-bar__left-icon, .van-notice-bar__right-icon
 			min-width 33px
+	.more
+		padding 0 15px
+		position absolute
+		right 0px
+		top 0
+		color #fff
+		line-height 40px
+		background rgb(249, 42, 15)
 	.gift-area
 		padding 0 .25rem
 		box-sizing border-box

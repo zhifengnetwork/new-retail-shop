@@ -19,6 +19,10 @@ import Sell from '@/pages/sell/Sell'
 // 上传评证
 import UploadDocuments from '@/pages/sell/UploadDocuments'
 
+// 公告
+import NoticeList from '@/pages/notice/NoticeList'
+import NoticeDetails from '@/pages/notice/NoticeDetails'
+
 // 搜索
 import Search from '@/pages/search/Search'
 
@@ -174,6 +178,25 @@ const router= new Router({
 			component:() => import('@/pages/sell/UploadDocuments'),
 			meta:{requireAuth:true}
 		},
+
+		/**
+		 * 公告
+		 */
+		// 公告列表
+		{
+			path: '/notice/NoticeList',
+			name: 'NoticeList',
+			component:() => import('@/pages/notice/NoticeList'),
+			meta:{requireAuth:true}
+		},
+		// 公告详情
+		{
+			path: '/notice/NoticeDetails',
+			name: 'NoticeDetails',
+			component:() => import('@/pages/notice/NoticeDetails'),
+			meta:{requireAuth:true}
+		},
+
 		/**
 		 * 搜索
 		 */
