@@ -47,7 +47,7 @@
     created(){
         this.requestShopAudit()
         this.$store.commit('showLoading')  
-        window.addEventListener('scroll', this.scrollBottom);
+        // window.addEventListener('scroll', this.scrollBottom);
     },
     mounted(){ 
         
@@ -55,11 +55,13 @@
     },
     methods: {
         scrollBottom(){
-            let innerHeight = document.querySelector('#app').clientHeight
-            let outerHeight = document.documentElement.clientHeight
-            let scrollTop = document.documentElement.scrollTop
-            if (outerHeight + scrollTop === innerHeight + 57) {
-                this.requestShopAudit()
+            let _this = this;
+            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            let windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+            if(scrollTop + windowHeight == scrollHeight){
+                _this.requestShopAudit()
+                // this.page++;
             }
         },
         submitAudit(fz_order_id,key){
@@ -98,8 +100,9 @@
                     if(res.data.data==""){
                         this.isShow=true
                     }else{
-                        this.page =this.page+1
+                        // this.page =this.page+1
                     }
+
                     if(this.page == 1){ 
                         this.auditList = res.data.data                       
                     }else{
@@ -124,6 +127,10 @@
             })
         }
     },
+    destroyed: function () {
+        window.removeEventListener('scroll', this.scrollBottom);
+    },
+
     filters: {
         // 日期格式化
         formatDate: function (time) {

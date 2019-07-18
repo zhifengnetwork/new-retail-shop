@@ -51,7 +51,8 @@
             viewData(){
                 var _that =this;
                 _that.$axios.post('user/user_order',{
-                    token:this.$store.getters.optuser.Authorization            
+                    token:this.$store.getters.optuser.Authorization,
+                    user_ids:this.$route.query.user_ids        
                 })
                 .then((res)=>{
                     var list = res.data;
