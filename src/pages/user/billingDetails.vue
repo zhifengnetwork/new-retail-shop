@@ -85,9 +85,7 @@
                 .then((res)=>{
                     console.log(res)
                     if(res.data.status ===200){
-						this.detItem= res.data.data.list;
-						
-                        
+						this.detItem= res.data.data.list;                       
                     }else{
                         Toast(res.data.msg)
                     }

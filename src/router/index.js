@@ -554,11 +554,11 @@ router.beforeEach((to,from,next) =>{
 		}else{
 			let token =localStorage.getItem('Authorization');
 			if(token === null || token === ''){		//判断是否有token
-				Dialog.confirm({
-					message: '亲，还没有登录哦!'
-				}).then(() =>{
-					next('/Login');
-				})
+				// Dialog.confirm({
+				// 	message: '亲，还没有登录哦!'
+				// }).then(() =>{
+				// 	next('/Login');
+				// })
 				next('/Login');
 			}else{
 				next()
