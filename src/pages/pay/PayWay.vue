@@ -87,9 +87,9 @@ export default {
                 if(res.data.status === 200){
                     this.pay_type = res.data.data;
                     this.pay_id = res.data.data[0].pay_type;//当前选中支付方式id
-                }
+                } 
                 else if(res.data.status == 999){
-					this.$toast(res.data.msg)
+
 					this.$store.commit('del_token'); //清除token
 					setTimeout(()=>{
 						this.$router.push('/Login')
@@ -199,7 +199,11 @@ export default {
                     //     window.location.href =res.data.data.url
                     // }
                     
-                }else if(res.data.status === 888){
+                } 
+                else if(res.data.status == 308){
+                    return this.$router.push('/user/upAmount')
+                }  
+                else if(res.data.status === 888){
                     // 设置支付密码
                     this.$toast.fail(res.data.msg);
                     this.$router.push('/user/SetPassword')

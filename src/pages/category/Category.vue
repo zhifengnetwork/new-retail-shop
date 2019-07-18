@@ -120,6 +120,9 @@ export default {
 
 <style lang="stylus" scoped>
 .Category
+	touch-action:none;
+	-webkit-overflow-scrolling: touch;
+	overflow-scrolling: touch;
 	width 100%
 	min-height 100vh
 	background-color #ffffff
