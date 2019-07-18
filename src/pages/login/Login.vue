@@ -17,6 +17,7 @@
 
             <div class="jump-link">
                 <router-link to="/Register">注册账号</router-link>
+                <router-link to="" class="appDown">app下载</router-link>
                 <router-link to="/EditPassword">忘记密码</router-link>
             </div>
 
@@ -24,7 +25,6 @@
        
     </div>
 </template>
-
 <script>
 import md5 from 'js-md5';
 export default {
@@ -180,6 +180,9 @@ export default {
             a
                 // color #1e82d2
                 color #fa9f71
+            .appDown
+               font-size 34px
+               text-decoration underline
 
 
 </style>
