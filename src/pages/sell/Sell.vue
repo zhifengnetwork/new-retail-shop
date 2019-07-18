@@ -103,6 +103,7 @@
                 })
                 .then((res)=>{
                     var list = res.data;
+                    console.log(res)
                     if(list.status == 200){
                         this.$router.push({name:'Payment'})
                     }
@@ -116,10 +117,12 @@
                         },1000)
                     } 
                     else if(list.status==309){
-                        _that.$toast(list.msg)
+                        // _that.$toast(list.msg)
+                        // console.log(111)
                         setTimeout(()=>{
                             this.$router.push('/user/PaycodeList')
                         },1000)
+                        //  _that.$toast(222)
                     } 
                     else if(res.data.status == 999){
                         _that.$store.commit('del_token'); //清除token
