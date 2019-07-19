@@ -32,7 +32,7 @@ export default {
             fileList: [],
             aValue:2,
             option1: [
-                { text: '码云闪付码', value: 1 },
+                { text: '云闪付二维码', value: 1 },
                 { text: '微信二维码', value:2 },
                 { text: '支付宝二维码', value: 3 },
             ],
