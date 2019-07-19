@@ -54,7 +54,7 @@ export default {
             list:[
                 {msg:'支付宝收款',id:0,pic:''},
                 {msg:'微信收款',id:1,pic:''},
-                {msg:'马云闪付',id:2,pic:''}
+                {msg:'码云闪付',id:2,pic:''}
             ],
             orderList:[],
             currentOrder:[],
