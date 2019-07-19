@@ -569,13 +569,15 @@ export default {
                     .-item-list
                         width: 100%;
                         display: flex;
+                        margin-bottom:20px;
                     .img-wrap
                         width 160px
                         height 160px
                         text-align center
                         margin-right 44px
                         img 
-                            max-width 100%
+                            width 100%
+                            height 100%
                     .text
                         flex 1
                         h3

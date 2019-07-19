@@ -29,7 +29,7 @@
                         <li>{{item.realname}}</li>
                         <li>{{item.mobile}}</li>
                         <li>
-                            <router-link class="my_look" to="/user/myTeam/commissionlist/viewOrders">查看</router-link>
+                            <router-link class="my_look" :to="'/user/myTeam/commissionlist/viewOrders?user_ids='+item.id">查看</router-link>
                         </li>
                     </ul>
                 </div>

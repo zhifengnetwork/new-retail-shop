@@ -209,7 +209,7 @@ export default {
         this._getGoodsData()        //商品信息
         this._getCommentList()      //评论
         this.get_default_address()
-        window.addEventListener('scroll', this.scrollBottom);
+        // window.addEventListener('scroll', this.scrollBottom);
     },
     methods:{
         showBigImg(img){

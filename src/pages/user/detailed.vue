@@ -25,7 +25,16 @@
                 </div>
 
             </div>
-        </div>    
+        </div>  
+        <!-- 无数据 -->
+        <div class="none" v-show="isShow">
+            <img src="/static/images/public/none.png"/>
+            <p>当前还没有佣金信息</p>
+        </div>
+         <!-- 数据加载完提示 -->
+                <div class="end-wrap" v-show="isBotom" style="text-align: center; color: #838386; line-height: 60px;">
+                    <p>我是有底线哦~~</p>
+                </div>
     </div>
 </template>
 
@@ -37,22 +46,53 @@
             return{
                 page:1,
                 list:[],
+                isShow:false,
+                isBotom:true
             }
 			
         },
+        created(){
+            var that =this;
+            this.seveData()
+            window.addEventListener('scroll', this.scrollBottom);
+        },
         methods:{
+            scrollBottom(){
+                let _this = this;
+                let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                let windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+                let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+                if(scrollTop + windowHeight == scrollHeight){
+                    
+                    _this.seveData();
+                    this.page++;
+                }
+            },
             seveData(){
                 let url = 'user/distribut_list'
                 this.$axios.post(url,{
-                    token:this.$store.getters.optuser.Authorization
+                    token:this.$store.getters.optuser.Authorization,
+                    page:this.page
                 })
                 .then((res)=>{                  
                     var that = this
                     var item = res.data.data;
-                    console.log(res.data.data)
                     if(res.data.status === 200){
-                        that.list = item.data;
-                        console.log(that.list)
+                        this.isBotom=false
+                        if(item.data.length<0){
+                            this.isShow=true
+                        }else{
+                        }
+                        if(this.page == 1){ 
+                            that.list = item.data                       
+                        }else{
+                            if(item.data.length > 0){        //如果有数据,拼接数组
+                                that.list = that.list.concat(item.data); 
+                                //  that.list = [...that.list, ...item.data]
+                            }else{
+                                this.isBotom=true
+                            }
+                        }
                     }else{
                         that.$toast(res.msg)
                     }
@@ -60,10 +100,13 @@
             }
         },
         mounted(){
-            this.seveData()
+            
         },
         components:{
             DetHeader,
+        },
+        destroyed: function () {
+            window.removeEventListener('scroll', this.scrollBottom);
         },
         
     }
@@ -84,6 +127,7 @@
                             text-align center
                             line-height 55px
                 .list_wrap ul
+                    margin-bottom 20px
                     display flex
                 .list_wrap ul li 
                     flex 1
