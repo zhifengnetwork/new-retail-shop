@@ -49,6 +49,7 @@
                 </div>
             </div>
         </div>
+        <div class="height-88"></div>
         <div class="content">
             <!-- 我的订单 -->
             <div class="order_wrap">
@@ -316,7 +317,6 @@
                     font-size 36px
                     color #e06f14
         .content
-            margin-top 100px
             padding 0 24px 108px
             box-sizing border-box
             .order_wrap

@@ -10,7 +10,7 @@
             <div class="notice-list">
                 <ul>
                     <router-link :to="'/notice/NoticeDetails?item_id='+item.id" tag="li" v-for="(item,index) in NotList" :key="index">
-                        <h3>{{item.desc}}</h3>
+                        <h3>{{item.title}}</h3>
                         <span class="date">{{item.create_time | formatDate}}</span>
                     </router-link>
                 </ul>
