@@ -80,16 +80,16 @@ export default {
             let url = 'Collection/collection_list?token='+_that.token;
             _that.$axios.get(url)
             .then( (res) => {
-                console.log(res)
                 var list =res.data
                 if(list.status === 200){
-                    _that.collectList =list.data
+                    var item =list.data
+                    for(var i in item){
+                        item[i].isCheck =false
+                    }
+                    _that.collectList =item
                     if(list.data==""){
                         _that.isShow=true
                     }
-                    // if(lis.data.length<1){         //显示没有数据提示
-                    //     _that.isShow=true
-                    // }
                 }
             })
             .catch((error) => {
@@ -101,7 +101,7 @@ export default {
         },
         selectAll(_flag){
             for(var i =0;i<this.collectList.length;i++){
-                this.collectList[i].isCheck = ! _flag;
+                this.$set(this.collectList[i],'isCheck',!_flag);
             }
         },
         selectGoods(e,key){
@@ -116,15 +116,6 @@ export default {
                 }
             }
         },
-        // countNumberCheckBoxes(){    //计算选中的复选框的总数
-        //     let counts =[];
-        //     this.collectList.forEach((data)=>{
-        //         if(data.isCheck){
-        //             counts.push('a')    // a 可为任何数，在这里仅用于占位
-        //         }
-        //     })
-        //     return counts;
-        // },
         deletOption(){
             var _that=this
             if(_that.updateNumber < 1){
