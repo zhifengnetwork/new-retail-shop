@@ -6,8 +6,11 @@
 		</TopHeader>
         <div class="height-88"></div>
         <div class="content">
-            <h1>{{NotiList.title}}</h1>
-            <p>{{NotiList.desc}}</p>
+            <div>
+                <h1>{{NotiList.title}}</h1>
+                <!-- <p>{{NotiList.desc}}</p> -->
+                <div v-html="NotiList.desc" class="ttt"></div>
+            </div>
         </div>
 
     </div>
@@ -34,7 +37,7 @@ export default {
                 token:this.$store.getters.optuser.Authorization,
                 'announce_id':this.announceId
             })
-            .then((res)=>{                 
+            .then((res)=>{          
                 var that = this
                 if(res.data.status === 200){
                     that.NotiList = res.data.data;
@@ -59,10 +62,14 @@ export default {
         margin 50px auto 0
         h1
             text-align center
-            font-size 38px
+            font-size 32px
             font-weight normal
-            margin-bottom 10px
-        p
-            line-height 36px
+            margin-bottom 20px
+            border-bottom 1px solid #ccc
+            padding :0 0 20px 0
+        .ttt
+            line-height 40px
             font-size 26px
+            color #666
+            letter-spacing 2px
 </style>
