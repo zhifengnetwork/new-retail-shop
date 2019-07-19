@@ -2,12 +2,10 @@
 	<div class="Category">
 		
 		<!-- 头部组件 -->
-		<TopHeader custom-title="分类" custom-fixed>
+		<TopHeader custom-title="分类">
 			<!-- <i slot="backBtn" class="iconfont icon-fanhui"></i> -->
 			<!-- <i slot="rightBtn" class="iconfont icon-lajitong"></i> -->
 		</TopHeader>
-		<div class="height-88"></div>
-		
 		<div class="scroll-content">
 			<div class="scroll-menu">
 				<div class="menu-item" 
@@ -145,10 +143,10 @@ export default {
 				&.active
 					background-color #fff
 		.scroll-list
+			padding 25px 0 68px
 			height 100%
 			overflow-y auto
 			flex 1
-			padding-top 25px
 			box-sizing border-box
 			.single-item
 				display flex
