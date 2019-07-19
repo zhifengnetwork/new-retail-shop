@@ -4,8 +4,6 @@
 		<TopHeader custom-title="公告列表" custom-fixed>
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</TopHeader>
-		<div class="height-88"></div>
-
         <div class="content">
             <div class="notice-list">
                 <ul>
@@ -81,18 +79,19 @@ export default {
 
 <style lang="stylus" scoped>
 .noticeList
+    padding-top 88px
     background-color #fff
     min-height 100vh
     .content
+        padding-top 10px
         .notice-list
             ul
                 li
+                    padding 10px 30px
                     font-size 28px
                     line-height 50px
                     border-bottom 1px solid #efefef
-                    padding 0 30px
                     box-sizing border-box
-                    margin-top 10px
                     h3
                         display -webkit-box
                         overflow hidden

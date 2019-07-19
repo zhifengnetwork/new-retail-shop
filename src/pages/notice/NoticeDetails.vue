@@ -4,7 +4,6 @@
 		<TopHeader custom-title="公告详情" custom-fixed>
 			<i slot="backBtn" class="iconfont icon-fanhui"></i>
 		</TopHeader>
-        <div class="height-88"></div>
         <div class="content">
             <div>
                 <h1>{{NotiList.title}}</h1>
@@ -55,6 +54,7 @@ export default {
 
 <style lang="stylus" scoped>
 .noticeDetails
+    padding-top 88px
     background-color #fff
     min-height 100vh
     .content
