@@ -20,7 +20,7 @@
                 <input type="password" placeholder="再次输入密码" v-model="password2" >
             </div>
 
-            <div class="btn" :class="{'hiLine':phone!='','hiLine':verifyCode!='','hiLine':password!='' ,'hiLine':password2!=''}" @click="confirmClick()">确定</div>
+            <div class="btn" :class="{'hiLine':phone!=''}" @click="confirmClick()">确定</div>
 
             <div class="jump-link">
                 <router-link to="/Login">登录</router-link>
@@ -223,7 +223,7 @@ export default {
             input 
                 height 50px
                 flex 1
-                font-size 26px
+                font-size 30px
             .verifyCode
                 height 90px
                 line-height 90px

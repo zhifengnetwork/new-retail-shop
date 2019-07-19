@@ -13,7 +13,7 @@
                     <i :class="isHide?'close-eyes':'open-eyes'"></i>
                 </div>
             </div>
-            <div class="btn" :class="{'hiLine':phone!='', 'hiLine':password!=''}"  @click="saveUserInfo()">登录</div>
+            <div class="btn" :class="{'hiLine':phone!=''}"  @click="saveUserInfo()">登录</div>
 
             <div class="jump-link">
                 <router-link to="/Register">注册账号</router-link>
@@ -157,7 +157,7 @@ export default {
             input 
                 height 50px
                 flex 1
-                font-size 26px
+                font-size 30px
             .eyes
                 width 82px
                 height 100%
