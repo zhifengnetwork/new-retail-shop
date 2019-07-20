@@ -109,10 +109,10 @@ export default {
             let isAndroid = ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1; //android终端
             let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);//ios终端
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                window.location = 'https://aifabu.com/MzMV'
+                window.location = 'https://www.aifabu.com/MzMV'
 
             } else if (/(Android)/i.test(navigator.userAgent)) {
-                window.location = 'https://aifabu.com/B3Eb'
+                window.location = 'https://www.aifabu.com/MzMV'
             }
 
             function isWeixinBrowser() {
