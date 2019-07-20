@@ -8,7 +8,7 @@
             <div class="tfoot">
                 <span class="btn" @click="handleCancel">取消</span>
                 <!-- <span class="confirm-btn btn"><input type="button" value="去付款" @click="topPayServiceCharge()"/></span> -->
-                <router-link to="/Pay/PayWay" class="confirm-btn btn"><input type="button" value="去付款" @click="topPayServiceCharge()"/></router-link>
+                <router-link to="/Pay/PayWay" class="confirm-btn btn"><input type="button" value="去付款"/></router-link>
             </div>
         </div>
     </div>

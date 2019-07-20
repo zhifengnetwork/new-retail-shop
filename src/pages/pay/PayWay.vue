@@ -160,8 +160,13 @@ export default {
                         this.$router.push('/sell/Sell')
                     },1500)
                 }else if(list.status == 308){
-                    this.$router.push('/user/upAmount')
-                }else if(res.data.status == 999){
+                    // this.$router.push('/user/upAmount')
+                }
+                else if(list.status == 310){
+                    // this.$router.push('/sell/UploadDocuments')
+                    this.$router.push('/Payment')
+                }
+                else if(res.data.status == 999){
 					this.$store.commit('del_token'); //清除token
 					setTimeout(()=>{
 						this.$router.push('/Login')
