@@ -68,11 +68,11 @@
                             <router-link :to="item.ar" class="look">
                                 <div class="img">
                                     <img :src="item.imgUrl"/>
-                                    <div class="info-icon van-info" v-if="index===0">{{userList.not_pay}}</div>
-                                    <div class="info-icon van-info" v-if="index===1">{{userList.not_delivery}}</div>
-                                    <div class="info-icon van-info" v-if="index===2">{{userList.not_receiving}}</div>
-                                    <div class="info-icon van-info" v-if="index===3">{{userList.not_evaluate}}</div>
-                                    <div class="info-icon van-info" v-if="index===4">{{userList.refund}}</div>
+                                    <div class="info-icon van-info" v-if="index===0&&userList.not_pay">{{userList.not_pay}}</div>
+                                    <div class="info-icon van-info" v-if="index===1&&userList.not_delivery">{{userList.not_delivery}}</div>
+                                    <div class="info-icon van-info" v-if="index===2&&userList.not_receiving">{{userList.not_receiving}}</div>
+                                    <div class="info-icon van-info" v-if="index===3&&userList.not_evaluate">{{userList.not_evaluate}}</div>
+                                    <div class="info-icon van-info" v-if="index===4&&userList.refund">{{userList.refund}}</div>
                                 </div>
                                 <div>{{item.name}}</div>
                             </router-link>
