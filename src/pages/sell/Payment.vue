@@ -37,9 +37,9 @@
             <p class="-userinfo"><strong>联系方式: {{currentOrder.mobile}}</strong></p>
         </div>
         <p class="height122"></p>
-        <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" >
-            <input class="submit" type="button" value="上传凭证" />
-        </router-link>
+        <!-- <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" > -->
+        <input class="submit" type="button" value="确定" @click="comfirm"/>
+        <!-- </router-link> -->
     </div>
 </template>
 <script>
@@ -67,6 +67,35 @@ export default {
         this._getPayList()
     },
     methods:{
+        comfirm(){
+            var _that =this;
+            _that.$axios.post('fifty_zone/upload_proof',{
+                'proof':'',
+                'fz_order_id':this.currentOrder.fz_order_id,
+                'token':this.$store.getters.optuser.Authorization            
+            })
+            .then((res)=>{
+                var list = res.data;
+                if(list.status === 200){
+                    _that.$toast('上传成功...')
+                    setTimeout(() => {
+                        // _that.$router.push('/Payment')
+                        location.reload() 
+                    },2000)
+                }
+                else if(res.data.status == 999){
+					this.$store.commit('del_token'); //清除token
+					setTimeout(()=>{
+						this.$router.push('/Login')
+					},1000)
+				}
+                else{
+                    _that.$toast(list.msg)
+                }
+            })
+
+
+        },
         shiftOrder(num) {
            var current= this.saveId+num;
             if(current<0){

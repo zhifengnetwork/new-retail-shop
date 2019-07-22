@@ -160,7 +160,7 @@ export default {
                         this.$router.push('/sell/Sell')
                     },1500)
                 }else if(list.status == 308){
-                    // this.$router.push('/user/upAmount')
+                    this.$router.push('/user/upAmount')
                 }
                 else if(list.status == 310){
                     // this.$router.push('/sell/UploadDocuments')

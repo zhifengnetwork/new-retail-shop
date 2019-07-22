@@ -12,9 +12,9 @@
                         <!-- <span>{{item.add_time | formatDate}}</span> -->
                         <!-- <span>{{item.hisTime}}</span> -->
                     </div>
-                    <div class="img_wrap">
+                    <!-- <div class="img_wrap">
                         <img :src="item.img"/>
-                    </div>
+                    </div> -->
                     <div class="num">
                         <span>{{item.mobile}} </span>
                         <button class="audit-btn" @click="submitAudit(item.fz_order_id,index)" :ref="'tpi_'+index">审核</button>
