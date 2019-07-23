@@ -3,6 +3,8 @@
       	<!-- 头部组件 -->
 		<TopHeader custom-title="50元专卖区" custom-fixed>
             <i slot="backBtn" class="iconfont icon-fanhui"></i>
+           <span slot="rightBtn" class="" @click="toPay()">未付款</span>
+            <!-- <router-link to="/Payment"> </router-link> -->
 		</TopHeader>
         <div class="height-88"></div>
         <!-- CONTENT START -->
@@ -44,6 +46,7 @@
                 shopsCode:'/static/images/sell/payCode.png',
                 show: false,
                 isShow:false,//弹窗是否显示
+                iswoo:false,
                 token:this.$store.getters.optuser.Authorization
             }
         },
@@ -52,6 +55,9 @@
             this._getSellList()
         },
         methods:{
+            toPay(){
+                this.$router.push('/Payment')
+            },
             _getSellList(){
                 var _that =this
                 _that.$axios.post('fifty_zone/shop_list',{
@@ -64,6 +70,7 @@
                         _that.$store.commit('hideLoading')
                     }else if(list.status == 304){
                         _that.$toast(list.msg)
+                        _that.iswoo =true
                         setTimeout(()=>{
                             this.$router.push('/Payment')
                         },1000)
