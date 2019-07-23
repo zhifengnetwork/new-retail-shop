@@ -7,39 +7,30 @@
         <div class="height-88"></div>
         <!-- CONTENT START --> 
         <div class="content">
-            <div class="shiftShop">
-                <!-- <div  class="shopMid iconfont icon-fanhui" v-on:click="shiftOrder(-1)"></div > -->
-                <div class="shopMid">{{currentOrder.fz_order_id}}</div>
-                <!-- <div  class="shopMid goright iconfont icon-fanhui" v-on:click="shiftOrder(1)"></div > -->
+            <div class="c_list" v-for="(list,index) in orderList" :key="index">
+                    <div class="shiftShop">
+                        <div class="shopMid">{{list.fz_order_id}}</div>
+                    </div>
+                    <div class="img">
+                        <div class="-list-msg">
+                            <p>ID: {{list.shop_user_id}}</p>
+                            <p>{{list.mobile}}</p>
+                        </div>
+                        <img class="-imgs" :src="list.img" />
+                    </div>
+                    <div class="inner" v-for="(item,key) in list.list" :key="key" v-show="list.ewmId == key" >   
+                        <div class="-img2">
+                            <img :src="item.pic" />
+                        </div>
+                        <div class="-payment-">
+                            <span class="-payment-1">{{item.msg}}</span>
+                            <span class="-payment-2"  @click="changPayment(index,key,$event)">切换</span>
+                        </div>
+                    </div>
+                    <p class="-userinfo"><strong>联系方式: {{list.mobile}}</strong></p>
+                    <input class="submit" type="button" value="确定" @click="comfirm(list.fz_order_id)"/>
             </div>
-            <div class="img">
-                <div class="-list-msg">
-                    <p>ID: {{currentOrder.shop_user_id}}</p>
-                    <p>{{currentOrder.mobile}}</p>
-                </div>
-                <img class="-imgs" :src="currentOrder.img" />
-            </div>
-            <div class="inner" v-for="(item,key) in list" :key="key" v-show="key==ewmId" >   
-                <div class="-img2">
-                    <img :src="item.pic" />
-                </div>
-                <div class="-payment-">
-                    <span class="-payment-1" v-show="key==ewmId">{{item.msg}}</span>
-                    <span class="-payment-2"  @click="changPayment()">切换</span>
-                </div>
-                <!-- <van-popup v-model="show" position="bottom" :style="{ height: '20%' }"> 
-                    <ul>
-                        <li>支付宝</li>
-                        <li>微信</li>
-                    </ul>
-                </van-popup> -->
-            </div>
-            <p class="-userinfo"><strong>联系方式: {{currentOrder.mobile}}</strong></p>
         </div>
-        <p class="height122"></p>
-        <!-- <router-link :to="'sell/UploadDocuments?fz_order_id='+currentOrder.fz_order_id" > -->
-        <input class="submit" type="button" value="确定" @click="comfirm"/>
-        <!-- </router-link> -->
     </div>
 </template>
 <script>
@@ -59,29 +50,48 @@ export default {
             orderList:[],
             currentOrder:[],
             token:this.$store.getters.optuser.Authorization,
-
+            wet:0,
+            pwet:0,
+            sel:[],
         }
     },
     created(){
         this.$store.commit('showLoading')       //加载loading
         this._getPayList()
     },
+   computed:{
+        updatePrice(){
+            let totalPrice=0;
+            this.list.forEach((data)=>{
+                if(data.selected==0){
+                    totalPrice += new Number(data.goods_price) * new Number(data.goods_num);
+                }
+            })
+            return totalPrice.toFixed(2);
+        }
+    },
     methods:{
-        comfirm(){
+        comfirm(fz_order_id){
+            // console.log(fz_order_id)
             var _that =this;
             _that.$axios.post('fifty_zone/upload_proof',{
                 'proof':'',
-                'fz_order_id':this.currentOrder.fz_order_id,
+                'fz_order_id':fz_order_id,
                 'token':this.$store.getters.optuser.Authorization            
             })
             .then((res)=>{
                 var list = res.data;
                 if(list.status === 200){
-                    _that.$toast('上传成功...')
+                    _that.$toast('提交成功...')
+                    // console.log(this.orderList)
                     setTimeout(() => {
                         // _that.$router.push('/Payment')
                         location.reload() 
                     },2000)
+
+                    if(this.orderList.length<1){
+
+                    }
                 }
                 else if(res.data.status == 999){
 					this.$store.commit('del_token'); //清除token
@@ -93,29 +103,16 @@ export default {
                     _that.$toast(list.msg)
                 }
             })
-
-
         },
-        shiftOrder(num) {
-           var current= this.saveId+num;
-            if(current<0){
-                current=0;
+        changPayment(index,key,e){
+            var t =key+1
+            if(t>2){
+                t =0
             }
-            if(current>this.orderList.length-1){
-                current=this.orderList.length-1;
-            }
-            this.saveId=current;
-             this.currentOrder=this.orderList[current];
-             this.list[0].pic=this.orderList[current].zfb_pic;
-             this.list[1].pic=this.orderList[current].wx_pic;
-             this.list[2].pic=this.orderList[current].my_pic;
+            this.$set(this.orderList[index],'ewmId',t)
+            this.$forceUpdate();
         },
-        changPayment(){
-            this.ewmId ++;
-            if(this.ewmId>2){
-                this.ewmId=0
-            }
-        },
+        
          _getPayList(){
                 var _that =this;
                 _that.$axios.post('fifty_zone/fifty_order',{
@@ -128,14 +125,17 @@ export default {
                             this.$router.push('/user/PaycodeList')
                         }
                         _that.orderList =list.data
-                        _that.currentOrder=list.data[0]
-                        _that.list[0].pic=list.data[0].zfb_pic;
-                        _that.list[1].pic=list.data[0].wx_pic;
-                        _that.list[2].pic=list.data[0].my_pic;
+                        for(var i in _that.orderList){
+                            _that.orderList[i].list  = _that.list
+                            _that.orderList[i].ewmId = 0
+
+                            _that.orderList[i].list[0].pic =_that.orderList[i].zfb_pic
+                            _that.orderList[i].list[1].pic =_that.orderList[i].wx_pic
+                             _that.orderList[i].list[2].pic =_that.orderList[i].my_pic
+                        }
+
+                        // console.log(_that.orderList)
                         _that.$store.commit('hideLoading')
-                        // if(list.data[0].zfb_pic==null && list.data[0].wx_pic==null && list.data[0].my_pic==null){
-                        //     this.$router.push('/user/PaycodeList')
-                        // }
                     }
                     else if(res.data.status == 999){
                         this.$toast(res.data.msg)
@@ -163,6 +163,9 @@ export default {
         height 100%
         .content
             padding 24px 24px 30px
+            .c_list
+               margin-bottom: 20px
+               background: #f5f5f5;
             .img
                 width 701px
                 height 280px
@@ -223,16 +226,18 @@ export default {
             width 100%
             height 122px
         .submit
-            width 702px
+            width 50%
             height 88px
             background-color #ff4d4d
             border-radius 44px
             color #fff
             font-size 30px
             letter-spacing 5px
-            position fixed
-            bottom 24px
-            left 24px
+            display block
+            margin 20px auto
+            // position fixed
+            // bottom 24px
+            // left 24px
        .shiftShop
             -height 100px
             width 50%
