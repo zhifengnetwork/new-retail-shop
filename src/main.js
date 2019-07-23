@@ -33,8 +33,8 @@ Vue.use(VueClipboard)
 
 // 拼接图片路径
 // Vue.prototype.url = 'http://www.hmylst.cn'
-Vue.prototype.globalUrl = 'http://www.hmylst.cn'
-// Vue.prototype.globalUrl ='http://newretailweb.zhifengwangluo.com'
+// Vue.prototype.globalUrl = 'http://www.hmylst.cn'
+Vue.prototype.globalUrl ='http://newretailweb.zhifengwangluo.com'
 
 /**
  * 注册全局自定义指令,获取焦点

@@ -9,13 +9,16 @@
         <div class="height-88"></div>
         <!-- CONTENT START -->
         <div class="content">
+            
             <a href="javascript:void(0)" class="sell-list" v-for="(item,key) in list" :key="key">
-                <div class="-list-msg">
-                    <p>ID: {{item.user_id}}</p>
-                    <p>{{item.realname}}</p>
+                <div class="sell-cont">
+                    <div class="-list-msg">
+                        <p>ID: {{item.user_id}}</p>
+                        <p>{{item.realname}}</p>
+                    </div>
+                    <img class="-list-img" :src="item.img" @click="showPopup(item.pay_code)"/>
+                    <div class="-list-radus-num">{{item.stock}}</div>
                 </div>
-                <img class="-list-img" :src="item.img" @click="showPopup(item.pay_code)"/>
-                <div class="-list-radus-num">{{item.stock}}</div>
                 <div class="-list-radus-box">
                     <van-checkbox v-model="item.isCheck" :check ="item.isCheck"></van-checkbox>
                 </div>
@@ -175,15 +178,15 @@
 </script>
 <style lang="stylus" scoped>
     .sell
-        .van-checkbox__icon
-            height 60px
-        .van-checkbox__icon .van-icon
-            width 60px
-            height 60px
+        .-list-radus-box /deep/ .van-checkbox__icon
+            width 60px !important
+            height 60px !important
+        .-list-radus-box /deep/ .van-checkbox__icon .van-icon
+            width 60px !important
+            height 60px !important
             line-height 60px
-            border 1px solid #151515
-            background #fff
-        .van-checkbox__icon--checked .van-icon
+            border-color #151515
+        .-list-radus-box /deep/ .van-checkbox__icon--checked .van-icon
             background-color #f30c0c
             border-color #fff
             border none
@@ -196,46 +199,51 @@
                 width 100%
                 border-radius 10px
                 position relative
-                .-list-img
-                    width 100%
-                    max-height 280px
-                    // max-height 100%
-                .-list-msg
-                    position absolute
-                    top 20px
-                    left 25px 
-                    font-size 26px
-                    color #fff
-                    width 180px
-                    text-align center
-                    background rgba(0,0,0,0.3)
-                    padding 6px 3px
-                    box-sizing border-box
-                    border-radius 8px
-                    p:nth-child(1)
-                        margin-bottom 4px
-                        .msg-a
-                            background red
-                            padding 5px
-                            width 21px
-                            text-align center
-                            border-radius 3px
-                .-list-radus-num
-                    position absolute
-                    top 0.24rem
-                    right 0
-                    width 100px
-                    height 60px
-                    line-height 60px
-                    background #e5233e
-                    color #fff
-                    border-bottom-left-radius 30px
-                    border-top-left-radius 30px
-                    text-align center
+                .sell-cont
+                    width 450px
+                    height 280px
+                    margin-bottom 15px
+                    .-list-img
+                        width 100%
+                        height 100%
+                    .-list-msg
+                        position absolute
+                        top 20px
+                        left 25px 
+                        font-size 26px
+                        color #fff
+                        width 180px
+                        text-align center
+                        background rgba(0,0,0,0.3)
+                        padding 6px 3px
+                        box-sizing border-box
+                        border-radius 8px
+                        p:nth-child(1)
+                            margin-bottom 4px
+                            .msg-a
+                                background red
+                                padding 5px
+                                width 21px
+                                text-align center
+                                border-radius 3px
+                    .-list-radus-num
+                        position absolute
+                        bottom 20px
+                        left 0
+                        width 100px
+                        height 60px
+                        line-height 60px
+                        // background #e5233e
+                        background: rgba(173, 29, 29, 0.7)
+                        color #fff
+                        border-bottom-right-radius 30px
+                        border-top-right-radius 30px
+                        text-align center
                 .-list-radus-box
                     position absolute
                     right 20px
-                    bottom 22px
+                    top 50%
+                    margin-top -30px
                     color #f30c0c
                     width 60px
                     height 60px
