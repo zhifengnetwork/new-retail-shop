@@ -8,7 +8,7 @@
 		</Rel-Header>
         <div class="content">
             <div class="main_wrap">
-                <div class="main" v-for="(item,index) in releaseList" :key="index">
+                <router-link :to="'/user/ByInfo?fz_id='+item.fz_id" class="main" v-for="(item,index) in releaseList" :key="index">
                     <div class="time">
                         <span>{{item.ymdTime}}</span>
                         <span>{{item.hisTime}}</span>
@@ -17,7 +17,7 @@
                         <img :src="item.img"/>
                     </div>
                     <div class="num">剩余商品数量{{item.stock}}</div>
-                </div>
+                </router-link>
             </div>
             <!-- 无数据 -->
             <div class="none" v-show="isShow">

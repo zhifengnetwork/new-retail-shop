@@ -15,7 +15,8 @@ module.exports = {
     // 代理跨域
     proxyTable: {
 		  "/api": {
-        target: "http://new_retail_test.zhifengwangluo.com/api/",//接口的域名 测试
+        // target: "http://new_retail_test.zhifengwangluo.com/api/",//接口的域名 测试
+        target:  "http://newretailweb.zhifengwangluo.com/api/",
         // target: "http://www.hmylst.cn/api/",//接口的域名
         // target: "http://www.puruitingxls.com/api/",//接口的域名
 		    secure: false,  //如果是https接口，需要配置这个参数

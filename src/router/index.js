@@ -106,6 +106,10 @@ import Collect from '@/pages/user/Collect'
 
 // 我的发布
 import release from '@/pages/user/release'
+
+// 购买信息
+import ByInfo from '@/pages/user/ByInfo'
+
 // 商家审核
 import ShopAudit from '@/pages/user/ShopAudit'
 // 编辑付款码
@@ -438,6 +442,12 @@ const router= new Router({
 			path: '/user/release',
 			name: 'release',
 			component:() => import('@/pages/user/release'),
+		},
+		// 购买信息
+		{
+			path: '/user/ByInfo',
+			name: 'ByInfo',
+			component:() => import('@/pages/user/ByInfo'),
 		},
 		// 商家审核
 		{
