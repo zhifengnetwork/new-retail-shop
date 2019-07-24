@@ -17,7 +17,7 @@
                     </div> -->
                     <div class="num">
                         <span>{{item.mobile}} </span>
-                        <button class="audit-btn" v-if="item.user_comfirm!=1 && item.shop_comfirm!=1" @click="submitAudit(item.fz_order_id,index)" :ref="'tpi_'+index">审核</button>
+                        <button class="audit-btn" v-if="item.user_confirm!=0 && item.shop_confirm!=1" @click="submitAudit(item.fz_order_id,index)" :ref="'tpi_'+index">审核</button>
                     </div>
                 </div>
             </div>
