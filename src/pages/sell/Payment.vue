@@ -18,15 +18,47 @@
                         </div>
                         <img class="-imgs" :src="list.img" />
                     </div>
-                    <div class="inner" v-for="(item,key) in list.list" :key="key" v-show="list.ewmId == key" >   
+
+                   <div class="inner" v-show="list.ewmId == 0">  
+                        <div class="-img2">
+                            <img :src="list.wx_pic" />
+                        </div>
+                        <div class="-payment-">
+                            <span class="-payment-1">微信收款</span>
+                            <span class="-payment-2"  @click="changPayment(index,0)">切换</span>
+                        </div>
+                    </div>
+                    <div class="inner" v-show="list.ewmId == 1" >  
+                        <div class="-img2">
+                            <img :src="list.zfb_pic" />
+                        </div>
+                        <div class="-payment-">
+                            <span class="-payment-1">支付宝收款</span>
+                            <span class="-payment-2"  @click="changPayment(index,1)">切换</span>
+                        </div>
+                    </div>
+
+                    <div class="inner" v-show="list.ewmId == 2" >  
+                        <div class="-img2">
+                            <img :src="list.my_pic" />
+                        </div>
+                        <div class="-payment-">
+                            <span class="-payment-1">云闪付收款</span>
+                            <span class="-payment-2"  @click="changPayment(index,2)">切换</span>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="inner" v-for="(item,key) in list.list" :key="key" v-show="list.ewmId == key" >   
                         <div class="-img2">
                             <img :src="item.pic" />
+                            {{item.pic}}
                         </div>
                         <div class="-payment-">
                             <span class="-payment-1">{{item.msg}}</span>
                             <span class="-payment-2"  @click="changPayment(index,key,$event)">切换</span>
                         </div>
-                    </div>
+                    </div> -->
                     <p class="-userinfo"><strong>联系方式: {{list.mobile}}</strong></p>
                     <input class="submit" type="button" value="确定" @click="comfirm(list.fz_order_id)"/>
             </div>
@@ -104,7 +136,7 @@ export default {
                 }
             })
         },
-        changPayment(index,key,e){
+        changPayment(index,key){
             var t =key+1
             if(t>2){
                 t =0
