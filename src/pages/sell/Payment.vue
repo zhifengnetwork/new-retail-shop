@@ -48,7 +48,6 @@
                         </div>
                     </div>
 
-
                     <!-- <div class="inner" v-for="(item,key) in list.list" :key="key" v-show="list.ewmId == key" >   
                         <div class="-img2">
                             <img :src="item.pic" />
@@ -60,7 +59,8 @@
                         </div>
                     </div> -->
                     <p class="-userinfo"><strong>联系方式: {{list.mobile}}</strong></p>
-                    <input class="submit" type="button" value="确定" @click="comfirm(list.fz_order_id)"/>
+                    <input class="submit" type="button"  v-if="list.user_confirm==0" value="确定" @click="comfirm(list.fz_order_id)"/>
+                    <input class="submit sub-heightline" type="button" v-else="" value="确定"/>
             </div>
         </div>
     </div>
@@ -267,9 +267,8 @@ export default {
             letter-spacing 5px
             display block
             margin 20px auto
-            // position fixed
-            // bottom 24px
-            // left 24px
+        .sub-heightline
+             background-color #ccc;
        .shiftShop
             -height 100px
             width 50%
