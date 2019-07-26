@@ -110,23 +110,6 @@ export default {
         /**
          * 立即付款
          */
-        // payment(order_id,pay_id){
-        //     if(pay_id == 1){
-        //         this.showPwd = true;
-        //         this.showKeyboard = true;
-        //         this.paswPopup =true
-        //     }
-        //     else if(pay_id == 2){
-        //        this.$toast("调用微信支付接口");
-        //     }
-        //     else if(pay_id == 3){
-        //         this.$toast("调用支付宝支付接口");
-        //     }
-        //     // else if(pay_id == 4){
-        //     //     this.$toast("货到付款");
-        //     // }
-        // },
-
         payment(order_id,pay_id){
             if(pay_id == 1){
                 this.showPwd = true;
@@ -134,11 +117,12 @@ export default {
                 this.paswPopup =true
             }
             else if(pay_id == 2){
-               this.$toast("调用微信支付接口");
+            //    this.$toast("调用微信支付接口");
+               this.requestInfo()               //拉起微信链接
             }
             else if(pay_id == 3){
-                this.$toast("调用支付宝支付接口");
-                // this.requestInfo()               //拉起支付宝链接，暂时注解
+                // this.$toast("调用支付宝支付接口");
+                this.requestInfo()               //拉起支付宝链接
             }
             // else if(pay_id == 4){
             //     this.$toast("货到付款");
@@ -187,8 +171,8 @@ export default {
             this.$axios.post(url,{
                 token:this.$store.getters.optuser.Authorization,
                 order_id:this.$route.query.order_id,
-                // pay_type:this.pay_id, 
-                pay_type:1,                         //默认余额支付
+                pay_type:this.pay_id, 
+                // pay_type:1,                         //默认余额支付
                 pwd:this.payPassword
             }).then((res) => {
                 if(res.data.status === 200){  
@@ -200,7 +184,10 @@ export default {
                             this.$router.push('/Order/OrderDetails?order_id=' + res.data.data.order_id)
                         },2000)
                     }
-                    // else if(this.pay_id==3){             //拉起支付宝链接，暂时注解
+                    if(this.pay_id==2 || this.pay_id==3){           //拉起支付宝链接，暂时注解
+                        window.location.href =res.data.data.url 
+                    }
+                    // else if(this.pay_id==3){             
                     //     window.location.href =res.data.data.url
                     // }
                     

@@ -11,8 +11,8 @@
                     <input type="number" placeholder="请输入充值金额" v-model="money"/>
                 </div>
                 <van-radio-group v-model="radio">
-                    <van-radio name="2" checked-color="#f30c0c">微信</van-radio>
-                    <van-radio name="3" checked-color="#f30c0c">支付宝</van-radio>
+                    <van-radio name="2" checked-color="#f30c0c" @change="selectPayWay(2)">微信</van-radio>
+                    <van-radio name="3" checked-color="#f30c0c" @change="selectPayWay(3)">支付宝</van-radio>
                 </van-radio-group>
             </div>
             <!-- 充值按钮 -->
@@ -34,6 +34,9 @@
 			
         },
         methods: {
+            selectPayWay(key){
+                this.radio=key
+            },
             PopData(){
                 var that = this 
                 if(that.money === '') {
@@ -42,7 +45,7 @@
                 if(that.money <= 0.01) {
                     return that.$toast('金额不能低于0.01元')
                 }
-                if(that.radio==2){return that.$toast('调用微信接口')} 
+                // if(that.radio==2){return that.$toast('调用微信接口')} 
                 var url = "pay/recharge_pay"
                 that.$axios.post(url,{
                     token:that.$store.getters.optuser.Authorization,
