@@ -556,6 +556,11 @@ const router= new Router({
 	]
 })
 
+router.afterEach(() => {
+	document.body.scrollTop = 0;
+	document.documentElement.scrollTop = 0;
+  })
+
 //注册全局钩子函数
 router.beforeEach((to,from,next) =>{
 	if(to.matched.some(r => r.meta.requireAuth)){	//当前页面是否需要登录

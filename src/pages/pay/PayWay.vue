@@ -89,7 +89,6 @@ export default {
                     this.pay_id = res.data.data[0].pay_type;//当前选中支付方式id
                 } 
                 else if(res.data.status == 999){
-
 					this.$store.commit('del_token'); //清除token
 					setTimeout(()=>{
 						this.$router.push('/Login')
@@ -117,12 +116,24 @@ export default {
                 this.paswPopup =true
             }
             else if(pay_id == 2){
+                 if(typeof(this.order_id)=='undefined'){
+                    this.topPayServiceCharge()
+                }else{
+                     
+                    this.requestInfo()                  // 请求数据
+                }
             //    this.$toast("调用微信支付接口");
-               this.requestInfo()               //拉起微信链接
+               // this.requestInfo()               //拉起微信链接
             }
             else if(pay_id == 3){
+                 if(typeof(this.order_id)=='undefined'){
+                    this.topPayServiceCharge()
+                }else{
+                     
+                    this.requestInfo()                  // 请求数据
+                }
                 // this.$toast("调用支付宝支付接口");
-                this.requestInfo()               //拉起支付宝链接
+                // this.requestInfo()               //拉起支付宝链接
             }
             // else if(pay_id == 4){
             //     this.$toast("货到付款");
@@ -133,7 +144,7 @@ export default {
             var _that =this;
             _that.$axios.post('pay/release_wx_pay',{
                 token:this.$store.getters.optuser.Authorization,
-                pay_type:1,
+                pay_type:this.pay_id,
                 pwd:this.payPassword         
             })
             .then((res)=>{
@@ -155,6 +166,8 @@ export default {
 					setTimeout(()=>{
 						this.$router.push('/Login')
 					},1000)
+				}else if(res.data.status == 311){
+				     window.location.href =res.data.data.url 
 				}
                 else{
                     _that.$toast(list.msg)

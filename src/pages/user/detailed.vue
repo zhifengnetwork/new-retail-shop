@@ -47,25 +47,30 @@
                 page:1,
                 list:[],
                 isShow:false,
-                isBotom:true
+                isBotom:false,
+
+                scrollTop:0,   //滚动条位置 
+                offsetHeight:0,    //可视区高 
+                scrollHeight:0,    //滚动区域 
             }
-			
         },
+
         created(){
-            var that =this;
             this.seveData()
-            window.addEventListener('scroll', this.scrollBottom);
+        },
+        mounted(){
+              window.addEventListener('scroll', this.scrollBottom);
         },
         methods:{
             scrollBottom(){
-                let _this = this;
-                let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-                let windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-                let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-                if(scrollTop + windowHeight == scrollHeight){
-                    
-                    _this.seveData();
-                    this.page++;
+                var scr = document.documentElement.scrollTop || document.body.scrollTop;                            // 向上滚动的那一部分高度
+                var clientHeight = document.documentElement.clientHeight || document.body.clientHeight ;            // 屏幕高度也就是当前设备静态下你所看到的视觉高度
+                var scrHeight = document.documentElement.scrollHeight || document.body.scrollHeight;                // 整个网页的实际高度，兼容Pc端
+                if(scr + clientHeight + 10 >= scrHeight){
+                    // console.log("距顶部"+scr+"可视区高度"+clientHeight+"滚动条总高度"+scrHeight);
+                    // this.$toast('加载中...')
+                    this.page++; 
+                    this.seveData();
                 }
             },
             seveData(){
@@ -82,13 +87,14 @@
                         if(item.data.length<0){
                             this.isShow=true
                         }else{
+                            
                         }
                         if(this.page == 1){ 
-                            that.list = item.data                       
+                            that.list = item.data                
                         }else{
                             if(item.data.length > 0){        //如果有数据,拼接数组
-                                that.list = that.list.concat(item.data); 
-                                //  that.list = [...that.list, ...item.data]
+                                // that.list = that.list.concat(item.data); 
+                                 that.list = [...that.list, ...item.data]
                             }else{
                                 this.isBotom=true
                             }
@@ -98,9 +104,6 @@
                     }
                 })
             }
-        },
-        mounted(){
-            
         },
         components:{
             DetHeader,
