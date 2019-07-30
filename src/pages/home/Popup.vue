@@ -62,8 +62,14 @@ export default {
 
         //点击取消
         handleCancel(){
-            // popShow = false
-            this.$emit('handleCancel',false)
+            var _that =this;
+            this.$emit('handleCancel',false)    
+            _that.$axios.post('fifty_zone/cancel_order',{
+                token:this.$store.getters.optuser.Authorization,        
+            })
+            .then((res)=>{
+
+            })
         }
     }
 }
