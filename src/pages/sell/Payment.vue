@@ -59,6 +59,17 @@
                         </div>
                     </div> -->
                     <p class="-userinfo"><strong>联系方式: {{list.mobile}}</strong></p>
+
+                    <p class="-userStatus">
+                        
+                        商家审核：
+                        <span v-if="list.shop_confirm==1">
+                            已审核
+                        </span>
+                        <span v-else="">
+                            未审核
+                        </span>
+                    </p>
                     <input class="submit" type="button"  v-if="list.user_confirm==0" value="确定" @click="comfirm(list.fz_order_id)"/>
                     <input class="submit sub-heightline" type="button" v-else="" value="确定"/>
             </div>
@@ -254,6 +265,9 @@ export default {
                     width: 100%
                     height: 500px
                     padding: 10px
+            .-userStatus
+                text-align: center
+                color: #ff6521
         .height122
             width 100%
             height 122px

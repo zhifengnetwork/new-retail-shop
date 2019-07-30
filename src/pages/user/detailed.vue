@@ -48,6 +48,8 @@
                 list:[],
                 isShow:false,
                 isBotom:false,
+                flag:false,
+                // countpage:0,
 
                 scrollTop:0,   //滚动条位置 
                 offsetHeight:0,    //可视区高 
@@ -74,12 +76,24 @@
                 }
             },
             seveData(){
+                // if(this.page == this.countpage){
+                //     return;
+                // }
+
+                if(this.flag){
+                    return
+                }
+                // this.flag = true;
+
                 let url = 'user/distribut_list'
                 this.$axios.post(url,{
                     token:this.$store.getters.optuser.Authorization,
                     page:this.page
                 })
-                .then((res)=>{                  
+                .then((res)=>{
+                    // this.countpage = res.data.last_page;
+                    
+                    // this.flag = false;                  
                     var that = this
                     var item = res.data.data;
                     if(res.data.status === 200){
