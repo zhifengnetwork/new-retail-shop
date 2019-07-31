@@ -29,8 +29,7 @@
 						<!-- <div class="sum_wrap" v-for="(list,index) in as" :key="index" v-show="cur===index"> -->
                         <div class="sum_wrap">
 							<h4>提现金额</h4>
-							<!-- 支付宝账号编辑 -->
-							<router-link to="/user/alipay" v-show="payType===4">
+							<router-link to="/user/alipay" v-show="payInex===0">
 								<div class="fee_wrap">
 									<div class="fee">
                                         <span>{{alipayInfo.alipay_name}}</span>
@@ -40,10 +39,20 @@
 								</div>
 							</router-link>
 
+							<router-link to="/user/bankCard" v-show="payInex===1">
+								<div class="fee_wrap">
+									<div class="fee">
+                                        <span>{{bankInfo.bank_name}}</span>
+                                        <span>{{bankInfo.bank_card}}</span>
+                                    </div>
+									<div class="unit icon"></div>
+								</div>
+							</router-link>
+
+
 							<div class="put">
                                 <span class="dollars">￥</span>
 								<div class="inp">
-									<!-- <input type="number" placeholder="请输入提现金额" v-model="money" @keyup="vertyMoney()" /> -->
                                     <input type="number" oninput="if(value.length > 12)value = value.slice(0, 12)" placeholder="请输入提现金额" ref="money" v-model.number="money">
 								</div>
 								<div class="all_btn" @click="all()">全部提现</div>
@@ -86,18 +95,20 @@
 		data() {
 			return{
                 pay:[
-                    {id:4,img:'/static/images/user/zfb.png'},
-                    // {id:2,img:'/static/images/user/weixi.png'},
-                    // {id:3,img:'/static/images/user/yhk.png'}
+                    {id:1,img:'/static/images/user/zfb.png'},
+                    {id:2,img:'/static/images/user/yhk.png'}
 				],
 				as:[
 					{id:1,num:0,mas:92.20},
 					{id:2,num:0,mas:92.20},
                 ],
+                alipayInfo:{},
+                bankInfo:{},
                 money:'',
-                payType:4,
+                payType:1,
+                payInex:0,
                 // tMoney:'',
-                alipayInfo:[],
+                // alipayInfo:[],
                 remainderMoney:this.$route.query.remainder_money,
                 rate:this.$route.query.rate,
                 fee:0,
@@ -119,12 +130,9 @@
         },
         methods:{
             withType(index,id){
+                // console.log(index)
                 this.payType =id
-            },
-            vertyNumber(){
-                if(this.vertyNumber){
-
-                }
+                this.payInex=index
             },
             saveWithdrawal(){
                 var url ='user/withdrawal'
@@ -150,20 +158,22 @@
             },
             getUserAlipayInfo(){
                 var url ='user/zfb_info'
-				this.$axios.post(url,{         // 传给后台的参数
+				this.$axios.post(url,{        
 					'token':this.$store.getters.optuser.Authorization
 				})
 				.then((res)=>{
                     var list =res.data
+                    // console.log(list.data)
                     if(list.status==200){
-                        this.alipayInfo =list.data
+                        this.alipayInfo=list.data[0]
+                        this.bankInfo=list.data[1]
                         this.$store.commit('hideLoading')
-                        if(this.alipayInfo.length<1){
-                            this.$router.push({
-                                path: '/user/alipay',
-                                name: 'alipay',
-                            })
-                        }
+                        // if(this.alipayInfo.length<1){
+                        //     this.$router.push({
+                        //         path: '/user/alipay',
+                        //         name: 'alipay',
+                        //     })
+                        // }
                     }
                     else if(res.data.status == 999){
                         this.$store.commit('del_token'); //清除token
@@ -222,8 +232,8 @@
                 width 58px
                 height 58px
             .mode .on
-                width 70px
-                height 70px
+                width 80px
+                height 80px
             .sum_wrap
                 .sum_wrap
                 .put

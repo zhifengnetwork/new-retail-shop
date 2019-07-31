@@ -98,6 +98,8 @@ import InviteLink from '@/pages/user/InviteLink'
 import mySharing from '@/pages/user/mySharing'
 // 支付宝账号编辑
 import alipay from '@/pages/user/alipay'
+// 银行卡编辑
+import bankCard from '@/pages/user/bankCard'
 // 修改用户名
 import modifyUserName from '@/pages/user/modifyUserName'
 
@@ -494,6 +496,14 @@ const router= new Router({
 			component:() => import('@/pages/user/alipay'),
 			meta:{requireAuth:true}
 		},
+		// 银行卡编辑
+		{
+			path: '/user/bankCard',
+			name: 'bankCard',
+			component:() => import('@/pages/user/bankCard'),
+			meta:{requireAuth:true}
+		},
+
 		// 修改用户名
 		{
 			path: '/user/modifyUserName',

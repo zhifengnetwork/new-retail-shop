@@ -50,6 +50,7 @@
 					'token':this.$store.getters.optuser.Authorization,
 					'alipay_name':_that.alipayName,
 					'alipay':_that.alipay,
+					'type':1
 				})
 				.then((res)=>{
 					if(res.data.status===200){
