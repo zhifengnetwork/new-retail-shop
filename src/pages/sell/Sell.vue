@@ -107,7 +107,7 @@
                        
                     }
                 }
-                _that.$axios.post('fifty_zone/fiftySubmitOrder',{
+                _that.$axios.post('pa/fiftySubmitOrder',{
                     'token':_that.token,
                     'fz_id':fzids    
                 })

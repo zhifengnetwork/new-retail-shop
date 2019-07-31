@@ -159,8 +159,8 @@
                 </li> -->
             </ul>
             <div class="-bar-list">
-                <input class="bar-btn-1" type="button" @click="showSizeBox(0)" value="加入购物车"/>
-                <input class="bar-btn-2" type="button" @click="showSizeBox(1)" value="立即购买"/>
+                <input v-if="this.goodsData.is_release==0 && this.goodsData.is_gift==1" class="bar-btn-1" type="button" @click="showSizeBox(0)" value="加入购物车"/>
+                <input v-if="this.goodsData.is_release==0 && this.goodsData.is_gift==1" class="bar-btn-2" type="button" @click="showSizeBox(1)" value="立即购买"/>
             </div>
         </div>
     </div>
@@ -202,6 +202,7 @@ export default {
             good:[],
             sizeBox:false,       //规格选择框
             proCityDistrict:'无',
+            isRelease:''
         }
     },
     created(){

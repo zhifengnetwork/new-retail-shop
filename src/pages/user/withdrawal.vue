@@ -20,16 +20,17 @@
 					<h4>提现方式</h4>
 					<!-- 选择方式 -->
 					<div class="mode">
-						<div class="wechat" v-for="(item,index) in pay" :key="index" @click="cur=index" :class="{on:cur==index}">
+						<div class="wechat" v-for="(item,index) in pay" :key="index" :class="{on:payType==item.id}" @click="withType(index,item.id)">
 							<img :src="item.img"/>
 						</div>
 					</div>
 					<div class="play_wrap">
 						<!-- 微信/支付宝-提现金额 -->
-						<div class="sum_wrap" v-for="(list,index) in as" :key="index" v-show="cur===index">
+						<!-- <div class="sum_wrap" v-for="(list,index) in as" :key="index" v-show="cur===index"> -->
+                        <div class="sum_wrap">
 							<h4>提现金额</h4>
 							<!-- 支付宝账号编辑 -->
-							<router-link to="/user/alipay">
+							<router-link to="/user/alipay" v-show="payType===4">
 								<div class="fee_wrap">
 									<div class="fee">
                                         <span>{{alipayInfo.alipay_name}}</span>
@@ -85,13 +86,16 @@
 		data() {
 			return{
                 pay:[
-					{id:4,img:'/static/images/user/zfb.png'},
+                    {id:4,img:'/static/images/user/zfb.png'},
+                    // {id:2,img:'/static/images/user/weixi.png'},
+                    // {id:3,img:'/static/images/user/yhk.png'}
 				],
 				as:[
 					{id:1,num:0,mas:92.20},
 					{id:2,num:0,mas:92.20},
                 ],
                 money:'',
+                payType:4,
                 // tMoney:'',
                 alipayInfo:[],
                 remainderMoney:this.$route.query.remainder_money,
@@ -113,9 +117,10 @@
                 return tMoney.toFixed(2)
             }
         },
-        mounted() {
-        },
         methods:{
+            withType(index,id){
+                this.payType =id
+            },
             vertyNumber(){
                 if(this.vertyNumber){
 
@@ -126,7 +131,7 @@
 				this.$axios.post(url,{         // 传给后台的参数
                     'token':this.$store.getters.optuser.Authorization,
                     'money':this.computeMoney,
-                    'withdraw_type':4
+                    'withdraw_type':this.payType
 				})
 				.then((res)=>{
                     var list =res.data
