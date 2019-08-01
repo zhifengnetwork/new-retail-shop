@@ -36,7 +36,7 @@
                         </span>
                         
                         <span class="audit-btn" v-if="item.user_confirm ==1 && item.shop_confirm ==1">已完成</span>
-                        <span class="audit-btn" v-if="item.user_confirm ==1 && item.shop_confirm ==0">已付款</span>
+                        <span class="audit-btn" v-if="item.user_confirm ==1 && item.shop_confirm ==0">待审核</span>
                         <span class="audit-btn" v-if="item.user_confirm ==0 && item.shop_confirm ==0">未付款</span>
                         <!-- <button class="audit-btn" v-if="item.user_confirm!=0 && item.shop_confirm!=1" @click="submitAudit(item.fz_order_id,index)" :ref="'tpi_'+index">审核</button> -->
                     </div>
