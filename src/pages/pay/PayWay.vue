@@ -80,9 +80,14 @@ export default {
          * 获取支付方式
          */
         requestData(){
+              var type=""
+              if(typeof(this.order_id)=='undefined'){
+                  type=1
+            }
             let url = 'Order/get_pay_type';
             this.$axios.post(url,{
-                token:this.$store.getters.optuser.Authorization
+                token:this.$store.getters.optuser.Authorization,
+                type:type
             }).then((res) => {
                 if(res.data.status === 200){
                     this.pay_type = res.data.data;
@@ -135,9 +140,6 @@ export default {
                 // this.$toast("调用支付宝支付接口");
                 // this.requestInfo()               //拉起支付宝链接
             }
-            // else if(pay_id == 4){
-            //     this.$toast("货到付款");
-            // }
         },
 
         topPayServiceCharge(){
@@ -145,7 +147,7 @@ export default {
             _that.$axios.post('pay/release_wx_pay',{
                 token:this.$store.getters.optuser.Authorization,
                 pay_type:this.pay_id,
-                pwd:this.payPassword         
+                pwd:this.payPassword        
             })
             .then((res)=>{
                 var list = res.data;
@@ -158,7 +160,6 @@ export default {
                     this.$router.push('/user/upAmount')
                 }
                 else if(list.status == 310){
-                    // this.$router.push('/sell/UploadDocuments')
                     this.$router.push('/Payment')
                 }
                 else if(res.data.status == 999){
@@ -185,7 +186,6 @@ export default {
                 token:this.$store.getters.optuser.Authorization,
                 order_id:this.$route.query.order_id,
                 pay_type:this.pay_id, 
-                // pay_type:1,                         //默认余额支付
                 pwd:this.payPassword
             }).then((res) => {
                 if(res.data.status === 200){  

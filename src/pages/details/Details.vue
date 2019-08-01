@@ -159,8 +159,8 @@
                 </li> -->
             </ul>
             <div class="-bar-list">
-                <input v-if="this.goodsData.is_release==0 && this.goodsData.is_gift==1" class="bar-btn-1" type="button" @click="showSizeBox(0)" value="加入购物车"/>
-                <input v-if="this.goodsData.is_release==0 && this.goodsData.is_gift==1" class="bar-btn-2" type="button" @click="showSizeBox(1)" value="立即购买"/>
+                <input v-if="(this.goodsData.is_release==0 && this.goodsData.is_gift==1) || this.goodsData.is_gift==0" class="bar-btn-1" type="button" @click="showSizeBox(0)" value="加入购物车"/>
+                <input v-if="(this.goodsData.is_release==0 && this.goodsData.is_gift==1) || this.goodsData.is_gift==0" class="bar-btn-2" type="button" @click="showSizeBox(1)" value="立即购买"/>
             </div>
         </div>
     </div>
