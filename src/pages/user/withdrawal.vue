@@ -42,7 +42,7 @@
 							<router-link to="/user/bankCard" v-show="payInex===1">
 								<div class="fee_wrap">
 									<div class="fee">
-                                        <span>{{bankInfo.bank_name}}</span>
+                                        <span>{{bankInfo.bank_real_name}}</span>
                                         <span>{{bankInfo.bank_card}}</span>
                                     </div>
 									<div class="unit icon"></div>

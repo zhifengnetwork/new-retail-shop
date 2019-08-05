@@ -7,7 +7,12 @@
 		</Rece-Header>
         <div class="content">
             <div class="main">
-                <div class="item">
+                <div class="-mag-wrap ">
+                    <img :src="bankInfo.kefu_code" />
+                </div>
+                <p>{{bankInfo.recharge_note}}</p>
+                
+                <!-- <div class="item">
                     <div class="title">收款人：</div>
                     <div class="name">{{bankInfo.title}}</div>
                 </div>
@@ -22,7 +27,7 @@
                 <div class="item">
                     <div class="title">银行：</div>
                     <div class="name">{{bankInfo.remark}}</div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -76,6 +81,18 @@
             .main
                 margin 18px 24px
                 background #fff
+                // text-align center
+                font-size 28px
+                color #151515
+                line-height 46px
+                padding 18px
+                .-mag-wrap 
+                    width 50%
+                    text-align center
+                    letter-spacing 2px
+                    margin 10px auto 30px
+                    img
+                        max-width 100%
                 .item
                     line-height 65px
 

@@ -58,8 +58,9 @@
                             <span class="-payment-2"  @click="changPayment(index,key,$event)">切换</span>
                         </div>
                     </div> -->
+                    
                     <p class="-userinfo"><strong>联系方式: {{list.mobile}}</strong></p>
-
+                    <p class="pay_num">购买数量：{{list.num}}</p>
                     <p class="-userStatus">
                         
                         商家审核：
@@ -232,7 +233,7 @@ export default {
                     border-radius 10px                   
             .inner
                 margin 30px 60px
-                padding 90px 0 0
+                padding 70px 0 0
                 background #fff
                 border-radius 10px
                 .-img2 
@@ -257,6 +258,10 @@ export default {
                         color #ff6521
                         font-size 28px
                         box-sizing border-box
+            .pay_num
+                text-align center
+                margin 10px 4px
+                font-size 26px
             .-userinfo
                 font-size 28px
                 text-align center

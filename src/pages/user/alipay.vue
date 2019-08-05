@@ -39,7 +39,34 @@
 				alipay:''
 			}
 		},
+		created(){
+			this.getUserAlipayInfo()
+		},
 		methods:{
+
+          getUserAlipayInfo(){
+			  	var that =this
+                var url ='user/zfb_info'
+				this.$axios.post(url,{        
+					'token':this.$store.getters.optuser.Authorization
+				})
+				.then((res)=>{
+                    var list =res.data
+                    // console.log(list.data)
+                    if(list.status==200){
+                        this.alipayInfo=list.data[0]
+						that.alipay=that.alipayInfo.alipay
+						that.alipayName=that.alipayInfo.alipay_name
+                    }
+                    else if(res.data.status == 999){
+                        this.$store.commit('del_token'); //清除token
+                    }else{
+                        this.$toast(res.data.msg)
+                    }
+				})
+            },
+
+
 			saveData(){
 				var _that =this
 				if(_that.alipayName=="" || _that.alipay==""){
