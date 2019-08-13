@@ -55,7 +55,6 @@
                     <van-tab title="参数">
                         <div class="params-wrap">
                             <ul class="param-list" v-html="this.goodsData.content_param">
-
                                 <!-- <li>
                                     <div class="param-name">商品编号 </div>
                                     <div class="param-value">55666666</div>
@@ -64,9 +63,8 @@
                                     <div class="param-name">面料</div>
                                     <div class="param-value">蕾丝</div>
                                 </li> -->
-                            </ul>
+                           </ul>
                         </div>
-
                     </van-tab>
                     <van-tab :title="'商品评价('+this.goodsData.comment_count+')'">
                         <div class="comment-wrap">
