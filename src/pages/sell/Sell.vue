@@ -268,7 +268,7 @@
                     .-list-img
                         width 100%
                         max-height 100%
-                        object-fit contain
+                        background #fff;
                     .-list-msg
                         position absolute
                         top 20px
