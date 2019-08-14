@@ -92,10 +92,11 @@ export default {
          * 校验手机号
          */
         validatePhone(){
-            if(!this.phone){
+            var phone =this.phone.replace(/\s+/g, "")
+            if(!phone){
                 this.$toast('手机号码不能为空')
                 return false;
-            }else if(!/^1[3456789]\d{9}$/.test(this.phone)){
+            }else if(!/^1[3456789]\d{9}$/.test(phone)){
                 this.$toast('请填写正确的手机号码')
                 return false;
             }else{
@@ -134,31 +135,34 @@ export default {
          */
         confirmClick(){
             var that = this;
-            if(that.phone == ''){
+            var phone =this.phone.replace(/\s+/g, "")
+            var pasw1=this.password.replace(/\s+/g, "")
+            var pasw2 =this.password2.replace(/\s+/g, "")
+            if(phone == ''){
                 that.$toast('手机号码不能为空')
                 return false
-            }else if(!/^1[3456789]\d{9}$/.test(that.phone)){
+            }else if(!/^1[3456789]\d{9}$/.test(phone)){
                 that.$toast('请填写正确的手机号码')
                 return false
             }else if(that.verifyCode == ''){
                 that.$toast('验证码不能为空')
                 return false
-            }else if(that.password == ''){
+            }else if(pasw1 == ''){
                 that.$toast('密码不能为空')
                 return false
-            }else if(!/^[a-z0-9_-]{6,18}$/.test(that.password)){
+            }else if(!/^[a-z0-9_-]{6,18}$/.test(pasw1)){
                 that.$toast('密码长度为6-18位')
                 return false
-            }else if(that.password != that.password2){
+            }else if(pasw1 != pasw2){
                 that.$toast('两次密码不一致')
                 return false
             }else{
                 // 请求修改密码接口
                 var url = "/user/resetPassword"
                 var params = new URLSearchParams();
-                    params.append('phone', this.phone);       // 要传给后台的参数值
-                    params.append('user_password', this.password);
-                    params.append('confirm_password', this.password2);
+                    params.append('phone', phone);       // 要传给后台的参数值
+                    params.append('user_password', pasw1);
+                    params.append('confirm_password', pasw2);
                     params.append('verify_code', this.verifyCode);  
                 this.$axios({
                     method: 'post',

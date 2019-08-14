@@ -41,6 +41,15 @@ export default {
         if(this.$store.getters.optuser.Authorization){       //返回登录页 如果有token 就返回首页
             this.$router.push('/Home')
         }
+        var loginInfo =JSON.parse(sessionStorage.getItem('loginInfo'))
+        console.log(loginInfo)
+        // if(typeof(loginInfo.phone)!="undefined" && typeof(loginInfo.password)!="undefined")){
+        if(loginInfo !=null){
+            
+            this.phone=loginInfo.phone 
+            this.password=loginInfo.password  
+            // console.log(this.carId)
+        }
     },
     methods:{
         saveUserInfo() {
@@ -48,8 +57,8 @@ export default {
             if(! _that._verifyUserInfo()){ return }
             let url = 'user/login'
              _that.$axios.post(url,{
-                phone: _that.phone,
-                user_password: _that.password
+                phone: _that.phone.replace(/\s+/g, ""),
+                user_password: _that.password.replace(/\s+/g, "")
             })
             .then((res)=>{
                 var list=res.data;
@@ -62,6 +71,13 @@ export default {
                     setTimeout(()=>{
                         _that.$router.push({path:'/Home',name:'Home'})
                     },1000)
+
+                    var loginInfo={
+                        'phone': _that.phone.replace(/\s+/g, ""),
+                        'password': _that.password.replace(/\s+/g, "")
+                    }
+                    sessionStorage.removeItem('loginInfo')
+                    sessionStorage.setItem('loginInfo',JSON.stringify(loginInfo))
                 }else{
                     _that.$toast(list.msg)
                 }
@@ -81,23 +97,22 @@ export default {
         /**
          * 校验登录
          */
+
+
         _verifyUserInfo(){
             let mobile_reg=/^1[3456789]\d{9}$/
-            let pswd_reg =/^[a-z0-9_-]{6,18}$/
-            if(this.phone == '' || !mobile_reg.test(this.phone)){
-                // return this.$toast('手机号码不能为空')
+            let pswd_reg =/^[a-z0-9_-]{6,20}$/
+            let mobile =this.phone.replace(/\s+/g, ""); 
+            let password =this.password.replace(/\s+/g, ""); 
+            if(mobile == '' || !mobile_reg.test(mobile)){
                 this.$toast('请填写正确的手机号码')
                 return false
             }
-            // if(!mobile_reg.test(this.phone)){
-            //     this.$toast('请填写正确的手机号码')
-            //     return false
-            // }
-            if(this.password == ''){
+            if(password == ''){
                 this.$toast('密码不能为空')
                 return false
             }
-            if(!pswd_reg.test(this.password)){
+            if(!pswd_reg.test(password)){
                this.$toast('密码长度为6-18位')
                 return false
             }
