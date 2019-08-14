@@ -265,10 +265,10 @@
                     height 280px
                     margin-bottom 15px
                     position relative
+                    background #fff
                     .-list-img
                         width 100%
                         max-height 100%
-                        background #fff;
                     .-list-msg
                         position absolute
                         top 20px
