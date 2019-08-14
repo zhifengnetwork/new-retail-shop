@@ -12,7 +12,7 @@
             
             <a href="javascript:void(0)" class="sell-list" v-for="(item,key) in list" :key="key">
                 <div class="sell-cont">
-                    <div class="-list-msg">
+                    <div class="-list-msg" v-if="item.is_open_id_nick==1">
                         <p>ID: {{item.user_id}}</p>
                         <p>{{item.realname}}</p>
                     </div>
@@ -171,7 +171,6 @@
                         }
                     }
                 }
-                console.log(fzids)
                 _that.$axios.post('fifty_zone/fiftySubmitOrder',{
                     'token':_that.token,
                     'fz_id':fzids    
@@ -268,7 +267,8 @@
                     position relative
                     .-list-img
                         width 100%
-                        height 100%
+                        max-height 100%
+                        object-fit contain
                     .-list-msg
                         position absolute
                         top 20px
