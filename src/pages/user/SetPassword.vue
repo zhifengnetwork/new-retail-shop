@@ -139,7 +139,7 @@ export default {
             if(phone == ''){
                 that.$toast('手机号码不能为空')
                 return false
-            }else if(!/^1[345678]\d{9}$/.test(phone)){
+            }else if(!/^1[3456789]\d{9}$/.test(phone)){
                 that.$toast('请填写正确的手机号码')
                 return false
             }else if(that.verifyCode == ''){
