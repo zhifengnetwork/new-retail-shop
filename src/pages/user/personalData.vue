@@ -112,12 +112,8 @@
             quitOut() {
                 var url = '/user/logout'
                 var params = new URLSearchParams();
-                    params.append('token', this.$store.getters.optuser.Authorization); //传给后台的参数值 key/value
-                Dialog.confirm({
-                    title: '温馨提示',
-                    message: '你确定要退出登录?'
-                }).then(() => {
-                    this.$axios({
+                params.append('token', this.$store.getters.optuser.Authorization); //传给后台的参数值 key/value
+                this.$axios({
                     method:"post",
                     url:url,
                     data:params
@@ -133,8 +129,33 @@
                             message:res.data.msg
                         })
                     }
-                });
-                }).catch(() => {
+                })
+                // var url = '/user/logout'
+                // var params = new URLSearchParams();
+                //     params.append('token', this.$store.getters.optuser.Authorization); //传给后台的参数值 key/value
+                // Dialog.confirm({
+                //     title: '温馨提示',
+                //     message: '你确定要退出登录?'
+                // }).then(() => {
+                //     this.$axios({
+                //     method:"post",
+                //     url:url,
+                //     data:params
+                // }).then((res)=>{
+                //     this.$store.commit('del_token'); //token，清除它;
+                //     if (res.data.status === 200){
+                //         Toast('退出成功');
+                //         setTimeout(() => {
+                //             this.$router.push("/Login");
+                //         }, 1000);
+                //     } else {
+                //         Dialog.alert({
+                //             message:res.data.msg
+                //         })
+                //     }
+                // });
+
+                .catch(() => {
                     // on cancel
                 })
             },
