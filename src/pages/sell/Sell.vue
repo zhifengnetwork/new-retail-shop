@@ -157,7 +157,7 @@
             },
             toPayment(){
                 var that =this
-                if(that.isClick = true){
+                if(that.isClick == true){
                     return
                 }
                 that.isClick =true
