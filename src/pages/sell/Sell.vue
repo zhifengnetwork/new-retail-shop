@@ -58,6 +58,7 @@
                 isShow:false,//弹窗是否显示
                 iswoo:false,
                 token:this.$store.getters.optuser.Authorization,
+                isClick:false,
                 numArray:[]    //存放选中的数量
             }
         },
@@ -155,6 +156,11 @@
                 this.isShow = false
             },
             toPayment(){
+                var that =this
+                if(that.isClick = true){
+                    return
+                }
+                that.isClick =true
                 if(this.numArray.length!=10){
                     return this.$toast.fail('限制只能购买10个')
                 }
@@ -190,12 +196,9 @@
                         },1000)
                     } 
                     else if(list.status==309){
-                        // _that.$toast(list.msg)
-                        // console.log(111)
                         setTimeout(()=>{
                             this.$router.push('/user/PaycodeList')
                         },1000)
-                        //  _that.$toast(222)
                     } 
                     else if(res.data.status == 999){
                         _that.$store.commit('del_token'); //清除token
@@ -206,6 +209,7 @@
                     else{
                         _that.$toast(list.msg)
                     }
+                    that.isClick = false
                 })
             },
             changStatus(key){
