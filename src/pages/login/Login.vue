@@ -41,7 +41,7 @@ export default {
         if(this.$store.getters.optuser.Authorization){       //返回登录页 如果有token 就返回首页
             this.$router.push('/Home')
         }
-        var loginInfo =JSON.parse(sessionStorage.getItem('loginInfo'))
+        var loginInfo =JSON.parse(localStorage.getItem('loginInfo'))
         console.log(loginInfo)
         // if(typeof(loginInfo.phone)!="undefined" && typeof(loginInfo.password)!="undefined")){
         if(loginInfo !=null){
