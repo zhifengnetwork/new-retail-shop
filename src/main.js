@@ -32,8 +32,8 @@ Vue.use(VueClipboard)
 
 
 // 拼接图片路径
-Vue.prototype.globalUrl = 'http://www.puruitingxls.com'
-// Vue.prototype.globalUrl ='http://newretailweb.zhifengwangluo.com'
+// Vue.prototype.globalUrl = 'http://www.puruitingxls.com'
+Vue.prototype.globalUrl ='http://xinlings_web.zhifengwangluo.com'   //测试
 
 /**
  * 注册全局自定义指令,获取焦点
