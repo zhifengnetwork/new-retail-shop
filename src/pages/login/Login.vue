@@ -76,8 +76,8 @@ export default {
                         'phone': _that.phone.replace(/\s+/g, ""),
                         'password': _that.password.replace(/\s+/g, "")
                     }
-                    sessionStorage.removeItem('loginInfo')
-                    sessionStorage.setItem('loginInfo',JSON.stringify(loginInfo))
+                    localStorage.removeItem('loginInfo')
+                    localStorage.setItem('loginInfo',JSON.stringify(loginInfo))
                 }else{
                     _that.$toast(list.msg)
                 }
